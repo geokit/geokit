@@ -21,8 +21,8 @@ module Geokit
   end
 end
 
-require 'lib/geocoders'
-require 'lib/mappable'
+require 'geocoders'
+require 'mappable'
 
 # make old-style module name "GeoKit" equivilent to new-style "Geokit"
 module GeoKit

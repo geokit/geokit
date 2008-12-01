@@ -2,7 +2,6 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/geocode
 lib/geocoders.rb
 lib/geokit.rb
 lib/mappable.rb
