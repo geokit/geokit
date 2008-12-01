@@ -1,8 +1,8 @@
-= GeoKit
+# GeoKit
 
 http://geokit.rubyforge.org
 
-== DESCRIPTION:
+## DESCRIPTION:
 
 The Geokit gem provides the following:
 
@@ -12,11 +12,11 @@ The Geokit gem provides the following:
 Combine this with gem with the geokit-rails plugin to get location-based finders for your Rails app. Plugins for other web frameworks and ORMs will provide similar functionality.
 
 
-== FEATURES/PROBLEMS:
+## FEATURES/PROBLEMS:
 
 * none currently
 
-== SYNOPSIS:
+## SYNOPSIS:
 
 		irb> require 'rubygems'
 		irb> require 'geokit'
@@ -32,19 +32,19 @@ Combine this with gem with the geokit-rails plugin to get location-based finders
 		=> 244.959832435678
 
 
-== REQUIREMENTS:
+## REQUIREMENTS:
 
 
-== INSTALL:
+## INSTALL:
 
   * gem sources -a http://gems.github.com
   * sudo gem install
 
-== LICENSE:
+## LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2007-2008 Andre Lewis and Bill Eisenhauer
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
