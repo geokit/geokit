@@ -1,26 +1,44 @@
 = GeoKit
 
-* FIX (url)
+http://geokit.rubyforge.org
 
 == DESCRIPTION:
 
-FIX (describe your package)
+The Geokit gem provides the following:
+
+ * Distance calculations between two points on the earth. Calculate the distance in miles or KM, with all the trigonometry abstracted away by GeoKit.
+ * Geocoding from multiple providers. It currently supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and it provides a uniform response structure from all of them. It also provides a fail-over mechanism, in case your input fails to geocode in one service.
+
+Combine this with gem with the geokit-rails plugin to get location-based finders for your Rails app. Plugins for other web frameworks and ORMs will provide similar functionality.
+
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* none currently
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+		irb> require 'rubygems'
+		irb> require 'geokit'
+		irb> a=Geokit::Geocoders::YahooGeocoder.geocode '140 Market St, San Francisco, CA'
+		irb> a.ll
+		 => 37.79363,-122.396116
+		irb> b=Geokit::Geocoders::YahooGeocoder.geocode '789 Geary St, San Francisco, CA'
+		irb> b.ll
+		 => 37.786217,-122.41619
+		irb> a.distance_to(b)
+		 => 1.21120007413626
+		irb> a.heading_to(b)
+		=> 244.959832435678
+
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+  * gem sources -a http://gems.github.com
+  * sudo gem install
 
 == LICENSE:
 
