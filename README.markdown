@@ -1,6 +1,6 @@
-# GeoKit
+# Geokit gem
 
-http://geokit.rubyforge.org
+[http://geokit.rubyforge.org](http://geokit.rubyforge.org)
 
 ## DESCRIPTION:
 
