@@ -3,7 +3,7 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
-require 'CGI'
+require 'cgi'
 
 module Geokit
   module Inflector
@@ -192,30 +192,12 @@ module Geokit
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
-          res = GeoLoc.new
-          coordinates=doc.elements['//coordinates'].text.to_s.split(',')
-
-          #basics
-          res.lat=coordinates[1]
-          res.lng=coordinates[0]
-          res.country_code=doc.elements['//CountryNameCode'].text
-          res.provider='google'
-
-          #extended -- false if not not available
-          res.city = doc.elements['//LocalityName'].text if doc.elements['//LocalityName']
-          res.state = doc.elements['//AdministrativeAreaName'].text if doc.elements['//AdministrativeAreaName']
-          res.full_address = doc.elements['//address'].text if doc.elements['//address'] # google provides it
-          res.zip = doc.elements['//PostalCodeNumber'].text if doc.elements['//PostalCodeNumber']
-          res.street_address = doc.elements['//ThoroughfareName'].text if doc.elements['//ThoroughfareName']
-          # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
-          # For Google, 1=low accuracy, 8=high accuracy
-          # old way -- address_details=doc.elements['//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
-          address_details=doc.elements['//*[local-name() = "AddressDetails"]']
-          accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
-          res.precision=%w{unknown country state state city zip zip+4 street address}[accuracy]
-          res.success=true
-          
-          return res
+          gs = GeoLocs.new
+          require 'ruby-debug'
+          doc.each_element('//Placemark') do |e|
+            gs.add_geoloc(do_placemark(e))
+          end
+          gs
         else 
           logger.info "Google was unable to geocode address: "+address
           return GeoLoc.new
@@ -224,7 +206,35 @@ module Geokit
         rescue
           logger.error "Caught an error during Google geocoding call: "+$!
           return GeoLoc.new
-      end  
+      end
+      
+      def self.do_placemark(doc)
+          res = GeoLoc.new
+          coordinates=doc.elements['.//coordinates'].text.to_s.split(',')
+
+          #basics
+          res.lat=coordinates[1]
+          res.lng=coordinates[0]
+          res.country_code=doc.elements['.//CountryNameCode'].text
+          res.provider='google'
+
+          #extended -- false if not not available
+          res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
+          res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
+          res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
+          res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
+          res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
+          # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
+          # For Google, 1=low accuracy, 8=high accuracy
+          # old way -- address_details=doc.elements['.//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
+          address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
+          accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+          res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]
+          res.success=true
+          
+          return res        
+      end
+        
     end
     
     # Provides geocoding based upon an IP address.  The underlying web service is a hostip.info

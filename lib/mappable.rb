@@ -339,11 +339,37 @@ module Geokit
       a.delete_if { |e| !e || e == '' }
       a.join(', ')      
     end
+    
+    def size ; 1 ; end
 
     # Returns a string representation of the instance.
     def to_s
       "Provider: #{provider}\n Street: #{street_address}\nCity: #{city}\nState: #{state}\nZip: #{zip}\nLatitude: #{lat}\nLongitude: #{lng}\nCountry: #{country_code}\nSuccess: #{success}"
     end
+  end
+  
+  require 'forwardable'  
+  class GeoLocs < SimpleDelegator
+    include Enumerable
+    extend Forwardable
+    
+    def_delegators :@a, :each, :push, :[], :size
+    
+    def initialize(geoloc = nil)
+      @a = []
+      if geoloc.nil?
+        super GeoLoc.new
+      else
+        @a << geoloc
+        super
+      end  
+    end
+    
+    def add_geoloc(geoloc)
+      __setobj__(geoloc) if @a.empty?
+      @a << geoloc
+    end
+    
   end
   
   # Bounds represents a rectangular bounds, defined by the SW and NE corners
