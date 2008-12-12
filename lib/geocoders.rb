@@ -248,6 +248,7 @@ module Geokit
       # longitude, city, and country code.  Sets the success attribute to false if the ip 
       # parameter does not match an ip address.  
       def self.do_geocode(ip)
+        return Geoloc.new if '0.0.0.0' == ip
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
