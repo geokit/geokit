@@ -350,7 +350,6 @@ module Geokit
   
   require 'forwardable'  
   class GeoLocs < SimpleDelegator
-    include Enumerable
     extend Forwardable
     
     def_delegators :@a, :each, :push, :[], :size
