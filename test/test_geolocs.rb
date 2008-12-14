@@ -5,24 +5,25 @@ class GeoLocsTest < Test::Unit::TestCase #:nodoc: all
   include Geokit
   
   def setup
-    @geolocs = GeoLocs.new(GeoLoc.new(:lat => 5, :lng => 7))
+    @geolocs = GeoLocs.new(:lat => 5, :lng => 7)
     @geolocs.push GeoLoc.new(:lat => 8, :lng => 9)
   end
   
-  def test_it_behaves_as_GeoLoc
+  def test_it_is_a_GeoLoc
     assert_respond_to @geolocs, :lat
     assert_respond_to @geolocs, :lng
+    assert_equal 5, @geolocs.lat
   end
   
-  def test_it_behaves_as_Array
+  def test_array_acccess
     assert_equal GeoLoc.new(:lat => 8, :lng => 9), @geolocs[1]
   end
   
-  def test_add_geoloc
-    gs = GeoLocs.new
-    gs.add_geoloc GeoLoc.new(:lat => 8, :lng => 9)
+  def test_push
+    g = GeoLoc.new(:lat => 8, :lng => 9)
+    gs = g.to_geolocs
     assert_equal 8, gs.lat
-    gs.add_geoloc GeoLoc.new(:lat => 5, :lng => 7)
+    gs.push GeoLoc.new(:lat => 5, :lng => 7)
     assert_equal 8, gs.lat
     assert_equal 2, gs.size
     assert_equal GeoLoc.new(:lat => 5, :lng => 7), gs[1]

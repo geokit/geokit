@@ -341,6 +341,12 @@ module Geokit
     end
     
     def size ; 1 ; end
+      
+    def to_geolocs
+      g = GeoLocs.new(hash)
+      g.success, g.provider, g.precision, g.full_address = success, provider, precision, full_address
+      g
+    end
 
     # Returns a string representation of the instance.
     def to_s
@@ -349,26 +355,25 @@ module Geokit
   end
   
   require 'forwardable'  
-  class GeoLocs < SimpleDelegator
+  class GeoLocs < GeoLoc
     extend Forwardable
     
     def_delegators :@a, :each, :push, :[], :size
     
-    def initialize(geoloc = nil)
-      @a = []
-      if geoloc.nil?
-        super GeoLoc.new
-      else
-        @a << geoloc
-        super
-      end  
+    def initialize(h = {})
+      super
+      @a = [self]
     end
     
-    def add_geoloc(geoloc)
-      __setobj__(geoloc) if @a.empty?
-      @a << geoloc
+    def to_geoloc
+      g = GeoLoc.new(hash)
+      g.success, g.provider, g.precision, g.full_address = success, provider, precision, full_address
+      g
     end
     
+    def to_yaml_properties
+      (instance_variables - ['@a']).sort
+    end
   end
   
   # Bounds represents a rectangular bounds, defined by the SW and NE corners
