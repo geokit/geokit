@@ -358,7 +358,7 @@ module Geokit
   class GeoLocs < GeoLoc
     extend Forwardable
     
-    def_delegators :@a, :each, :push, :[], :size
+    def_delegators :@a, :each, :push, :[], :size, :map
     
     def initialize(h = {})
       super
