@@ -46,4 +46,9 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     @another = Geokit::GeoLoc.new @loc.to_hash    
     assert_equal @loc, @another
   end
+  
+  def test_all
+    assert_equal [@loc], @loc.all
+  end
+  
 end

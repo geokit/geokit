@@ -342,10 +342,16 @@ module Geokit
     
     def size ; 1 ; end
       
+    def to_geoloc ; self ; end
+      
     def to_geolocs
       g = GeoLocs.new(hash)
       g.success, g.provider, g.precision, g.full_address = success, provider, precision, full_address
       g
+    end
+    
+    def all
+      [self]
     end
 
     # Returns a string representation of the instance.
@@ -369,6 +375,10 @@ module Geokit
       g = GeoLoc.new(hash)
       g.success, g.provider, g.precision, g.full_address = success, provider, precision, full_address
       g
+    end
+    
+    def all
+      @a.map(&:to_geoloc)
     end
     
     def to_yaml_properties

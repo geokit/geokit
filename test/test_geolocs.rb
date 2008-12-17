@@ -28,4 +28,9 @@ class GeoLocsTest < Test::Unit::TestCase #:nodoc: all
     assert_equal 2, gs.size
     assert_equal GeoLoc.new(:lat => 5, :lng => 7), gs[1]
   end
+    
+  def test_all
+    assert_equal [GeoLoc.new(:lat => 5, :lng => 7), GeoLoc.new(:lat => 8, :lng => 9)], @geolocs.all
+  end
+  
 end
