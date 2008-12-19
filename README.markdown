@@ -38,7 +38,7 @@ Combine this with gem with the geokit-rails plugin to get location-based finders
 ## INSTALL:
 
   * gem sources -a http://gems.github.com
-  * sudo gem install
+  * sudo gem install andre-geokit
 
 ## LICENSE:
 
