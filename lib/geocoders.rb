@@ -111,9 +111,16 @@ module Geokit
       private
       
       # Wraps the geocoder call around a proxy if necessary.
-      def self.do_get(url)     
-        return Net::HTTP::Proxy(Geokit::Geocoders::proxy_addr, Geokit::Geocoders::proxy_port,
-            Geokit::Geocoders::proxy_user, Geokit::Geocoders::proxy_pass).get_response(URI.parse(url))          
+      def self.do_get(url) 
+        uri = URI.parse(url)
+        req = Net::HTTP::Get.new(url)
+        req.basic_auth(uri.user, uri.password) if uri.userinfo
+        res = Net::HTTP::Proxy(GeoKit::Geocoders::proxy_addr,
+                GeoKit::Geocoders::proxy_port,
+                GeoKit::Geocoders::proxy_user,
+                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.request(req) }
+
+        return res
       end
       
       # Adds subclass' geocode method making it conveniently available through 
@@ -280,19 +287,32 @@ module Geokit
     class UsGeocoder < Geocoder
 
       private
-
-      # For now, the geocoder_method will only geocode full addresses -- not zips or cities in isolation
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = "http://"+(Geokit::Geocoders::geocoder_us || '')+"geocoder.us/service/csv/geocode?address=#{Geokit::Inflector::url_escape(address_str)}"
+        
+        query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
+        url = if GeoKit::Geocoders::geocoder_us         
+          "http://#{GeoKit::Geocoders::geocoder_us}@geocoder.us/member/service/csv/geocode"
+        else
+          "http://geocoder.us/service/csv/geocode"
+        end
+        
+        url = "#{url}?#{query}"  
         res = self.call_geocoder_service(url)
+        
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body
         logger.debug "Geocoder.us geocoding. Address: #{address}. Result: #{data}"
         array = data.chomp.split(',')
-
-        if array.length == 6  
+        
+        if array.length == 5
           res=GeoLoc.new
+          res.lat,res.lng,res.city,res.state,res.zip=array
+          res.country_code='US'
+          res.success=true
+          return res
+        elsif array.length == 6  
+          res=GeoLoc.new 
           res.lat,res.lng,res.street_address,res.city,res.state,res.zip=array
           res.country_code='US'
           res.success=true 
@@ -304,6 +324,7 @@ module Geokit
         rescue 
           logger.error "Caught an error during geocoder.us geocoding call: "+$!
           return GeoLoc.new
+
       end
     end
     
