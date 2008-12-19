@@ -1,7 +1,10 @@
+.loadpath
+.project
 History.txt
 Manifest.txt
-README.txt
+README.markdown
 Rakefile
+geokit.gemspec
 lib/geocoders.rb
 lib/geokit.rb
 lib/mappable.rb
@@ -10,6 +13,7 @@ test/test_bounds.rb
 test/test_ca_geocoder.rb
 test/test_geoloc.rb
 test/test_google_geocoder.rb
+test/test_ipgeocoder.rb
 test/test_latlng.rb
 test/test_multi_geocoder.rb
 test/test_us_geocoder.rb
