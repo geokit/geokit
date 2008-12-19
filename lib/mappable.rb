@@ -410,7 +410,7 @@ module Geokit
         Geokit::Bounds.new(sw,ne)
       end
       
-      # Takes two main combinations of arguements to create a bounds:
+      # Takes two main combinations of arguments to create a bounds:
       # point,point   (this is the only one which takes two arguments
       # [point,point]
       # . . . where a point is anything LatLng#normalize can handle (which is quite a lot)
