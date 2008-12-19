@@ -3,7 +3,6 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
-require 'CGI'
 
 module Geokit
   module Inflector
@@ -31,6 +30,12 @@ module Geokit
       s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/, '_\&') =~ /_*(.*)/
         return $+.downcase
       
+    end
+    
+    def url_escape(s)
+    s.gsub(/([^ a-zA-Z0-9_.-]+)/n) do
+      '%' + $1.unpack('H2' * $1.size).join('%').upcase
+      end.tr(' ', '+')
     end
   end  
   # Contains a set of geocoders which can be used independently if desired.  The list contains:
@@ -161,8 +166,8 @@ module Geokit
       def self.construct_request(location)
         url = ""
         url += add_ampersand(url) + "stno=#{location.street_number}" if location.street_address
-        url += add_ampersand(url) + "addresst=#{CGI.escape(location.street_name)}" if location.street_address
-        url += add_ampersand(url) + "city=#{CGI.escape(location.city)}" if location.city
+        url += add_ampersand(url) + "addresst=#{Geokit::Inflector::url_escape(location.street_name)}" if location.street_address
+        url += add_ampersand(url) + "city=#{Geokit::Inflector::url_escape(location.city)}" if location.city
         url += add_ampersand(url) + "prov=#{location.state}" if location.state
         url += add_ampersand(url) + "postal=#{location.zip}" if location.zip
         url += add_ampersand(url) + "auth=#{Geokit::Geocoders::geocoder_ca}" if Geokit::Geocoders::geocoder_ca
@@ -184,8 +189,8 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{CGI.escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
-#        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?q=#{CGI.escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+#        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml=res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
@@ -279,7 +284,7 @@ module Geokit
       # For now, the geocoder_method will only geocode full addresses -- not zips or cities in isolation
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = "http://"+(Geokit::Geocoders::geocoder_us || '')+"geocoder.us/service/csv/geocode?address=#{CGI.escape(address_str)}"
+        url = "http://"+(Geokit::Geocoders::geocoder_us || '')+"geocoder.us/service/csv/geocode?address=#{Geokit::Inflector::url_escape(address_str)}"
         res = self.call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body
@@ -311,7 +316,7 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url="http://api.local.yahoo.com/MapsService/V1/geocode?appid=#{Geokit::Geocoders::yahoo}&location=#{CGI.escape(address_str)}"
+        url="http://api.local.yahoo.com/MapsService/V1/geocode?appid=#{Geokit::Geocoders::yahoo}&location=#{Geokit::Inflector::url_escape(address_str)}"
         res = self.call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
