@@ -15,7 +15,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geocoder_us
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "http://geocoder.us/service/csv/geocode?address=#{CGI.escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     verify(Geokit::Geocoders::UsGeocoder.geocode(@address))
   end
@@ -23,14 +23,14 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geocoder_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "http://geocoder.us/service/csv/geocode?address=#{CGI.escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     verify(Geokit::Geocoders::UsGeocoder.geocode(@us_full_loc))    
   end
   
   def test_service_unavailable
     response = MockFailure.new
-    url = "http://geocoder.us/service/csv/geocode?address=#{CGI.escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::UsGeocoder.geocode(@us_full_loc).success   
   end  
