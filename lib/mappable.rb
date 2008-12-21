@@ -1,3 +1,4 @@
+require 'forwardable'
 
 module Geokit     
   # Contains class and instance methods providing distance calcuation services.  This
@@ -268,6 +269,8 @@ module Geokit
   # the "full address" method for geocoders that do not provide a 
   # full address in their results (for example, Yahoo), and the "is_us" method.
   class GeoLoc < LatLng
+    extend Forwardable
+
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
     attr_accessor :street_address, :city, :state, :zip, :country_code, :full_address
@@ -280,6 +283,8 @@ module Geokit
 
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h={})
+      @results = [self]
+      
       @street_address=h[:street_address] 
       @city=h[:city] 
       @state=h[:state] 
@@ -340,49 +345,20 @@ module Geokit
       a.join(', ')      
     end
     
-    def size ; 1 ; end
-      
-    def to_geoloc ; self ; end
-      
-    def to_geolocs
-      g = GeoLocs.new(hash)
-      g.success, g.provider, g.precision, g.full_address = success, provider, precision, full_address
-      g
-    end
+    def_delegators :@results, :each, :push, :size, :map
+    def_delegator :@results, :[], :pick
     
     def all
-      [self]
+      @results.dup
+    end
+    
+    def to_yaml_properties
+      (instance_variables - ['@results']).sort
     end
 
     # Returns a string representation of the instance.
     def to_s
       "Provider: #{provider}\n Street: #{street_address}\nCity: #{city}\nState: #{state}\nZip: #{zip}\nLatitude: #{lat}\nLongitude: #{lng}\nCountry: #{country_code}\nSuccess: #{success}"
-    end
-  end
-  
-  require 'forwardable'  
-  class GeoLocs < GeoLoc
-    extend Forwardable
-    
-    def_delegators :@a, :each, :push, :[], :size, :map
-    
-    def initialize(h = {})
-      super
-      @a = [self]
-    end
-    
-    def to_geoloc
-      g = GeoLoc.new(hash)
-      g.success, g.provider, g.precision, g.full_address = success, provider, precision, full_address
-      g
-    end
-    
-    def all
-      @a.map(&:to_geoloc)
-    end
-    
-    def to_yaml_properties
-      (instance_variables - ['@a']).sort
     end
   end
   

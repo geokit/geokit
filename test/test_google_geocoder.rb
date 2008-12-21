@@ -88,7 +88,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert !Geokit::Geocoders::GoogleGeocoder.geocode(@google_city_loc).success
   end 
   
-  def test_geolocs
+  def test_multiple_results
     #Geokit::Geocoders::GoogleGeocoder.do_geocode('via Sandro Pertini 8, Ossona, MI')
     response = MockSuccess.new
     response.expects(:body).returns(GOOGLE_MULTI)
@@ -104,7 +104,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "google", res.provider
 
     assert_equal 2, res.size
-    res = res[1]
+    res = res.pick(1)
     assert_equal "Lombardy", res.state
     assert_equal "Ossona", res.city
     assert_equal "45.5074444,8.90232", res.ll

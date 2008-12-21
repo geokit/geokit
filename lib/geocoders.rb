@@ -192,16 +192,16 @@ module Geokit
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
-          gs = nil
+          results = nil
           doc.each_element('//Placemark') do |e|
             g = do_placemark(e)        
-            if gs.nil?
-              gs = g.to_geolocs
+            if results.nil?
+              results = g
             else
-              gs.push(g)
+              results.push(g)
             end  
           end
-          return gs
+          return results
         else 
           logger.info "Google was unable to geocode address: "+address
           return GeoLoc.new
