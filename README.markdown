@@ -36,6 +36,8 @@ Combine this with gem with the [geokit-rails plugin](http://github.com/andre/geo
 
 FYI, that `.ll` method means "latitude longitude".
 
+See the RDOC more more ... there is also operations on rectangular bounds (e.g., determining if a point is within bounds, find the center, etc).
+
 ## INSTALL:
 
   * gem sources -a http://gems.github.com
