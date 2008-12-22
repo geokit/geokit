@@ -1,6 +1,7 @@
 # Geokit gem
 
-[http://geokit.rubyforge.org](http://geokit.rubyforge.org)
+* Geokit Documentation at Rubyforge [http://geokit.rubyforge.org](http://geokit.rubyforge.org).
+* Repository at Github: [http://github.com/andre/geokit-gem/tree/master](http://github.com/andre/geokit-gem/tree/master).
 
 ## DESCRIPTION:
 
@@ -41,7 +42,7 @@ See the RDOC more more ... there is also operations on rectangular bounds (e.g.,
 ## INSTALL:
 
   * gem sources -a http://gems.github.com
-  * sudo gem install andre-geokit-gem
+  * sudo gem install andre-geokit
 
 ## Configuration
 
