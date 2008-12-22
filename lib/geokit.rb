@@ -25,6 +25,4 @@ require 'geokit/geocoders'
 require 'geokit/mappable'
 
 # make old-style module name "GeoKit" equivilent to new-style "Geokit"
-module GeoKit
-  include Geokit
-end
+GeoKit=Geokit
