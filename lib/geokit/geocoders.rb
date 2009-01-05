@@ -211,7 +211,7 @@ module Geokit
           #basics
           res.lat=coordinates[1]
           res.lng=coordinates[0]
-          res.country_code=doc.elements['//CountryNameCode'].text
+          res.country_code=doc.elements['//CountryNameCode'].text if doc.elements['//CountryNameCode']
           res.provider='google'
 
           #extended -- false if not not available
