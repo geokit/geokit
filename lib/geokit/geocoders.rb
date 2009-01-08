@@ -95,6 +95,9 @@ module Geokit
         return res.success ? res : GeoLoc.new
       end  
       
+      # Main method which calls the do_reverse_geocode template method which subclasses
+      # are responsible for implementing.  Returns a populated GeoLoc or an
+      # empty one with a failed success code.
       def self.reverse_geocode(latlon)
         res = do_reverse_geocode(latlon)
         return res.success ? res : GeoLoc.new        
@@ -199,15 +202,14 @@ module Geokit
 
       private 
       
+      # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlon)
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlon)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
   #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-
         xml = res.body
         logger.debug "Google reverse-geocoding. LL: #{latlon}. Result: #{xml}"
-        return self.xml2GeoLoc(xml)
-        
+        return self.xml2GeoLoc(xml)        
       end
 
       # Template method which does the geocode lookup.
@@ -218,8 +220,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        return self.xml2GeoLoc(xml)
-        
+        return self.xml2GeoLoc(xml)        
       end
       
       def self.xml2GeoLoc(xml)
