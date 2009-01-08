@@ -95,6 +95,11 @@ module Geokit
         return res.success ? res : GeoLoc.new
       end  
       
+      def self.reverse_geocode(latlon)
+        res = do_reverse_geocode(latlon)
+        return res.success ? res : GeoLoc.new        
+      end
+      
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
         timeout(Geokit::Geocoders::timeout) { return self.do_get(url) } if Geokit::Geocoders::timeout        
@@ -193,6 +198,17 @@ module Geokit
     class GoogleGeocoder < Geocoder
 
       private 
+      
+      def self.do_reverse_geocode(latlon)
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlon)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+  #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+
+        xml = res.body
+        logger.debug "Google reverse-geocoding. LL: #{latlon}. Result: #{xml}"
+        return self.xml2GeoLoc(xml)
+        
+      end
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
@@ -200,8 +216,13 @@ module Geokit
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
 #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml=res.body
+        xml = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
+        return self.xml2GeoLoc(xml)
+        
+      end
+      
+      def self.xml2GeoLoc(xml)
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
