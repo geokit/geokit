@@ -3,7 +3,6 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
-require 'cgi'
 
 module Geokit
   module Inflector
@@ -32,6 +31,12 @@ module Geokit
         return $+.downcase
       
     end
+    
+    def url_escape(s)
+    s.gsub(/([^ a-zA-Z0-9_.-]+)/n) do
+      '%' + $1.unpack('H2' * $1.size).join('%').upcase
+      end.tr(' ', '+')
+    end
   end  
   # Contains a set of geocoders which can be used independently if desired.  The list contains:
   # 
@@ -54,11 +59,12 @@ module Geokit
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@geocoder_us = false
     @@geocoder_ca = false
+    @@geonames = false
     @@provider_order = [:google,:us]
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     
-    [:yahoo, :google, :geocoder_us, :geocoder_ca, :provider_order, :timeout, 
+    [:yahoo, :google, :geocoder_us, :geocoder_ca, :geonames, :provider_order, :timeout, 
      :proxy_addr, :proxy_port, :proxy_user, :proxy_pass,:logger].each do |sym|
       class_eval <<-EOS, __FILE__, __LINE__
         def self.#{sym}
@@ -106,9 +112,16 @@ module Geokit
       private
       
       # Wraps the geocoder call around a proxy if necessary.
-      def self.do_get(url)     
-        return Net::HTTP::Proxy(Geokit::Geocoders::proxy_addr, Geokit::Geocoders::proxy_port,
-            Geokit::Geocoders::proxy_user, Geokit::Geocoders::proxy_pass).get_response(URI.parse(url))          
+      def self.do_get(url) 
+        uri = URI.parse(url)
+        req = Net::HTTP::Get.new(url)
+        req.basic_auth(uri.user, uri.password) if uri.userinfo
+        res = Net::HTTP::Proxy(GeoKit::Geocoders::proxy_addr,
+                GeoKit::Geocoders::proxy_port,
+                GeoKit::Geocoders::proxy_user,
+                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.request(req) }
+
+        return res
       end
       
       # Adds subclass' geocode method making it conveniently available through 
@@ -161,8 +174,8 @@ module Geokit
       def self.construct_request(location)
         url = ""
         url += add_ampersand(url) + "stno=#{location.street_number}" if location.street_address
-        url += add_ampersand(url) + "addresst=#{CGI.escape(location.street_name)}" if location.street_address
-        url += add_ampersand(url) + "city=#{CGI.escape(location.city)}" if location.city
+        url += add_ampersand(url) + "addresst=#{Geokit::Inflector::url_escape(location.street_name)}" if location.street_address
+        url += add_ampersand(url) + "city=#{Geokit::Inflector::url_escape(location.city)}" if location.city
         url += add_ampersand(url) + "prov=#{location.state}" if location.state
         url += add_ampersand(url) + "postal=#{location.zip}" if location.zip
         url += add_ampersand(url) + "auth=#{Geokit::Geocoders::geocoder_ca}" if Geokit::Geocoders::geocoder_ca
@@ -184,8 +197,8 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{CGI.escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
-#        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?q=#{CGI.escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+#        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml=res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
@@ -219,7 +232,7 @@ module Geokit
           #basics
           res.lat=coordinates[1]
           res.lng=coordinates[0]
-          res.country_code=doc.elements['.//CountryNameCode'].text
+          res.country_code=doc.elements['.//CountryNameCode'].text if doc.elements['.//CountryNameCode']
           res.provider='google'
 
           #extended -- false if not not available
@@ -290,19 +303,32 @@ module Geokit
     class UsGeocoder < Geocoder
 
       private
-
-      # For now, the geocoder_method will only geocode full addresses -- not zips or cities in isolation
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = "http://"+(Geokit::Geocoders::geocoder_us || '')+"geocoder.us/service/csv/geocode?address=#{CGI.escape(address_str)}"
+        
+        query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
+        url = if GeoKit::Geocoders::geocoder_us         
+          "http://#{GeoKit::Geocoders::geocoder_us}@geocoder.us/member/service/csv/geocode"
+        else
+          "http://geocoder.us/service/csv/geocode"
+        end
+        
+        url = "#{url}?#{query}"  
         res = self.call_geocoder_service(url)
+        
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body
         logger.debug "Geocoder.us geocoding. Address: #{address}. Result: #{data}"
         array = data.chomp.split(',')
-
-        if array.length == 6  
+        
+        if array.length == 5
           res=GeoLoc.new
+          res.lat,res.lng,res.city,res.state,res.zip=array
+          res.country_code='US'
+          res.success=true
+          return res
+        elsif array.length == 6  
+          res=GeoLoc.new 
           res.lat,res.lng,res.street_address,res.city,res.state,res.zip=array
           res.country_code='US'
           res.success=true 
@@ -314,6 +340,7 @@ module Geokit
         rescue 
           logger.error "Caught an error during geocoder.us geocoding call: "+$!
           return GeoLoc.new
+
       end
     end
     
@@ -326,7 +353,7 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url="http://api.local.yahoo.com/MapsService/V1/geocode?appid=#{Geokit::Geocoders::yahoo}&location=#{CGI.escape(address_str)}"
+        url="http://api.local.yahoo.com/MapsService/V1/geocode?appid=#{Geokit::Geocoders::yahoo}&location=#{Geokit::Inflector::url_escape(address_str)}"
         res = self.call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
@@ -358,6 +385,54 @@ module Geokit
         rescue 
           logger.info "Caught an error during Yahoo geocoding call: "+$!
           return GeoLoc.new
+      end
+    end
+
+    class GeonamesGeocoder < Geocoder
+
+      private 
+      
+      # Template method which does the geocode lookup.
+      def self.do_geocode(address)
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+        # geonames need a space seperated search string
+        address_str.gsub!(/,/, " ")
+        params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
+        
+        if(GeoKit::Geocoders::geonames)
+          url = "http://ws.geonames.net#{params}&username=#{GeoKit::Geocoders::geonames}"
+        else
+          url = "http://ws.geonames.org#{params}"
+        end
+        
+        res = self.call_geocoder_service(url)
+        
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        
+        xml=res.body
+        logger.debug "Geonames geocoding. Address: #{address}. Result: #{xml}"
+        doc=REXML::Document.new(xml)
+        
+        if(doc.elements['//geonames/totalResultsCount'].text.to_i > 0)
+          res=GeoLoc.new
+        
+          # only take the first result
+          res.lat=doc.elements['//code/lat'].text if doc.elements['//code/lat']
+          res.lng=doc.elements['//code/lng'].text if doc.elements['//code/lng']
+          res.country_code=doc.elements['//code/countryCode'].text if doc.elements['//code/countryCode']
+          res.provider='genomes'  
+          res.city=doc.elements['//code/name'].text if doc.elements['//code/name']
+          res.state=doc.elements['//code/adminName1'].text if doc.elements['//code/adminName1']
+          res.zip=doc.elements['//code/postalcode'].text if doc.elements['//code/postalcode']
+          res.success=true
+          return res
+        else 
+          logger.info "Geonames was unable to geocode address: "+address
+          return GeoLoc.new
+        end
+        
+        rescue
+          logger.error "Caught an error during Geonames geocoding call: "+$!
       end
     end
     

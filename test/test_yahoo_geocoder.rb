@@ -27,7 +27,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yahoo_full_address
     response = MockSuccess.new
     response.expects(:body).returns(YAHOO_FULL)
-    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{CGI.escape(@address)}"
+    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@address))
   end 
@@ -35,7 +35,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yahoo_full_address_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(YAHOO_FULL)
-    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{CGI.escape(@full_address)}"
+    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{Geokit::Inflector.url_escape(@full_address)}"
     Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_full_loc))
   end  
@@ -43,7 +43,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yahoo_city
     response = MockSuccess.new
     response.expects(:body).returns(YAHOO_CITY)
-    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{CGI.escape(@address)}"
+    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@address))
   end
@@ -51,14 +51,14 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yahoo_city_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(YAHOO_CITY)
-    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{CGI.escape(@address)}"  
+    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{Geokit::Inflector.url_escape(@address)}"  
     Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc))
   end  
   
   def test_service_unavailable
     response = MockFailure.new
-    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{CGI.escape(@address)}"
+    url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=Yahoo&location=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc).success
   end  
