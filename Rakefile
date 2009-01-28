@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'hoe'
-require './lib/geokit.rb'
+require './lib/geokit'
 
 Hoe.new('Geokit', Geokit::VERSION) do |p|
   # p.rubyforge_name = 'Geokitx' # if different than lowercase project name

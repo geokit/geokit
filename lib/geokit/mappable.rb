@@ -9,14 +9,17 @@ module Geokit
   # * Pythagorean Theory (flat Earth) - which assumes the world is flat and loses accuracy over long distances.
   # * Haversine (sphere) - which is fairly accurate, but at a performance cost.
   # 
-  # Distance units supported are :miles and :kms.
+  # Distance units supported are :miles, :kms, and :nms.
   module Mappable
     PI_DIV_RAD = 0.0174
     KMS_PER_MILE = 1.609
+    NMS_PER_MILE = 0.868976242
     EARTH_RADIUS_IN_MILES = 3963.19
     EARTH_RADIUS_IN_KMS = EARTH_RADIUS_IN_MILES * KMS_PER_MILE
+    EARTH_RADIUS_IN_NMS = EARTH_RADIUS_IN_MILES * NMS_PER_MILE
     MILES_PER_LATITUDE_DEGREE = 69.1
     KMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * KMS_PER_MILE
+    NMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * NMS_PER_MILE
     LATITUDE_DEGREES = EARTH_RADIUS_IN_MILES / MILES_PER_LATITUDE_DEGREE  
     
     # Mix below class methods into the includer.
@@ -27,7 +30,7 @@ module Geokit
     module ClassMethods #:nodoc:
       # Returns the distance between two points.  The from and to parameters are
       # required to have lat and lng attributes.  Valid options are:
-      # :units - valid values are :miles or :kms (Geokit::default_units is the default)
+      # :units - valid values are :miles, :kms, :nms (Geokit::default_units is the default)
       # :formula - valid values are :flat or :sphere (Geokit::default_formula is the default)
       def distance_between(from, to, options={})
         from=Geokit::LatLng.normalize(from)
@@ -67,7 +70,11 @@ module Geokit
       # will be used instead of this method.
       def endpoint(start,heading, distance, options={})
         units = options[:units] || Geokit::default_units
-        radius = units == :miles ? EARTH_RADIUS_IN_MILES : EARTH_RADIUS_IN_KMS
+        radius = case units
+          when :kms: EARTH_RADIUS_IN_KMS
+          when :nms: EARTH_RADIUS_IN_NMS
+          else EARTH_RADIUS_IN_MILES
+        end
         start=Geokit::LatLng.normalize(start)        
         lat=deg2rad(start.lat)
         lng=deg2rad(start.lng)
@@ -86,7 +93,7 @@ module Geokit
       # Returns the midpoint, given two points. Returns a LatLng. 
       # Typically, the instance method will be used instead of this method.
       # Valid option:
-      #   :units - valid values are :miles or :kms (:miles is the default)
+      #   :units - valid values are :miles, :kms, or :nms (:miles is the default)
       def midpoint_between(from,to,options={})
         from=Geokit::LatLng.normalize(from)
 
@@ -120,18 +127,30 @@ module Geokit
 
       # Returns the multiplier used to obtain the correct distance units.
       def units_sphere_multiplier(units)
-        units == :miles ? EARTH_RADIUS_IN_MILES : EARTH_RADIUS_IN_KMS
+        case units
+          when :kms: EARTH_RADIUS_IN_KMS
+          when :nms: EARTH_RADIUS_IN_NMS
+          else EARTH_RADIUS_IN_MILES
+        end
       end
 
       # Returns the number of units per latitude degree.
       def units_per_latitude_degree(units)
-        units == :miles ? MILES_PER_LATITUDE_DEGREE : KMS_PER_LATITUDE_DEGREE
+        case units
+          when :kms: KMS_PER_LATITUDE_DEGREE
+          when :nms: NMS_PER_LATITUDE_DEGREE
+          else MILES_PER_LATITUDE_DEGREE
+        end
       end
     
       # Returns the number units per longitude degree.
       def units_per_longitude_degree(lat, units)
         miles_per_longitude_degree = (LATITUDE_DEGREES * Math.cos(lat * PI_DIV_RAD)).abs
-        units == :miles ? miles_per_longitude_degree : miles_per_longitude_degree * KMS_PER_MILE
+        case units
+          when :kms: miles_per_longitude_degree * KMS_PER_MILE
+          when :nms: miles_per_longitude_degree * NMS_PER_MILE
+          else miles_per_longitude_degree
+        end
       end  
     end
   
@@ -143,12 +162,12 @@ module Geokit
     def to_lat_lng
       return self if instance_of?(Geokit::LatLng) || instance_of?(Geokit::GeoLoc)
       return LatLng.new(send(self.class.lat_column_name),send(self.class.lng_column_name)) if self.class.respond_to?(:acts_as_mappable)
-      return nil
+      nil
     end
 
     # Returns the distance from another point.  The other point parameter is
     # required to have lat and lng attributes.  Valid options are:
-    # :units - valid values are :miles or :kms (:miles is the default)
+    # :units - valid values are :miles, :kms, :or :nms (:miles is the default)
     # :formula - valid values are :flat or :sphere (:sphere is the default)
     def distance_to(other, options={})
       self.class.distance_between(self, other, options)
@@ -169,14 +188,14 @@ module Geokit
  
     # Returns the endpoint, given a heading (in degrees) and distance.  
     # Valid option:
-    # :units - valid values are :miles or :kms (:miles is the default)
+    # :units - valid values are :miles, :kms, or :nms (:miles is the default)
     def endpoint(heading,distance,options={})
       self.class.endpoint(self,heading,distance,options)  
     end
 
     # Returns the midpoint, given another point on the map.  
     # Valid option:
-    # :units - valid values are :miles or :kms (:miles is the default)    
+    # :units - valid values are :miles, :kms, or :nms (:miles is the default)    
     def midpoint_to(other, options={})
       self.class.midpoint_between(self,other,options)
     end
