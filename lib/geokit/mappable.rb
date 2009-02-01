@@ -36,11 +36,15 @@ module Geokit
         units = options[:units] || Geokit::default_units
         formula = options[:formula] || Geokit::default_formula
         case formula
-        when :sphere          
-          units_sphere_multiplier(units) * 
-              Math.acos( Math.sin(deg2rad(from.lat)) * Math.sin(deg2rad(to.lat)) + 
-              Math.cos(deg2rad(from.lat)) * Math.cos(deg2rad(to.lat)) * 
-              Math.cos(deg2rad(to.lng) - deg2rad(from.lng)))   
+        when :sphere
+          begin
+            units_sphere_multiplier(units) * 
+                Math.acos( Math.sin(deg2rad(from.lat)) * Math.sin(deg2rad(to.lat)) + 
+                Math.cos(deg2rad(from.lat)) * Math.cos(deg2rad(to.lat)) * 
+                Math.cos(deg2rad(to.lng) - deg2rad(from.lng)))
+          rescue Errno::EDOM
+            0.0
+          end
         when :flat
           Math.sqrt((units_per_latitude_degree(units)*(from.lat-to.lat))**2 + 
               (units_per_longitude_degree(from.lat, units)*(from.lng-to.lng))**2)
