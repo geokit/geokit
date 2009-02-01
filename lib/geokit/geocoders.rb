@@ -211,11 +211,12 @@ module Geokit
       
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlng)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        latlng=LatLng.normalize(latlng)
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlng.ll)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
   #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
-        logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
+        logger.debug "Google reverse-geocoding. LL: #{latlng.ll}. Result: #{xml}"
         return self.xml2GeoLoc(xml)        
       end
 
