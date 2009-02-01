@@ -98,8 +98,8 @@ module Geokit
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
-      def self.reverse_geocode(latlon)
-        res = do_reverse_geocode(latlon)
+      def self.reverse_geocode(latlng)
+        res = do_reverse_geocode(latlng)
         return res.success ? res : GeoLoc.new        
       end
       
@@ -109,6 +109,13 @@ module Geokit
         return self.do_get(url)
       rescue TimeoutError
         return nil  
+      end
+
+      # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
+      # a call to reverse_geocode will return an empty GeoLoc. If you happen to be using MultiGeocoder,
+      # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
+      def self.do_reverse_geocode(latlng)
+        return GeoLoc.new
       end
 
       protected
@@ -203,12 +210,12 @@ module Geokit
       private 
       
       # Template method which does the reverse-geocode lookup.
-      def self.do_reverse_geocode(latlon)
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlon)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+      def self.do_reverse_geocode(latlng)
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlng)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
   #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
-        logger.debug "Google reverse-geocoding. LL: #{latlon}. Result: #{xml}"
+        logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
         return self.xml2GeoLoc(xml)        
       end
 

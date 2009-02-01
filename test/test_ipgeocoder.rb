@@ -36,7 +36,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     location = GeoKit::Geocoders::IpGeocoder.geocode('12.215.42.19')
     assert_not_nil location
     assert_equal 41.7696, location.lat
-    assert_equal -88.4588, location.lng
+    assert_equal(-88.4588, location.lng)
     assert_equal "Sugar Grove", location.city
     assert_equal "IL", location.state
     assert_equal "US", location.country_code
@@ -53,7 +53,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_not_nil location
     assert_equal 57.7167, location.lat
     assert_equal 12.9167, location.lng
-    assert_equal "Borås", location.city
+    assert_equal "Bor\303\245S", location.city
     assert_nil location.state
     assert_equal "SE", location.country_code
     assert_equal "hostip", location.provider
