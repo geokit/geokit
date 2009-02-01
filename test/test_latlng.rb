@@ -24,6 +24,11 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_equal 0, @loc_a.distance_to(@loc_a, :units => :kms, :formula => :flat)
   end
   
+  def test_distance_between_same_with_nms_and_flat
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :nms, :formula => :flat)
+    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :nms, :formula => :flat)
+  end
+  
   def test_distance_between_same_with_miles_and_sphere
     assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :miles, :formula => :sphere)
     assert_equal 0, @loc_a.distance_to(@loc_a, :units => :miles, :formula => :sphere)
@@ -32,6 +37,11 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   def test_distance_between_same_with_kms_and_sphere
     assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :kms, :formula => :sphere)
     assert_equal 0, @loc_a.distance_to(@loc_a, :units => :kms, :formula => :sphere)
+  end
+  
+  def test_distance_between_same_with_nms_and_sphere
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :nms, :formula => :sphere)
+    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :nms, :formula => :sphere)
   end
   
   def test_distance_between_diff_using_defaults
@@ -49,6 +59,11 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_in_delta 6.39, @loc_a.distance_to(@loc_e, :units => :kms, :formula => :flat), 0.4
   end
   
+  def test_distance_between_diff_with_nms_and_flat
+    assert_in_delta 3.334, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :nms, :formula => :flat), 0.4
+    assert_in_delta 3.334, @loc_a.distance_to(@loc_e, :units => :nms, :formula => :flat), 0.4
+  end
+  
   def test_distance_between_diff_with_miles_and_sphere
     assert_in_delta 3.97, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :miles, :formula => :sphere), 0.01
     assert_in_delta 3.97, @loc_a.distance_to(@loc_e, :units => :miles, :formula => :sphere), 0.01
@@ -59,12 +74,18 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_in_delta 6.39, @loc_a.distance_to(@loc_e, :units => :kms, :formula => :sphere), 0.01
   end
   
+  def test_distance_between_diff_with_nms_and_sphere
+    assert_in_delta 3.454, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :nms, :formula => :sphere), 0.01
+    assert_in_delta 3.454, @loc_a.distance_to(@loc_e, :units => :nms, :formula => :sphere), 0.01
+  end
+  
   def test_manually_mixed_in
     assert_equal 0, Geokit::LatLng.distance_between(@point, @point)
     assert_equal 0, @point.distance_to(@point)
     assert_equal 0, @point.distance_to(@loc_a)
     assert_in_delta 3.97, @point.distance_to(@loc_e, :units => :miles, :formula => :flat), 0.2
     assert_in_delta 6.39, @point.distance_to(@loc_e, :units => :kms, :formula => :flat), 0.4
+    assert_in_delta 3.334, @point.distance_to(@loc_e, :units => :nms, :formula => :flat), 0.4
   end
   
   def test_heading_between
