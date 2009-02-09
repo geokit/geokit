@@ -75,8 +75,8 @@ module Geokit
       def endpoint(start,heading, distance, options={})
         units = options[:units] || Geokit::default_units
         radius = case units
-          when :kms: EARTH_RADIUS_IN_KMS
-          when :nms: EARTH_RADIUS_IN_NMS
+          when :kms; EARTH_RADIUS_IN_KMS
+          when :nms; EARTH_RADIUS_IN_NMS
           else EARTH_RADIUS_IN_MILES
         end
         start=Geokit::LatLng.normalize(start)        
@@ -132,8 +132,8 @@ module Geokit
       # Returns the multiplier used to obtain the correct distance units.
       def units_sphere_multiplier(units)
         case units
-          when :kms: EARTH_RADIUS_IN_KMS
-          when :nms: EARTH_RADIUS_IN_NMS
+          when :kms; EARTH_RADIUS_IN_KMS
+          when :nms; EARTH_RADIUS_IN_NMS
           else EARTH_RADIUS_IN_MILES
         end
       end
@@ -141,8 +141,8 @@ module Geokit
       # Returns the number of units per latitude degree.
       def units_per_latitude_degree(units)
         case units
-          when :kms: KMS_PER_LATITUDE_DEGREE
-          when :nms: NMS_PER_LATITUDE_DEGREE
+          when :kms; KMS_PER_LATITUDE_DEGREE
+          when :nms; NMS_PER_LATITUDE_DEGREE
           else MILES_PER_LATITUDE_DEGREE
         end
       end
@@ -151,8 +151,8 @@ module Geokit
       def units_per_longitude_degree(lat, units)
         miles_per_longitude_degree = (LATITUDE_DEGREES * Math.cos(lat * PI_DIV_RAD)).abs
         case units
-          when :kms: miles_per_longitude_degree * KMS_PER_MILE
-          when :nms: miles_per_longitude_degree * NMS_PER_MILE
+          when :kms; miles_per_longitude_degree * KMS_PER_MILE
+          when :nms; miles_per_longitude_degree * NMS_PER_MILE
           else miles_per_longitude_degree
         end
       end  

@@ -10,13 +10,13 @@ module Geokit
     extend self
    
     def titleize(word)
-      humanize(underscore(word)).gsub(/\b([a-z])/) { $1.capitalize }
+      humanize(underscore(word)).gsub(/\b([a-z])/u) { $1.capitalize }
     end
    
     def underscore(camel_cased_word)
       camel_cased_word.to_s.gsub(/::/, '/').
-      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
+      gsub(/([A-Z]+)([A-Z][a-z])/u,'\1_\2').
+      gsub(/([a-z\d])([A-Z])/u,'\1_\2').
       tr("-", "_").
       downcase
     end
@@ -26,14 +26,14 @@ module Geokit
     end
     
     def snake_case(s)
-      return s.downcase if s =~ /^[A-Z]+$/
-      s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/, '_\&') =~ /_*(.*)/
+      return s.downcase if s =~ /^[A-Z]+$/u
+      s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/u, '_\&') =~ /_*(.*)/
         return $+.downcase
       
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/n) do
+    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
       '%' + $1.unpack('H2' * $1.size).join('%').upcase
       end.tr(' ', '+')
     end

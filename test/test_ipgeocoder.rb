@@ -1,3 +1,4 @@
+# encoding: utf-8
 require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 
 class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
@@ -53,7 +54,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_not_nil location
     assert_equal 57.7167, location.lat
     assert_equal 12.9167, location.lng
-    assert_equal "Bor\303\245S", location.city
+    assert_equal "Bor\303\245s", location.city
     assert_nil location.state
     assert_equal "SE", location.country_code
     assert_equal "hostip", location.provider
