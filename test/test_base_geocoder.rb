@@ -45,7 +45,7 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
   end
   
   def test_find_geocoder_methods
-    public_methods = Geokit::Geocoders::Geocoder.public_methods
+    public_methods = Geokit::Geocoders::Geocoder.public_methods.map { |m| m.to_s }
     assert public_methods.include?("yahoo_geocoder")
     assert public_methods.include?("google_geocoder")
     assert public_methods.include?("ca_geocoder")
