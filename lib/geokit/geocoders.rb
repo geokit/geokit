@@ -307,7 +307,7 @@ module Geokit
         res.lat = yaml['Latitude'] 
         res.lng = yaml['Longitude']
         res.country_code.chop!
-        res.success = res.city != "(Private Address)"
+        res.success = !(res.city =~ /\(.+\)/)
         res
       end
     end
