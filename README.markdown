@@ -101,6 +101,24 @@ If you're using this gem by itself, here's how to set configurations:
 If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
 
+## SUPPORTED GEOCODERS
+
+### "regular" address geocoders 
+* Yahoo Geocoder - requires an API key.
+* Geocoder.us - may require authentication if performing more than the free request limit.
+* Geocoder.ca - for Canada; may require authentication as well.
+* Geonames - a free geocoder
+
+### address geocoders that also provide reverse geocoding 
+* Google Geocoder - requires an API key.
+
+### IP address geocoders 
+* IP Geocoder - geocodes an IP address using hostip.info's web service.
+* Geoplugin.net -- another IP address geocoder
+
+### The Multigeocoder
+* Multi Geocoder - provides failover for the physical location geocoders.
+
 ## NOTES ON WHAT'S WHERE
 
 mappable.rb contains the Mappable module, which provides basic
