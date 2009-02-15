@@ -390,10 +390,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        return self.xml2GeoLoc(xml)        
+        return self.xml2GeoLoc(xml, address)        
       end
       
-      def self.xml2GeoLoc(xml)
+      def self.xml2GeoLoc(xml, address="")
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
