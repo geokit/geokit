@@ -10,13 +10,13 @@ module Geokit
     extend self
    
     def titleize(word)
-      humanize(underscore(word)).gsub(/\b([a-z])/) { $1.capitalize }
+      humanize(underscore(word)).gsub(/\b([a-z])/u) { $1.capitalize }
     end
    
     def underscore(camel_cased_word)
       camel_cased_word.to_s.gsub(/::/, '/').
-      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
+      gsub(/([A-Z]+)([A-Z][a-z])/u,'\1_\2').
+      gsub(/([a-z\d])([A-Z])/u,'\1_\2').
       tr("-", "_").
       downcase
     end
@@ -26,29 +26,38 @@ module Geokit
     end
     
     def snake_case(s)
-      return s.downcase if s =~ /^[A-Z]+$/
-      s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/, '_\&') =~ /_*(.*)/
+      return s.downcase if s =~ /^[A-Z]+$/u
+      s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/u, '_\&') =~ /_*(.*)/
         return $+.downcase
       
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/n) do
+    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
       '%' + $1.unpack('H2' * $1.size).join('%').upcase
       end.tr(' ', '+')
     end
   end  
-  # Contains a set of geocoders which can be used independently if desired.  The list contains:
+  
+  # Contains a range of geocoders:
   # 
-  # * Google Geocoder - requires an API key.
+  # ### "regular" address geocoders 
   # * Yahoo Geocoder - requires an API key.
   # * Geocoder.us - may require authentication if performing more than the free request limit.
   # * Geocoder.ca - for Canada; may require authentication as well.
+  # * Geonames - a free geocoder
+  #
+  # ### address geocoders that also provide reverse geocoding 
+  # * Google Geocoder - requires an API key.
+  #  
+  # ### IP address geocoders 
   # * IP Geocoder - geocodes an IP address using hostip.info's web service.
+  # * Geoplugin.net -- another IP address geocoder
+  #
+  # ### The Multigeocoder
   # * Multi Geocoder - provides failover for the physical location geocoders.
   # 
-  # Some configuration is required for these geocoders and can be located in the environment
-  # configuration files.
+  # Some of these geocoders require configuration. You don't have to provide it here. See the README.
   module Geocoders
     @@proxy_addr = nil
     @@proxy_port = nil
@@ -83,6 +92,10 @@ module Geokit
     
     # Error which is thrown in the event a geocoding error occurs.
     class GeocodeError < StandardError; end
+
+    # -------------------------------------------------------------------------------------------
+    # Geocoder Base class -- every geocoder should inherit from this
+    # -------------------------------------------------------------------------------------------    
     
     # The Geocoder base class which defines the interface to be used by all
     # other geocoders.
@@ -95,12 +108,27 @@ module Geokit
         return res.success ? res : GeoLoc.new
       end  
       
+      # Main method which calls the do_reverse_geocode template method which subclasses
+      # are responsible for implementing.  Returns a populated GeoLoc or an
+      # empty one with a failed success code.
+      def self.reverse_geocode(latlng)
+        res = do_reverse_geocode(latlng)
+        return res.success ? res : GeoLoc.new        
+      end
+      
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
         timeout(Geokit::Geocoders::timeout) { return self.do_get(url) } if Geokit::Geocoders::timeout        
         return self.do_get(url)
       rescue TimeoutError
         return nil  
+      end
+
+      # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
+      # a call to reverse_geocode will return an empty GeoLoc. If you happen to be using MultiGeocoder,
+      # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
+      def self.do_reverse_geocode(latlng)
+        return GeoLoc.new
       end
 
       protected
@@ -136,6 +164,10 @@ module Geokit
         class_eval(src)
       end
     end
+
+    # -------------------------------------------------------------------------------------------
+    # "Regular" Address geocoders
+    # -------------------------------------------------------------------------------------------    
     
     # Geocoder CA geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_CA variable to
     # contain true or false based upon whether authentication is to occur.  Conforms to the 
@@ -187,115 +219,6 @@ module Geokit
         url && url.length > 0 ? "&" : ""
       end
     end    
-    
-    # Google geocoder implementation.  Requires the Geokit::Geocoders::GOOGLE variable to
-    # contain a Google API key.  Conforms to the interface set by the Geocoder class.
-    class GoogleGeocoder < Geocoder
-
-      private 
-
-      # Template method which does the geocode lookup.
-      def self.do_geocode(address)
-        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
-#        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml=res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        doc=REXML::Document.new(xml)
-
-        if doc.elements['//kml/Response/Status/code'].text == '200'
-          results = nil
-          doc.each_element('//Placemark') do |e|
-            g = do_placemark(e)        
-            if results.nil?
-              results = g
-            else
-              results.push(g)
-            end  
-          end
-          return results
-        else 
-          logger.info "Google was unable to geocode address: "+address
-          return GeoLoc.new
-        end
-
-        rescue
-          logger.error "Caught an error during Google geocoding call: "+$!
-          return GeoLoc.new
-      end
-      
-      def self.do_placemark(doc)
-          res = GeoLoc.new
-          coordinates=doc.elements['.//coordinates'].text.to_s.split(',')
-
-          #basics
-          res.lat=coordinates[1]
-          res.lng=coordinates[0]
-          res.country_code=doc.elements['.//CountryNameCode'].text if doc.elements['.//CountryNameCode']
-          res.provider='google'
-
-          #extended -- false if not not available
-          res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
-          res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
-          res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
-          res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
-          res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
-          # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
-          # For Google, 1=low accuracy, 8=high accuracy
-          # old way -- address_details=doc.elements['.//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
-          address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
-          accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
-          res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]
-          res.success=true
-          
-          return res        
-      end
-        
-    end
-    
-    # Provides geocoding based upon an IP address.  The underlying web service is a hostip.info
-    # which sources their data through a combination of publicly available information as well
-    # as community contributions.
-    class IpGeocoder < Geocoder 
-
-      private 
-
-      # Given an IP address, returns a GeoLoc instance which contains latitude,
-      # longitude, city, and country code.  Sets the success attribute to false if the ip 
-      # parameter does not match an ip address.  
-      def self.do_geocode(ip)
-        return Geoloc.new if '0.0.0.0' == ip
-        return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
-        url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
-        response = self.call_geocoder_service(url)
-        response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
-      rescue
-        logger.error "Caught an error during HostIp geocoding call: "+$!
-        return GeoLoc.new
-      end
-
-      # Converts the body to YAML since its in the form of:
-      #
-      # Country: UNITED STATES (US)
-      # City: Sugar Grove, IL
-      # Latitude: 41.7696
-      # Longitude: -88.4588
-      #
-      # then instantiates a GeoLoc instance to populate with location data.
-      def self.parse_body(body) # :nodoc:
-        yaml = YAML.load(body)
-        res = GeoLoc.new
-        res.provider = 'hostip'
-        res.city, res.state = yaml['City'].split(', ')
-        country, res.country_code = yaml['Country'].split(' (')
-        res.lat = yaml['Latitude'] 
-        res.lng = yaml['Longitude']
-        res.country_code.chop!
-        res.success = res.city != "(Private Address)"
-        res
-      end
-    end
     
     # Geocoder Us geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_US variable to
     # contain true or false based upon whether authentication is to occur.  Conforms to the 
@@ -388,6 +311,8 @@ module Geokit
       end
     end
 
+    # Another geocoding web service
+    # http://www.geonames.org
     class GeonamesGeocoder < Geocoder
 
       private 
@@ -435,6 +360,168 @@ module Geokit
           logger.error "Caught an error during Geonames geocoding call: "+$!
       end
     end
+
+    # -------------------------------------------------------------------------------------------
+    # Address geocoders that also provide reverse geocoding
+    # -------------------------------------------------------------------------------------------
+
+    # Google geocoder implementation.  Requires the Geokit::Geocoders::GOOGLE variable to
+    # contain a Google API key.  Conforms to the interface set by the Geocoder class.
+    class GoogleGeocoder < Geocoder
+
+      private 
+      
+      # Template method which does the reverse-geocode lookup.
+      def self.do_reverse_geocode(latlng) 
+        latlng=LatLng.normalize(latlng)
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlng.ll)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
+        return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
+        xml = res.body
+        logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
+        return self.xml2GeoLoc(xml)        
+      end  
+
+      # Template method which does the geocode lookup.
+      def self.do_geocode(address)
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        xml = res.body
+        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
+        return self.xml2GeoLoc(xml)        
+      end
+      
+      def self.xml2GeoLoc(xml)
+        doc=REXML::Document.new(xml)
+
+        if doc.elements['//kml/Response/Status/code'].text == '200'
+          results = nil
+          doc.each_element('//Placemark') do |e|
+            g = do_placemark(e)        
+            if results.nil?
+              results = g
+            else
+              results.push(g)
+            end  
+          end
+          return results
+        else 
+          logger.info "Google was unable to geocode address: "+address
+          return GeoLoc.new
+        end
+
+        rescue
+          logger.error "Caught an error during Google geocoding call: "+$!
+          return GeoLoc.new
+      end  
+
+      def self.do_placemark(doc)
+        res = GeoLoc.new
+        coordinates=doc.elements['.//coordinates'].text.to_s.split(',')
+
+        #basics
+        res.lat=coordinates[1]
+        res.lng=coordinates[0]
+        res.country_code=doc.elements['.//CountryNameCode'].text if doc.elements['.//CountryNameCode']
+        res.provider='google'
+
+        #extended -- false if not not available
+        res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
+        res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
+        res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
+        res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
+        res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
+        # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
+        # For Google, 1=low accuracy, 8=high accuracy
+        # old way -- address_details=doc.elements['.//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
+        address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
+        accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+        res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]
+        res.success=true
+        
+        return res        
+      end
+    end
+
+
+    # -------------------------------------------------------------------------------------------
+    # IP Geocoders
+    # -------------------------------------------------------------------------------------------
+  
+    # Provides geocoding based upon an IP address.  The underlying web service is geoplugin.net
+    class GeoPluginGeocoder < Geocoder
+      private
+      
+      def self.do_geocode(ip)
+        return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        response = self.call_geocoder_service("http://www.geoplugin.net/xml.gp?ip=#{ip}")
+        return response.is_a?(Net::HTTPSuccess) ? parse_xml(response.body) : GeoLoc.new
+      rescue
+        logger.error "Caught an error during GeloPluginGeocoder geocoding call: "+$!
+        return GeoLoc.new
+      end
+
+      def self.parse_xml(xml)
+        xml = REXML::Document.new(xml)
+        geo = GeoLoc.new
+        geo.provider='geoPlugin'
+        geo.city = xml.elements['//geoplugin_city'].text
+        geo.state = xml.elements['//geoplugin_region'].text
+        geo.country_code = xml.elements['//geoplugin_countryCode'].text
+        geo.lat = xml.elements['//geoplugin_latitude'].text.to_f
+        geo.lng = xml.elements['//geoplugin_longitude'].text.to_f
+        geo.success = !geo.city.empty?
+        return geo
+      end
+    end
+
+    # Provides geocoding based upon an IP address.  The underlying web service is a hostip.info
+    # which sources their data through a combination of publicly available information as well
+    # as community contributions.
+    class IpGeocoder < Geocoder 
+
+      private 
+
+      # Given an IP address, returns a GeoLoc instance which contains latitude,
+      # longitude, city, and country code.  Sets the success attribute to false if the ip 
+      # parameter does not match an ip address.  
+      def self.do_geocode(ip)
+        return Geoloc.new if '0.0.0.0' == ip
+        return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
+        response = self.call_geocoder_service(url)
+        response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
+      rescue
+        logger.error "Caught an error during HostIp geocoding call: "+$!
+        return GeoLoc.new
+      end
+
+      # Converts the body to YAML since its in the form of:
+      #
+      # Country: UNITED STATES (US)
+      # City: Sugar Grove, IL
+      # Latitude: 41.7696
+      # Longitude: -88.4588
+      #
+      # then instantiates a GeoLoc instance to populate with location data.
+      def self.parse_body(body) # :nodoc:
+        yaml = YAML.load(body)
+        res = GeoLoc.new
+        res.provider = 'hostip'
+        res.city, res.state = yaml['City'].split(', ')
+        country, res.country_code = yaml['Country'].split(' (')
+        res.lat = yaml['Latitude'] 
+        res.lng = yaml['Longitude']
+        res.country_code.chop!
+        res.success = !(res.city =~ /\(.+\)/)
+        res
+      end
+    end
+    
+    # -------------------------------------------------------------------------------------------
+    # The Multi Geocoder
+    # -------------------------------------------------------------------------------------------    
     
     # Provides methods to geocode with a variety of geocoding service providers, plus failover
     # among providers in the order you configure.

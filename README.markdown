@@ -1,20 +1,24 @@
-# Geokit gem
+## GEOKIT GEM DESCRIPTION
+
+The Geokit gem provides:
+
+ * Distance calculations between two points on the earth. Calculate the distance in miles, kilometers, or nautical miles, with all the trigonometry abstracted away by GeoKit.
+ * Geocoding from multiple providers. It supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and others. It provides a uniform response structure from all of them. 
+   It also provides a fail-over mechanism, in case your input fails to geocode in one service.
+ * Rectangular bounds calculations: is a point within a given rectangular bounds?
+ * Heading and midpoint calculations
+
+Combine this with gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master) to get location-based finders for your Rails app.
 
 * Geokit Documentation at Rubyforge [http://geokit.rubyforge.org](http://geokit.rubyforge.org).
 * Repository at Github: [http://github.com/andre/geokit-gem/tree/master](http://github.com/andre/geokit-gem/tree/master).
 
-## DESCRIPTION:
+## INSTALL
 
-The Geokit gem provides the following:
+    gem sources -a http://gems.github.com
+    sudo gem install andre-geokit
 
- * Distance calculations between two points on the earth. Calculate the distance in miles or KM, with all the trigonometry abstracted away by GeoKit.
- * Geocoding from multiple providers. It currently supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and it provides a uniform response structure from all of them. It also provides a fail-over mechanism, in case your input fails to geocode in one service.
- * Rectangular bounds calculations: is a point within a given rectangular bounds?
- * Heading and midpoint calculations
-
-Combine this with gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master) to get location-based finders for your Rails app. Plugins for other web frameworks and ORMs will provide similar functionality.
-
-## SYNOPSIS:
+## QUICK START
 
 		irb> require 'rubygems'
 		irb> require 'geokit'
@@ -37,14 +41,9 @@ Combine this with gem with the [geokit-rails plugin](http://github.com/andre/geo
 
 FYI, that `.ll` method means "latitude longitude".
 
-See the RDOC more more ... there is also operations on rectangular bounds (e.g., determining if a point is within bounds, find the center, etc).
+See the RDOC more more ... there are also operations on rectangular bounds (e.g., determining if a point is within bounds, find the center, etc).
 
-## INSTALL:
-
-  * gem sources -a http://gems.github.com
-  * sudo gem install andre-geokit
-
-## Configuration
+## CONFIGURATION
 
 If you're using this gem by itself, here's how to set configurations:
 
@@ -99,7 +98,26 @@ If you're using this gem by itself, here's how to set configurations:
 		# geocoder you are going to use.
 		Geokit::Geocoders::provider_order = [:google,:us]
 
-If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), a template with these settings gets placed in your app's config/initializers directory.
+If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), the plugin
+creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
+
+## SUPPORTED GEOCODERS
+
+### "regular" address geocoders 
+* Yahoo Geocoder - requires an API key.
+* Geocoder.us - may require authentication if performing more than the free request limit.
+* Geocoder.ca - for Canada; may require authentication as well.
+* Geonames - a free geocoder
+
+### address geocoders that also provide reverse geocoding 
+* Google Geocoder - requires an API key.
+
+### IP address geocoders 
+* IP Geocoder - geocodes an IP address using hostip.info's web service.
+* Geoplugin.net -- another IP address geocoder
+
+### The Multigeocoder
+* Multi Geocoder - provides failover for the physical location geocoders.
 
 ## NOTES ON WHAT'S WHERE
 
@@ -122,7 +140,7 @@ geocoders.rb contains all the geocoder implemenations. All the gercoders
 inherit from a common base (class Geocoder) and implement the private method
 do_geocode.
 
-## LICENSE:
+## LICENSE
 
 (The MIT License)
 

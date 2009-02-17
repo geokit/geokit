@@ -55,7 +55,7 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
   
   def test_center
     assert_in_delta 32.939828,@bounds.center.lat,0.00005
-    assert_in_delta -96.9511763,@bounds.center.lng,0.00005
+    assert_in_delta(-96.9511763,@bounds.center.lng,0.00005)
   end
 
   def test_center_cross_meridian
