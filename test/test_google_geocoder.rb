@@ -103,8 +103,8 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "8 Via Sandro Pertini", res.street_address
     assert_equal "google", res.provider
 
-    assert_equal 2, res.size
-    res = res.pick(1)
+    assert_equal 2, res.all.size
+    res = res.all[1]
     assert_equal "Lombardy", res.state
     assert_equal "Ossona", res.city
     assert_equal "45.5074444,8.90232", res.ll

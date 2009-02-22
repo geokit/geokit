@@ -396,16 +396,21 @@ module Geokit
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
-          results = nil
+          geoloc = nil
+          # Google can return multiple results as //Placemark elements. 
+          # iterate through each and extract each placemark as a geoloc
           doc.each_element('//Placemark') do |e|
-            g = do_placemark(e)        
-            if results.nil?
-              results = g
+            extracted_geoloc = extract_placemark(e) # g is now an instance of Geoloc
+            if geoloc.nil? 
+              # first time through, geoloc is still nill, so we make it the geoloc we just extracted
+              geoloc = extracted_geoloc 
             else
-              results.push(g)
+              # second (and subsequent) iterations, we push additional 
+              # geolocs onto "geoloc.all" 
+              geoloc.all.push(extracted_geoloc) 
             end  
           end
-          return results
+          return geoloc
         else 
           logger.info "Google was unable to geocode address: "+address
           return GeoLoc.new
@@ -416,7 +421,8 @@ module Geokit
           return GeoLoc.new
       end  
 
-      def self.do_placemark(doc)
+      # extracts a single geoloc from a //placemark element in the google results xml
+      def self.extract_placemark(doc)
         res = GeoLoc.new
         coordinates=doc.elements['.//coordinates'].text.to_s.split(',')
 
@@ -434,7 +440,6 @@ module Geokit
         res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
-        # old way -- address_details=doc.elements['.//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
         accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
         res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]

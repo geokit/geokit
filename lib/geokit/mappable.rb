@@ -1,4 +1,4 @@
-require 'forwardable'
+#require 'forwardable'
 
 module Geokit     
   # Contains class and instance methods providing distance calcuation services.  This
@@ -292,11 +292,10 @@ module Geokit
   # the "full address" method for geocoders that do not provide a 
   # full address in their results (for example, Yahoo), and the "is_us" method.
   class GeoLoc < LatLng
-    extend Forwardable
 
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
-    attr_accessor :street_address, :city, :state, :zip, :country_code, :full_address
+    attr_accessor :street_address, :city, :state, :zip, :country_code, :full_address, :all
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
     # Finally, precision is an indicator of the accuracy of the geocoding.
@@ -306,7 +305,7 @@ module Geokit
 
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h={})
-      @results = [self]
+      @all = [self]
       
       @street_address=h[:street_address] 
       @city=h[:city] 
@@ -366,13 +365,6 @@ module Geokit
       a=[street_address, city, state, zip, country_code].compact
       a.delete_if { |e| !e || e == '' }
       a.join(', ')      
-    end
-    
-    def_delegators :@results, :each, :push, :size, :map
-    def_delegator :@results, :[], :pick
-    
-    def all
-      @results.dup
     end
     
     def to_yaml_properties
