@@ -220,7 +220,6 @@ module Geokit
       end
     end    
     
-        
     # Geocoder Us geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_US variable to
     # contain true or false based upon whether authentication is to occur.  Conforms to the 
     # interface set by the Geocoder class.
@@ -397,30 +396,16 @@ module Geokit
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
-          res = GeoLoc.new
-          coordinates=doc.elements['//coordinates'].text.to_s.split(',')
-
-          #basics
-          res.lat=coordinates[1]
-          res.lng=coordinates[0]
-          res.country_code=doc.elements['//CountryNameCode'].text if doc.elements['//CountryNameCode']
-          res.provider='google'
-
-          #extended -- false if not not available
-          res.city = doc.elements['//LocalityName'].text if doc.elements['//LocalityName']
-          res.state = doc.elements['//AdministrativeAreaName'].text if doc.elements['//AdministrativeAreaName']
-          res.full_address = doc.elements['//address'].text if doc.elements['//address'] # google provides it
-          res.zip = doc.elements['//PostalCodeNumber'].text if doc.elements['//PostalCodeNumber']
-          res.street_address = doc.elements['//ThoroughfareName'].text if doc.elements['//ThoroughfareName']
-          # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
-          # For Google, 1=low accuracy, 8=high accuracy
-          # old way -- address_details=doc.elements['//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
-          address_details=doc.elements['//*[local-name() = "AddressDetails"]']
-          accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
-          res.precision=%w{unknown country state state city zip zip+4 street address}[accuracy]
-          res.success=true
-          
-          return res
+          results = nil
+          doc.each_element('//Placemark') do |e|
+            g = do_placemark(e)        
+            if results.nil?
+              results = g
+            else
+              results.push(g)
+            end  
+          end
+          return results
         else 
           logger.info "Google was unable to geocode address: "+address
           return GeoLoc.new
@@ -430,6 +415,33 @@ module Geokit
           logger.error "Caught an error during Google geocoding call: "+$!
           return GeoLoc.new
       end  
+
+      def self.do_placemark(doc)
+        res = GeoLoc.new
+        coordinates=doc.elements['.//coordinates'].text.to_s.split(',')
+
+        #basics
+        res.lat=coordinates[1]
+        res.lng=coordinates[0]
+        res.country_code=doc.elements['.//CountryNameCode'].text if doc.elements['.//CountryNameCode']
+        res.provider='google'
+
+        #extended -- false if not not available
+        res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
+        res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
+        res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
+        res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
+        res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
+        # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
+        # For Google, 1=low accuracy, 8=high accuracy
+        # old way -- address_details=doc.elements['.//AddressDetails','urn:oasis:names:tc:ciq:xsdschema:xAL:2.0']
+        address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
+        accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+        res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]
+        res.success=true
+        
+        return res        
+      end
     end
 
 
@@ -475,6 +487,7 @@ module Geokit
       # longitude, city, and country code.  Sets the success attribute to false if the ip 
       # parameter does not match an ip address.  
       def self.do_geocode(ip)
+        return Geoloc.new if '0.0.0.0' == ip
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
@@ -505,7 +518,7 @@ module Geokit
         res
       end
     end
-
+    
     # -------------------------------------------------------------------------------------------
     # The Multi Geocoder
     # -------------------------------------------------------------------------------------------    

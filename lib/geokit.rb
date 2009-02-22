@@ -21,6 +21,8 @@ module Geokit
   end
 end
 
+path = File.expand_path(File.dirname(__FILE__))
+$: <<  path unless $:.include?(path)
 require 'geokit/geocoders'
 require 'geokit/mappable'
 
