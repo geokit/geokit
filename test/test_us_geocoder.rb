@@ -35,6 +35,15 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert !Geokit::Geocoders::UsGeocoder.geocode(@us_full_loc).success   
   end  
   
+  def test_all_method
+    response = MockSuccess.new
+    response.expects(:body).returns(GEOCODER_US_FULL)
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
+    Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    res=Geokit::Geocoders::UsGeocoder.geocode(@address)
+    assert_equal 1, res.all.size
+  end
+  
   private
   
   def verify(location)
