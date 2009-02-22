@@ -45,7 +45,7 @@ See the RDOC more more ... there are also operations on rectangular bounds (e.g.
 
 ## CONFIGURATION
 
-If you're using this gem by itself, here's how to set configurations:
+If you're using this gem by itself, here are the configuration options:
 
 		# These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
 		Geokit::default_units = :miles
@@ -110,7 +110,7 @@ creates a template with these settings and places it in `config/initializers/geo
 * Geonames - a free geocoder
 
 ### address geocoders that also provide reverse geocoding 
-* Google Geocoder - requires an API key.
+* Google Geocoder - requires an API key. Also supports multiple results.
 
 ### IP address geocoders 
 * IP Geocoder - geocodes an IP address using hostip.info's web service.
@@ -118,6 +118,25 @@ creates a template with these settings and places it in `config/initializers/geo
 
 ### The Multigeocoder
 * Multi Geocoder - provides failover for the physical location geocoders.
+
+## MULTIPLE RESULTS
+Some geocoding services will return multple results if the there isn't one clear result. 
+Geoloc can capture multiple results through its "all" method. Currently only the Google geocoder 
+supports multiple results:
+
+		irb> geo=Geokit::Geocoders::GoogleGeocoder.geocode("900 Sycamore Drive")
+		irb> geo.full_address
+		=> "900 Sycamore Dr, Arkadelphia, AR 71923, USA"
+		irb> geo.all.size
+		irb> geo.all.each { |e| puts e.full_address }
+		900 Sycamore Dr, Arkadelphia, AR 71923, USA
+		900 Sycamore Dr, Burkburnett, TX 76354, USA
+		900 Sycamore Dr, TN 38361, USA
+		.... 
+
+geo.all is just an array of additional Geolocs, so do what you want with it. If you call .all on a 
+geoloc that doesn't have any additional results, you will get  an array of one.
+
 
 ## NOTES ON WHAT'S WHERE
 

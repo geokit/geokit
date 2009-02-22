@@ -286,11 +286,26 @@ module Geokit
     
   end
 
-  # This class encapsulates the result of a geocoding call
+  # This class encapsulates the result of a geocoding call.
   # It's primary purpose is to homogenize the results of multiple
   # geocoding providers. It also provides some additional functionality, such as 
   # the "full address" method for geocoders that do not provide a 
   # full address in their results (for example, Yahoo), and the "is_us" method.
+  #
+  # Some geocoders can return multple results. Geoloc can capture multiple results through
+  # its "all" method. 
+  #
+  # For the geocoder setting the results, it would look something like this:
+  #     geo=GeoLoc.new(first_result)
+  #     geo.all.push(second_result)
+  #     geo.all.push(third_result)
+  #
+  # Then, for the user of the result:
+  #
+  #     puts geo.full_address     # just like usual
+  #     puts geo.all.size  => 3   # there's three results total
+  #     puts geo.all.first        # all is just an array or additional geolocs, 
+  #                                 so do what you want with it
   class GeoLoc < LatLng
 
     # Location attributes.  Full address is a concatenation of all values.  For example:
