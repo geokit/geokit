@@ -159,6 +159,10 @@ geocoders.rb contains all the geocoder implemenations. All the gercoders
 inherit from a common base (class Geocoder) and implement the private method
 do_geocode.
 
+## GOOGLE GROUP
+
+Follow the Google Group for updates and discussion on Geokit: http://groups.google.com/group/geokit 
+
 ## LICENSE
 
 (The MIT License)
