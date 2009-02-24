@@ -371,7 +371,8 @@ module Geokit
 
     # Sets the street address after capitalizing each word within the street address.
     def street_address=(address)
-      @street_address = Geokit::Inflector::titleize(address) if address
+      #@street_address = Geokit::Inflector::titleize(address) if address
+      @street_address = address if address
     end  
 
     # Returns a comma-delimited string consisting of the street address, city, state,
