@@ -383,7 +383,7 @@ module Geokit
     end
     
     def to_yaml_properties
-      (instance_variables - ['@results']).sort
+      (instance_variables - ['@all']).sort
     end
 
     # Returns a string representation of the instance.

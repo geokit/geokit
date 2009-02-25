@@ -51,4 +51,14 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     assert_equal [@loc], @loc.all
   end
   
+  def test_to_yaml
+    @loc.city = 'San Francisco'
+    @loc.state = 'CA'
+    @loc.zip = '94105'
+    @loc.country_code = 'US'
+    assert_equal( 
+      "--- !ruby/object:Geokit::GeoLoc \ncity: San Francisco\ncountry_code: US\nfull_address: \nlat: \nlng: \nprecision: unknown\nstate: CA\nstreet_address: \nsuccess: false\nzip: \"94105\"\n", 
+      @loc.to_yaml)
+  end
+  
 end

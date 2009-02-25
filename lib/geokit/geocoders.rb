@@ -402,7 +402,7 @@ module Geokit
           doc.each_element('//Placemark') do |e|
             extracted_geoloc = extract_placemark(e) # g is now an instance of Geoloc
             if geoloc.nil? 
-              # first time through, geoloc is still nill, so we make it the geoloc we just extracted
+              # first time through, geoloc is still nil, so we make it the geoloc we just extracted
               geoloc = extracted_geoloc 
             else
               # second (and subsequent) iterations, we push additional 
