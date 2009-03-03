@@ -2,19 +2,13 @@
 
 require 'rubygems'
 require 'hoe'
-require './lib/geokit'
+require './lib/geokit.rb'
 
-Hoe.new('Geokit', Geokit::VERSION) do |p|
-  # p.rubyforge_name = 'Geokitx' # if different than lowercase project name
-  p.developer('Andre Lewis and Bill Eisenhauer', 'andre@earthcode.com / bill_eisenhauer@yahoo.com')
+project=Hoe.new('geokit', Geokit::VERSION) do |p|
+  #p.rubyforge_name = 'geokit' # if different than lowercase project name
+  p.developer('Andre Lewis', 'andre@earthcode.com')
+  p.summary="Geokit provides geocoding and distance calculation in an easy-to-use API"
 end
 
-task :generate_gemspec do
-  system "rake debug_gem | grep -v \"(in \" > `basename \\`pwd\\``.gemspec"
-end
-
-task :update_manifest do
-  system "touch Manifest.txt; rake check_manifest | grep -v \"(in \" | patch"
-end
 
 # vim: syntax=Ruby

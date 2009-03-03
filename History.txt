@@ -1,0 +1,29 @@
+=== 1.2.5 / 2009-02-25
+
+* fixed GeoLoc.to_yaml
+* fixed minor google geocoding bug
+* now periodically publishing the Geokit gem to Rubyforge. Still maintaining development and managing contributions at Github
+
+=== 1.2.4 / 2009-02-25
+
+* Improved Google geocoder in the Gem: Support for multiple geocoding results from the Google geocoder. (thanks github/pic)
+
+=== 1.2.3 / 2009-02-01
+
+* Adding GeoPluginGeocoder for IP geocoding (thanks github/xjunior)
+* Ruby 1.9.1 compatibility and Unicode fixes (thanks github/Nielsomat)
+* various bug fixes
+
+=== 1.2.1 / 2009-01-05
+
+* minor bug fixes
+* reverse geocoding added (Google only): res=Geokit::Geocoders::GoogleGeocoder.reverse_geocode "37.791821,-122.394679"
+* nautical miles added (in addition to miles and KM)
+
+=== 1.2.0 / 2008-12-01
+
+* Improved Geocoder.us support -- respects authentication, and can geocode city names or zipcodes alone
+* cross-meridian finds work correctly with bounds conditions
+* fixed a problem with columns with "distance" in their name
+* added Geonames geocoder
+* the gem and plugin are now hosted at Github.
