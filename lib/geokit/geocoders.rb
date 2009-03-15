@@ -400,7 +400,7 @@ module Geokit
           # Google can return multiple results as //Placemark elements. 
           # iterate through each and extract each placemark as a geoloc
           doc.each_element('//Placemark') do |e|
-            extracted_geoloc = extract_placemark(e) # g is now an instance of Geoloc
+            extracted_geoloc = extract_placemark(e) # g is now an instance of GeoLoc
             if geoloc.nil? 
               # first time through, geoloc is still nil, so we make it the geoloc we just extracted
               geoloc = extracted_geoloc 
@@ -492,7 +492,7 @@ module Geokit
       # longitude, city, and country code.  Sets the success attribute to false if the ip 
       # parameter does not match an ip address.  
       def self.do_geocode(ip)
-        return Geoloc.new if '0.0.0.0' == ip
+        return GeoLoc.new if '0.0.0.0' == ip
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
