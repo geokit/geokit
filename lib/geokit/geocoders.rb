@@ -105,7 +105,7 @@ module Geokit
       # empty one with a failed success code.
       def self.geocode(address)  
         res = do_geocode(address)
-        return res.success ? res : GeoLoc.new
+        return res.success? ? res : GeoLoc.new
       end  
       
       # Main method which calls the do_reverse_geocode template method which subclasses
@@ -113,7 +113,7 @@ module Geokit
       # empty one with a failed success code.
       def self.reverse_geocode(latlng)
         res = do_reverse_geocode(latlng)
-        return res.success ? res : GeoLoc.new        
+        return res.success? ? res : GeoLoc.new        
       end
       
       # Call the geocoder service using the timeout if configured.
@@ -550,7 +550,7 @@ module Geokit
           begin
             klass = Geokit::Geocoders.const_get "#{provider.to_s.capitalize}Geocoder"
             res = klass.send :geocode, address
-            return res if res.success
+            return res if res.success?
           rescue
             logger.error("Something has gone very wrong during geocoding, OR you have configured an invalid class name in Geokit::Geocoders::provider_order. Address: #{address}. Provider: #{provider}")
           end

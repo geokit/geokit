@@ -42,7 +42,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "IL", location.state
     assert_equal "US", location.country_code
     assert_equal "hostip", location.provider
-    assert location.success
+    assert location.success?
   end
   
   def test_unicoded_lookup
@@ -58,7 +58,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_nil location.state
     assert_equal "SE", location.country_code
     assert_equal "hostip", location.provider
-    assert location.success
+    assert location.success?
   end
   
   def test_failed_lookup
@@ -68,13 +68,13 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
     location = GeoKit::Geocoders::IpGeocoder.geocode("10.10.10.10")
     assert_not_nil location
-    assert !location.success
+    assert !location.success?
   end
   
   def test_invalid_ip
     location = GeoKit::Geocoders::IpGeocoder.geocode("blah")
     assert_not_nil location
-    assert !location.success
+    assert !location.success?
   end
   
   def test_service_unavailable
@@ -83,6 +83,6 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
     location = GeoKit::Geocoders::IpGeocoder.geocode("10.10.10.10")
     assert_not_nil location
-    assert !location.success
+    assert !location.success?
   end  
 end
