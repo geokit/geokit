@@ -1,3 +1,6 @@
+=== 1.2.6 / 2009-03-19
+* misc minor fixes
+
 === 1.2.5 / 2009-02-25
 
 * fixed GeoLoc.to_yaml
@@ -27,3 +30,21 @@
 * fixed a problem with columns with "distance" in their name
 * added Geonames geocoder
 * the gem and plugin are now hosted at Github.
+
+=== 1.1.1 / 2008-01-20
+* fixes for distance calculation (in-memory and database) when distances are either very small or 0. 
+* NOTE: older versions of MySQL/Postgres may not work. See readme for more info.
+
+=== 1.1.0 / 2007-12-07
+* Geokit is now Rails 2.0 / Edge friendly. 
+
+=== 1.0.0 / 2007-07-22
+* see http://earthcode.com/blog/2007/07/new_geokit_release.html
+* auto geocoding: an option to automatically geocode a model's address field on create
+* in-memory sort-by-distance for arrays of location objects
+* bounding box queries: `Location.find :all, :bounds=>[sw,ne]`
+* improved performance by automatically adding a bounding box condition to radial queries
+* new Bounds class for in-memory bounds-related operations
+* ability to calculate heading and midpoint between two points
+* ability to calculate endpoint given a point, heading, and distance
+

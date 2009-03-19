@@ -16,8 +16,7 @@ Combine this gem with the [geokit-rails plugin](http://github.com/andre/geokit-r
 
 ## INSTALL
 
-    gem sources -a http://gems.github.com
-    sudo gem install andre-geokit
+    sudo gem install geokit
 
 ## QUICK START
 
