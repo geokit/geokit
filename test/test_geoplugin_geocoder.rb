@@ -39,13 +39,13 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "Minas Gerais", location.state
     assert_equal "BR", location.country_code
     assert_equal "geoPlugin", location.provider
-    assert location.success
+    assert location.success?
   end
 
   def test_invalid_ip
     location = GeoKit::Geocoders::GeoPluginGeocoder.geocode("pixrum")
     assert_not_nil location
-    assert !location.success
+    assert !location.success?
   end
   
   def test_service_unavailable
@@ -54,6 +54,6 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     GeoKit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
     location = GeoKit::Geocoders::GeoPluginGeocoder.geocode("10.10.10.10")
     assert_not_nil location
-    assert !location.success
+    assert !location.success?
   end  
 end

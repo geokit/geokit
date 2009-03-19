@@ -112,7 +112,7 @@ module Geokit
       # Geocodes a location using the multi geocoder.
       def geocode(location)
         res = Geocoders::MultiGeocoder.geocode(location)
-        return res if res.success
+        return res if res.success?
         raise Geokit::Geocoders::GeocodeError      
       end
     
@@ -270,7 +270,7 @@ module Geokit
           return Geokit::LatLng.new(match[1],match[2])
         else
           res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
-          return res if res.success
+          return res if res.success?
           raise Geokit::Geocoders::GeocodeError  
         end
       elsif thing.is_a?(Array) && thing.size==2
@@ -336,6 +336,10 @@ module Geokit
     # Returns true if geocoded to the United States.
     def is_us?
       country_code == 'US'
+    end
+    
+    def success?
+      success == true
     end
 
     # full_address is provided by google but not by yahoo. It is intended that the google

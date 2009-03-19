@@ -13,6 +13,14 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     assert @loc.is_us?
   end
   
+  def test_success
+    assert !@loc.success?
+    @loc.success = false
+    assert !@loc.success?
+    @loc.success = true
+    assert @loc.success?
+  end
+  
   def test_street_number
     @loc.street_address = '123 Spear St.'
     assert_equal '123', @loc.street_number

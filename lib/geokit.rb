@@ -26,5 +26,5 @@ $: <<  path unless $:.include?(path)
 require 'geokit/geocoders'
 require 'geokit/mappable'
 
-# make old-style module name "GeoKit" equivilent to new-style "Geokit"
+# make old-style module name "GeoKit" equivalent to new-style "Geokit"
 GeoKit=Geokit

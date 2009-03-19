@@ -17,6 +17,12 @@ end
 # Base class for testing geocoders.
 class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
 
+  class Geokit::Geocoders::TestGeocoder < Geokit::Geocoders::Geocoder
+    def self.do_get(url)
+      sleep(2)
+    end    
+  end
+
   # Defines common test fixtures.
   def setup
     @address = 'San Francisco, CA'    
@@ -28,14 +34,9 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
   end  
   
   def test_timeout_call_web_service
-    Geokit::Geocoders::Geocoder.class_eval do
-      def self.do_get(url)
-        sleep(2)
-      end
-    end
     url = "http://www.anything.com"
     Geokit::Geocoders::timeout = 1
-    assert_nil Geokit::Geocoders::Geocoder.call_geocoder_service(url)    
+    assert_nil Geokit::Geocoders::TestGeocoder.call_geocoder_service(url)    
   end
   
   def test_successful_call_web_service
