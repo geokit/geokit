@@ -72,16 +72,29 @@ module Geokit
     @@provider_order = [:google,:us]
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
+    @@domain = nil
+    
+    def self.domain
+      @@domain
+    end
+
+    def self.domain=(obj)
+      @@domain = obj
+    end
     
     [:yahoo, :google, :geocoder_us, :geocoder_ca, :geonames, :provider_order, :timeout, 
-     :proxy_addr, :proxy_port, :proxy_user, :proxy_pass,:logger].each do |sym|
+     :proxy_addr, :proxy_port, :proxy_user, :proxy_pass, :logger].each do |sym|
       class_eval <<-EOS, __FILE__, __LINE__
         def self.#{sym}
-          if defined?(#{sym.to_s.upcase})
+          value = if defined?(#{sym.to_s.upcase})
             #{sym.to_s.upcase}
           else
             @@#{sym}
           end
+          if value.is_a?(Hash)
+            value = (self.domain.nil? ? nil : value[self.domain]) || value.values.first
+          end
+          value
         end
 
         def self.#{sym}=(obj)
