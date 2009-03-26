@@ -25,7 +25,6 @@ path = File.expand_path(File.dirname(__FILE__))
 $: <<  path unless $:.include?(path)
 require 'geokit/geocoders'
 require 'geokit/mappable'
-require 'geokit/geocoder_control'
 
 # make old-style module name "GeoKit" equivalent to new-style "Geokit"
 GeoKit=Geokit
