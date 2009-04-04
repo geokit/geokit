@@ -50,6 +50,15 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "100 Spear St, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
     assert_equal "google", res.provider
   end  
+  
+  def test_google_full_address_accuracy
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_FULL)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}&output=xml&key=Google&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    res=Geokit::Geocoders::GoogleGeocoder.geocode(@google_full_loc)
+    assert_equal 8, res.accuracy
+  end
 
   def test_google_city
     response = MockSuccess.new
@@ -65,6 +74,15 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_nil res.street_address
     assert_equal "google", res.provider
   end  
+  
+  def test_google_city_accuracy
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_CITY)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@address)}&output=xml&key=Google&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
+    assert_equal 4, res.accuracy
+  end
   
   def test_google_city_with_geo_loc
     response = MockSuccess.new

@@ -314,7 +314,7 @@ module Geokit
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
     # Finally, precision is an indicator of the accuracy of the geocoding.
-    attr_accessor :success, :provider, :precision
+    attr_accessor :success, :provider, :precision, :accuracy
     # Street number and street name are extracted from the street address attribute.
     attr_reader :street_number, :street_name
 
