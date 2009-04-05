@@ -298,6 +298,8 @@ module Geokit
           res.zip=doc.elements['//Zip'].text if doc.elements['//Zip'] && doc.elements['//Zip'].text != nil
           res.street_address=doc.elements['//Address'].text if doc.elements['//Address'] && doc.elements['//Address'].text != nil
           res.precision=doc.elements['//Result'].attributes['precision'] if doc.elements['//Result']
+          # set the accuracy as google does (added by Andruby)
+          res.accuracy=%w{unknown country state state city zip zip+4 street address building}.index(res.precision)
           res.success=true
           return res
         else 
@@ -442,8 +444,8 @@ module Geokit
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
-        accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
-        res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]
+        res.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+        res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
         res.success=true
 
         return res
