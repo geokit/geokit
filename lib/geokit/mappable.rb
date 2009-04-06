@@ -251,6 +251,14 @@ module Geokit
       other.is_a?(LatLng) ? self.lat == other.lat && self.lng == other.lng : false
     end
     
+    def hash
+      lat.hash + lng.hash
+    end
+    
+    def eql?(other)
+      self == other
+    end
+    
     # A *class* method to take anything which can be inferred as a point and generate
     # a LatLng from it. You should use this anything you're not sure what the input is,
     # and want to deal with it as a LatLng if at all possible. Can take:

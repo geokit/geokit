@@ -128,5 +128,21 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     res=Geokit::LatLng.normalize([lat,lng])
     assert_equal res,Geokit::LatLng.new(lat,lng)
   end
-    
+  
+  def test_hash
+    lat=37.7690
+    lng=-122.443
+    first = Geokit::LatLng.new(lat,lng)
+    second = Geokit::LatLng.new(lat,lng)
+    assert_equal first.hash, second.hash
+  end
+  
+  def test_eql?
+    lat=37.7690
+    lng=-122.443
+    first = Geokit::LatLng.new(lat,lng)
+    second = Geokit::LatLng.new(lat,lng)
+    assert first.eql?(second)
+    assert second.eql?(first)
+  end
 end
