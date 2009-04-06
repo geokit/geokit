@@ -74,6 +74,12 @@ If you're using this gem by itself, here are the configuration options:
 		# See http://www.google.com/apis/maps/signup.html
 		# and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
 		Geokit::Geocoders::google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+		
+		# You can also set multiple API KEYS for different domains that may be directed to this same application.
+		# The domain from which the current user is being directed will automatically be updated for Geokit via
+		# the GeocoderControl class, which gets it's begin filter mixed into the ActionController.
+		# You define these keys with a Hash as follows:
+		#Geokit::Geocoders::google = { 'rubyonrails.org' => 'RUBY_ON_RAILS_API_KEY', 'ruby-docs.org' => 'RUBY_DOCS_API_KEY' }
 		    
 		# This is your username and password for geocoder.us.
 		# To use the free service, the value can be set to nil or false.  For 
