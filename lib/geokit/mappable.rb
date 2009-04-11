@@ -325,6 +325,9 @@ module Geokit
     attr_accessor :success, :provider, :precision
     # Street number and street name are extracted from the street address attribute.
     attr_reader :street_number, :street_name
+    # accuracy is set for Yahoo and Google geocoders, it is a numeric value of the 
+    # precision. see http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
+    attr_accessor :accuracy
 
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h={})
