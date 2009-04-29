@@ -1,0 +1,56 @@
+=== 1.3.0 / 2009-04-11
+* Added capability to define multiple API keys for different domains that may be pointing to the same application (thanks Glenn Powell)
+* Added numeric accuracy accessor for Yahoo and Google geocoders (thanks Andrew Fecheyr Lippens)
+* Implement #hash and #eql? on LatLng to allow for using it as a hash key (thanks Luke Melia and Ross Kaffenberger)
+*
+
+=== 1.2.6 / 2009-03-19
+* misc minor fixes
+
+=== 1.2.5 / 2009-02-25
+
+* fixed GeoLoc.to_yaml
+* fixed minor google geocoding bug
+* now periodically publishing the Geokit gem to Rubyforge. Still maintaining development and managing contributions at Github
+
+=== 1.2.4 / 2009-02-25
+
+* Improved Google geocoder in the Gem: Support for multiple geocoding results from the Google geocoder. (thanks github/pic)
+
+=== 1.2.3 / 2009-02-01
+
+* Adding GeoPluginGeocoder for IP geocoding (thanks github/xjunior)
+* Ruby 1.9.1 compatibility and Unicode fixes (thanks github/Nielsomat)
+* various bug fixes
+
+=== 1.2.1 / 2009-01-05
+
+* minor bug fixes
+* reverse geocoding added (Google only): res=Geokit::Geocoders::GoogleGeocoder.reverse_geocode "37.791821,-122.394679"
+* nautical miles added (in addition to miles and KM)
+
+=== 1.2.0 / 2008-12-01
+
+* Improved Geocoder.us support -- respects authentication, and can geocode city names or zipcodes alone
+* cross-meridian finds work correctly with bounds conditions
+* fixed a problem with columns with "distance" in their name
+* added Geonames geocoder
+* the gem and plugin are now hosted at Github.
+
+=== 1.1.1 / 2008-01-20
+* fixes for distance calculation (in-memory and database) when distances are either very small or 0. 
+* NOTE: older versions of MySQL/Postgres may not work. See readme for more info.
+
+=== 1.1.0 / 2007-12-07
+* Geokit is now Rails 2.0 / Edge friendly. 
+
+=== 1.0.0 / 2007-07-22
+* see http://earthcode.com/blog/2007/07/new_geokit_release.html
+* auto geocoding: an option to automatically geocode a model's address field on create
+* in-memory sort-by-distance for arrays of location objects
+* bounding box queries: `Location.find :all, :bounds=>[sw,ne]`
+* improved performance by automatically adding a bounding box condition to radial queries
+* new Bounds class for in-memory bounds-related operations
+* ability to calculate heading and midpoint between two points
+* ability to calculate endpoint given a point, heading, and distance
+

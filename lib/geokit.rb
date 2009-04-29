@@ -1,5 +1,5 @@
 module Geokit
-  VERSION = '1.2.0'
+  VERSION = '1.3.0'
   # These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
   @@default_units = :miles
   @@default_formula = :sphere
@@ -26,5 +26,5 @@ $: <<  path unless $:.include?(path)
 require 'geokit/geocoders'
 require 'geokit/mappable'
 
-# make old-style module name "GeoKit" equivilent to new-style "Geokit"
+# make old-style module name "GeoKit" equivalent to new-style "Geokit"
 GeoKit=Geokit

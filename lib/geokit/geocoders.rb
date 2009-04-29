@@ -72,16 +72,29 @@ module Geokit
     @@provider_order = [:google,:us]
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
+    @@domain = nil
+    
+    def self.domain
+      @@domain
+    end
+
+    def self.domain=(obj)
+      @@domain = obj
+    end
     
     [:yahoo, :google, :geocoder_us, :geocoder_ca, :geonames, :provider_order, :timeout, 
-     :proxy_addr, :proxy_port, :proxy_user, :proxy_pass,:logger].each do |sym|
+     :proxy_addr, :proxy_port, :proxy_user, :proxy_pass, :logger].each do |sym|
       class_eval <<-EOS, __FILE__, __LINE__
         def self.#{sym}
-          if defined?(#{sym.to_s.upcase})
+          value = if defined?(#{sym.to_s.upcase})
             #{sym.to_s.upcase}
           else
             @@#{sym}
           end
+          if value.is_a?(Hash)
+            value = (self.domain.nil? ? nil : value[self.domain]) || value.values.first
+          end
+          value
         end
 
         def self.#{sym}=(obj)
@@ -105,7 +118,7 @@ module Geokit
       # empty one with a failed success code.
       def self.geocode(address)  
         res = do_geocode(address)
-        return res.success ? res : GeoLoc.new
+        return res.success? ? res : GeoLoc.new
       end  
       
       # Main method which calls the do_reverse_geocode template method which subclasses
@@ -113,7 +126,7 @@ module Geokit
       # empty one with a failed success code.
       def self.reverse_geocode(latlng)
         res = do_reverse_geocode(latlng)
-        return res.success ? res : GeoLoc.new        
+        return res.success? ? res : GeoLoc.new        
       end
       
       # Call the geocoder service using the timeout if configured.
@@ -298,6 +311,8 @@ module Geokit
           res.zip=doc.elements['//Zip'].text if doc.elements['//Zip'] && doc.elements['//Zip'].text != nil
           res.street_address=doc.elements['//Address'].text if doc.elements['//Address'] && doc.elements['//Address'].text != nil
           res.precision=doc.elements['//Result'].attributes['precision'] if doc.elements['//Result']
+          # set the accuracy as google does (added by Andruby)
+          res.accuracy=%w{unknown country state state city zip zip+4 street address building}.index(res.precision)
           res.success=true
           return res
         else 
@@ -389,10 +404,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        return self.xml2GeoLoc(xml)        
+        return self.xml2GeoLoc(xml, address)        
       end
       
-      def self.xml2GeoLoc(xml)
+      def self.xml2GeoLoc(xml, address="")
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
@@ -400,9 +415,9 @@ module Geokit
           # Google can return multiple results as //Placemark elements. 
           # iterate through each and extract each placemark as a geoloc
           doc.each_element('//Placemark') do |e|
-            extracted_geoloc = extract_placemark(e) # g is now an instance of Geoloc
+            extracted_geoloc = extract_placemark(e) # g is now an instance of GeoLoc
             if geoloc.nil? 
-              # first time through, geoloc is still nill, so we make it the geoloc we just extracted
+              # first time through, geoloc is still nil, so we make it the geoloc we just extracted
               geoloc = extracted_geoloc 
             else
               # second (and subsequent) iterations, we push additional 
@@ -441,8 +456,8 @@ module Geokit
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
-        accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
-        res.precision=%w{unknown country state state city zip zip+4 street address building}[accuracy]
+        res.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+        res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
         res.success=true
         
         return res        
@@ -492,7 +507,7 @@ module Geokit
       # longitude, city, and country code.  Sets the success attribute to false if the ip 
       # parameter does not match an ip address.  
       def self.do_geocode(ip)
-        return Geoloc.new if '0.0.0.0' == ip
+        return GeoLoc.new if '0.0.0.0' == ip
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
@@ -550,7 +565,7 @@ module Geokit
           begin
             klass = Geokit::Geocoders.const_get "#{provider.to_s.capitalize}Geocoder"
             res = klass.send :geocode, address
-            return res if res.success
+            return res if res.success?
           rescue
             logger.error("Something has gone very wrong during geocoding, OR you have configured an invalid class name in Geokit::Geocoders::provider_order. Address: #{address}. Provider: #{provider}")
           end

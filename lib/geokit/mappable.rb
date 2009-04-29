@@ -112,7 +112,7 @@ module Geokit
       # Geocodes a location using the multi geocoder.
       def geocode(location)
         res = Geocoders::MultiGeocoder.geocode(location)
-        return res if res.success
+        return res if res.success?
         raise Geokit::Geocoders::GeocodeError      
       end
     
@@ -251,6 +251,14 @@ module Geokit
       other.is_a?(LatLng) ? self.lat == other.lat && self.lng == other.lng : false
     end
     
+    def hash
+      lat.hash + lng.hash
+    end
+    
+    def eql?(other)
+      self == other
+    end
+    
     # A *class* method to take anything which can be inferred as a point and generate
     # a LatLng from it. You should use this anything you're not sure what the input is,
     # and want to deal with it as a LatLng if at all possible. Can take:
@@ -270,7 +278,7 @@ module Geokit
           return Geokit::LatLng.new(match[1],match[2])
         else
           res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
-          return res if res.success
+          return res if res.success?
           raise Geokit::Geocoders::GeocodeError  
         end
       elsif thing.is_a?(Array) && thing.size==2
@@ -317,6 +325,9 @@ module Geokit
     attr_accessor :success, :provider, :precision
     # Street number and street name are extracted from the street address attribute.
     attr_reader :street_number, :street_name
+    # accuracy is set for Yahoo and Google geocoders, it is a numeric value of the 
+    # precision. see http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
+    attr_accessor :accuracy
 
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h={})
@@ -336,6 +347,10 @@ module Geokit
     # Returns true if geocoded to the United States.
     def is_us?
       country_code == 'US'
+    end
+    
+    def success?
+      success == true
     end
 
     # full_address is provided by google but not by yahoo. It is intended that the google
@@ -384,7 +399,7 @@ module Geokit
     end
     
     def to_yaml_properties
-      (instance_variables - ['@results']).sort
+      (instance_variables - ['@all']).sort
     end
 
     # Returns a string representation of the instance.
