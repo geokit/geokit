@@ -476,7 +476,7 @@ module Geokit
         response = self.call_geocoder_service("http://www.geoplugin.net/xml.gp?ip=#{ip}")
         return response.is_a?(Net::HTTPSuccess) ? parse_xml(response.body) : GeoLoc.new
       rescue
-        logger.error "Caught an error during GeloPluginGeocoder geocoding call: "+$!
+        logger.error "Caught an error during GeoPluginGeocoder geocoding call: "+$!
         return GeoLoc.new
       end
 
