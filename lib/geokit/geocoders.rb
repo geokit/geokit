@@ -70,6 +70,7 @@ module Geokit
     @@geocoder_ca = false
     @@geonames = false
     @@provider_order = [:google,:us]
+    @@ip_provider_order = [:geo_plugin,:ip]
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
@@ -116,7 +117,7 @@ module Geokit
       # empty one with a failed success code.
       def self.geocode(address)  
         res = do_geocode(address)
-        return res.success? ? res : GeoLoc.new
+        return res ? res : GeoLoc.new
       end  
       
       # Main method which calls the do_reverse_geocode template method which subclasses
@@ -558,18 +559,22 @@ module Geokit
       # 
       # The failover approach is crucial for production-grade apps, but is rarely used.
       # 98% of your geocoding calls will be successful with the first call  
-      def self.do_geocode(address)
-        Geokit::Geocoders::provider_order.each do |provider|
+      def self.do_geocode(address, geocode_ip=false)
+        first_fail = GeoLoc.new
+        provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
+        provider_order.each do |provider|
           begin
-            klass = Geokit::Geocoders.const_get "#{provider.to_s.capitalize}Geocoder"
+            klass = Geokit::Geocoders.const_get "#{provider.to_s.camelize}Geocoder"
             res = klass.send :geocode, address
             return res if res.success?
+            logger.error("Geocoding failed, provider \"#{provider}\", returned:\n#{res}")
+            first_fail = res if !first_fail.provider
           rescue
             logger.error("Something has gone very wrong during geocoding, OR you have configured an invalid class name in Geokit::Geocoders::provider_order. Address: #{address}. Provider: #{provider}")
           end
         end
         # If we get here, we failed completely.
-        GeoLoc.new
+        return first_fail
       end
     end   
   end
