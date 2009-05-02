@@ -74,34 +74,32 @@ module Geokit
     @@logger.level=Logger::INFO
     @@domain = nil
     
-    def self.domain
-      @@domain
+    def self.__define_accessors
+      class_variables.each do |v| 
+        sym = v.delete("@").to_sym
+        unless self.respond_to? sym
+          module_eval <<-EOS, __FILE__, __LINE__
+            def self.#{sym}
+              value = if defined?(#{sym.to_s.upcase})
+                #{sym.to_s.upcase}
+              else
+                @@#{sym}
+              end
+              if value.is_a?(Hash)
+                value = (self.domain.nil? ? nil : value[self.domain]) || value.values.first
+              end
+              value
+            end
+          
+            def self.#{sym}=(obj)
+              @@#{sym} = obj
+            end
+          EOS
+        end
+      end
     end
 
-    def self.domain=(obj)
-      @@domain = obj
-    end
-    
-    [:yahoo, :google, :geocoder_us, :geocoder_ca, :geonames, :provider_order, :timeout, 
-     :proxy_addr, :proxy_port, :proxy_user, :proxy_pass, :logger].each do |sym|
-      class_eval <<-EOS, __FILE__, __LINE__
-        def self.#{sym}
-          value = if defined?(#{sym.to_s.upcase})
-            #{sym.to_s.upcase}
-          else
-            @@#{sym}
-          end
-          if value.is_a?(Hash)
-            value = (self.domain.nil? ? nil : value[self.domain]) || value.values.first
-          end
-          value
-        end
-
-        def self.#{sym}=(obj)
-          @@#{sym} = obj
-        end
-      EOS
-    end
+    __define_accessors
     
     # Error which is thrown in the event a geocoding error occurs.
     class GeocodeError < StandardError; end
