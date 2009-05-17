@@ -37,6 +37,10 @@ module Geokit
       '%' + $1.unpack('H2' * $1.size).join('%').upcase
       end.tr(' ', '+')
     end
+    
+    def camelize(str)
+      str.split('_').map {|w| w.capitalize}.join
+    end
   end  
   
   # Contains a range of geocoders:
@@ -117,9 +121,8 @@ module Geokit
       # empty one with a failed success code.
       def self.geocode(address)  
         res = do_geocode(address)
-        return res ? res : GeoLoc.new
+        return res.nil? ? GeoLoc.new : res
       end  
-      
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
@@ -560,21 +563,18 @@ module Geokit
       # The failover approach is crucial for production-grade apps, but is rarely used.
       # 98% of your geocoding calls will be successful with the first call  
       def self.do_geocode(address, geocode_ip=false)
-        first_fail = GeoLoc.new
         provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
         provider_order.each do |provider|
           begin
-            klass = Geokit::Geocoders.const_get "#{provider.to_s.camelize}Geocoder"
+            klass = Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
             res = klass.send :geocode, address
             return res if res.success?
-            logger.error("Geocoding failed, provider \"#{provider}\", returned:\n#{res}")
-            first_fail = res if !first_fail.provider
           rescue
             logger.error("Something has gone very wrong during geocoding, OR you have configured an invalid class name in Geokit::Geocoders::provider_order. Address: #{address}. Provider: #{provider}")
           end
         end
         # If we get here, we failed completely.
-        return first_fail
+        GeoLoc.new
       end
     end   
   end
