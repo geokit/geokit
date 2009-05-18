@@ -96,6 +96,10 @@ If you're using this gem by itself, here are the configuration options:
 		# and http://geocoder.ca/?register=1
 		Geokit::Geocoders::geocoder_ca = false
 		
+		# require "external_geocoder.rb"
+		# Please see the section "writing your own geocoders" for more information.
+		# Geokit::Geocoders::external_geocoder_key = 'REPLACE_WITH_YOUR_API_KEY'
+		
 		# This is the order in which the geocoders are called in a failover scenario
 		# If you only want to use a single geocoder, put a single symbol in the array.
 		# Valid symbols are :google, :yahoo, :us, and :ca.
@@ -103,6 +107,10 @@ If you're using this gem by itself, here are the configuration options:
 		# various geocoders.  Make sure you read up on relevant Terms of Use for each
 		# geocoder you are going to use.
 		Geokit::Geocoders::provider_order = [:google,:us]
+		
+		# The IP provider order. Valid symbols are :ip,:geo_plugin.
+		# As before, make sure you read up on relevant Terms of Use for each.
+		# Geokit::Geocoders::ip_provider_order = [:extenal_geocoder,:geo_plugin,:ip]
 
 If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
@@ -123,7 +131,7 @@ creates a template with these settings and places it in `config/initializers/geo
 * Geoplugin.net -- another IP address geocoder
 
 ### The Multigeocoder
-* Multi Geocoder - provides failover for the physical location geocoders.
+* Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders.
 
 ## MULTIPLE RESULTS
 Some geocoding services will return multple results if the there isn't one clear result. 
@@ -164,6 +172,34 @@ AND the Mappable modeule goodness for free.
 geocoders.rb contains all the geocoder implemenations. All the gercoders 
 inherit from a common base (class Geocoder) and implement the private method
 do_geocode.
+
+## WRITING YOUR OWN GEOCODERS
+
+If you would like to write your own geocoders, you can do so by requiring 'geokit' or 'geokit/geocoders.rb' in a new file and subclassing the base class (which is class "Geocoder").
+You must then also require such extenal file back in your main geokit configuration.
+
+	require "geokit"
+
+	module Geokit
+	  module Geocoders
+   		
+	    @@external_geocoder_key = 'REPLACE_WITH_YOUR_API_KEY'
+	    __define_accessors
+   
+	    class ExternalGeocoder < Geocoder
+		  # Use :external_geocoder to specify this geocoder in the configuration file.
+	      private 
+	      def self.do_geocode(address)
+	        # Main geocoding method
+	      end
+
+	      def self.parse_http_resp(body) # :nodoc:
+	        # Helper method to parse http response. See geokit/geocoders.rb.
+	      end
+	    end
+	
+	  end
+	end
 
 ## GOOGLE GROUP
 
