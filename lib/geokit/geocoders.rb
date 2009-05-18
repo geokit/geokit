@@ -493,7 +493,7 @@ module Geokit
         geo.country_code = xml.elements['//geoplugin_countryCode'].text
         geo.lat = xml.elements['//geoplugin_latitude'].text.to_f
         geo.lng = xml.elements['//geoplugin_longitude'].text.to_f
-        geo.success = !geo.city.empty?
+        geo.success = !!geo.city && !geo.city.empty?
         return geo
       end
     end
@@ -546,7 +546,8 @@ module Geokit
     # -------------------------------------------------------------------------------------------    
     
     # Provides methods to geocode with a variety of geocoding service providers, plus failover
-    # among providers in the order you configure.
+    # among providers in the order you configure. When 2nd parameter is set 'true', perform
+    # ip location lookup with 'address' as the ip address.
     # 
     # Goal:
     # - homogenize the results of multiple geocoders
@@ -555,8 +556,12 @@ module Geokit
     # - currently only provides the first result. Sometimes geocoders will return multiple results.
     # - currently discards the "accuracy" component of the geocoding calls
     class MultiGeocoder < Geocoder 
+      
+      def self.geocode(address, geocode_ip=false)
+        self.do_geocode(address, geocode_ip)
+      end
+      
       private
-
       # This method will call one or more geocoders in the order specified in the 
       # configuration until one of the geocoders work.
       # 
