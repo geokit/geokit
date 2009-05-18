@@ -98,7 +98,7 @@ If you're using this gem by itself, here are the configuration options:
 		
 		# require "external_geocoder.rb"
 		# Please see the section "writing your own geocoders" for more information.
-		# Geokit::Geocoders::external_geocoder_key = 'REPLACE_WITH_YOUR_API_KEY'
+		# Geokit::Geocoders::external_key = 'REPLACE_WITH_YOUR_API_KEY'
 		
 		# This is the order in which the geocoders are called in a failover scenario
 		# If you only want to use a single geocoder, put a single symbol in the array.
@@ -110,7 +110,7 @@ If you're using this gem by itself, here are the configuration options:
 		
 		# The IP provider order. Valid symbols are :ip,:geo_plugin.
 		# As before, make sure you read up on relevant Terms of Use for each.
-		# Geokit::Geocoders::ip_provider_order = [:extenal_geocoder,:geo_plugin,:ip]
+		# Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 
 If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
@@ -183,11 +183,13 @@ You must then also require such extenal file back in your main geokit configurat
 	module Geokit
 	  module Geocoders
    		
-	    @@external_geocoder_key = 'REPLACE_WITH_YOUR_API_KEY'
+		# Should be overriden as Geokit::Geocoders::external_key in your configuration file
+	    @@external_key = 'REPLACE_WITH_YOUR_API_KEY'
 	    __define_accessors
    
+		# Replace name 'External' (below) with the name of your custom geocoder class
+		# and use :external to specify this geocoder in your list of geocoders.
 	    class ExternalGeocoder < Geocoder
-		  # Use :external_geocoder to specify this geocoder in the configuration file.
 	      private 
 	      def self.do_geocode(address)
 	        # Main geocoding method
