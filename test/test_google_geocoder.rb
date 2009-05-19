@@ -14,6 +14,10 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   
   GOOGLE_MULTI="<?xml version='1.0' encoding='UTF-8'?>\n<kml xmlns='http://earth.google.com/kml/2.0'><Response>\n  <name>via Sandro Pertini 8, Ossona, MI</name>\n  <Status>\n    <code>200</code>\n    <request>geocode</request>\n  </Status>\n  <Placemark id='p1'>\n    <address>Via Sandro Pertini, 8, 20010 Mesero MI, Italy</address>\n    <AddressDetails Accuracy='8' xmlns='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'><Country><CountryNameCode>IT</CountryNameCode><CountryName>Italy</CountryName><AdministrativeArea><AdministrativeAreaName>Lombardy</AdministrativeAreaName><SubAdministrativeArea><SubAdministrativeAreaName>Milan</SubAdministrativeAreaName><Locality><LocalityName>Mesero</LocalityName><Thoroughfare><ThoroughfareName>8 Via Sandro Pertini</ThoroughfareName></Thoroughfare><PostalCode><PostalCodeNumber>20010</PostalCodeNumber></PostalCode></Locality></SubAdministrativeArea></AdministrativeArea></Country></AddressDetails>\n    <Point><coordinates>8.8527131,45.4966243,0</coordinates></Point>\n  </Placemark>\n  <Placemark id='p2'>\n    <address>Via Sandro Pertini, 20010 Ossona MI, Italy</address>\n    <AddressDetails Accuracy='6' xmlns='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'><Country><CountryNameCode>IT</CountryNameCode><CountryName>Italy</CountryName><AdministrativeArea><AdministrativeAreaName>Lombardy</AdministrativeAreaName><SubAdministrativeArea><SubAdministrativeAreaName>Milan</SubAdministrativeAreaName><Locality><LocalityName>Ossona</LocalityName><Thoroughfare><ThoroughfareName>Via Sandro Pertini</ThoroughfareName></Thoroughfare><PostalCode><PostalCodeNumber>20010</PostalCodeNumber></PostalCode></Locality></SubAdministrativeArea></AdministrativeArea></Country></AddressDetails>\n    <Point><coordinates>8.9023200,45.5074444,0</coordinates></Point>\n  </Placemark>\n</Response></kml>\n"
   
+  GOOGLE_TOO_MANY=<<-EOF.strip
+  <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>100 spear st, san francisco, ca</name><Status><code>620</code><request>geocode</request></Status></Response></kml>
+  EOF
+  
   def setup
     super
     @google_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
@@ -130,5 +134,15 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "Via Sandro Pertini, 20010 Ossona MI, Italy", res.full_address
     assert_equal "Via Sandro Pertini", res.street_address
     assert_equal "google", res.provider
+  end
+  
+  def test_too_many_queries
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_TOO_MANY)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@address)}&output=xml&key=Google&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    assert_raise "" do
+      res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
+    end
   end
 end
