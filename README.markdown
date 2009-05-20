@@ -131,7 +131,11 @@ creates a template with these settings and places it in `config/initializers/geo
 * Geoplugin.net -- another IP address geocoder
 
 ### The Multigeocoder
-* Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders.
+Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders. Its configured by setting Geokit::Geocoders::provider_order, and Geokit::Geocoders::ip_provider_order. You should call the Multi-Geocoder with its :geocode method, supplying one address parameter which is either a real street address, or an ip address. For example:
+
+		Geokit::Geocoders::MultiGeocoder.geocode("900 Sycamore Drive")
+
+		Geokit::Geocoders::MultiGeocoder.geocode("12.12.12.12")
 
 ## MULTIPLE RESULTS
 Some geocoding services will return multple results if the there isn't one clear result. 

@@ -555,20 +555,18 @@ module Geokit
     # Limitations:
     # - currently only provides the first result. Sometimes geocoders will return multiple results.
     # - currently discards the "accuracy" component of the geocoding calls
-    class MultiGeocoder < Geocoder 
-      
-      def self.geocode(address, geocode_ip=false)
-        self.do_geocode(address, geocode_ip)
-      end
-      
+    class MultiGeocoder < Geocoder       
+
       private
       # This method will call one or more geocoders in the order specified in the 
       # configuration until one of the geocoders work.
       # 
       # The failover approach is crucial for production-grade apps, but is rarely used.
       # 98% of your geocoding calls will be successful with the first call  
-      def self.do_geocode(address, geocode_ip=false)
+      def self.do_geocode(address)
+        geocode_ip = !!/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(address)
         provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
+        
         provider_order.each do |provider|
           begin
             klass = Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
