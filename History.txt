@@ -1,3 +1,6 @@
+=== 1.3.2 / 2009-05-27
+* Fixed blank address geocoding bug
+
 === 1.3.1 / 2009-05-21
 * Support for External geocoders file (thanks dreamcat4)
 * Support multiple ip geocoders, including new setting for ip_provider_order (thanks dreamcat4)

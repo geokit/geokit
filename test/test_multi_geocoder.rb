@@ -41,4 +41,14 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders.provider_order = temp
   end
 
+  def test_blank_address
+    t1, t2 = Geokit::Geocoders.provider_order, Geokit::Geocoders.ip_provider_order # will need to reset after
+    Geokit::Geocoders.provider_order = [:google]
+    Geokit::Geocoders.ip_provider_order = [:geo_plugin]
+    Geokit::Geocoders::GoogleGeocoder.expects(:geocode).with("").returns(@failure)
+    Geokit::Geocoders::GeoPluginGeocoder.expects(:geocode).never
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode("")
+    Geokit::Geocoders.provider_order, Geokit::Geocoders.ip_provider_order = t1, t2 # reset to orig values
+  end
+
 end

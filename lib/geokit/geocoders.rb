@@ -564,7 +564,7 @@ module Geokit
       # The failover approach is crucial for production-grade apps, but is rarely used.
       # 98% of your geocoding calls will be successful with the first call  
       def self.do_geocode(address)
-        geocode_ip = !!/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(address)
+        geocode_ip = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.match(address)
         provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
         
         provider_order.each do |provider|
