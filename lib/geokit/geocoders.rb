@@ -460,6 +460,14 @@ module Geokit
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
         res.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
         res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
+        
+        # google returns a set of suggested boundaries for the geocoded result
+        if suggested_bounds = doc.elements['//LatLonBox']  
+          res.suggested_bounds = Bounds.normalize(
+                                  [suggested_bounds.attributes['south'], suggested_bounds.attributes['west']], 
+                                  [suggested_bounds.attributes['north'], suggested_bounds.attributes['east']])
+        end
+        
         res.success=true
         
         return res        

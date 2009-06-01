@@ -7,6 +7,10 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   GOOGLE_FULL=<<-EOF.strip
   <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>100 spear st, san francisco, ca</name><Status><code>200</code><request>geocode</request></Status><Placemark><address>100 Spear St, San Francisco, CA 94105, USA</address><AddressDetails Accuracy="8" xmlns="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"><Country><CountryNameCode>US</CountryNameCode><AdministrativeArea><AdministrativeAreaName>CA</AdministrativeAreaName><SubAdministrativeArea><SubAdministrativeAreaName>San Francisco</SubAdministrativeAreaName><Locality><LocalityName>San Francisco</LocalityName><Thoroughfare><ThoroughfareName>100 Spear St</ThoroughfareName></Thoroughfare><PostalCode><PostalCodeNumber>94105</PostalCodeNumber></PostalCode></Locality></SubAdministrativeArea></AdministrativeArea></Country></AddressDetails><Point><coordinates>-122.393985,37.792501,0</coordinates></Point></Placemark></Response></kml>
   EOF
+  
+  GOOGLE_RESULT_WITH_SUGGESTED_BOUNDS=<<-EOF.strip
+  <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>100 spear st, san francisco, ca</name><Status><code>200</code><request>geocode</request></Status><Placemark><address>100 Spear St, San Francisco, CA 94105, USA</address><AddressDetails Accuracy="8" xmlns="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"><Country><CountryNameCode>US</CountryNameCode><AdministrativeArea><AdministrativeAreaName>CA</AdministrativeAreaName><SubAdministrativeArea><SubAdministrativeAreaName>San Francisco</SubAdministrativeAreaName><Locality><LocalityName>San Francisco</LocalityName><Thoroughfare><ThoroughfareName>100 Spear St</ThoroughfareName></Thoroughfare><PostalCode><PostalCodeNumber>94105</PostalCodeNumber></PostalCode></Locality></SubAdministrativeArea></AdministrativeArea></Country></AddressDetails><ExtendedData><LatLonBox north="37.7956328" south="37.7893376" east="-122.3908573" west="-122.3971525" /></ExtendedData><Point><coordinates>-122.393985,37.792501,0</coordinates></Point></Placemark></Response></kml>
+  EOF
 
   GOOGLE_CITY=<<-EOF.strip
   <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>San Francisco</name><Status><code>200</code><request>geocode</request></Status><Placemark><address>San Francisco, CA, USA</address><AddressDetails Accuracy="4" xmlns="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"><Country><CountryNameCode>US</CountryNameCode><AdministrativeArea><AdministrativeAreaName>CA</AdministrativeAreaName><Locality><LocalityName>San Francisco</LocalityName></Locality></AdministrativeArea></Country></AddressDetails><Point><coordinates>-122.418333,37.775000,0</coordinates></Point></Placemark></Response></kml>
@@ -98,6 +102,20 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_nil res.street_address
     assert_equal "google", res.provider
   end  
+  
+  def test_google_suggested_bounds
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_RESULT_WITH_SUGGESTED_BOUNDS)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}&output=xml&key=Google&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    res = Geokit::Geocoders::GoogleGeocoder.geocode(@google_full_loc)
+    
+    assert_instance_of Geokit::Bounds, res.suggested_bounds
+    assert_equal 37.7956328, res.suggested_bounds.ne.lat
+    assert_equal -122.3908573, res.suggested_bounds.ne.lng
+    assert_equal 37.7893376, res.suggested_bounds.sw.lat
+    assert_equal -122.3971525, res.suggested_bounds.sw.lng
+  end
   
   def test_service_unavailable
     response = MockFailure.new
