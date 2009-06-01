@@ -130,7 +130,7 @@ creates a template with these settings and places it in `config/initializers/geo
 * IP Geocoder - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
 
-### Google Geocoder tricks
+### Google Geocoder Tricks
 
 The Google Geocoder sports a number of useful tricks that elevate it a little bit above the rest of the currently supported geocoders. For starters, it returns a `suggested_bounds` property for all your geocoded results, so you can more easily decide where and how to center a map on the places you geocode. Here's a quick example:
 
@@ -146,7 +146,7 @@ In addition, you can use viewport or country code biasing to make sure the geoco
 		irb> res.full_address
 		=> "Syracuse, NY, USA"
 	
-Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method.
+Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
 
 		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
 		irb> res.full_address
@@ -160,10 +160,10 @@ Alternatively, we can speficy the geocoding bias as a bounding box object. Say w
 	
 Not it. What we can do is tell the geocoder to return results only from in and around LA.
 
-	irb> la_bounds = Geokit::Geocoder::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
-	irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
-	irb> res.full_address
-	=> "Winnetka, California, USA"
+		irb> la_bounds = Geokit::Geocoder::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
+		irb> res.full_address
+		=> "Winnetka, California, USA"
 
 
 ### The Multigeocoder
