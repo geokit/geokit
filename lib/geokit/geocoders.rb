@@ -579,6 +579,23 @@ module Geokit
         # If we get here, we failed completely.
         GeoLoc.new
       end
+      
+      # This method will call one or more geocoders in the order specified in the 
+      # configuration until one of the geocoders work, only this time it's going
+      # to try to reverse geocode a geographical point.
+      def self.do_reverse_geocode(latlng)
+        Geokit::Geocoders::provider_order.each do |provider|
+          begin
+            klass = Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
+            res = klass.send :reverse_geocode, latlng
+            return res if res.success?
+          rescue
+            logger.error("Something has gone very wrong during reverse geocoding, OR you have configured an invalid class name in Geokit::Geocoders::provider_order. LatLng: #{latlng}. Provider: #{provider}")
+          end
+        end
+        # If we get here, we failed completely.
+        GeoLoc.new
+      end
     end   
   end
 end
