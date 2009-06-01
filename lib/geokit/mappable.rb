@@ -292,6 +292,30 @@ module Geokit
       raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, Mappable, etc., but no dice.")
     end
     
+    # Reverse geocodes a LatLng object using the MultiGeocoder (default), or optionally
+    # using a geocoder of your choosing. Returns a new Geokit::GeoLoc object
+    # 
+    # ==== Options
+    # * :using  - Specifies the geocoder to use for reverse geocoding. Defaults to
+    #             MultiGeocoder. Can be either the geocoder class (or any class that 
+    #             implements do_reverse_geocode for that matter), or the name of
+    #             the class without the "Geocoder" part (e.g. :google)
+    #
+    # ==== Examples
+    # LatLng.new(51.4578329, 7.0166848).reverse_geocode # => #<Geokit::GeoLoc:0x12dac20 @state...>
+    # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using => :google) # => #<Geokit::GeoLoc:0x12dac20 @state...>
+    # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using => Geokit::Geocoders::GoogleGeocoder) # => #<Geokit::GeoLoc:0x12dac20 @state...>
+    def reverse_geocode(options = { :using => Geokit::Geocoders::MultiGeocoder })
+      if options[:using].is_a?(String) or options[:using].is_a?(Symbol)
+        provider = Geokit::Geocoders.const_get("#{Geokit::Inflector::camelize(options[:using].to_s)}Geocoder")
+      elsif options[:using].respond_to?(:do_reverse_geocode)
+        provider = options[:using]
+      else
+        raise ArgumentError.new("#{options[:using]} is not a valid geocoder.")
+      end
+      
+      provider.send(:reverse_geocode, self)
+    end
   end
 
   # This class encapsulates the result of a geocoding call.
