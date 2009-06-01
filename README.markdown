@@ -124,11 +124,47 @@ creates a template with these settings and places it in `config/initializers/geo
 * Geonames - a free geocoder
 
 ### address geocoders that also provide reverse geocoding 
-* Google Geocoder - requires an API key. Also supports multiple results.
+* Google Geocoder - requires an API key. Also supports multiple results and bounding box/country code biasing.
 
 ### IP address geocoders 
 * IP Geocoder - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
+
+### Google Geocoder tricks
+
+The Google Geocoder sports a number of useful tricks that elevate it a little bit above the rest of the currently supported geocoders. For starters, it returns a `suggested_bounds` property for all your geocoded results, so you can more easily decide where and how to center a map on the places you geocode. Here's a quick example:
+
+    irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('140 Market St, San Francisco, CA')
+		irb> pp res.suggested_bounds
+		#<Geokit::Bounds:0x53b36c
+		 @ne=#<Geokit::LatLng:0x53b204 @lat=37.7968528, @lng=-122.3926933>,
+		 @sw=#<Geokit::LatLng:0x53b2b8 @lat=37.7905576, @lng=-122.3989885>>
+
+In addition, you can use viewport or country code biasing to make sure the geocoders prefers results within a specific area. Say we wanted to geocode the city of Syracuse in Italy. A normal geocoding query would look like this:
+
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse')
+		irb> res.full_address
+		=> "Syracuse, NY, USA"
+	
+Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method.
+
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
+		irb> res.full_address
+		=> "Syracuse, Italy"
+
+Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
+
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka')
+		irb> res.full_address
+		=> "Winnetka, IL, USA"
+	
+Not it. What we can do is tell the geocoder to return results only from in and around LA.
+
+	irb> la_bounds = Geokit::Geocoder::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
+	irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
+	irb> res.full_address
+	=> "Winnetka, California, USA"
+
 
 ### The Multigeocoder
 Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders. Its configured by setting Geokit::Geocoders::provider_order, and Geokit::Geocoders::ip_provider_order. You should call the Multi-Geocoder with its :geocode method, supplying one address parameter which is either a real street address, or an ip address. For example:
@@ -195,7 +231,7 @@ You must then also require such extenal file back in your main geokit configurat
 		# and use :external to specify this geocoder in your list of geocoders.
 	    class ExternalGeocoder < Geocoder
 	      private 
-	      def self.do_geocode(address)
+	      def self.do_geocode(address, options = {})
 	        # Main geocoding method
 	      end
 

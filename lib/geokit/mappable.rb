@@ -110,8 +110,8 @@ module Geokit
       end
   
       # Geocodes a location using the multi geocoder.
-      def geocode(location)
-        res = Geocoders::MultiGeocoder.geocode(location)
+      def geocode(location, options = {})
+        res = Geocoders::MultiGeocoder.geocode(location, options)
         return res if res.success?
         raise Geokit::Geocoders::GeocodeError      
       end
@@ -479,6 +479,16 @@ module Geokit
     # is true if the lat and lng attributes are the same for both objects.
     def ==(other)
       other.is_a?(Bounds) ? self.sw == other.sw && self.ne == other.ne : false
+    end
+    
+    # Equivalent to Google Maps API's .toSpan() method on GLatLng's.
+    #
+    # Returns a LatLng object, whose coordinates represent the size of a rectangle
+    # defined by these bounds.
+    def to_span
+      lat_span = (@ne.lat - @sw.lat).abs
+      lng_span = (crosses_meridian? ? 360 + @ne.lng - @sw.lng : @ne.lng - @sw.lng).abs
+      Geokit::LatLng.new(lat_span, lng_span)
     end
     
     class <<self
