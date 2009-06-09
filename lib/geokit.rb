@@ -1,5 +1,5 @@
 module Geokit
-  VERSION = '1.3.2'
+  VERSION = '1.4.0'
   # These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
   @@default_units = :miles
   @@default_formula = :sphere
