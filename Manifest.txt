@@ -1,4 +1,3 @@
-.project
 History.txt
 Manifest.txt
 README.markdown
