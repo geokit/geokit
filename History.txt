@@ -1,3 +1,6 @@
+=== 1.4.1 / 2009-06-15
+* Fixed Ruby 1.9.1 compat and load order (thanks Niels Ganser)
+
 === 1.4.0 / 2009-05-27
 * Added country code/viewport biasing to GoogleGeocoder. Added Bounds#to_span method
 * Added suggested_bounds (Geokit::Bounds) property to GeoLoc. (Google geocoder only)
