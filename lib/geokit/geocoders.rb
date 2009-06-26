@@ -546,14 +546,26 @@ module Geokit
     # as community contributions.
     class IpGeocoder < Geocoder 
 
+      # A number of private IP address ranges.
+      #
+      # These are defined in RFC1918:
+      # http://tools.ietf.org/html/rfc1918
+      # http://en.wikipedia.org/wiki/Private_network
+      PRIVATE_IP_ADDRESSES = [
+	/^0\.0\.0\.0$/,                                   # 0.0.0.0 (no address)
+	/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/,                # 10.0.0.0/8
+	/^172\.(?:1[6789]|2\d|3[01])\.\d{1,3}\.\d{1,3}$/, # 172.16.0.0/12
+	/^192\.168\.\d{1,3}\.\d{1,3}$/                    # 192.168.0.0/24
+      ].freeze
+
       private 
 
       # Given an IP address, returns a GeoLoc instance which contains latitude,
       # longitude, city, and country code.  Sets the success attribute to false if the ip 
       # parameter does not match an ip address.  
       def self.do_geocode(ip, options = {})
-        return GeoLoc.new if '0.0.0.0' == ip
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        return GeoLoc.new if self.private_ip_address?(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
         response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
@@ -581,6 +593,15 @@ module Geokit
         res.country_code.chop!
         res.success = !(res.city =~ /\(.+\)/)
         res
+      end
+
+      # Checks whether the IP address belongs to a private address range.
+      #
+      # This function is used to reduce the number of useless queries made to
+      # the geocoding service. Such queries can occur frequently during
+      # integration tests.
+      def self.private_ip_address?(ip)
+	return PRIVATE_IP_ADDRESSES.any? { |regexp| ip =~ regexp }
       end
     end
     
