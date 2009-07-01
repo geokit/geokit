@@ -1,4 +1,5 @@
 require 'net/http'
+require 'ipaddr'
 require 'rexml/document'
 require 'yaml'
 require 'timeout'
@@ -546,16 +547,25 @@ module Geokit
     # as community contributions.
     class IpGeocoder < Geocoder 
 
-      # A number of private IP address ranges.
+      # A number of non-routable IP ranges.
       #
-      # These are defined in RFC1918:
-      # http://tools.ietf.org/html/rfc1918
-      # http://en.wikipedia.org/wiki/Private_network
-      PRIVATE_IP_ADDRESSES = [
-	/^0\.0\.0\.0$/,                                   # 0.0.0.0 (no address)
-	/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/,                # 10.0.0.0/8
-	/^172\.(?:1[6789]|2\d|3[01])\.\d{1,3}\.\d{1,3}$/, # 172.16.0.0/12
-	/^192\.168\.\d{1,3}\.\d{1,3}$/                    # 192.168.0.0/24
+      # --
+      # Sources for these:
+      #   RFC 3330: Special-Use IPv4 Addresses
+      #   The bogon list: http://www.cymru.com/Documents/bogon-list.html
+
+      NON_ROUTABLE_IP_RANGES = [
+	IPAddr.new('0.0.0.0/8'),      # "This" Network
+	IPAddr.new('10.0.0.0/8'),     # Private-Use Networks
+	IPAddr.new('14.0.0.0/8'),     # Public-Data Networks
+	IPAddr.new('127.0.0.0/8'),    # Loopback
+	IPAddr.new('169.254.0.0/16'), # Link local
+	IPAddr.new('172.16.0.0/12'),  # Private-Use Networks
+	IPAddr.new('192.0.2.0/24'),   # Test-Net
+	IPAddr.new('192.168.0.0/16'), # Private-Use Networks
+	IPAddr.new('198.18.0.0/15'),  # Network Interconnect Device Benchmark Testing
+	IPAddr.new('224.0.0.0/4'),    # Multicast
+	IPAddr.new('240.0.0.0/4')     # Reserved for future use
       ].freeze
 
       private 
@@ -601,7 +611,7 @@ module Geokit
       # the geocoding service. Such queries can occur frequently during
       # integration tests.
       def self.private_ip_address?(ip)
-	return PRIVATE_IP_ADDRESSES.any? { |regexp| ip =~ regexp }
+	return NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
       end
     end
     
