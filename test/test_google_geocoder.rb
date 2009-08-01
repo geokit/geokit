@@ -25,6 +25,10 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   GOOGLE_BOUNDS_BIASED_RESULT = <<-EOF.strip
   <?xml version="1.0" encoding="UTF-8" ?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>Winnetka</name><Status><code>200</code><request>geocode</request></Status><Placemark id="p1"><address>Winnetka, California, USA</address><AddressDetails Accuracy="4" xmlns="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"><Country><CountryNameCode>US</CountryNameCode><CountryName>USA</CountryName><AdministrativeArea><AdministrativeAreaName>CA</AdministrativeAreaName><AddressLine>Winnetka</AddressLine></AdministrativeArea></Country></AddressDetails><ExtendedData><LatLonBox north="34.2353090" south="34.1791050" east="-118.5534191" west="-118.5883200" /></ExtendedData><Point><coordinates>-118.5710220,34.2131710,0</coordinates></Point></Placemark></Response></kml>
   EOF
+
+  GOOGLE_TOO_MANY=<<-EOF.strip
+  <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>100 spear st, san francisco, ca</name><Status><code>620</code><request>geocode</request></Status></Response></kml>
+  EOF
   
   def setup
     super
@@ -179,5 +183,15 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     
     assert_equal 'US', biased_result.country_code
     assert_equal 'CA', biased_result.state
+  end
+
+  def test_too_many_queries
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_TOO_MANY)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@address)}&output=xml&key=Google&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    assert_raise "" do
+      res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
+    end
   end
 end
