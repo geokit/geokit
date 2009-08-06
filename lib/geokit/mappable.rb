@@ -110,8 +110,8 @@ module Geokit
       end
   
       # Geocodes a location using the multi geocoder.
-      def geocode(location)
-        res = Geocoders::MultiGeocoder.geocode(location)
+      def geocode(location, options = {})
+        res = Geocoders::MultiGeocoder.geocode(location, options)
         return res if res.success?
         raise Geokit::Geocoders::GeocodeError      
       end
@@ -292,6 +292,30 @@ module Geokit
       raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, Mappable, etc., but no dice.")
     end
     
+    # Reverse geocodes a LatLng object using the MultiGeocoder (default), or optionally
+    # using a geocoder of your choosing. Returns a new Geokit::GeoLoc object
+    # 
+    # ==== Options
+    # * :using  - Specifies the geocoder to use for reverse geocoding. Defaults to
+    #             MultiGeocoder. Can be either the geocoder class (or any class that 
+    #             implements do_reverse_geocode for that matter), or the name of
+    #             the class without the "Geocoder" part (e.g. :google)
+    #
+    # ==== Examples
+    # LatLng.new(51.4578329, 7.0166848).reverse_geocode # => #<Geokit::GeoLoc:0x12dac20 @state...>
+    # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using => :google) # => #<Geokit::GeoLoc:0x12dac20 @state...>
+    # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using => Geokit::Geocoders::GoogleGeocoder) # => #<Geokit::GeoLoc:0x12dac20 @state...>
+    def reverse_geocode(options = { :using => Geokit::Geocoders::MultiGeocoder })
+      if options[:using].is_a?(String) or options[:using].is_a?(Symbol)
+        provider = Geokit::Geocoders.const_get("#{Geokit::Inflector::camelize(options[:using].to_s)}Geocoder")
+      elsif options[:using].respond_to?(:do_reverse_geocode)
+        provider = options[:using]
+      else
+        raise ArgumentError.new("#{options[:using]} is not a valid geocoder.")
+      end
+      
+      provider.send(:reverse_geocode, self)
+    end
   end
 
   # This class encapsulates the result of a geocoding call.
@@ -322,7 +346,7 @@ module Geokit
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
     # Finally, precision is an indicator of the accuracy of the geocoding.
-    attr_accessor :success, :provider, :precision
+    attr_accessor :success, :provider, :precision, :suggested_bounds
     # Street number and street name are extracted from the street address attribute.
     attr_reader :street_number, :street_name
     # accuracy is set for Yahoo and Google geocoders, it is a numeric value of the 
@@ -389,7 +413,7 @@ module Geokit
       #@street_address = Geokit::Inflector::titleize(address) if address
       @street_address = address if address
     end  
-
+    
     # Returns a comma-delimited string consisting of the street address, city, state,
     # zip, and country code.  Only includes those attributes that are non-blank.
     def to_geocodeable_s
@@ -404,7 +428,7 @@ module Geokit
 
     # Returns a string representation of the instance.
     def to_s
-      "Provider: #{provider}\n Street: #{street_address}\nCity: #{city}\nState: #{state}\nZip: #{zip}\nLatitude: #{lat}\nLongitude: #{lng}\nCountry: #{country_code}\nSuccess: #{success}"
+      "Provider: #{provider}\nStreet: #{street_address}\nCity: #{city}\nState: #{state}\nZip: #{zip}\nLatitude: #{lat}\nLongitude: #{lng}\nCountry: #{country_code}\nSuccess: #{success}"
     end
   end
   
@@ -456,6 +480,16 @@ module Geokit
     # is true if the lat and lng attributes are the same for both objects.
     def ==(other)
       other.is_a?(Bounds) ? self.sw == other.sw && self.ne == other.ne : false
+    end
+    
+    # Equivalent to Google Maps API's .toSpan() method on GLatLng's.
+    #
+    # Returns a LatLng object, whose coordinates represent the size of a rectangle
+    # defined by these bounds.
+    def to_span
+      lat_span = (@ne.lat - @sw.lat).abs
+      lng_span = (crosses_meridian? ? 360 + @ne.lng - @sw.lng : @ne.lng - @sw.lng).abs
+      Geokit::LatLng.new(lat_span, lng_span)
     end
     
     class <<self

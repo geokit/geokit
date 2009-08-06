@@ -96,6 +96,10 @@ If you're using this gem by itself, here are the configuration options:
 		# and http://geocoder.ca/?register=1
 		Geokit::Geocoders::geocoder_ca = false
 		
+		# require "external_geocoder.rb"
+		# Please see the section "writing your own geocoders" for more information.
+		# Geokit::Geocoders::external_key = 'REPLACE_WITH_YOUR_API_KEY'
+		
 		# This is the order in which the geocoders are called in a failover scenario
 		# If you only want to use a single geocoder, put a single symbol in the array.
 		# Valid symbols are :google, :yahoo, :us, and :ca.
@@ -103,6 +107,10 @@ If you're using this gem by itself, here are the configuration options:
 		# various geocoders.  Make sure you read up on relevant Terms of Use for each
 		# geocoder you are going to use.
 		Geokit::Geocoders::provider_order = [:google,:us]
+		
+		# The IP provider order. Valid symbols are :ip,:geo_plugin.
+		# As before, make sure you read up on relevant Terms of Use for each.
+		# Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 
 If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
@@ -116,14 +124,54 @@ creates a template with these settings and places it in `config/initializers/geo
 * Geonames - a free geocoder
 
 ### address geocoders that also provide reverse geocoding 
-* Google Geocoder - requires an API key. Also supports multiple results.
+* Google Geocoder - requires an API key. Also supports multiple results and bounding box/country code biasing.
 
 ### IP address geocoders 
 * IP Geocoder - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
 
+### Google Geocoder Tricks
+
+The Google Geocoder sports a number of useful tricks that elevate it a little bit above the rest of the currently supported geocoders. For starters, it returns a `suggested_bounds` property for all your geocoded results, so you can more easily decide where and how to center a map on the places you geocode. Here's a quick example:
+
+    irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('140 Market St, San Francisco, CA')
+		irb> pp res.suggested_bounds
+		#<Geokit::Bounds:0x53b36c
+		 @ne=#<Geokit::LatLng:0x53b204 @lat=37.7968528, @lng=-122.3926933>,
+		 @sw=#<Geokit::LatLng:0x53b2b8 @lat=37.7905576, @lng=-122.3989885>>
+
+In addition, you can use viewport or country code biasing to make sure the geocoders prefers results within a specific area. Say we wanted to geocode the city of Syracuse in Italy. A normal geocoding query would look like this:
+
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse')
+		irb> res.full_address
+		=> "Syracuse, NY, USA"
+	
+Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
+
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
+		irb> res.full_address
+		=> "Syracuse, Italy"
+
+Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
+
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka')
+		irb> res.full_address
+		=> "Winnetka, IL, USA"
+	
+Not it. What we can do is tell the geocoder to return results only from in and around LA.
+
+		irb> la_bounds = Geokit::Geocoder::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
+		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
+		irb> res.full_address
+		=> "Winnetka, California, USA"
+
+
 ### The Multigeocoder
-* Multi Geocoder - provides failover for the physical location geocoders.
+Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders. Its configured by setting Geokit::Geocoders::provider_order, and Geokit::Geocoders::ip_provider_order. You should call the Multi-Geocoder with its :geocode method, supplying one address parameter which is either a real street address, or an ip address. For example:
+
+		Geokit::Geocoders::MultiGeocoder.geocode("900 Sycamore Drive")
+
+		Geokit::Geocoders::MultiGeocoder.geocode("12.12.12.12")
 
 ## MULTIPLE RESULTS
 Some geocoding services will return multple results if the there isn't one clear result. 
@@ -164,6 +212,36 @@ AND the Mappable modeule goodness for free.
 geocoders.rb contains all the geocoder implemenations. All the gercoders 
 inherit from a common base (class Geocoder) and implement the private method
 do_geocode.
+
+## WRITING YOUR OWN GEOCODERS
+
+If you would like to write your own geocoders, you can do so by requiring 'geokit' or 'geokit/geocoders.rb' in a new file and subclassing the base class (which is class "Geocoder").
+You must then also require such extenal file back in your main geokit configuration.
+
+	require "geokit"
+
+	module Geokit
+	  module Geocoders
+   		
+		# Should be overriden as Geokit::Geocoders::external_key in your configuration file
+	    @@external_key = 'REPLACE_WITH_YOUR_API_KEY'
+	    __define_accessors
+   
+		# Replace name 'External' (below) with the name of your custom geocoder class
+		# and use :external to specify this geocoder in your list of geocoders.
+	    class ExternalGeocoder < Geocoder
+	      private 
+	      def self.do_geocode(address, options = {})
+	        # Main geocoding method
+	      end
+
+	      def self.parse_http_resp(body) # :nodoc:
+	        # Helper method to parse http response. See geokit/geocoders.rb.
+	      end
+	    end
+	
+	  end
+	end
 
 ## GOOGLE GROUP
 

@@ -71,4 +71,27 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
     assert !bounds.contains?(outside)
   end
   
+  def test_bounds_to_span
+    sw = Geokit::LatLng.new(32, -96)
+    ne = Geokit::LatLng.new(40, -70)
+    bounds = Geokit::Bounds.new(sw, ne)
+    
+    assert_equal Geokit::LatLng.new(8, 26), bounds.to_span
+  end
+  
+  def test_bounds_to_span_with_bounds_crossing_prime_meridian
+    sw = Geokit::LatLng.new(20, -70)
+    ne = Geokit::LatLng.new(40, 100)
+    bounds = Geokit::Bounds.new(sw, ne)
+    
+    assert_equal Geokit::LatLng.new(20, 170), bounds.to_span
+  end
+  
+  def test_bounds_to_span_with_bounds_crossing_dateline
+    sw = Geokit::LatLng.new(20, 100)
+    ne = Geokit::LatLng.new(40, -70)
+    bounds = Geokit::Bounds.new(sw, ne)
+    
+    assert_equal Geokit::LatLng.new(20, 190), bounds.to_span
+  end
 end

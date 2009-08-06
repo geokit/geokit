@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{geokit}
-  s.version = "1.3.0.1"
+  s.version = "1.4.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andre Lewis and Bill Eisenhauer"]
-  s.date = %q{2009-4-11}
+  s.date = %q{2009-06-15}
   s.description = %q{Geokit Gem}
   s.email = ["andre@earthcode.com / bill_eisenhauer@yahoo.com"]
   s.extra_rdoc_files = ["Manifest.txt", "README.markdown"]
@@ -18,7 +18,10 @@ Gem::Specification.new do |s|
   s.rubyforge_project = %q{geokit}
   s.rubygems_version = %q{1.3.1}
   s.summary = %q{none}
-  s.test_files = ["test/test_base_geocoder.rb", "test/test_bounds.rb", "test/test_ca_geocoder.rb", "test/test_geoloc.rb", "test/test_google_geocoder.rb", "test/test_latlng.rb", "test/test_multi_geocoder.rb", "test/test_us_geocoder.rb", "test/test_yahoo_geocoder.rb"]
+  s.test_files = ["test/test_base_geocoder.rb", "test/test_bounds.rb", "test/test_ca_geocoder.rb", "test/test_geoloc.rb", 
+  								"test/test_geoplugin_geocoder.rb", "test/test_google_geocoder.rb", "test/test_google_reverse_geocoder.rb", 
+  								"test/test_inflector.rb", "test/test_ipgeocoder.rb", "test/test_latlng.rb", "test/test_multi_geocoder.rb", 
+  								"test/test_multi_ip_geocoder.rb", "test/test_us_geocoder.rb", "test/test_yahoo_geocoder.rb"]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
