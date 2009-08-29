@@ -36,7 +36,7 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
   
   def test_timeout_call_web_service
     url = "http://www.anything.com"
-    Geokit::Geocoders::timeout = 1
+    Geokit::Geocoders::request_timeout = 1
     assert_nil Geokit::Geocoders::TestGeocoder.call_geocoder_service(url)    
   end
   

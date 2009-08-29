@@ -67,7 +67,7 @@ module Geokit
     @@proxy_port = nil
     @@proxy_user = nil
     @@proxy_pass = nil
-    @@timeout = nil    
+    @@request_timeout = nil    
     @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@geocoder_us = false
@@ -133,7 +133,7 @@ module Geokit
       
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
-        timeout(Geokit::Geocoders::timeout) { return self.do_get(url) } if Geokit::Geocoders::timeout        
+        Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout        
         return self.do_get(url)
       rescue TimeoutError
         return nil  
