@@ -336,13 +336,13 @@ module Geokit
   #
   #     puts geo.full_address     # just like usual
   #     puts geo.all.size  => 3   # there's three results total
-  #     puts geo.all.first        # all is just an array or additional geolocs, 
+  #     puts geo.all.first        # all is just an array or additional geolocs,
   #                                 so do what you want with it
   class GeoLoc < LatLng
 
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
-    attr_accessor :street_address, :city, :state, :zip, :country_code, :full_address, :all
+    attr_accessor :street_address, :city, :state, :zip, :country_code, :country, :full_address, :all
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
     # Finally, precision is an indicator of the accuracy of the geocoding.

@@ -489,6 +489,7 @@ module Geokit
         res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
         res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
         res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
+        res.country = doc.elements['.//CountryName'].text if doc.elements['.//CountryName']
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
@@ -503,8 +504,8 @@ module Geokit
         end
         
         res.success=true
-        
-        return res        
+
+        return res
       end
     end
 
