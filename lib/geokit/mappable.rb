@@ -342,7 +342,7 @@ module Geokit
 
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
-    attr_accessor :street_address, :city, :state, :zip, :country_code, :country, :full_address, :all
+    attr_accessor :street_address, :city, :state, :zip, :country_code, :country, :full_address, :all, :district, :province
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
     # Finally, precision is an indicator of the accuracy of the geocoding.
@@ -361,7 +361,8 @@ module Geokit
       @city=h[:city] 
       @state=h[:state] 
       @zip=h[:zip] 
-      @country_code=h[:country_code] 
+      @country_code=h[:country_code]
+      @province = h[:province]
       @success=false
       @precision='unknown'
       @full_address=nil
@@ -398,7 +399,7 @@ module Geokit
     # gives you all the important fields as key-value pairs
     def hash
       res={}
-      [:success,:lat,:lng,:country_code,:city,:state,:zip,:street_address,:provider,:full_address,:is_us?,:ll,:precision].each { |s| res[s] = self.send(s.to_s) }
+      [:success,:lat,:lng,:country_code,:city,:state,:zip,:street_address,:province,:district,:provider,:full_address,:is_us?,:ll,:precision].each { |s| res[s] = self.send(s.to_s) }
       res
     end
     alias to_hash hash
@@ -416,7 +417,7 @@ module Geokit
     # Returns a comma-delimited string consisting of the street address, city, state,
     # zip, and country code.  Only includes those attributes that are non-blank.
     def to_geocodeable_s
-      a=[street_address, city, state, zip, country_code].compact
+      a=[street_address, district, city, province, state, zip, country_code].compact
       a.delete_if { |e| !e || e == '' }
       a.join(', ')      
     end
