@@ -165,6 +165,18 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert first.eql?(second)
     assert second.eql?(first)
   end
+
+  def test_valid_when_lat_and_lng_defined
+    assert Geokit::LatLng.new(37.7690,-122.443).valid?
+  end
+
+  def test_not_valid_when_lat_is_nil
+    assert ! Geokit::LatLng.new(nil,-122.443).valid?
+  end
+
+  def test_not_valid_when_lng_is_nil
+    assert ! Geokit::LatLng.new(37.7690,nil).valid?
+  end
   
   def test_reverse_geocode
     point = Geokit::LatLng.new(51.4578329, 7.0166848)
