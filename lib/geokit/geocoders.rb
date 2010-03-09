@@ -1,10 +1,14 @@
 require 'net/http'
+require 'ipaddr'
 require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
 
 module Geokit
+
+  class TooManyQueriesError < StandardError; end
+
   module Inflector
    
     extend self
@@ -67,7 +71,7 @@ module Geokit
     @@proxy_port = nil
     @@proxy_user = nil
     @@proxy_pass = nil
-    @@timeout = nil    
+    @@request_timeout = nil    
     @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@geocoder_us = false
@@ -133,7 +137,7 @@ module Geokit
       
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
-        timeout(Geokit::Geocoders::timeout) { return self.do_get(url) } if Geokit::Geocoders::timeout        
+        Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout        
         return self.do_get(url)
       rescue TimeoutError
         return nil  
@@ -162,8 +166,7 @@ module Geokit
         res = Net::HTTP::Proxy(GeoKit::Geocoders::proxy_addr,
                 GeoKit::Geocoders::proxy_port,
                 GeoKit::Geocoders::proxy_user,
-                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.request(req) }
-
+                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.get(uri.path + "?" + uri.query) }
         return res
       end
       
@@ -463,14 +466,19 @@ module Geokit
             end  
           end
           return geoloc
-        else 
+        elsif doc.elements['//kml/Response/Status/code'].text == '620'
+           raise Geokit::TooManyQueriesError
+        else
           logger.info "Google was unable to geocode address: "+address
           return GeoLoc.new
         end
 
-        rescue
-          logger.error "Caught an error during Google geocoding call: "+$!
-          return GeoLoc.new
+      rescue Geokit::TooManyQueriesError
+        # re-raise because of other rescue
+        raise Geokit::TooManyQueriesError, "Google returned a 620 status, too many queries. The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. If you're sending multiple requests in parallel or in a tight loop, use a timer or pause in your code to make sure you don't send the requests too quickly."
+      rescue
+        logger.error "Caught an error during Google geocoding call: "+$!
+        return GeoLoc.new
       end  
 
       # extracts a single geoloc from a //placemark element in the google results xml
@@ -487,9 +495,12 @@ module Geokit
         #extended -- false if not not available
         res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
         res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
+        res.province = doc.elements['.//SubAdministrativeAreaName'].text if doc.elements['.//SubAdministrativeAreaName']
         res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
         res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
         res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
+        res.country = doc.elements['.//CountryName'].text if doc.elements['.//CountryName']
+        res.district = doc.elements['.//DependentLocalityName'].text if doc.elements['.//DependentLocalityName']
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
@@ -504,8 +515,8 @@ module Geokit
         end
         
         res.success=true
-        
-        return res        
+
+        return res
       end
     end
 
@@ -546,14 +557,35 @@ module Geokit
     # as community contributions.
     class IpGeocoder < Geocoder 
 
+      # A number of non-routable IP ranges.
+      #
+      # --
+      # Sources for these:
+      #   RFC 3330: Special-Use IPv4 Addresses
+      #   The bogon list: http://www.cymru.com/Documents/bogon-list.html
+
+      NON_ROUTABLE_IP_RANGES = [
+	IPAddr.new('0.0.0.0/8'),      # "This" Network
+	IPAddr.new('10.0.0.0/8'),     # Private-Use Networks
+	IPAddr.new('14.0.0.0/8'),     # Public-Data Networks
+	IPAddr.new('127.0.0.0/8'),    # Loopback
+	IPAddr.new('169.254.0.0/16'), # Link local
+	IPAddr.new('172.16.0.0/12'),  # Private-Use Networks
+	IPAddr.new('192.0.2.0/24'),   # Test-Net
+	IPAddr.new('192.168.0.0/16'), # Private-Use Networks
+	IPAddr.new('198.18.0.0/15'),  # Network Interconnect Device Benchmark Testing
+	IPAddr.new('224.0.0.0/4'),    # Multicast
+	IPAddr.new('240.0.0.0/4')     # Reserved for future use
+      ].freeze
+
       private 
 
       # Given an IP address, returns a GeoLoc instance which contains latitude,
       # longitude, city, and country code.  Sets the success attribute to false if the ip 
       # parameter does not match an ip address.  
       def self.do_geocode(ip, options = {})
-        return GeoLoc.new if '0.0.0.0' == ip
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        return GeoLoc.new if self.private_ip_address?(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
         response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
@@ -581,6 +613,15 @@ module Geokit
         res.country_code.chop!
         res.success = !(res.city =~ /\(.+\)/)
         res
+      end
+
+      # Checks whether the IP address belongs to a private address range.
+      #
+      # This function is used to reduce the number of useless queries made to
+      # the geocoding service. Such queries can occur frequently during
+      # integration tests.
+      def self.private_ip_address?(ip)
+	return NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
       end
     end
     

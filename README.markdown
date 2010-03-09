@@ -54,7 +54,7 @@ If you're using this gem by itself, here are the configuration options:
 		# This is the timeout value in seconds to be used for calls to the geocoder web
 		# services.  For no timeout at all, comment out the setting.  The timeout unit
 		# is in seconds. 
-		Geokit::Geocoders::timeout = 3
+		Geokit::Geocoders::request_timeout = 3
 		
 		# These settings are used if web service calls must be routed through a proxy.
 		# These setting can be nil if not needed, otherwise, addr and port must be 

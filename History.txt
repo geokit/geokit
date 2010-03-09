@@ -1,3 +1,9 @@
+=== 1.5.0 / 2009-09-21
+* fixed jruby compatibility (thanks manalang)
+* added country name to Google reverse geocoder (thanks joahking)
+* added  DependentLocalityName as district, and SubAdministrativeAreaName as province (google geocoder only)
+* Google geocoder throws an error if you exceed geocoding rates (thanks drogus)
+
 === 1.4.1 / 2009-06-15
 * Fixed Ruby 1.9.1 compat and load order (thanks Niels Ganser)
 
