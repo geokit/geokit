@@ -4,7 +4,7 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
-require 'json'
+require 'json/pure'
 
 module Geokit
 
