@@ -4,7 +4,13 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
-require 'json/pure'
+
+# do this just in case 
+begin 
+  ActiveSupport.nil?
+rescue NameError
+  require 'json/pure'
+end
 
 module Geokit
 
@@ -568,7 +574,7 @@ module Geokit
         logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
         return self.json2GeoLoc(json, address)        
       end
-      
+ 
       def self.construct_bias_string_from_options(bias)
         if bias.is_a?(String) or bias.is_a?(Symbol)
           # country code biasing
@@ -578,19 +584,24 @@ module Geokit
           "&bounds=#{bias.nw.to_s}|#{bias.se.to_s}"
         end
       end
-      
+
       def self.json2GeoLoc(json, address="")
         ret=nil
-        results=JSON.parse(json, :symbolize_names => true)
+        begin
+          results=::ActiveSupport::JSON.decode(json)
+        rescue NameError => e
+          results=JSON.parse(json)
+        end
+          
         
-        if results[:status] == 'OVER_QUERY_LIMIT'
+        if results['status'] == 'OVER_QUERY_LIMIT'
           raise Geokit::TooManyQueriesError
         end
-        if results[:status] == 'ZERO_RESULTS'
+        if results['status'] == 'ZERO_RESULTS'
           return GeoLoc.new
         end
         # this should probably be smarter.
-        if !results[:status] == 'OK'
+        if !results['status'] == 'OK'
           raise Geokit::Geocoders::GeocodeError
         end
         # location_type stores additional data about the specified location.
@@ -615,35 +626,35 @@ module Geokit
           "GEOMETRIC_CENTER" => 5,
           "APPROXIMATE" => 4
         }
-        results[:results].sort_by{|a|accuracy[a[:geometry][:location_type]]}.reverse.each do |addr|
+        results['results'].sort_by{|a|accuracy[a['geometry']['location_type']]}.reverse.each do |addr|
           res=GeoLoc.new
           res.provider = 'google3'
           res.success = true
-          res.full_address = addr[:formatted_address]
-          addr[:address_components].each do |comp|
+          res.full_address = addr['formatted_address']
+          addr['address_components'].each do |comp|
             case
-            when comp[:types].include?("street_number")
-              res.street_number = comp[:short_name]
-            when comp[:types].include?("route")
-              res.street_name = comp[:long_name]
-            when comp[:types].include?("locality")
-              res.city = comp[:long_name]
-            when comp[:types].include?("administrative_area_level_1")
-              res.state = comp[:short_name]
-              res.province = comp[:short_name]
-            when comp[:types].include?("postal_code")
-              res.zip = comp[:long_name]
-            when comp[:types].include?("country")
-              res.country_code = comp[:short_name]
-              res.country = comp[:long_name]
-            when comp[:types].include?("administrative_area_level_2")
-              res.district = comp[:long_name]
+            when comp['types'].include?("street_number")
+              res.street_number = comp['short_name']
+            when comp['types'].include?("route")
+              res.street_name = comp['long_name']
+            when comp['types'].include?("locality")
+              res.city = comp['long_name']
+            when comp['types'].include?("administrative_area_level_1")
+              res.state = comp['short_name']
+              res.province = comp['short_name']
+            when comp['types'].include?("postal_code")
+              res.zip = comp['long_name']
+            when comp['types'].include?("country")
+              res.country_code = comp['short_name']
+              res.country = comp['long_name']
+            when comp['types'].include?("administrative_area_level_2")
+              res.district = comp['long_name']
             end
           end
           if res.street_name
             res.street_address=[res.street_number,res.street_name].join(' ').strip
           end
-          res.accuracy = accuracy[addr[:geometry][:location_type]]
+          res.accuracy = accuracy[addr['geometry']['location_type']]
           res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
           # try a few overrides where we can
           if res.street_name && res.precision=='city'
@@ -651,16 +662,16 @@ module Geokit
             res.accuracy = 7
           end
             
-          res.lat=addr[:geometry][:location][:lat].to_f
-          res.lng=addr[:geometry][:location][:lng].to_f
+          res.lat=addr['geometry']['location']['lat'].to_f
+          res.lng=addr['geometry']['location']['lng'].to_f
 
           ne=Geokit::LatLng.new(
-            addr[:geometry][:viewport][:northeast][:lat].to_f, 
-            addr[:geometry][:viewport][:northeast][:lng].to_f
+            addr['geometry']['viewport']['northeast']['lat'].to_f, 
+            addr['geometry']['viewport']['northeast']['lng'].to_f
             )
           sw=Geokit::LatLng.new(
-            addr[:geometry][:viewport][:southwest][:lat].to_f,
-            addr[:geometry][:viewport][:southwest][:lng].to_f
+            addr['geometry']['viewport']['southwest']['lat'].to_f,
+            addr['geometry']['viewport']['southwest']['lng'].to_f
           )
           res.suggested_bounds = Geokit::Bounds.new(sw,ne)
 
