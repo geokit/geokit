@@ -581,7 +581,7 @@ module Geokit
           "&region=#{bias.to_s.downcase}"
         elsif bias.is_a?(Bounds)
           # viewport biasing
-          "&bounds=#{bias.nw.to_s}|#{bias.se.to_s}"
+          Geokit::Inflector::url_escape("&bounds=#{bias.sw.to_s}|#{bias.ne.to_s}")
         end
       end
 
