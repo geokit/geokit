@@ -1,7 +1,5 @@
 require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 
-Geokit::Geocoders::google = 'Google'
-
 class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   
   GOOGLE_FULL=<<-EOF.strip
@@ -39,6 +37,8 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     @google_full_loc = Geokit::GeoLoc.new(@google_full_hash)
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
+
+    Geokit::Geocoders::google = 'Google'
   end  
 
   def test_google_full_address
@@ -100,6 +100,15 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
     assert_equal 4, res.accuracy
+  end
+  
+  def test_google_with_api_premier_key
+    Geokit::Geocoders::google = 'gme-test' # enterprise keys begin with 'gme-'
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_CITY)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@address)}&output=xml&client=gme-test&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    Geokit::Geocoders::GoogleGeocoder.geocode(@address)
   end
   
   def test_google_city_with_geo_loc
