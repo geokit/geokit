@@ -351,6 +351,9 @@ module Geokit
     # accuracy is set for Yahoo and Google geocoders, it is a numeric value of the 
     # precision. see http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
     attr_accessor :accuracy
+    # FCC Attributes
+    attr_accessor :district_fips, :state_fips, :block_fips
+    
 
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h={})
@@ -401,7 +404,7 @@ module Geokit
     # gives you all the important fields as key-value pairs
     def hash
       res={}
-      [:success,:lat,:lng,:country_code,:city,:state,:zip,:street_address,:province,:district,:provider,:full_address,:is_us?,:ll,:precision].each { |s| res[s] = self.send(s.to_s) }
+      [:success,:lat,:lng,:country_code,:city,:state,:zip,:street_address,:province,:district,:provider,:full_address,:is_us?,:ll,:precision,:district_fips,:state_fips,:block_fips].each { |s| res[s] = self.send(s.to_s) }
       res
     end
     alias to_hash hash
