@@ -2,7 +2,7 @@ History.txt
 Manifest.txt
 README.markdown
 Rakefile
-geokit.gemspec
+geokit-premier.gemspec
 lib/geokit.rb
 lib/geokit/geocoders.rb
 lib/geokit/mappable.rb
