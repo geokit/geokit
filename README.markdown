@@ -1,4 +1,7 @@
+
 ## GEOKIT GEM DESCRIPTION
+
+This clone will provide access to Google API Premier - which uses a client id, and signs the url.
 
 The Geokit gem provides:
 
