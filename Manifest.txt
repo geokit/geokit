@@ -6,6 +6,8 @@ geokit.gemspec
 lib/geokit.rb
 lib/geokit/geocoders.rb
 lib/geokit/mappable.rb
+spec/geocoder_spec.rb
+spec/spec_helper.rb
 test/test_base_geocoder.rb
 test/test_bounds.rb
 test/test_ca_geocoder.rb
