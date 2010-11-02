@@ -1,0 +1,65 @@
+require 'spec_helper'
+
+describe "Geocoder" do
+  
+  after(:each) do
+    Geokit::Geocoders.google_client_id = nil
+    Geokit::Geocoders.google_premier_secret_key = nil
+    Geokit::Geocoders::google = nil
+  end
+  
+
+  describe "self.google_client_id" do
+    it "should be nil by default and settable" do
+      Geokit::Geocoders.google_client_id.should == nil
+      Geokit::Geocoders.google_client_id = 'abc'
+      Geokit::Geocoders.google_client_id.should == 'abc'
+    end
+  end
+  
+  describe "self.google_premier_secret_key" do
+    it "should be nil by default and settable" do
+      Geokit::Geocoders.google_premier_secret_key.should == nil
+      Geokit::Geocoders.google_premier_secret_key = 'abc123'
+      Geokit::Geocoders.google_premier_secret_key.should == 'abc123'
+    end
+  end
+
+  describe "#sign_url" do
+    it "should encrypt the url" do
+      expected = 'http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID&signature=KrU1TzVQM7Ur0i8i7K3huiw3MsA='
+      actual = Geokit::Geocoders::Geocoder.sign_url('http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID','vNIXE0xscrmjlyV-12Nj_BvUPaw=')
+      actual.should == expected
+    end
+  end
+  
+  describe "#urlsafe_decode64" do
+    it "should deal with - and +" do
+      Geokit::Geocoders::Geocoder.urlsafe_decode64("a-b+c-d+").should == "k\346\376s\347~"
+    end
+  end
+
+  describe "#urlsafe_encode64" do
+    it "should deal with - and +" do
+      Geokit::Geocoders::Geocoder.urlsafe_encode64("k\346\376s\347~").should == "a-b-c-d-\n"
+    end
+  end
+  
+  describe "GoogleGeocoder#geocode_url" do
+    
+    it "should use default if not premier" do
+      Geokit::Geocoders::google = 'abc123'
+      expected = "http://maps.google.com/maps/geo?q=Ottawa&output=xml&key=abc123&oe=utf-8"
+      Geokit::Geocoders::GoogleGeocoder.geocode_url('Ottawa',{}).should == expected
+    end
+    
+    it "should use client if premier" do
+      Geokit::Geocoders.google_client_id = 'clientID'
+      Geokit::Geocoders.google_premier_secret_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+      expected = "http://maps.google.com/maps/geo?q=Ottawa&output=xml&client=clientID&oe=utf-8&signature=iJ5l4zE5KFYbRcBjDJUiq5f8rGY="
+      Geokit::Geocoders::GoogleGeocoder.geocode_url('Ottawa',{}).should == expected
+    end
+    
+  end
+  
+end

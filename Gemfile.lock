@@ -1,0 +1,31 @@
+GEM
+  remote: http://rubygems.org/
+  remote: http://gemcutter.org/
+  specs:
+    autotest (4.4.2)
+    autotest-fsevent (0.2.3)
+      sys-uname
+    diff-lcs (1.1.2)
+    rspec (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+      rspec-mocks (~> 2.0.1)
+    rspec-core (2.0.1)
+    rspec-expectations (2.0.1)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+    rspec-rails (2.0.1)
+      rspec (~> 2.0.0)
+    sys-uname (0.8.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  autotest
+  autotest-fsevent
+  rspec (>= 2.0.0.beta.23)
+  rspec-mocks (>= 2.0.0.beta.23)
+  rspec-rails (>= 2.0.0.beta.23)

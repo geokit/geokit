@@ -2,3 +2,5 @@
 .project
 pkg
 .idea
+.bundle
+.rvmrc

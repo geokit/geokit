@@ -4,6 +4,7 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
+require 'base64'
 
 module Geokit
 
@@ -74,6 +75,8 @@ module Geokit
     @@request_timeout = nil    
     @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+    @@google_client_id = nil #only used for premier accounts
+    @@google_premier_secret_key = nil
     @@geocoder_us = false
     @@geocoder_ca = false
     @@geonames = false
@@ -149,6 +152,34 @@ module Geokit
       def self.do_reverse_geocode(latlng)
         return GeoLoc.new
       end
+
+      # This will sign a raw url with a private key
+      def self.sign_url(raw_url,private_key)
+        uri = URI.parse(raw_url)
+        url_to_sign = uri.path + "?" + uri.query
+        decoded_key = Geocoder.urlsafe_decode64(private_key)
+
+        sha1_digest  = OpenSSL::Digest::Digest.new('sha1')
+        signature = OpenSSL::HMAC.digest(sha1_digest,decoded_key,url_to_sign)
+        encoded_signature = Geocoder.urlsafe_encode64(signature)
+        signed_url = "#{uri.scheme}://#{uri.host}#{uri.path}?#{uri.query}&signature=#{encoded_signature}".strip!
+        signed_url
+      end
+
+      # This will provide url safe base64 decoding
+      def self.urlsafe_decode64(raw_text)
+        decoded_text = raw_text.gsub('-','+').gsub('_', '/')
+        decoded_text = Base64.decode64(decoded_text)
+        decoded_text
+      end
+
+      # This will provide url safe base64 encoding
+      def self.urlsafe_encode64(raw_text)
+        encoded_text = Base64.encode64(raw_text)
+        encoded_text = encoded_text.gsub('+','-').gsub('/', '_')
+        encoded_text
+      end
+
 
       protected
 
@@ -428,14 +459,25 @@ module Geokit
       # bounds = Geokit::Bounds.normalize([34.074081, -118.694401], [34.321129, -118.399487])
       # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => bounds).state # => 'CA'
       def self.do_geocode(address, options = {})
-        bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
-        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        res = self.call_geocoder_service(self.geocode_url(address,options))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
         return self.xml2GeoLoc(xml, address)        
       end
+      
+      # Determine the Google API url based on the google api key, or based on the client / private key for premier users
+      def self.geocode_url(address,options = {})
+        bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+
+        if !Geokit::Geocoders::google_client_id.nil? && !Geokit::Geocoders::google_premier_secret_key.nil?
+          Geokit::Geocoders::Geocoder.sign_url("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&client=#{Geokit::Geocoders::google_client_id}&oe=utf-8",Geokit::Geocoders::google_premier_secret_key)
+        else
+          "http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8"
+        end
+      end
+      
       
       def self.construct_bias_string_from_options(bias)
         if bias.is_a?(String) or bias.is_a?(Symbol)
