@@ -31,6 +31,14 @@ describe "Geocoder" do
       actual = Geokit::Geocoders::Geocoder.sign_url('http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID','vNIXE0xscrmjlyV-12Nj_BvUPaw=')
       actual.should == expected
     end
+    
+    it "xml example" do
+      secret = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+      url = "http://maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&client=gme-cenx&sensor=false"
+      expected = "http://maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&client=gme-cenx&sensor=false&signature=1LZ2Iz3gtt-OH0uIv0nJBFGN8E8="
+      Geokit::Geocoders::Geocoder.sign_url(url,secret).should == expected
+    end
+    
   end
   
   describe "#urlsafe_decode64" do
@@ -54,9 +62,9 @@ describe "Geocoder" do
     end
     
     it "should use client if premier" do
-      Geokit::Geocoders.google_client_id = 'clientID'
-      Geokit::Geocoders.google_premier_secret_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
-      expected = "http://maps.google.com/maps/geo?q=Ottawa&output=xml&client=clientID&oe=utf-8&signature=iJ5l4zE5KFYbRcBjDJUiq5f8rGY="
+      Geokit::Geocoders.google_client_id = 'gme-cenx'
+      Geokit::Geocoders.google_premier_secret_key = 'ciK-I4AWUmFx5jBRIjtrL6hDC04='
+      expected = "http://maps.googleapis.com/maps/api/geocode/xml?address=Ottawa&client=gme-cenx&oe=utf-8&signature=ejybSgk_Q9X41odBqAdkNHSGL9s="
       Geokit::Geocoders::GoogleGeocoder.geocode_url('Ottawa',{}).should == expected
     end
     

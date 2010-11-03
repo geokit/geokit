@@ -472,7 +472,8 @@ module Geokit
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
         if !Geokit::Geocoders::google_client_id.nil? && !Geokit::Geocoders::google_premier_secret_key.nil?
-          Geokit::Geocoders::Geocoder.sign_url("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&client=#{Geokit::Geocoders::google_client_id}&oe=utf-8",Geokit::Geocoders::google_premier_secret_key)
+          url = "http://maps.googleapis.com/maps/api/geocode/xml?address=#{Geokit::Inflector::url_escape(address_str)}&client=#{Geokit::Geocoders::google_client_id}&oe=utf-8"
+          Geokit::Geocoders::Geocoder.sign_url(url,Geokit::Geocoders::google_premier_secret_key)
         else
           "http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8"
         end
