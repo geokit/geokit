@@ -342,13 +342,12 @@ module Geokit
 
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
-    attr_accessor :street_address, :city, :state, :zip, :country_code, :country, :full_address, :all, :district, :province
+    # Street number and street name are extracted from the street address attribute if they don't exist
+    attr_accessor :street_number,:street_name,:street_address, :city, :state, :zip, :country_code, :country, :full_address, :all, :district, :province
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
     # Finally, precision is an indicator of the accuracy of the geocoding.
     attr_accessor :success, :provider, :precision, :suggested_bounds
-    # Street number and street name are extracted from the street address attribute.
-    attr_reader :street_number, :street_name
     # accuracy is set for Yahoo and Google geocoders, it is a numeric value of the 
     # precision. see http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
     attr_accessor :accuracy
@@ -358,6 +357,8 @@ module Geokit
       @all = [self]
       
       @street_address=h[:street_address] 
+      @street_number=nil
+      @street_name=nil
       @city=h[:city] 
       @state=h[:state] 
       @zip=h[:zip] 
@@ -385,15 +386,16 @@ module Geokit
       @full_address ? @full_address : to_geocodeable_s
     end
 
-    # Extracts the street number from the street address if the street address
-    # has a value.
+    # Extracts the street number from the street address where possible.
     def street_number
-      street_address[/(\d*)/] if street_address
+      @street_number ||= street_address[/(\d*)/] if street_address
+      @street_number
     end
 
-    # Returns the street name portion of the street address.
+    # Returns the street name portion of the street address where possible
     def street_name
-       street_address[street_number.length, street_address.length].strip if street_address
+      @street_name||=street_address[street_number.length, street_address.length].strip if street_address
+      @street_name
     end
 
     # gives you all the important fields as key-value pairs
@@ -411,8 +413,12 @@ module Geokit
 
     # Sets the street address after capitalizing each word within the street address.
     def street_address=(address)
-      @street_address = Geokit::Inflector::titleize(address) if address
-    end
+      if address and not ['google','google3'].include?(self.provider)
+        @street_address = Geokit::Inflector::titleize(address) 
+      else
+        @street_address = address
+      end
+    end  
     
     # Returns a comma-delimited string consisting of the street address, city, state,
     # zip, and country code.  Only includes those attributes that are non-blank.
