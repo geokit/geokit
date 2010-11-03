@@ -64,7 +64,7 @@ describe "Geocoder" do
     it "should use client if premier" do
       Geokit::Geocoders.google_client_id = 'gme-cenx'
       Geokit::Geocoders.google_premier_secret_key = 'ciK-I4AWUmFx5jBRIjtrL6hDC04='
-      expected = "http://maps.googleapis.com/maps/api/geocode/xml?address=Ottawa&client=gme-cenx&oe=utf-8&signature=ejybSgk_Q9X41odBqAdkNHSGL9s="
+      expected = "http://maps.googleapis.com/maps/api/geocode/xml?address=Ottawa&client=gme-cenx&sensor=false&oe=utf-8&signature=fEoiAhMbpkT1azjXFekwv7Hg49A="
       Geokit::Geocoders::GoogleGeocoder.geocode_url('Ottawa',{}).should == expected
     end
     
