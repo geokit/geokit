@@ -53,19 +53,19 @@ describe "Geocoder" do
     end
   end
   
-  describe "GoogleGeocoder#geocode_url" do
+  describe "GoogleGeocoder3#geocode_url" do
     
     it "should use default if not premier" do
       Geokit::Geocoders::google = 'abc123'
-      expected = "http://maps.google.com/maps/geo?q=Ottawa&output=xml&key=abc123&oe=utf-8"
-      Geokit::Geocoders::GoogleGeocoder.geocode_url('Ottawa',{}).should == expected
+      expected = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Ottawa"
+      Geokit::Geocoders::GoogleGeocoder3.geocode_url('Ottawa',{}).should == expected
     end
     
     it "should use client if premier" do
       Geokit::Geocoders.google_client_id = 'gme-cenx'
       Geokit::Geocoders.google_premier_secret_key = 'ciK-I4AWUmFx5jBRIjtrL6hDC04='
-      expected = "http://maps.googleapis.com/maps/api/geocode/xml?address=Ottawa&client=gme-cenx&sensor=false&oe=utf-8&signature=fEoiAhMbpkT1azjXFekwv7Hg49A="
-      Geokit::Geocoders::GoogleGeocoder.geocode_url('Ottawa',{}).should == expected
+      expected = "http://maps.googleapis.com/maps/api/geocode/json?address=Ottawa&client=gme-cenx&sensor=false&oe=utf-8&signature=VG4njf1Yo59tnEvwPAMlgOoj4_0="
+      Geokit::Geocoders::GoogleGeocoder3.geocode_url('Ottawa',{}).should == expected
     end
     
   end

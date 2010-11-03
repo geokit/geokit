@@ -6,6 +6,7 @@ GEM
     autotest-fsevent (0.2.3)
       sys-uname
     diff-lcs (1.1.2)
+    json_pure (1.4.6)
     rspec (2.0.1)
       rspec-core (~> 2.0.1)
       rspec-expectations (~> 2.0.1)
@@ -26,6 +27,7 @@ PLATFORMS
 DEPENDENCIES
   autotest
   autotest-fsevent
+  json_pure
   rspec (>= 2.0.0.beta.23)
   rspec-mocks (>= 2.0.0.beta.23)
   rspec-rails (>= 2.0.0.beta.23)
