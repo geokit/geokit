@@ -287,6 +287,8 @@ module Geokit
     
     # Yahoo geocoder implementation.  Requires the Geokit::Geocoders::YAHOO variable to
     # contain a Yahoo API key.  Conforms to the interface set by the Geocoder class.
+    # cfrugard
+    # uses the new where.yahooapis and includes multiple matches in th the .all attribute of the returned record.  The child records have an empty all record, so the object can respond to to_json type methods without bombing out with endless recursing 
     class YahooGeocoder < Geocoder
 
       private 
@@ -294,32 +296,47 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url="http://api.local.yahoo.com/MapsService/V1/geocode?appid=#{Geokit::Geocoders::yahoo}&location=#{Geokit::Inflector::url_escape(address_str)}"
+        url="http://where.yahooapis.com/geocode?location=#{Geokit::Inflector::url_escape(address_str)}&appid=#{Geokit::Geocoders::yahoo}&count=100"
         res = self.call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
         doc = REXML::Document.new(xml)
         logger.debug "Yahoo geocoding. Address: #{address}. Result: #{xml}"
-
+        geoloc = nil 
         if doc.elements['//ResultSet']
-          res=GeoLoc.new
-
-          #basic      
-          res.lat=doc.elements['//Latitude'].text
-          res.lng=doc.elements['//Longitude'].text
-          res.country_code=doc.elements['//Country'].text
-          res.provider='yahoo'  
-
-          #extended - false if not available
-          res.city=doc.elements['//City'].text if doc.elements['//City'] && doc.elements['//City'].text != nil
-          res.state=doc.elements['//State'].text if doc.elements['//State'] && doc.elements['//State'].text != nil
-          res.zip=doc.elements['//Zip'].text if doc.elements['//Zip'] && doc.elements['//Zip'].text != nil
-          res.street_address=doc.elements['//Address'].text if doc.elements['//Address'] && doc.elements['//Address'].text != nil
-          res.precision=doc.elements['//Result'].attributes['precision'] if doc.elements['//Result']
-          # set the accuracy as google does (added by Andruby)
-          res.accuracy=%w{unknown country state state city zip zip+4 street address building}.index(res.precision)
-          res.success=true
-          return res
+          doc.each_element('//Result') do |result|
+              # Lower than 86 quality is not a an address match (cfrugard)
+              if result.elements['quality'].text.to_i > 86
+                  res=GeoLoc.new
+                  #basic      
+                  res.lat=result.elements['latitude'].text
+                  res.lng=result.elements['longitude'].text
+                  res.country_code=result.elements['country'].text
+                  #res.county=result.elements['//county'].text
+                  res.provider='yahoo'
+                  #extended - false if not available
+                  res.city=result.elements['city'].text if result.elements['city'] && result.elements['city'].text != nil
+                  res.state=result.elements['statecode'].text if result.elements['statecode'] && result.elements['statecode'].text != nil
+                  res.zip=result.elements['postal'].text if result.elements['postal'] && result.elements['postal'].text != nil
+                  res.street_address="#{result.elements['house'].text} #{result.elements['street'].text}".squeeze(" ") if result.elements['street'] && result.elements['street'].text != nil
+                  res.full_address = "#{result.elements['line1'].text}, #{result.elements['line2'].text}".squeeze(" ") if result.elements['line2'] && result.elements['line2'].text != nil && result.elements['line1'] && result.elements['line1'].text != nil
+                  # set the accuracy as google does (added by Andruby)
+                  # We know it was better than 87 from earlier check (cfrugard)
+                  res.accuracy=8
+                  res.success=true
+                  if geoloc.nil?
+                    geoloc = res
+                    # remove self from the all list.  will add a clone of self later.  This way we can clear out the all methods on the children.  Otherwise, to_json,to_yaml methods will run in loops
+                    geoloc.all = []
+                  end
+                  geoloc.all << res.clone
+              end
+          end
+          # Clear out all on each geoloc
+           geoloc.all.each do |gloc|
+            gloc.all = nil
+          end
+          return geoloc
         else 
           logger.info "Yahoo was unable to geocode address: "+address
           return GeoLoc.new
