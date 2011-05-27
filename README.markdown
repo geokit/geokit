@@ -142,26 +142,26 @@ The Google Geocoder sports a number of useful tricks that elevate it a little bi
 
 In addition, you can use viewport or country code biasing to make sure the geocoders prefers results within a specific area. Say we wanted to geocode the city of Syracuse in Italy. A normal geocoding query would look like this:
 
-		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse')
+		irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse')
 		irb> res.full_address
 		=> "Syracuse, NY, USA"
 	
 Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
 
-		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
+		irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
 		irb> res.full_address
 		=> "Syracuse, Italy"
 
 Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
 
-		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka')
+		irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka')
 		irb> res.full_address
 		=> "Winnetka, IL, USA"
 	
 Not it. What we can do is tell the geocoder to return results only from in and around LA.
 
-		irb> la_bounds = Geokit::Geocoder::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
-		irb> res = Geokit::Geocoder::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
+		irb> la_bounds = Geokit::Geocoders::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
+		irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
 		irb> res.full_address
 		=> "Winnetka, California, USA"
 
