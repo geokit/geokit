@@ -5,6 +5,13 @@ require 'yaml'
 require 'timeout'
 require 'logger'
 
+# do this just in case 
+begin 
+  ActiveSupport.nil?
+rescue NameError
+  require 'json/pure'
+end
+
 module Geokit
 
   class TooManyQueriesError < StandardError; end
@@ -520,7 +527,220 @@ module Geokit
       end
     end
 
+    class GoogleGeocoder3 < Geocoder
 
+      private 
+      # Template method which does the reverse-geocode lookup.
+      def self.do_reverse_geocode(latlng) 
+        latlng=LatLng.normalize(latlng)
+        res = self.call_geocoder_service("http://maps.google.com/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
+        return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
+        json = res.body
+        logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{json}"
+        return self.json2GeoLoc(json)        
+      end  
+
+      # Template method which does the geocode lookup.
+      #
+      # Supports viewport/country code biasing
+      #
+      # ==== OPTIONS
+      # * :bias - This option makes the Google Geocoder return results biased to a particular
+      #           country or viewport. Country code biasing is achieved by passing the ccTLD
+      #           ('uk' for .co.uk, for example) as a :bias value. For a list of ccTLD's, 
+      #           look here: http://en.wikipedia.org/wiki/CcTLD. By default, the geocoder
+      #           will be biased to results within the US (ccTLD .com).
+      #
+      #           If you'd like the Google Geocoder to prefer results within a given viewport,
+      #           you can pass a Geokit::Bounds object as the :bias value.
+      #
+      # ==== EXAMPLES
+      # # By default, the geocoder will return Syracuse, NY
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse').country_code # => 'US'
+      # # With country code biasing, it returns Syracuse in Sicily, Italy
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => :it).country_code # => 'IT'
+      #
+      # # By default, the geocoder will return Winnetka, IL
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka').state # => 'IL'
+      # # When biased to an bounding box around California, it will now return the Winnetka neighbourhood, CA
+      # bounds = Geokit::Bounds.normalize([34.074081, -118.694401], [34.321129, -118.399487])
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => bounds).state # => 'CA'
+      def self.do_geocode(address, options = {})
+        bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+        res = self.call_geocoder_service("http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}")
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        json = res.body
+        logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
+        return self.json2GeoLoc(json, address)        
+      end
+ 
+      def self.construct_bias_string_from_options(bias)
+        if bias.is_a?(String) or bias.is_a?(Symbol)
+          # country code biasing
+          "&region=#{bias.to_s.downcase}"
+        elsif bias.is_a?(Bounds)
+          # viewport biasing
+          Geokit::Inflector::url_escape("&bounds=#{bias.sw.to_s}|#{bias.ne.to_s}")
+        end
+      end
+
+      def self.json2GeoLoc(json, address="")
+        ret=nil
+        begin
+          results=::ActiveSupport::JSON.decode(json)
+        rescue NameError => e
+          results=JSON.parse(json)
+        end
+          
+        
+        if results['status'] == 'OVER_QUERY_LIMIT'
+          raise Geokit::TooManyQueriesError
+        end
+        if results['status'] == 'ZERO_RESULTS'
+          return GeoLoc.new
+        end
+        # this should probably be smarter.
+        if !results['status'] == 'OK'
+          raise Geokit::Geocoders::GeocodeError
+        end
+        # location_type stores additional data about the specified location.
+        # The following values are currently supported:
+        # "ROOFTOP" indicates that the returned result is a precise geocode
+        # for which we have location information accurate down to street
+        # address precision.
+        # "RANGE_INTERPOLATED" indicates that the returned result reflects an
+        # approximation (usually on a road) interpolated between two precise
+        # points (such as intersections). Interpolated results are generally
+        # returned when rooftop geocodes are unavailable for a street address.
+        # "GEOMETRIC_CENTER" indicates that the returned result is the
+        # geometric center of a result such as a polyline (for example, a
+        # street) or polygon (region).
+        # "APPROXIMATE" indicates that the returned result is approximate
+
+        # these do not map well. Perhaps we should guess better based on size
+        # of bounding box where it exists? Does it really matter?
+        accuracy = {
+          "ROOFTOP" => 9,
+          "RANGE_INTERPOLATED" => 8,
+          "GEOMETRIC_CENTER" => 5,
+          "APPROXIMATE" => 4
+        }
+        results['results'].sort_by{|a|accuracy[a['geometry']['location_type']]}.reverse.each do |addr|
+          res=GeoLoc.new
+          res.provider = 'google3'
+          res.success = true
+          res.full_address = addr['formatted_address']
+          addr['address_components'].each do |comp|
+            case
+            when comp['types'].include?("street_number")
+              res.street_number = comp['short_name']
+            when comp['types'].include?("route")
+              res.street_name = comp['long_name']
+            when comp['types'].include?("locality")
+              res.city = comp['long_name']
+            when comp['types'].include?("administrative_area_level_1")
+              res.state = comp['short_name']
+              res.province = comp['short_name']
+            when comp['types'].include?("postal_code")
+              res.zip = comp['long_name']
+            when comp['types'].include?("country")
+              res.country_code = comp['short_name']
+              res.country = comp['long_name']
+            when comp['types'].include?("administrative_area_level_2")
+              res.district = comp['long_name']
+            end
+          end
+          if res.street_name
+            res.street_address=[res.street_number,res.street_name].join(' ').strip
+          end
+          res.accuracy = accuracy[addr['geometry']['location_type']]
+          res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
+          # try a few overrides where we can
+          if res.street_name && res.precision=='city'
+            res.precision = 'street'
+            res.accuracy = 7
+          end
+            
+          res.lat=addr['geometry']['location']['lat'].to_f
+          res.lng=addr['geometry']['location']['lng'].to_f
+
+          ne=Geokit::LatLng.new(
+            addr['geometry']['viewport']['northeast']['lat'].to_f, 
+            addr['geometry']['viewport']['northeast']['lng'].to_f
+            )
+          sw=Geokit::LatLng.new(
+            addr['geometry']['viewport']['southwest']['lat'].to_f,
+            addr['geometry']['viewport']['southwest']['lng'].to_f
+          )
+          res.suggested_bounds = Geokit::Bounds.new(sw,ne)
+
+          if ret
+            ret.all.push(res)
+          else
+            ret=res
+          end
+        end
+        return ret
+      end
+    end
+    
+    class FCCGeocoder < Geocoder
+
+       private 
+       # Template method which does the reverse-geocode lookup.
+       def self.do_reverse_geocode(latlng) 
+         latlng=LatLng.normalize(latlng)
+         res = self.call_geocoder_service("http://data.fcc.gov/api/block/find?format=json&latitude=#{Geokit::Inflector::url_escape(latlng.lat.to_s)}&longitude=#{Geokit::Inflector::url_escape(latlng.lng.to_s)}")
+         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
+         json = res.body
+         logger.debug "FCC reverse-geocoding. LL: #{latlng}. Result: #{json}"
+         return self.json2GeoLoc(json)        
+       end  
+
+       # Template method which does the geocode lookup.
+       #
+       # ==== EXAMPLES
+       # ll=GeoKit::LatLng.new(40, -85)
+       # Geokit::Geocoders::FCCGeocoder.geocode(ll) # 
+
+       # JSON result looks like this
+       # => {"County"=>{"name"=>"Wayne", "FIPS"=>"18177"},
+       # "Block"=>{"FIPS"=>"181770103002004"},
+       # "executionTime"=>"0.099",
+       # "State"=>{"name"=>"Indiana", "code"=>"IN", "FIPS"=>"18"},
+       # "status"=>"OK"}
+
+       def self.json2GeoLoc(json, address="")
+         ret=nil
+         begin
+           results=::ActiveSupport::JSON.decode(json)
+         rescue NameError => e
+           results=JSON.parse(json)
+         end
+         
+         if results.has_key?('Err') and results['Err']["msg"] == 'There are no results for this location'
+           return GeoLoc.new
+         end
+         # this should probably be smarter.
+         if !results['status'] == 'OK'
+           raise Geokit::Geocoders::GeocodeError
+         end
+
+         res = GeoLoc.new
+         res.provider      = 'fcc'
+         res.success       = true
+         res.precision     = 'block'
+         res.country_code  = 'US'
+         res.district      = results['County']['name']
+         res.district_fips = results['County']['FIPS']
+         res.state         = results['State']['code']
+         res.state_fips    = results['State']['FIPS']
+         res.block_fips    = results['Block']['FIPS']
+
+         res
+       end
+     end
     # -------------------------------------------------------------------------------------------
     # IP Geocoders
     # -------------------------------------------------------------------------------------------

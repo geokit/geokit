@@ -186,7 +186,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     assert_equal "Plaza de la Puerta del Sol, 28013, Madrid, Spain", res.full_address
     assert_equal "28013", res.zip
-    assert_equal "Plaza De La Puerta Del Sol", res.street_address
+    assert_equal "Plaza de la Puerta del Sol", res.street_address
   end  
   
   def test_country_code_biasing

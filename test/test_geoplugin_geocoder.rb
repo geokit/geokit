@@ -33,8 +33,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     GeoKit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(success)
     location = GeoKit::Geocoders::GeoPluginGeocoder.geocode('200.150.38.66')
     assert_not_nil location
-    assert_equal -19.916700, location.lat
-    assert_equal -43.933300, location.lng
+    assert_equal(-19.916700, location.lat)
+    assert_equal(-43.933300, location.lng)
     assert_equal "Belo Horizonte", location.city
     assert_equal "Minas Gerais", location.state
     assert_equal "BR", location.country_code
