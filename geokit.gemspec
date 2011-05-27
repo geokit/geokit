@@ -36,5 +36,3 @@ Gem::Specification.new do |s|
   end
   s.add_dependency(%q{json_pure})
 end
-
-
