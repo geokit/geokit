@@ -287,6 +287,8 @@ module Geokit
         return thing
       elsif thing.class.respond_to?(:acts_as_mappable) && thing.class.respond_to?(:distance_column_name)
         return thing.to_lat_lng
+      elsif thing.respond_to? :to_lat_lng
+        return thing.to_lat_lng
       end
       
       raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, Mappable, etc., but no dice.")
