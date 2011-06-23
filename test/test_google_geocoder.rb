@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 
 Geokit::Geocoders::google = 'Google'
@@ -31,7 +33,11 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   GOOGLE_TOO_MANY=<<-EOF.strip
   <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>100 spear st, san francisco, ca</name><Status><code>620</code><request>geocode</request></Status></Response></kml>
   EOF
-  
+
+  GOOGLE_ADDRESS_WITH_UMLAUTS=<<-EOF.strip
+  <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>Maschm\xC3\xBChlenweg\xC2\xA099, G\xC3\xB6ttingen, Germany</name><Status><code>200</code><request>geocode</request></Status><Placemark id="p1"><address>Maschm\xC3\xBChlenweg 99, 37081 G\xC3\xB6ttingen, Germany</address><AddressDetails Accuracy="8" xmlns="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"><Country><CountryNameCode>DE</CountryNameCode><CountryName>Germany</CountryName><AdministrativeArea><AdministrativeAreaName>Lower Saxony</AdministrativeAreaName><SubAdministrativeArea><SubAdministrativeAreaName>G\xC3\xB6ttingen</SubAdministrativeAreaName><Locality><LocalityName>G\xC3\xB6ttingen</LocalityName><DependentLocality><DependentLocalityName>G\xC3\xB6ttingen</DependentLocalityName><Thoroughfare><ThoroughfareName>Maschm\xC3\xBChlenweg 99</ThoroughfareName></Thoroughfare><PostalCode><PostalCodeNumber>37081</PostalCodeNumber></PostalCode></DependentLocality></Locality></SubAdministrativeArea></AdministrativeArea></Country></AddressDetails><ExtendedData><LatLonBox north="51.5489376" south="51.5426424" east="9.9270876" west="9.9207924" /></ExtendedData><Point><coordinates>9.9239400,51.5457900,0</coordinates></Point></Placemark></Response></kml>
+  EOF
+
   def setup
     super
     @google_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
@@ -223,5 +229,19 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_raise Geokit::TooManyQueriesError do
       res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
     end
+  end
+
+  def test_address_with_umlauts
+    response = MockSuccess.new
+    response.expects(:body).returns(GOOGLE_ADDRESS_WITH_UMLAUTS)
+    url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@full_address_umlauts)}&output=xml&key=Google&oe=utf-8"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    res=Geokit::Geocoders::GoogleGeocoder.geocode(@full_address_umlauts)
+    assert_equal "Lower Saxony", res.state
+    assert_equal "Göttingen", res.city
+    assert_equal "51.54579,9.92394", res.ll
+    assert !res.is_us?
+    assert_equal "Maschmühlenweg 99, 37081 Göttingen, Germany", res.full_address
+    assert_equal "google", res.provider
   end
 end

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'test/unit'
 require 'net/http'
 require 'rubygems'
@@ -28,7 +30,8 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     @address = 'San Francisco, CA'    
     @full_address = '100 Spear St, San Francisco, CA, 94105-1522, US'   
     @full_address_short_zip = '100 Spear St, San Francisco, CA, 94105, US' 
-    
+    @full_address_umlauts = 'Maschmühlenweg 99, Göttingen, Germany'
+
     @latlng = Geokit::LatLng.new(37.7742, -122.417068)
     @success = Geokit::GeoLoc.new({:city=>"SAN FRANCISCO", :state=>"CA", :country_code=>"US", :lat=>@latlng.lat, :lng=>@latlng.lng})
     @success.success = true    
