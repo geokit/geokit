@@ -34,5 +34,5 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 2
   end
-  s.add_dependency(%q{json_pure})
+  s.add_dependency(%q{json})
 end
