@@ -707,15 +707,17 @@ module Geokit
           res.lat=addr['geometry']['location']['lat'].to_f
           res.lng=addr['geometry']['location']['lng'].to_f
 
-          ne=Geokit::LatLng.new(
-            addr['geometry']['viewport']['northeast']['lat'].to_f, 
-            addr['geometry']['viewport']['northeast']['lng'].to_f
+          if addr['geometry'].include?('viewport')
+            ne=Geokit::LatLng.new(
+              addr['geometry']['viewport']['northeast']['lat'].to_f, 
+              addr['geometry']['viewport']['northeast']['lng'].to_f
+              )
+            sw=Geokit::LatLng.new(
+              addr['geometry']['viewport']['southwest']['lat'].to_f,
+              addr['geometry']['viewport']['southwest']['lng'].to_f
             )
-          sw=Geokit::LatLng.new(
-            addr['geometry']['viewport']['southwest']['lat'].to_f,
-            addr['geometry']['viewport']['southwest']['lng'].to_f
-          )
-          res.suggested_bounds = Geokit::Bounds.new(sw,ne)
+            res.suggested_bounds = Geokit::Bounds.new(sw,ne)
+          end
 
           if ret
             ret.all.push(res)
