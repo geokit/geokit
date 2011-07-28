@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'net/http'
 require 'ipaddr'
 require 'rexml/document'
@@ -44,9 +45,10 @@ module Geokit
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-      '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      parser = URI::Parser.new
+
+      # The gsub part will make the result compatible with the old tests
+      parser.escape(s).gsub('%20', '+')
     end
     
     def camelize(str)
@@ -437,10 +439,12 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        call_str = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8"
+        res = self.call_geocoder_service( call_str )
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
+        xml = res.body.encode('utf-8')
+        logger.debug "Google geocoding: #{call_str}"
+        logger.debug "Google geocoding. Address: #{address_str}. Result: #{xml}"
         return self.xml2GeoLoc(xml, address)        
       end
       
@@ -568,13 +572,15 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}")
+        call_str = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}"
+        res = self.call_geocoder_service( call_str )
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
+        json = res.body.encode('utf-8')
+        logger.debug "Google geocoding: #{call_str}"
         logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
         return self.json2GeoLoc(json, address)        
       end
- 
+
       def self.construct_bias_string_from_options(bias)
         if bias.is_a?(String) or bias.is_a?(Symbol)
           # country code biasing
@@ -665,16 +671,18 @@ module Geokit
           res.lat=addr['geometry']['location']['lat'].to_f
           res.lng=addr['geometry']['location']['lng'].to_f
 
-          ne=Geokit::LatLng.new(
-            addr['geometry']['viewport']['northeast']['lat'].to_f, 
-            addr['geometry']['viewport']['northeast']['lng'].to_f
+          if addr['geometry']['viewport']
+            ne=Geokit::LatLng.new(
+              addr['geometry']['viewport']['northeast']['lat'].to_f, 
+              addr['geometry']['viewport']['northeast']['lng'].to_f
+              )
+            sw=Geokit::LatLng.new(
+              addr['geometry']['viewport']['southwest']['lat'].to_f,
+              addr['geometry']['viewport']['southwest']['lng'].to_f
             )
-          sw=Geokit::LatLng.new(
-            addr['geometry']['viewport']['southwest']['lat'].to_f,
-            addr['geometry']['viewport']['southwest']['lng'].to_f
-          )
-          res.suggested_bounds = Geokit::Bounds.new(sw,ne)
-
+            res.suggested_bounds = Geokit::Bounds.new(sw,ne)
+          end
+          
           if ret
             ret.all.push(res)
           else
