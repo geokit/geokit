@@ -442,7 +442,8 @@ module Geokit
         call_str = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8"
         res = self.call_geocoder_service( call_str )
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml = res.body.encode('utf-8')
+        xml = res.body
+        xml.force_encoding(Encoding::UTF_8) if xml.respond_to?(:force_encoding)
         logger.debug "Google geocoding: #{call_str}"
         logger.debug "Google geocoding. Address: #{address_str}. Result: #{xml}"
         return self.xml2GeoLoc(xml, address)        
@@ -575,7 +576,8 @@ module Geokit
         call_str = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}"
         res = self.call_geocoder_service( call_str )
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body.encode('utf-8')
+        json = res.body
+        json.force_encoding(Encoding::UTF_8) if json.respond_to?(:force_encoding)
         logger.debug "Google geocoding: #{call_str}"
         logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
         return self.json2GeoLoc(json, address)        
