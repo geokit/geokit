@@ -92,7 +92,17 @@ module Geokit
         end_lng=lng+Math.atan2(Math.sin(heading)*Math.sin(distance/radius)*Math.cos(lat),
                                Math.cos(distance/radius)-Math.sin(lat)*Math.sin(end_lat))
 
-        LatLng.new(rad2deg(end_lat),rad2deg(end_lng))
+        new_point = LatLng.new(rad2deg(end_lat),rad2deg(end_lng))
+
+        # wrap around to a valid degree in range -180 -> 180
+        while (new_point.lng < 180)
+         new_point.lng += 360
+        end
+        while (new_point.lng > 180)
+         new_point.lng -= 360
+        end
+
+        new_point
       end
 
       # Returns the midpoint, given two points. Returns a LatLng. 
@@ -446,6 +456,7 @@ module Geokit
   # Bounds represents a rectangular bounds, defined by the SW and NE corners
   class Bounds
     MAX_LATITUDE = 90 - 0.0000000000000000001
+    MAX_LONGITUDE = 180
 
     # sw and ne are LatLng objects
     attr_accessor :sw, :ne
@@ -531,12 +542,12 @@ module Geokit
         # circumference is 2 x radius x PI
         max_distance = point.class.units_sphere_multiplier(options[:units] || Geokit::default_units) * Math::PI
         p90 = if (radius > max_distance)
-          point.endpoint(90,max_distance,options)
+          LatLng.new(point.lat,MAX_LONGITUDE)
         else
           point.endpoint(90,radius,options)
         end
         p270 = if (radius > max_distance)
-          point.endpoint(270,max_distance,options)
+          LatLng.new(point.lat,-MAX_LONGITUDE)
         else
           point.endpoint(270,radius,options)
         end
