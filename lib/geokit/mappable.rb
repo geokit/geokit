@@ -116,6 +116,15 @@ module Geokit
         raise Geokit::Geocoders::GeocodeError      
       end
     
+      # Returns the multiplier used to obtain the correct distance units.
+      def units_sphere_multiplier(units)
+        case units
+          when :kms; EARTH_RADIUS_IN_KMS
+          when :nms; EARTH_RADIUS_IN_NMS
+          else EARTH_RADIUS_IN_MILES
+        end
+      end
+
       protected
     
       def deg2rad(degrees)
@@ -128,15 +137,6 @@ module Geokit
       
       def to_heading(rad)
         (rad2deg(rad)+360)%360
-      end
-
-      # Returns the multiplier used to obtain the correct distance units.
-      def units_sphere_multiplier(units)
-        case units
-          when :kms; EARTH_RADIUS_IN_KMS
-          when :nms; EARTH_RADIUS_IN_NMS
-          else EARTH_RADIUS_IN_MILES
-        end
       end
 
       # Returns the number of units per latitude degree.
@@ -445,6 +445,8 @@ module Geokit
   
   # Bounds represents a rectangular bounds, defined by the SW and NE corners
   class Bounds
+    MAX_LATITUDE = 90 - 0.0000000000000000001
+
     # sw and ne are LatLng objects
     attr_accessor :sw, :ne
     
@@ -507,11 +509,38 @@ module Geokit
       
       # returns an instance of bounds which completely encompases the given circle
       def from_point_and_radius(point,radius,options={})
-        point=LatLng.normalize(point)
-        p0=point.endpoint(0,radius,options)
-        p90=point.endpoint(90,radius,options)
-        p180=point.endpoint(180,radius,options)
-        p270=point.endpoint(270,radius,options)
+        point=Geokit::LatLng.normalize(point)
+
+        # do not allow a radius so great it would crosses the north pole
+        max_distance = point.distance_to(Geokit::LatLng.normalize(MAX_LATITUDE,point.lng))
+        p0 = if (radius >= max_distance)
+          point.endpoint(0,max_distance-0.00000001,options)
+        else
+          point.endpoint(0,radius,options)
+        end
+
+        # do not allow a radius so great it would crosses the south pole
+        max_distance = point.distance_to(Geokit::LatLng.normalize(-MAX_LATITUDE,point.lng))
+        if (radius >= max_distance)
+          p180=point.endpoint(180,max_distance-0.00000001,options)
+        else
+          p180=point.endpoint(180,radius,options)
+        end
+
+        # do not allow a radius greater than half the circumference of the earth as bounds will cross over each other
+        # circumference is 2 x radius x PI
+        max_distance = point.class.units_sphere_multiplier(options[:units] || Geokit::default_units) * Math::PI
+        p90 = if (radius > max_distance)
+          point.endpoint(90,max_distance,options)
+        else
+          point.endpoint(90,radius,options)
+        end
+        p270 = if (radius > max_distance)
+          point.endpoint(270,max_distance,options)
+        else
+          point.endpoint(270,radius,options)
+        end
+
         sw=Geokit::LatLng.new(p180.lat,p270.lng)
         ne=Geokit::LatLng.new(p0.lat,p90.lng)
         Geokit::Bounds.new(sw,ne)
