@@ -2,7 +2,7 @@ require 'test/unit'
 require 'net/http'
 require 'rubygems'
 require 'mocha'
-require 'lib/geokit'
+require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize

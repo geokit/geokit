@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require 'test/unit'
-require 'lib/geokit'
+require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class InflectorTest < Test::Unit::TestCase #:nodoc: all
   

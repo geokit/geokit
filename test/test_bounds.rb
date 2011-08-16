@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'lib/geokit'
+require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class BoundsTest < Test::Unit::TestCase #:nodoc: all
   

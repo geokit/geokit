@@ -1,6 +1,6 @@
 require 'test/unit'
-require 'lib/geokit'
 require 'mocha'
+require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class LatLngTest < Test::Unit::TestCase #:nodoc: all
   
