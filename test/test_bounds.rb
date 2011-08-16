@@ -1,5 +1,4 @@
-require 'test/unit'
-require 'lib/geokit'
+require File.join(File.dirname(__FILE__), 'helper')
 
 class BoundsTest < Test::Unit::TestCase #:nodoc: all
 

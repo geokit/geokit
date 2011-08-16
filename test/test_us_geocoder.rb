@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'test_base_geocoder')
+require File.join(File.dirname(__FILE__), 'helper')
 
 Geokit::Geocoders::geocoder_us = nil
 

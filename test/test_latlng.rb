@@ -1,6 +1,4 @@
-require 'test/unit'
-require 'lib/geokit'
-require 'mocha'
+require File.join(File.dirname(__FILE__), 'helper')
 
 class LatLngTest < Test::Unit::TestCase #:nodoc: all
 

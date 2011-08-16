@@ -1,5 +1,4 @@
-# encoding: utf-8
-require File.join(File.dirname(__FILE__), 'test_base_geocoder')
+require File.join(File.dirname(__FILE__), 'helper')
 
 class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
 

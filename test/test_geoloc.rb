@@ -1,5 +1,4 @@
-require 'test/unit'
-require 'lib/geokit'
+require File.join(File.dirname(__FILE__), 'helper')
 
 class GeoLocTest < Test::Unit::TestCase #:nodoc: all
 
@@ -68,5 +67,4 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
       "--- !ruby/object:Geokit::GeoLoc \ncity: San Francisco\ncountry_code: US\nfull_address: \nlat: \nlng: \nprecision: unknown\nprovince: \nstate: CA\nstreet_address: \nstreet_name: \nstreet_number: \nsub_premise: \nsuccess: false\nzip: \"94105\"\n",
       @loc.to_yaml)
   end
-
 end

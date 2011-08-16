@@ -1,4 +1,19 @@
-require File.join(File.dirname(__FILE__), 'helper')
+require 'test/unit'
+require 'mocha'
+require 'net/http'
+
+require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
+
+
+class MockSuccess < Net::HTTPSuccess #:nodoc: all
+  def initialize
+  end
+end
+
+class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
+  def initialize
+  end
+end
 
 # Base class for testing geocoders.
 class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
