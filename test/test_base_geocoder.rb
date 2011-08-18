@@ -46,6 +46,27 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     assert_equal "SUCCESS", Geokit::Geocoders::Geocoder.call_geocoder_service(url)
   end
   
+  def test_successful_call_web_service_with_basic_auth
+    user_credentials = 'user1:asdf1234'
+    url              = "http://#{user_credentials}@www.anything.com"
+
+    # Expect a Net::HTTP::Get instance to setup basic auth
+    http_get_request = Net::HTTP::Get.new(url)
+    Net::HTTP::Get.expects(:new).returns(http_get_request)
+    http_get_request.expects(:basic_auth).with('user1', 'asdf1234')
+
+    # Expect a Net::HTTP::Proxy to use the http_get_request with basic auth
+    mock_http_proxy    = mock('http_proxy')
+    mock_proxy_result  = mock('proxy_result')
+    mock_proxy_request = mock('proxy_request')
+    Net::HTTP.expects(:Proxy).returns(mock_http_proxy)
+    mock_http_proxy.expects(:new).with('www.anything.com', 80).returns(mock_proxy_result)
+    mock_proxy_result.expects(:start).yields(mock_proxy_request).returns('SUCCESS')
+    mock_proxy_request.expects(:request).with(http_get_request)
+
+    assert_equal "SUCCESS", Geokit::Geocoders::Geocoder.call_geocoder_service(url)
+  end
+
   def test_find_geocoder_methods
     public_methods = Geokit::Geocoders::Geocoder.public_methods.map { |m| m.to_s }
     assert public_methods.include?("yahoo_geocoder")
