@@ -175,7 +175,7 @@ module Geokit
         res = Net::HTTP::Proxy(GeoKit::Geocoders::proxy_addr,
                 GeoKit::Geocoders::proxy_port,
                 GeoKit::Geocoders::proxy_user,
-                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.get(uri.path + "?" + uri.query) }
+                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.get( [uri.path, uri.query].compact.join('?') ) }
         return res
       end
       
