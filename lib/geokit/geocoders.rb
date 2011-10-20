@@ -9,7 +9,7 @@ require 'logger'
 begin 
   ActiveSupport.nil?
 rescue NameError
-  require 'json/pure'
+  require 'json'
 end
 
 module Geokit
