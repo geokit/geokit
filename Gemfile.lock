@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geokit-premier (0.0.6)
+    geokit-premier (0.0.7)
       hoe
       json_pure
 
