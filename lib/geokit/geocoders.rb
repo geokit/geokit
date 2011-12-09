@@ -45,9 +45,7 @@ module Geokit
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-      '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      URI.escape(s)
     end
     
     def camelize(str)
@@ -599,7 +597,7 @@ module Geokit
         res = res = self.call_geocoder_service(self.geocode_url(address,options))
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
+#         logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
         return self.json2GeoLoc(json, address)        
       end
  

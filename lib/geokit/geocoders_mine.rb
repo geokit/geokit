@@ -38,9 +38,7 @@ module Geokit
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-      '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      URI.escape(s)
     end
     
     def camelize(str)
