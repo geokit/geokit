@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geokit-premier (0.0.5)
+    geokit-premier (0.0.6)
       hoe
       json_pure
 
@@ -23,10 +23,10 @@ GEM
     autotest (4.4.2)
     builder (2.1.2)
     diff-lcs (1.1.2)
-    hoe (2.8.0)
-      rake (>= 0.8.7)
+    hoe (2.12.4)
+      rake (~> 0.8)
     i18n (0.5.0)
-    json_pure (1.4.6)
+    json_pure (1.6.3)
     mysql (2.8.1)
     rake (0.8.7)
     rspec (2.0.1)
@@ -51,8 +51,6 @@ DEPENDENCIES
   ZenTest
   autotest
   geokit-premier!
-  hoe
-  json_pure
   mysql
   rspec
   standalone_migrations
