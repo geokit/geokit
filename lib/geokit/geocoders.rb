@@ -568,10 +568,13 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+
         res = self.call_geocoder_service("http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}")
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+
         json = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
+
         return self.json2GeoLoc(json, address)
       end
 
@@ -626,13 +629,19 @@ module Geokit
           "GEOMETRIC_CENTER" => 5,
           "APPROXIMATE" => 4
         }
-        results['results'].sort_by{|a|accuracy[a['geometry']['location_type']]}.reverse.each do |addr|
-          res=GeoLoc.new
+
+        @unsorted = []
+
+        results['results'].each do |addr|
+          res = GeoLoc.new
           res.provider = 'google3'
           res.success = true
           res.full_address = addr['formatted_address']
+
           addr['address_components'].each do |comp|
             case
+            when comp['types'].include?("subpremise")
+              res.sub_premise = comp['short_name']
             when comp['types'].include?("street_number")
               res.street_number = comp['short_name']
             when comp['types'].include?("route")
@@ -657,6 +666,10 @@ module Geokit
           res.accuracy = accuracy[addr['geometry']['location_type']]
           res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
           # try a few overrides where we can
+          if res.sub_premise
+            res.accuracy = 9
+            res.precision = 'building'
+          end
           if res.street_name && res.precision=='city'
             res.precision = 'street'
             res.accuracy = 7
@@ -675,13 +688,13 @@ module Geokit
           )
           res.suggested_bounds = Geokit::Bounds.new(sw,ne)
 
-          if ret
-            ret.all.push(res)
-          else
-            ret=res
-          end
+          @unsorted << res
         end
-        return ret
+
+        all = @unsorted.sort_by { |a| a.accuracy }.reverse
+        encoded = all.first
+        encoded.all = all
+        return encoded
       end
     end
 
@@ -785,17 +798,17 @@ module Geokit
       #   The bogon list: http://www.cymru.com/Documents/bogon-list.html
 
       NON_ROUTABLE_IP_RANGES = [
-  IPAddr.new('0.0.0.0/8'),      # "This" Network
-  IPAddr.new('10.0.0.0/8'),     # Private-Use Networks
-  IPAddr.new('14.0.0.0/8'),     # Public-Data Networks
-  IPAddr.new('127.0.0.0/8'),    # Loopback
-  IPAddr.new('169.254.0.0/16'), # Link local
-  IPAddr.new('172.16.0.0/12'),  # Private-Use Networks
-  IPAddr.new('192.0.2.0/24'),   # Test-Net
-  IPAddr.new('192.168.0.0/16'), # Private-Use Networks
-  IPAddr.new('198.18.0.0/15'),  # Network Interconnect Device Benchmark Testing
-  IPAddr.new('224.0.0.0/4'),    # Multicast
-  IPAddr.new('240.0.0.0/4')     # Reserved for future use
+        IPAddr.new('0.0.0.0/8'),      # "This" Network
+        IPAddr.new('10.0.0.0/8'),     # Private-Use Networks
+        IPAddr.new('14.0.0.0/8'),     # Public-Data Networks
+        IPAddr.new('127.0.0.0/8'),    # Loopback
+        IPAddr.new('169.254.0.0/16'), # Link local
+        IPAddr.new('172.16.0.0/12'),  # Private-Use Networks
+        IPAddr.new('192.0.2.0/24'),   # Test-Net
+        IPAddr.new('192.168.0.0/16'), # Private-Use Networks
+        IPAddr.new('198.18.0.0/15'),  # Network Interconnect Device Benchmark Testing
+        IPAddr.new('224.0.0.0/4'),    # Multicast
+        IPAddr.new('240.0.0.0/4')     # Reserved for future use
       ].freeze
 
       private
@@ -841,7 +854,7 @@ module Geokit
       # the geocoding service. Such queries can occur frequently during
       # integration tests.
       def self.private_ip_address?(ip)
-  return NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
+        return NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
       end
     end
 

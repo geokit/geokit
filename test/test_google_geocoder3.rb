@@ -5,63 +5,80 @@ Geokit::Geocoders::google = 'Google'
 class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
   GOOGLE3_FULL=%q/
-  {
-    "status": "OK",
-    "results": [ {
-      "types": [ "street_address" ],
-      "formatted_address": "100 Spear St, San Francisco, CA 94105, USA",
-      "address_components": [ {
-        "long_name": "100",
-        "short_name": "100",
-        "types": [ "street_number" ]
-      }, {
-        "long_name": "Spear St",
-        "short_name": "Spear St",
-        "types": [ "route" ]
-      }, {
-        "long_name": "San Francisco",
-        "short_name": "San Francisco",
-        "types": [ "locality", "political" ]
-      }, {
-        "long_name": "San Francisco",
-        "short_name": "San Francisco",
-        "types": [ "administrative_area_level_3", "political" ]
-      }, {
-        "long_name": "San Francisco",
-        "short_name": "San Francisco",
-        "types": [ "administrative_area_level_2", "political" ]
-      }, {
-        "long_name": "California",
-        "short_name": "CA",
-        "types": [ "administrative_area_level_1", "political" ]
-      }, {
-        "long_name": "United States",
-        "short_name": "US",
-        "types": [ "country", "political" ]
-      }, {
-        "long_name": "94105",
-        "short_name": "94105",
-        "types": [ "postal_code" ]
-      } ],
-      "geometry": {
-        "location": {
-          "lat": 37.7921509,
-          "lng": -122.3940000
-        },
-        "location_type": "ROOFTOP",
-        "viewport": {
-          "southwest": {
-            "lat": 37.7890033,
-            "lng": -122.3971476
-          },
-          "northeast": {
-            "lat": 37.7952985,
-            "lng": -122.3908524
+    {
+       "results" : [
+          {
+             "address_components" : [
+                {
+                   "long_name" : "5",
+                   "short_name" : "5",
+                   "types" : [ "subpremise" ]
+                },
+                {
+                   "long_name" : "100",
+                   "short_name" : "100",
+                   "types" : [ "street_number" ]
+                },
+                {
+                   "long_name" : "Spear St",
+                   "short_name" : "Spear St",
+                   "types" : [ "route" ]
+                },
+                {
+                   "long_name" : "South Beach",
+                   "short_name" : "South Beach",
+                   "types" : [ "neighborhood", "political" ]
+                },
+                {
+                   "long_name" : "San Francisco",
+                   "short_name" : "SF",
+                   "types" : [ "locality", "political" ]
+                },
+                {
+                   "long_name" : "San Francisco",
+                   "short_name" : "San Francisco",
+                   "types" : [ "administrative_area_level_2", "political" ]
+                },
+                {
+                   "long_name" : "California",
+                   "short_name" : "CA",
+                   "types" : [ "administrative_area_level_1", "political" ]
+                },
+                {
+                   "long_name" : "United States",
+                   "short_name" : "US",
+                   "types" : [ "country", "political" ]
+                },
+                {
+                   "long_name" : "94105",
+                   "short_name" : "94105",
+                   "types" : [ "postal_code" ]
+                }
+             ],
+             "formatted_address" : "100 Spear St #5, San Francisco, CA 94105, USA",
+             "geometry" : {
+                "location" : {
+                   "lat" : 37.79215090,
+                   "lng" : -122.3940
+                },
+                "location_type" : "APPROXIMATE",
+                "viewport" : {
+                   "northeast" : {
+                      "lat" : 37.79349988029150,
+                      "lng" : -122.3926510197085
+                   },
+                   "southwest" : {
+                      "lat" : 37.79080191970850,
+                      "lng" : -122.3953489802915
+                   }
+                }
+             },
+             "partial_match" : true,
+             "types" : [ "subpremise" ]
           }
-        }
-      }
-    } ]
-  }
+       ],
+       "status" : "OK"
+    }
   /.strip
 
   GOOGLE3_CITY=%q/
@@ -357,7 +374,9 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
   /
   def setup
     super
-    @google_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
+    @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'
+    @full_address_short_zip = '100 Spear St Apt. 5, San Francisco, CA, 94105, US'
+    @google_full_hash = {:street_address=>"100 Spear St Apt. 5", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
     @google_city_hash = {:city=>"San Francisco", :state=>"CA"}
 
     @google_full_loc = Geokit::GeoLoc.new(@google_full_hash)
@@ -374,7 +393,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
     assert_equal "San Francisco", res.city
     assert_equal "37.7921509,-122.394", res.ll # slightly dif from yahoo
     assert res.is_us?
-    assert_equal "100 Spear St, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
+    assert_equal "100 Spear St #5, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
     assert_equal "google3", res.provider
   end
 
@@ -388,7 +407,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "San Francisco", res.city
      assert_equal "37.7921509,-122.394", res.ll # slightly dif from yahoo
      assert res.is_us?
-     assert_equal "100 Spear St, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
+     assert_equal "100 Spear St #5, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
      assert_equal "google3", res.provider
    end
 
@@ -398,6 +417,8 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@full_address_short_zip)}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
+
+puts res.to_hash.inspect
      assert_equal 9, res.accuracy
    end
 
@@ -448,7 +469,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      res = Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
 
      assert_instance_of Geokit::Bounds, res.suggested_bounds
-     assert_equal Geokit::Bounds.new(Geokit::LatLng.new(37.7890033, -122.3971476), Geokit::LatLng.new(37.7952985, -122.3908524)), res.suggested_bounds
+     assert_equal Geokit::Bounds.new(Geokit::LatLng.new(37.7908019197085, -122.395348980292), Geokit::LatLng.new(37.7934998802915, -122.392651019708)), res.suggested_bounds
    end
 
    def test_service_unavailable
