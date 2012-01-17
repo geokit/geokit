@@ -259,6 +259,11 @@ module Geokit
       self == other
     end
 
+    # Returns true if both lat and lng attributes are defined
+    def valid?
+      self.lat and self.lng
+    end
+
     # A *class* method to take anything which can be inferred as a point and generate
     # a LatLng from it. You should use this anything you're not sure what the input is,
     # and want to deal with it as a LatLng if at all possible. Can take:
