@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 Geokit::Geocoders::google = 'Google'
 
 class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
-  
+
   GOOGLE3_FULL=%q/
   {
     "status": "OK",
@@ -362,7 +362,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
     @google_full_loc = Geokit::GeoLoc.new(@google_full_hash)
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
-  end  
+  end
 
   def test_google3_full_address
     response = MockSuccess.new
@@ -371,13 +371,13 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
     res=Geokit::Geocoders::GoogleGeocoder3.geocode(@address)
     assert_equal "CA", res.state
-    assert_equal "San Francisco", res.city 
+    assert_equal "San Francisco", res.city
     assert_equal "37.7921509,-122.394", res.ll # slightly dif from yahoo
     assert res.is_us?
     assert_equal "100 Spear St, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
     assert_equal "google3", res.provider
   end
-  
+
   def test_google3_full_address_with_geo_loc
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_FULL)
@@ -385,13 +385,13 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
      assert_equal "CA", res.state
-     assert_equal "San Francisco", res.city 
+     assert_equal "San Francisco", res.city
      assert_equal "37.7921509,-122.394", res.ll # slightly dif from yahoo
      assert res.is_us?
      assert_equal "100 Spear St, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
      assert_equal "google3", res.provider
-   end  
-   
+   end
+
    def test_google3_full_address_accuracy
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_FULL)
@@ -400,7 +400,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
      assert_equal 9, res.accuracy
    end
-  
+
    def test_google3_city
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_CITY)
@@ -414,8 +414,8 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert res.is_us?
      assert_equal "San Francisco, CA, USA", res.full_address
      assert_equal "google3", res.provider
-   end  
-   
+   end
+
    def test_google3_city_accuracy
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_CITY)
@@ -424,7 +424,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@address)
      assert_equal 4, res.accuracy
    end
-   
+
    def test_google3_city_with_geo_loc
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_CITY)
@@ -438,7 +438,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "San Francisco, CA, USA", res.full_address
      assert_nil res.street_address
      assert_equal "google3", res.provider
-   end  
+   end
 
    def test_google3_suggested_bounds
      response = MockSuccess.new
@@ -446,18 +446,18 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@full_address_short_zip)}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      res = Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
-     
+
      assert_instance_of Geokit::Bounds, res.suggested_bounds
      assert_equal Geokit::Bounds.new(Geokit::LatLng.new(37.7890033, -122.3971476), Geokit::LatLng.new(37.7952985, -122.3908524)), res.suggested_bounds
    end
-   
+
    def test_service_unavailable
      response = MockFailure.new
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      assert !Geokit::Geocoders::GoogleGeocoder3.geocode(@google_city_loc).success
-   end 
-   
+   end
+
    def test_multiple_results
      #Geokit::Geocoders::GoogleGeocoder3.do_geocode('via Sandro Pertini 8, Ossona, MI')
      response = MockSuccess.new
@@ -472,7 +472,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "Via Sandro Pertini, 8, 20010 Mesero MI, Italy", res.full_address
      assert_equal "8 Via Sandro Pertini", res.street_address
      assert_equal "google3", res.provider
-  
+
      assert_equal 2, res.all.size
      res = res.all[1]
      assert_equal "Lombardy", res.state
@@ -483,7 +483,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "Via Sandro Pertini", res.street_address
      assert_equal "google3", res.provider
    end
-  # 
+  #
    def test_reverse_geocode
      #Geokit::Geocoders::GoogleGeocoder3.do_reverse_geocode("40.4167413, -3.7032498")
      madrid = Geokit::GeoLoc.new
@@ -494,36 +494,36 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).
        returns(response)
      res=Geokit::Geocoders::GoogleGeocoder3.do_reverse_geocode(madrid.ll)
-  
+
      assert_equal madrid.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
      assert_equal madrid.lng.to_s.slice(1..5), res.lng.to_s.slice(1..5)
      assert_equal "ES", res.country_code
      assert_equal "google3", res.provider
-  
+
      assert_equal "Madrid", res.city
      assert_equal "Madrid", res.state
-  
+
      assert_equal "Spain", res.country
      assert_equal "street", res.precision
      assert_equal true, res.success
-  
+
      assert_equal "Calle de las Carretas, 28013 Madrid, Spain", res.full_address
      assert_equal "28013", res.zip
      assert_equal "Calle de las Carretas", res.street_address
-   end  
+   end
 
    def test_country_code_biasing
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_COUNTRY_CODE_BIASED_RESULT)
-     
+
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      biased_result = Geokit::Geocoders::GoogleGeocoder3.geocode('Syracuse', :bias => 'it')
-     
+
      assert_equal 'IT', biased_result.country_code
      assert_equal 'Sicily', biased_result.state
    end
-  
+
    def test_too_many_queries
      response = MockSuccess.new
      response.expects(:body).returns(GOOGLE3_TOO_MANY)
