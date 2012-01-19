@@ -4,6 +4,7 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
+require 'cgi'
 
 # do this just in case 
 begin 
@@ -44,9 +45,7 @@ module Geokit
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-      '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      CGI::escape(s)
     end
     
     def camelize(str)
@@ -440,7 +439,8 @@ module Geokit
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
+        logger.debug "Google geocoding. Address: #{address}."
+        logger.debug "Google geocoding. Xml: #{xml}."
         return self.xml2GeoLoc(xml, address)        
       end
       
