@@ -1,38 +1,43 @@
 # -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require 'lib/geokit'
 
 Gem::Specification.new do |s|
-  s.name = %q{geokit}
-  s.version = "1.6.0"
+  s.name        = "geokit"
+  s.version     = Geokit::VERSION
+  s.authors     = ["James Cox, Andre Lewis & Bill Eisenhauer"]
+  s.email       = ["james+geokit@imaj.es"]
+  s.homepage    = "https://github.com/imajes/geokit-gem"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Andre Lewis and Bill Eisenhauer"]
-  s.date = %q{2009-08-02}
-  s.description = %q{Geokit Gem}
-  s.email = ["andre@earthcode.com / bill_eisenhauer@yahoo.com"]
-  s.extra_rdoc_files = ["Manifest.txt", "README.markdown"]
-  s.files = ["Manifest.txt", "README.markdown", "Rakefile", "lib/geokit/geocoders.rb", "lib/geokit.rb",
+  s.summary     = %q{Geokit: encoding and distance calculation gem}
+  s.description = %q{Geokit provides geocoding and distance calculation in an easy-to-use API}
+
+  s.rubyforge_project = "geokit"
+
+  s.has_rdoc = true
+  s.rdoc_options = ["--main", "README.markdown"]
+  s.extra_rdoc_files = ["README.markdown"]
+
+  s.files = ["README.markdown", "Rakefile", "lib/geokit/geocoders.rb", "lib/geokit.rb",
     "lib/geokit/mappable.rb", "test/test_base_geocoder.rb", "test/test_bounds.rb",
     "test/test_ca_geocoder.rb", "test/test_geoloc.rb", "test/test_google_geocoder3.rb",
     "test/test_google_geocoder.rb", "test/test_latlng.rb", "test/test_multi_geocoder.rb",
     "test/test_us_geocoder.rb", "test/test_yahoo_geocoder.rb"
   ]
-  s.has_rdoc = true
-  s.homepage = %q{http://geokit.rubyforge.org}
-  s.rdoc_options = ["--main", "README.markdown"]
-  s.require_paths = ["lib"]
-  s.rubyforge_project = %q{geokit}
-  s.rubygems_version = %q{1.3.5}
-  s.summary = %q{none}
-  s.test_files = [ 
+
+  s.test_files = [
     "test/test_base_geocoder.rb", "test/test_bounds.rb", "test/test_ca_geocoder.rb",
     "test/test_geoloc.rb", "test/test_geoplugin_geocoder.rb", "test/test_google_geocoder3.rb",
     "test/test_google_geocoder.rb", "test/test_google_reverse_geocoder.rb", "test/test_inflector.rb",
     "test/test_ipgeocoder.rb", "test/test_latlng.rb", "test/test_multi_geocoder.rb",
     "test/test_multi_ip_geocoder.rb", "test/test_us_geocoder.rb", "test/test_yahoo_geocoder.rb"
   ]
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 2
-  end
-  s.add_dependency(%q{json_pure})
+
+  s.require_paths = ["lib"]
+
+  # specify any dependencies here; for example:
+  # s.add_development_dependency "rspec"
+  # s.add_runtime_dependency "rest-client"
+  s.add_dependency('json_pure')
 end
+
