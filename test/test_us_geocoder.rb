@@ -1,7 +1,5 @@
 require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 
-Geokit::Geocoders::geocoder_us = nil
-
 class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   
   GEOCODER_US_FULL='37.792528,-122.393981,100 Spear St,San Francisco,CA,94105'  
@@ -10,12 +8,23 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
     super
     @us_full_hash = {:city=>"San Francisco", :state=>"CA"}
     @us_full_loc = Geokit::GeoLoc.new(@us_full_hash)
+    Geokit::Geocoders::geocoder_us = nil
   end  
   
   def test_geocoder_us
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
     url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
+    Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    verify(Geokit::Geocoders::UsGeocoder.geocode(@address))
+  end
+
+  def test_geocoder_us_basic_auth
+    user_credentials = 'user1:asdf1234'
+    response = MockSuccess.new
+    response.expects(:body).returns(GEOCODER_US_FULL)
+    Geokit::Geocoders::geocoder_us = user_credentials
+    url = "http://#{user_credentials}@geocoder.us/member/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     verify(Geokit::Geocoders::UsGeocoder.geocode(@address))
   end
