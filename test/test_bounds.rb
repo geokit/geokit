@@ -70,7 +70,29 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
     assert bounds.contains?(inside)
     assert !bounds.contains?(outside)
   end
-  
+
+  def test_from_point_and_radius
+    bounds=Geokit::Bounds.from_point_and_radius([0, 0], 100)
+    assert_in_delta -1.445, bounds.sw.lat, 0.005
+    assert_in_delta -1.445, bounds.sw.lng, 0.005
+  end
+
+  def test_from_point_and_radius_greater_than_circumference
+    bounds=Geokit::Bounds.from_point_and_radius([0,45], 50000)
+    assert_in_delta 90, bounds.ne.lat, 0.005
+    assert_in_delta -180, bounds.sw.lng, 0.005
+    assert_in_delta 180, bounds.ne.lng, 0.005
+  end
+
+  def test_from_point_and_radius_causes_wrapping
+    bounds=Geokit::Bounds.from_point_and_radius([0,90], 9000)
+    assert_in_delta -139.887, bounds.ne.lng, 0.005 # 220.113 before wrapping
+    assert_in_delta -40.113, bounds.sw.lng, 0.005
+    bounds=Geokit::Bounds.from_point_and_radius([0,-90], 9000)
+    assert_in_delta 40.113, bounds.ne.lng, 0.005 # -220.113 before wrapping
+    assert_in_delta 139.887, bounds.sw.lng, 0.005
+  end
+
   def test_bounds_to_span
     sw = Geokit::LatLng.new(32, -96)
     ne = Geokit::LatLng.new(40, -70)
