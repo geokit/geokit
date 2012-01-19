@@ -7,7 +7,7 @@ module Geokit
   # 
   # At present, two forms of distance calculations are provided:
   # 
-  # * Pythagorean Theory (flat Earth) - which assumes the world is flat and loses accuracy over long distances.
+  # * Pythagorean Theory (flat globe) - which assumes the world is flat and loses accuracy over long distances.
   # * Haversine (sphere) - which is fairly accurate, but at a performance cost.
   # 
   # Distance units supported are :miles, :kms, and :nms.
@@ -15,13 +15,30 @@ module Geokit
     PI_DIV_RAD = 0.0174
     KMS_PER_MILE = 1.609
     NMS_PER_MILE = 0.868976242
-    EARTH_RADIUS_IN_MILES = 3963.19
-    EARTH_RADIUS_IN_KMS = EARTH_RADIUS_IN_MILES * KMS_PER_MILE
-    EARTH_RADIUS_IN_NMS = EARTH_RADIUS_IN_MILES * NMS_PER_MILE
-    MILES_PER_LATITUDE_DEGREE = 69.1
+
+    # determining the origin of planetocentric coordinate systems is left as an exercise to the user: http://reference.wolfram.com/legacy/applications/astronomer/AdditionalInformation/PlanetographicCoordinates.html
+    GLOBE_RADII = {
+      :sun      => 432566.81,
+      :jupiter  => 43449.97,
+      :saturn   => 36191.42,
+      :uranus   => 15762.59,
+      :neptune  => 15302.67,
+      :earth    => 3963.19,
+      :venus    => 3761.22,
+      :mars     => 2106.90,
+      :mercury  => 1516.28,
+      :the_moon => 1079.61,
+      :pluto    => 716.59 # get bent, IAU
+    }
+    GLOBE = Geokit::default_globe
+    GLOBE_RADIUS_IN_MILES = GLOBE_RADII[GLOBE]
+    GLOBE_RADIUS_IN_KMS = GLOBE_RADIUS_IN_MILES * KMS_PER_MILE
+    GLOBE_RADIUS_IN_NMS = GLOBE_RADIUS_IN_MILES * NMS_PER_MILE
+
+    MILES_PER_LATITUDE_DEGREE = (Math::PI * (2 * GLOBE_RADIUS_IN_MILES)) / 360 # this used to return 69.1, but accurate to tenths, it ought to be 69.2 (69.1707...)
     KMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * KMS_PER_MILE
     NMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * NMS_PER_MILE
-    LATITUDE_DEGREES = EARTH_RADIUS_IN_MILES / MILES_PER_LATITUDE_DEGREE  
+    LATITUDE_DEGREES = GLOBE_RADIUS_IN_MILES / MILES_PER_LATITUDE_DEGREE
     
     # Mix below class methods into the includer.
     def self.included(receiver) # :nodoc:
@@ -76,9 +93,9 @@ module Geokit
       def endpoint(start,heading, distance, options={})
         units = options[:units] || Geokit::default_units
         radius = case units
-          when :kms; EARTH_RADIUS_IN_KMS
-          when :nms; EARTH_RADIUS_IN_NMS
-          else EARTH_RADIUS_IN_MILES
+          when :kms; GLOBE_RADIUS_IN_KMS
+          when :nms; GLOBE_RADIUS_IN_NMS
+          else GLOBE_RADIUS_IN_MILES
         end
         start=Geokit::LatLng.normalize(start)        
         lat=deg2rad(start.lat)
@@ -133,9 +150,9 @@ module Geokit
       # Returns the multiplier used to obtain the correct distance units.
       def units_sphere_multiplier(units)
         case units
-          when :kms; EARTH_RADIUS_IN_KMS
-          when :nms; EARTH_RADIUS_IN_NMS
-          else EARTH_RADIUS_IN_MILES
+          when :kms; GLOBE_RADIUS_IN_KMS
+          when :nms; GLOBE_RADIUS_IN_NMS
+          else GLOBE_RADIUS_IN_MILES
         end
       end
 

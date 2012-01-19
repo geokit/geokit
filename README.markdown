@@ -2,9 +2,9 @@
 
 The Geokit gem provides:
 
- * Distance calculations between two points on the earth. Calculate the distance in miles, kilometers, or nautical miles, with all the trigonometry abstracted away by GeoKit.
+ * Distance calculations between two points on a globe. Calculate the distance in miles, kilometers, or nautical miles, with all the trigonometry abstracted away by GeoKit.
  * Geocoding from multiple providers. It supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and others. It provides a uniform response structure from all of them. 
-   It also provides a fail-over mechanism, in case your input fails to geocode in one service.
+   It also provides a fail-over mechanism, in case your input fails to geocode in one service. There are currently no providers for globes other than the Earth.
  * Rectangular bounds calculations: is a point within a given rectangular bounds?
  * Heading and midpoint calculations
 
@@ -50,6 +50,7 @@ If you're using this gem by itself, here are the configuration options:
 		# These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
 		Geokit::default_units = :miles
 		Geokit::default_formula = :sphere
+		Geokit::default_globe = :earth
 		
 		# This is the timeout value in seconds to be used for calls to the geocoder web
 		# services.  For no timeout at all, comment out the setting.  The timeout unit
