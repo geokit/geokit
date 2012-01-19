@@ -21,4 +21,8 @@ class InflectorTest < Test::Unit::TestCase #:nodoc: all
     assert_equal 'Borås (Abc)', Geokit::Inflector.titleize('borås (abc)')
   end
    
+  def test_url_escape_with_umlauts
+    assert_equal '%C3%BC%C3%B6%C3%A4', Geokit::Inflector.url_escape('üöä')
+  end
+
 end

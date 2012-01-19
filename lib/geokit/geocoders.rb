@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'net/http'
 require 'ipaddr'
 require 'rexml/document'
@@ -44,9 +46,10 @@ module Geokit
     end
     
     def url_escape(s)
-    s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-      '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      parser = URI::Parser.new
+
+      # The gsub part will make the result compatible with the old tests
+      parser.escape(s).gsub('%20', '+')
     end
     
     def camelize(str)
@@ -440,8 +443,8 @@ module Geokit
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        return self.xml2GeoLoc(xml, address)        
+        logger.debug "Google geocoding. Address: #{address}. Result: #{xml.encode("UTF-8")}"
+        return self.xml2GeoLoc(xml, address)
       end
       
       def self.construct_bias_string_from_options(bias)
