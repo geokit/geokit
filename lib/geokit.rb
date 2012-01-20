@@ -1,7 +1,7 @@
 module Geokit
-  VERSION = '1.6.0'
+  VERSION = '1.6.1'
   # These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
-  @@default_units = :miles
+  @@default_units   = :miles
   @@default_formula = :sphere
 
   [:default_units, :default_formula].each do |sym|
