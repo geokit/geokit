@@ -42,6 +42,17 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert location.success?
   end
 
+  def test_successful_bad_body
+    success = MockSuccess.new
+    success.expects(:body).returns("")
+    url = 'http://www.geoplugin.net/xml.gp?ip=10.10.10.10'
+    GeoKit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(success)
+    location = GeoKit::Geocoders::GeoPluginGeocoder.geocode("10.10.10.10")
+    assert_not_nil location
+    assert !location.success?
+  end
+
+
   def test_invalid_ip
     location = GeoKit::Geocoders::GeoPluginGeocoder.geocode("pixrum")
     assert_not_nil location

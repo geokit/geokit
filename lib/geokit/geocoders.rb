@@ -760,15 +760,27 @@ module Geokit
 
       def self.parse_xml(xml)
         xml = REXML::Document.new(xml)
-        geo = GeoLoc.new
-        geo.provider='geoPlugin'
-        geo.city = xml.elements['//geoplugin_city'].text
-        geo.state = xml.elements['//geoplugin_region'].text
-        geo.country_code = xml.elements['//geoplugin_countryCode'].text
-        geo.lat = xml.elements['//geoplugin_latitude'].text.to_f
-        geo.lng = xml.elements['//geoplugin_longitude'].text.to_f
-        geo.success = !!geo.city && !geo.city.empty?
-        return geo
+        elements = %w{
+          //geoplugin_city 
+          //geoplugin_region 
+          //geoplugin_countryCode 
+          //geoplugin_latitude 
+          //geoplugin_longitude
+        }
+        unless elements.map {|element| xml.elements[element] }.any?(&:nil?)
+          geo = GeoLoc.new
+          geo.provider='geoPlugin'
+          geo.city = xml.elements['//geoplugin_city'].text
+          geo.state = xml.elements['//geoplugin_region'].text
+          geo.country_code = xml.elements['//geoplugin_countryCode'].text
+          geo.lat = xml.elements['//geoplugin_latitude'].text.to_f
+          geo.lng = xml.elements['//geoplugin_longitude'].text.to_f
+          geo.success = !!geo.city && !geo.city.empty?
+          return geo
+        else
+          logger.warn "GeoPluginGeocoder returned an invalid body!"
+          return GeoLoc.new
+        end
       end
     end
 
