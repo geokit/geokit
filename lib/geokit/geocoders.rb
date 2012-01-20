@@ -301,40 +301,70 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url="http://api.local.yahoo.com/MapsService/V1/geocode?appid=#{Geokit::Geocoders::yahoo}&location=#{Geokit::Inflector::url_escape(address_str)}"
+        url="http://where.yahooapis.com/geocode?flags=J&appid=#{Geokit::Geocoders::yahoo}&q=#{Geokit::Inflector::url_escape(address_str)}"
         res = self.call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml = res.body
-        doc = REXML::Document.new(xml)
-        logger.debug "Yahoo geocoding. Address: #{address}. Result: #{xml}"
+        json = res.body
+        logger.debug "Yahoo geocoding. Address: #{address}. Result: #{json}"
+        return self.json2GeoLoc(json, address)
+      end
 
-        if doc.elements['//ResultSet']
-          res=GeoLoc.new
-
-          #basic
-          res.lat=doc.elements['//Latitude'].text
-          res.lng=doc.elements['//Longitude'].text
-          res.country_code=doc.elements['//Country'].text
-          res.provider='yahoo'
-
-          #extended - false if not available
-          res.city=doc.elements['//City'].text if doc.elements['//City'] && doc.elements['//City'].text != nil
-          res.state=doc.elements['//State'].text if doc.elements['//State'] && doc.elements['//State'].text != nil
-          res.zip=doc.elements['//Zip'].text if doc.elements['//Zip'] && doc.elements['//Zip'].text != nil
-          res.street_address=doc.elements['//Address'].text if doc.elements['//Address'] && doc.elements['//Address'].text != nil
-          res.precision=doc.elements['//Result'].attributes['precision'] if doc.elements['//Result']
-          # set the accuracy as google does (added by Andruby)
-          res.accuracy=%w{unknown country state state city zip zip+4 street address building}.index(res.precision)
-          res.success=true
-          return res
-        else
-          logger.info "Yahoo was unable to geocode address: "+address
-          return GeoLoc.new
+      def self.json2GeoLoc(json, address)
+        begin
+          results = ::ActiveSupport::JSON.decode(json)
+        rescue NameError => e
+          results = JSON.parse(json)
         end
 
-        rescue
-          logger.info "Caught an error during Yahoo geocoding call: "+$!
+        if results['ResultSet']['Error'] == 0
+          geoloc = nil
+          results['ResultSet']['Results'].each do |result|
+            extracted_geoloc = extract_geoloc(result)
+            if geoloc.nil?
+              geoloc = extracted_geoloc
+            else
+              geoloc.all.push(extracted_geoloc)
+            end
+          end
+          return geoloc
+        else
+          logger.info "Yahoo was unable to geocode address: " + address
           return GeoLoc.new
+        end
+      end
+
+      def self.extract_geoloc(result_json)
+        geoloc = GeoLoc.new
+
+        # basic
+        geoloc.lat            = result_json['latitude']
+        geoloc.lng            = result_json['longitude']
+        geoloc.country_code   = result_json['countrycode']
+        geoloc.provider       = 'yahoo'
+
+        # extended
+        geoloc.street_address = result_json['line1'].to_s.empty? ? nil : result_json['line1']
+        geoloc.city           = result_json['city']
+        geoloc.state          = geoloc.is_us? ? result_json['statecode'] : result_json['state']
+        geoloc.zip            = result_json['postal']
+
+        geoloc.precision = case result_json['quality']
+          when 9,10         then 'country'
+          when 19..30       then 'state'
+          when 39,40        then 'city'
+          when 49,50        then 'neighborhood'
+          when 59,60,64     then 'zip'
+          when 74,75        then 'zip+4'
+          when 70..72       then 'street'
+          when 80..87       then 'address'
+          when 62,63,90,99  then 'building'
+          else 'unknown'
+        end
+
+        geoloc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(geoloc.precision)
+        geoloc.success = true
+
+        return geoloc
       end
     end
 
