@@ -1,3 +1,18 @@
+=== 1.6.5 / 2012-01-23
+
+* first release by @imajes, thanks @andre for all the hard work!
+* normalized whitespace
+* added support for subpremise on google3 encoder
+* fixed yahoo's support by switching to placefinder
+* switched to multi json for agnostic json support
+* removed hoe and replaced with bundler's gem harness
+
+=== 1.6.0 / 2011-05-27
+
+* added Google geocoder3 support (thanks @projectdx)
+* added FCC encoder support (thanks @paulschreiber)
+* various minor fixes.
+
 === 1.5.0 / 2009-09-21
 * fixed jruby compatibility (thanks manalang)
 * added country name to Google reverse geocoder (thanks joahking)
