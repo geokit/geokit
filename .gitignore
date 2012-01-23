@@ -4,3 +4,4 @@ pkg
 .idea
 nbproject
 *.swp
+Gemfile.lock
