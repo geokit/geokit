@@ -5,12 +5,7 @@ require 'yaml'
 require 'timeout'
 require 'logger'
 
-# do this just in case
-begin
-  ActiveSupport.nil?
-rescue NameError
-  require 'json/pure'
-end
+require 'multi_json'
 
 module Geokit
 
@@ -310,11 +305,7 @@ module Geokit
       end
 
       def self.json2GeoLoc(json, address)
-        begin
-          results = ::ActiveSupport::JSON.decode(json)
-        rescue NameError => e
-          results = JSON.parse(json)
-        end
+        results = MultiJson.decode(json)
 
         if results['ResultSet']['Error'] == 0
           geoloc = nil
@@ -620,12 +611,7 @@ module Geokit
 
       def self.json2GeoLoc(json, address="")
         ret=nil
-        begin
-          results=::ActiveSupport::JSON.decode(json)
-        rescue NameError => e
-          results=JSON.parse(json)
-        end
-
+        results = MultiJson.decode(json)
 
         if results['status'] == 'OVER_QUERY_LIMIT'
           raise Geokit::TooManyQueriesError
@@ -755,12 +741,8 @@ module Geokit
        # "status"=>"OK"}
 
        def self.json2GeoLoc(json, address="")
-         ret=nil
-         begin
-           results=::ActiveSupport::JSON.decode(json)
-         rescue NameError => e
-           results=JSON.parse(json)
-         end
+         ret = nil
+         results = MultiJson.decode(json)
 
          if results.has_key?('Err') and results['Err']["msg"] == 'There are no results for this location'
            return GeoLoc.new
