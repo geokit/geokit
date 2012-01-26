@@ -112,7 +112,7 @@ If you're using this gem by itself, here are the configuration options:
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 
-If you're using this gem with the [geokit-rails plugin](http://github.com/andre/geokit-rails/tree/master), the plugin
+If you're using this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-rails), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
 
 ## SUPPORTED GEOCODERS
