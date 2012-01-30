@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require 'test/unit'
-require 'lib/geokit'
+require 'geokit'
 
 class InflectorTest < Test::Unit::TestCase #:nodoc: all
 
@@ -20,5 +20,10 @@ class InflectorTest < Test::Unit::TestCase #:nodoc: all
     assert_equal 'Borås (Abc)', Geokit::Inflector.titleize('borås (Abc)')
     assert_equal 'Borås (Abc)', Geokit::Inflector.titleize('borås (abc)')
   end
+
+  def test_url_enconde_with_unicode
+    assert_equal "Park+Alle+289R%2C+2605+Br%C3%B8ndby%2C+Denmark", Geokit::Inflector.url_escape('Park Alle 289R, 2605 Brøndby, Denmark')
+  end
+  
 
 end
