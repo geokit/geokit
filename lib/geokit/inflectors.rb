@@ -28,7 +28,7 @@ module Geokit
 
     def url_escape(s)
       s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-        '%' + $1.unpack('H2' * $1.size).join('%').upcase
+        '%' + $1.unpack('H2H2H2H2').select{ |c| !c.empty? }.join('%').upcase
       end.tr(' ', '+')
     end
 
