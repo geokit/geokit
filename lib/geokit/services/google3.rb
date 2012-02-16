@@ -126,6 +126,8 @@ module Geokit
               res.country = comp['long_name']
             when comp['types'].include?("administrative_area_level_2")
               res.district = comp['long_name']
+            when comp['types'].include?('neighborhood')
+              res.neighborhood = comp['short_name']
             end
           end
           if res.street_name
