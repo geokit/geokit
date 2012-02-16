@@ -69,4 +69,8 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
       @loc.to_yaml)
   end
 
+  def test_neighborhood
+    @loc.neighborhood = "SoMa"
+    assert_equal @loc.neighborhood, 'SoMa'
+  end
 end
