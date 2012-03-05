@@ -545,4 +545,42 @@ module Geokit
       end
     end
   end
+  
+  # A complex polygon made of multiple points.  End point must equal start point to close the poly.
+  class Polygon
+    
+    attr_accessor :poly_y, :poly_x
+    
+    def initialize(points)
+      # Pass in an array of Geokit::LatLng
+      @poly_y = []
+      @poly_x = []
+
+      points.each do |point|
+        @poly_x << point.lng
+        @poly_y << point.lat
+      end
+    end
+
+    def contains?(point)
+      j = @poly_x.length - 1
+      oddNodes = false
+      x = point.lng
+      y = point.lat
+
+      for i in (0..j)
+        if (@poly_y[i] < y && @poly_y[j] >= y ||
+            @poly_y[j] < y && @poly_y[i] >= y)
+          if (@poly_x[i] + (y - @poly_y[i]) / (@poly_y[j] - @poly_y[i]) * (@poly_x[j] - @poly_x[i]) < x)
+            oddNodes = !oddNodes
+          end
+        end
+ 
+        j=i
+      end
+
+      oddNodes
+    end # contains?
+  end # class Polygon
+  
 end
