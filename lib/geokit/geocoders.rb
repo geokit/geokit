@@ -40,6 +40,9 @@ module Geokit
     @@request_timeout = nil
     @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+    @@google_client_id = nil
+    @@google_cryptographic_key = nil
+    @@google_channel = nil
     @@geocoder_us = false
     @@geocoder_ca = false
     @@geonames = false
