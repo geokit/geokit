@@ -4,12 +4,12 @@ module Geokit
 
       private
       # Template method which does the reverse-geocode lookup.
-      def self.do_reverse_geocode(latlng, options = {})
+      def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
         if !Geokit::Geocoders::google_client_id.nil? and !Geokit::Geocoders::google_cryptographic_key.nil?
-          urlToSign = "/maps/api/geocode/json?latlng=#{Geokit::Inflector::url_escape(latlng.ll)}&client=#{Geokit::Geocoders::google_client_id}" + "#{(Geokit::Geocoders::google_channel.present? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}" + "&sensor=false"
+          urlToSign = "/maps/api/geocode/json?latlng=#{Geokit::Inflector::url_escape(latlng.ll)}&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}" + "&sensor=false"
           signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
-          submit_url =  (options[:ssl] == true ? "https://" : "http://") + "maps.googleapis.com" + urlToSign + "&signature=#{signature}"
+          submit_url =  "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
         else
           submit_url = "http://maps.google.com/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}"
         end
@@ -49,9 +49,9 @@ module Geokit
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         if !Geokit::Geocoders::google_client_id.nil? and !Geokit::Geocoders::google_cryptographic_key.nil?
-          urlToSign = "/maps/api/geocode/json?address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}&client=#{Geokit::Geocoders::google_client_id}" + "#{(Geokit::Geocoders::google_channel.present? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}" + "&sensor=false"
+          urlToSign = "/maps/api/geocode/json?address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}" + "&sensor=false"
           signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
-          submit_url =  (options[:ssl] == true ? "https://" : "http://") + "maps.googleapis.com" + urlToSign + "&signature=#{signature}"
+          submit_url =  "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
         else
           submit_url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}"
         end
