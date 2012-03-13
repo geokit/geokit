@@ -44,6 +44,15 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @complex_outside_two = Geokit::LatLng.new(45.30435378077673, -93.6859130859375)
     @complex_outside_three = Geokit::LatLng.new(45.538820010517036, -93.486946108751)
 
+    # Test open sided polygon aka line - for closing on initialize
+    @op1 = Geokit::LatLng.new(44.97402795596173, -92.7297592163086)
+    @op2 = Geokit::LatLng.new(44.97395509241393, -92.68448066781275)
+    @op3 = Geokit::LatLng.new(44.94455954512172, -92.68413734505884)
+    @op4 = Geokit::LatLng.new(44.94383053857761, -92.72876930306666)
+
+    @open_points = [@op1, @op2, @op3, @op4]
+    @open_polygon = Geokit::Polygon.new(@open_points)
+
   end  
 
   def test_point_inside_poly
@@ -74,6 +83,19 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     assert !@complex_polygon.contains?(@complex_outside_one)
     assert !@complex_polygon.contains?(@complex_outside_two) 
     assert !@complex_polygon.contains?(@complex_outside_three)     
+  end
+  
+  def test_open_polygon
+    # A polygon can only exist of the last point is equal to the first
+    # Otherwise, it would just be a line of points.
+
+    #puts "\n\nTesting intialize function to close an open polygon..."
+    #puts "\t Does poly_x[0] (#{@open_polygon.poly_x[0]}) == poly_x[-1] (#{@open_polygon.poly_x[-1]}) ?"
+    #puts "\t Does poly_y[0] (#{@open_polygon.poly_y[0]}) == poly_y[-1] (#{@open_polygon.poly_y[-1]}) ?"
+    
+    assert @open_polygon.poly_x[0] == @open_polygon.poly_x[-1]
+    assert @open_polygon.poly_y[0] == @open_polygon.poly_y[-1]
+    
   end
 
 end

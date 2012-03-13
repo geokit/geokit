@@ -553,13 +553,21 @@ module Geokit
     
     def initialize(points)
       # Pass in an array of Geokit::LatLng
-      @poly_y = []
       @poly_x = []
+      @poly_y = []
 
       points.each do |point|
         @poly_x << point.lng
         @poly_y << point.lat
       end
+      
+      # A Polygon must be 'closed', the last point equal to the first point
+      if not @poly_x[0] == @poly_x[-1] or not @poly_y[0] == @poly_y[-1]
+        # Append the first point to the array to close the polygon
+        @poly_x << @poly_x[0]
+        @poly_y << @poly_y[0]
+      end
+      
     end
 
     def contains?(point)
