@@ -1,6 +1,10 @@
 require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 
 Geokit::Geocoders::google = 'Google'
+Geokit::Geocoders::google_client_id = nil
+Geokit::Geocoders::google_cryptographic_key = nil
+Geokit::Geocoders::google_channel = nil
+
 
 class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
