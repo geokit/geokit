@@ -69,5 +69,65 @@ describe "Geocoder" do
     end
     
   end
+
+  describe "sorting results" do
+    let(:raw_results) {
+      {
+        "results" => [
+          { "formatted_address" => '1-First Rooftop Place',
+            "geometry" => {"location_type" => "ROOFTOP", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '2-Second Rooftop Place',
+            "geometry" => {"location_type" => "ROOFTOP", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '7-First Approximate Place',
+            "geometry" => {"location_type" => "APPROXIMATE", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '8-First Approximate Place',
+            "geometry" => {"location_type" => "APPROXIMATE", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '5-First Geometric-Center Place',
+            "geometry" => {"location_type" => "GEOMETRIC_CENTER", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '6-Second Geometric-Center Place',
+            "geometry" => {"location_type" => "GEOMETRIC_CENTER", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '3-First Range-Interpolated Place',
+            "geometry" => {"location_type" => "RANGE_INTERPOLATED", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []},
+
+          { "formatted_address" => '4-Second Range-Interpolated Place',
+            "geometry" => {"location_type" => "RANGE_INTERPOLATED", "location" => {"lat" => 1.0, "lng" => 1.0}},
+            'address_components' => []}
+        ]
+      }
+    }
+
+    it "returns the most relevant result first" do
+      JSON.stub!(:decode).and_return(raw_results)
+      JSON.stub!(:parse).and_return(raw_results)
+
+      results = Geokit::Geocoders::GoogleGeocoder3.json2GeoLoc('mock-json-string')
+
+      # first default result should be the first one.
+      results.full_address.should == '1-First Rooftop Place'
+
+      # all results should be ordered properly
+      results.all[0].full_address.should == '1-First Rooftop Place'
+      results.all[1].full_address.should == '2-Second Rooftop Place'
+      results.all[2].full_address.should == '3-First Range-Interpolated Place'
+      results.all[3].full_address.should == '4-Second Range-Interpolated Place'
+      results.all[4].full_address.should == '5-First Geometric-Center Place'
+      results.all[5].full_address.should == '6-Second Geometric-Center Place'
+      results.all[6].full_address.should == '7-First Approximate Place'
+      results.all[7].full_address.should == '8-First Approximate Place'
+    end
+  end
   
 end
