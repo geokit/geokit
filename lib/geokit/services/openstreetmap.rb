@@ -92,7 +92,7 @@ module Geokit
           address_data = result_json['address']
 
           geoloc.country = address_data['country']
-          geoloc.country_code = address_data['country_code'].upcase
+          geoloc.country_code = address_data['country_code'].upcase if address_data['country_code']
           geoloc.state = address_data['state']
           geoloc.city = address_data['city']
           geoloc.city = address_data['county'] if geoloc.city.nil? && address_data['county']
