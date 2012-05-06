@@ -11,6 +11,10 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
       {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":40,"Found":1,"Results":[{"quality":40,"latitude":"37.7742","longitude":"-122.417068","offsetlat":"37.7742","offsetlon":"-122.417068","radius":10700,"name":"","line1":"","line2":"San Francisco, CA","line3":"","line4":"United States","house":"","street":"","xstreet":"","unittype":"","unit":"","postal":"","neighborhood":"","city":"San Francisco","county":"San Francisco County","state":"California","country":"United States","countrycode":"US","statecode":"CA","countycode":"","uzip":"94102","hash":"","woeid":2487956,"woetype":7}]}}
     EOF
 
+    YAHOO_NO_RESULTS=<<-EOF.strip
+      {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":10,"Found":0}}
+    EOF
+
   def setup
     super
     @yahoo_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105-1522", :country_code=>"US"}
@@ -68,6 +72,19 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc))
+  end
+
+  def test_no_results
+    no_results_address = "ZZ, ZZ, ZZ"
+    no_results_full_hash = {:street_address=>"ZZ", :city=>"ZZ", :state=>"ZZ"}
+    no_results_full_loc = Geokit::GeoLoc.new(no_results_full_hash)
+
+    response = MockSuccess.new
+    response.expects(:body).returns(YAHOO_NO_RESULTS)
+    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(no_results_address)}"
+    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    result = Geokit::Geocoders::YahooGeocoder.geocode(no_results_address)
+    assert_equal ",", result.ll
   end
 
   def test_service_unavailable
