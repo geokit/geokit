@@ -52,7 +52,7 @@ module Geokit
       end
 
       def self.json2GeoLoc(json, obj)
-        results = MultiJson.decode(json)
+        results = MultiJson.load(json)
         if results.is_a?(Hash)
           return GeoLoc.new if results['error']
           results = [results]
