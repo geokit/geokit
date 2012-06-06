@@ -1,5 +1,6 @@
 module Geokit
   module Inflector
+    require 'cgi'
 
     extend self
 
@@ -27,9 +28,7 @@ module Geokit
     end
 
     def url_escape(s)
-      s.gsub(/([^ a-zA-Z0-9_.-]+)/nu) do
-        '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      CGI.escape(s)
     end
 
     def camelize(str)
