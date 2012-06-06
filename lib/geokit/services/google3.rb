@@ -100,7 +100,7 @@ module Geokit
           return GeoLoc.new
         end
         # this should probably be smarter.
-        if !results['status'] == 'OK'
+        if results['status'] != 'OK'
           raise Geokit::Geocoders::GeocodeError
         end
         # location_type stores additional data about the specified location.
