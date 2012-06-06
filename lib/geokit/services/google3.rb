@@ -191,7 +191,7 @@ module Geokit
 
         all = @unsorted.sort_by { |a| a.accuracy }.reverse
         encoded = all.first
-        encoded.all = all
+        encoded.all = all if encoded
         return encoded
       end
     end

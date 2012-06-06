@@ -52,7 +52,7 @@ module Geokit
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
+        logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(xml)}"
         return self.xml2GeoLoc(xml, address)
       end
 
