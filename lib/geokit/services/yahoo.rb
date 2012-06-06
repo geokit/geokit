@@ -18,7 +18,7 @@ module Geokit
       end
 
       def self.json2GeoLoc(json, address)
-        results = MultiJson.decode(json)
+        results = MultiJson.load(json)
 
         if results['ResultSet']['Error'] == 0 && results['ResultSet']['Results'] != nil
           geoloc = nil
