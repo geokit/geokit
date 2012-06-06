@@ -67,4 +67,9 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
       "--- !ruby/object:Geokit::GeoLoc \ncity: San Francisco\ncountry_code: US\nfull_address: \nlat: \nlng: \nprecision: unknown\nprovince: \nstate: CA\nstreet_address: \nstreet_name: \nstreet_number: \nsub_premise: \nsuccess: false\nzip: \"94105\"\n",
       @loc.to_yaml)
   end
+
+  def test_neighborhood
+    @loc.neighborhood = "SoMa"
+    assert_equal @loc.neighborhood, 'SoMa'
+  end
 end
