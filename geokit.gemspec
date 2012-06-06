@@ -17,12 +17,13 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.rdoc_options = ["--main", "README.markdown"]
   s.extra_rdoc_files = ["README.markdown"]
-
-  s.files = ["README.markdown", "Rakefile", "lib/geokit/geocoders.rb", "lib/geokit.rb",
-    "lib/geokit/mappable.rb", "test/test_base_geocoder.rb", "test/test_bounds.rb",
-    "test/test_ca_geocoder.rb", "test/test_geoloc.rb", "test/test_google_geocoder3.rb",
-    "test/test_google_geocoder.rb", "test/test_latlng.rb", "test/test_multi_geocoder.rb",
-    "test/test_us_geocoder.rb", "test/test_yahoo_geocoder.rb"
+    
+  s.files = [
+    "README.markdown", "Rakefile",  "lib/geokit.rb", "lib/geokit/geocoders.rb", "lib/geokit/inflectors.rb", 
+    "lib/geokit/mappable.rb", "lib/geokit/multi_geocoder.rb", "lib/geokit/services/ca_geocoder.rb", 
+    "lib/geokit/services/fcc.rb", "lib/geokit/services/geo_plugin.rb", "lib/geokit/services/geonames.rb", 
+    "lib/geokit/services/google.rb", "lib/geokit/services/google3.rb", "lib/geokit/services/ip.rb", 
+    "lib/geokit/services/us_geocoder.rb", "lib/geokit/services/yahoo.rb", "lib/geokit/version.rb"
   ]
 
   s.test_files = [
