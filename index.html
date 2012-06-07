@@ -1,0 +1,313 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Geokit by imajes</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/imajes/geokit">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/imajes/geokit/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/imajes/geokit/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Geokit</h1>
+          <p>Official Geokit Gem. Geokit gem provides geocoding and distance/heading calculations. Pair with the geokit-rails plugin for full-fledged location-based app functionality.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/imajes">imajes</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h2>GEOKIT GEM DESCRIPTION</h2>
+
+<p>The Geokit gem provides:</p>
+
+<ul>
+<li>Distance calculations between two points on the earth. Calculate the distance in miles, kilometers, or nautical miles, with all the trigonometry abstracted away by GeoKit.</li>
+<li>Geocoding from multiple providers. It supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and others. It provides a uniform response structure from all of them.
+It also provides a fail-over mechanism, in case your input fails to geocode in one service.</li>
+<li>Rectangular bounds calculations: is a point within a given rectangular bounds?</li>
+<li>Heading and midpoint calculations</li>
+</ul><p>Combine this gem with the <a href="http://github.com/imajes/geokit-rails">geokit-rails plugin</a> to get location-based finders for your Rails app.</p>
+
+<ul>
+<li>Geokit main site <a href="http://rubygeokit.org">http://rubygeokit.org/</a>.</li>
+<li>Repository at Github: <a href="http://github.com/imajes/geokit">http://github.com/imajes/geokit</a>.</li>
+<li>RDoc pages: <a href="http://rdoc.info/github/imajes/geokit/master/frames">http://rdoc.info/github/imajes/geokit/master/frames</a>
+</li>
+<li>Follow the Google Group for updates and discussion on Geokit: <a href="http://groups.google.com/group/geokit">http://groups.google.com/group/geokit</a>
+</li>
+</ul><h2>INSTALL</h2>
+
+<pre><code>gem install geokit
+</code></pre>
+
+<h2>QUICK START</h2>
+
+<pre><code>irb&gt; require 'rubygems'
+irb&gt; require 'geokit'
+irb&gt; a=Geokit::Geocoders::YahooGeocoder.geocode '140 Market St, San Francisco, CA'
+irb&gt; a.ll
+ =&gt; 37.79363,-122.396116
+irb&gt; b=Geokit::Geocoders::YahooGeocoder.geocode '789 Geary St, San Francisco, CA'
+irb&gt; b.ll
+ =&gt; 37.786217,-122.41619
+irb&gt; a.distance_to(b)
+ =&gt; 1.21120007413626
+irb&gt; a.heading_to(b)
+=&gt; 244.959832435678
+irb(main):006:0&gt; c=a.midpoint_to(b)      # what's halfway from a to b?
+irb&gt; c.ll
+=&gt; "37.7899239257175,-122.406153503469"
+irb(main):008:0&gt; d=c.endpoint(90,10)     # what's 10 miles to the east of c?
+irb&gt; d.ll
+=&gt; "37.7897825005142,-122.223214776155"
+</code></pre>
+
+<p>FYI, that <code>.ll</code> method means "latitude longitude".</p>
+
+<p>See the RDOC more more ... there are also operations on rectangular bounds (e.g., determining if a point is within bounds, find the center, etc).</p>
+
+<h2>CONFIGURATION</h2>
+
+<p>If you're using this gem by itself, here are the configuration options:</p>
+
+<pre><code># These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
+Geokit::default_units = :miles
+Geokit::default_formula = :sphere
+
+# This is the timeout value in seconds to be used for calls to the geocoder web
+# services.  For no timeout at all, comment out the setting.  The timeout unit
+# is in seconds.
+Geokit::Geocoders::request_timeout = 3
+
+# These settings are used if web service calls must be routed through a proxy.
+# These setting can be nil if not needed, otherwise, addr and port must be
+# filled in at a minimum.  If the proxy requires authentication, the username
+# and password can be provided as well.
+Geokit::Geocoders::proxy_addr = nil
+Geokit::Geocoders::proxy_port = nil
+Geokit::Geocoders::proxy_user = nil
+Geokit::Geocoders::proxy_pass = nil
+
+# This is your yahoo application key for the Yahoo Geocoder.
+# See http://developer.yahoo.com/faq/index.html#appid
+# and http://developer.yahoo.com/maps/rest/V1/geocode.html
+Geokit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
+
+# This is your Google Maps geocoder key.
+# See http://www.google.com/apis/maps/signup.html
+# and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
+Geokit::Geocoders::google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+
+# You can also set multiple API KEYS for different domains that may be directed to this same application.
+# The domain from which the current user is being directed will automatically be updated for Geokit via
+# the GeocoderControl class, which gets it's begin filter mixed into the ActionController.
+# You define these keys with a Hash as follows:
+#Geokit::Geocoders::google = { 'rubyonrails.org' =&gt; 'RUBY_ON_RAILS_API_KEY', 'ruby-docs.org' =&gt; 'RUBY_DOCS_API_KEY' }
+
+# This is your username and password for geocoder.us.
+# To use the free service, the value can be set to nil or false.  For
+# usage tied to an account, the value should be set to username:password.
+# See http://geocoder.us
+# and http://geocoder.us/user/signup
+Geokit::Geocoders::geocoder_us = false
+
+# This is your authorization key for geocoder.ca.
+# To use the free service, the value can be set to nil or false.  For
+# usage tied to an account, set the value to the key obtained from
+# Geocoder.ca.
+# See http://geocoder.ca
+# and http://geocoder.ca/?register=1
+Geokit::Geocoders::geocoder_ca = false
+
+# require "external_geocoder.rb"
+# Please see the section "writing your own geocoders" for more information.
+# Geokit::Geocoders::external_key = 'REPLACE_WITH_YOUR_API_KEY'
+
+# This is the order in which the geocoders are called in a failover scenario
+# If you only want to use a single geocoder, put a single symbol in the array.
+# Valid symbols are :google, :yahoo, :us, and :ca.
+# Be aware that there are Terms of Use restrictions on how you can use the
+# various geocoders.  Make sure you read up on relevant Terms of Use for each
+# geocoder you are going to use.
+Geokit::Geocoders::provider_order = [:google,:us]
+
+# The IP provider order. Valid symbols are :ip,:geo_plugin.
+# As before, make sure you read up on relevant Terms of Use for each.
+# Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
+</code></pre>
+
+<p>If you're using this gem with the <a href="http://github.com/imajes/geokit-rails">geokit-rails plugin</a>, the plugin
+creates a template with these settings and places it in <code>config/initializers/geokit_config.rb</code>.</p>
+
+<h2>SUPPORTED GEOCODERS</h2>
+
+<h3>"regular" address geocoders</h3>
+
+<ul>
+<li>Yahoo Geocoder - requires an API key.</li>
+<li>Geocoder.us - may require authentication if performing more than the free request limit.</li>
+<li>Geocoder.ca - for Canada; may require authentication as well.</li>
+<li>Geonames - a free geocoder</li>
+</ul><h3>address geocoders that also provide reverse geocoding</h3>
+
+<ul>
+<li>Google Geocoder - requires an API key. Also supports multiple results and bounding box/country code biasing.</li>
+</ul><h3>IP address geocoders</h3>
+
+<ul>
+<li>IP Geocoder - geocodes an IP address using hostip.info's web service.</li>
+<li>Geoplugin.net -- another IP address geocoder</li>
+</ul><h3>Google Geocoder Tricks</h3>
+
+<p>The Google Geocoder sports a number of useful tricks that elevate it a little bit above the rest of the currently supported geocoders. For starters, it returns a <code>suggested_bounds</code> property for all your geocoded results, so you can more easily decide where and how to center a map on the places you geocode. Here's a quick example:</p>
+
+<pre><code>irb&gt; res = Geokit::Geocoders::GoogleGeocoder.geocode('140 Market St, San Francisco, CA')
+irb&gt; pp res.suggested_bounds
+#&lt;Geokit::Bounds:0x53b36c
+ @ne=#&lt;Geokit::LatLng:0x53b204 @lat=37.7968528, @lng=-122.3926933&gt;,
+ @sw=#&lt;Geokit::LatLng:0x53b2b8 @lat=37.7905576, @lng=-122.3989885&gt;&gt;
+</code></pre>
+
+<p>In addition, you can use viewport or country code biasing to make sure the geocoders prefers results within a specific area. Say we wanted to geocode the city of Syracuse in Italy. A normal geocoding query would look like this:</p>
+
+<pre><code>irb&gt; res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse')
+irb&gt; res.full_address
+=&gt; "Syracuse, NY, USA"
+</code></pre>
+
+<p>Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the <code>:bias</code> option of the <code>geocode</code> method. You can find a comprehensive list of all ccTLDs here: <a href="http://en.wikipedia.org/wiki/CcTLD">http://en.wikipedia.org/wiki/CcTLD</a>.</p>
+
+<pre><code>irb&gt; res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias =&gt; 'it')
+irb&gt; res.full_address
+=&gt; "Syracuse, Italy"
+</code></pre>
+
+<p>Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.</p>
+
+<pre><code>irb&gt; res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka')
+irb&gt; res.full_address
+=&gt; "Winnetka, IL, USA"
+</code></pre>
+
+<p>Not it. What we can do is tell the geocoder to return results only from in and around LA.</p>
+
+<pre><code>irb&gt; la_bounds = Geokit::Geocoders::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
+irb&gt; res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias =&gt; la_bounds)
+irb&gt; res.full_address
+=&gt; "Winnetka, California, USA"
+</code></pre>
+
+<h3>The Multigeocoder</h3>
+
+<p>Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders. Its configured by setting Geokit::Geocoders::provider_order, and Geokit::Geocoders::ip_provider_order. You should call the Multi-Geocoder with its :geocode method, supplying one address parameter which is either a real street address, or an ip address. For example:</p>
+
+<pre><code>Geokit::Geocoders::MultiGeocoder.geocode("900 Sycamore Drive")
+
+Geokit::Geocoders::MultiGeocoder.geocode("12.12.12.12")
+</code></pre>
+
+<h2>MULTIPLE RESULTS</h2>
+
+<p>Some geocoding services will return multple results if the there isn't one clear result.
+Geoloc can capture multiple results through its "all" method. Currently only the Google geocoder
+supports multiple results:</p>
+
+<pre><code>irb&gt; geo=Geokit::Geocoders::GoogleGeocoder.geocode("900 Sycamore Drive")
+irb&gt; geo.full_address
+=&gt; "900 Sycamore Dr, Arkadelphia, AR 71923, USA"
+irb&gt; geo.all.size
+irb&gt; geo.all.each { |e| puts e.full_address }
+900 Sycamore Dr, Arkadelphia, AR 71923, USA
+900 Sycamore Dr, Burkburnett, TX 76354, USA
+900 Sycamore Dr, TN 38361, USA
+....
+</code></pre>
+
+<p>geo.all is just an array of additional Geolocs, so do what you want with it. If you call .all on a
+geoloc that doesn't have any additional results, you will get  an array of one.</p>
+
+<h2>NOTES ON WHAT'S WHERE</h2>
+
+<p>mappable.rb contains the Mappable module, which provides basic
+distance calculation methods, i.e., calculating the distance
+between two points.</p>
+
+<p>mappable.rb also contains LatLng, GeoLoc, and Bounds.
+LatLng is a simple container for latitude and longitude, but
+it's made more powerful by mixing in the above-mentioned Mappable
+module -- therefore, you can calculate easily the distance between two
+LatLng ojbects with <code>distance = first.distance_to(other)</code></p>
+
+<p>GeoLoc (also in mappable.rb) represents an address or location which
+has been geocoded. You can get the city, zipcode, street address, etc.
+from a GeoLoc object. GeoLoc extends LatLng, so you also get lat/lng
+AND the Mappable modeule goodness for free.</p>
+
+<p>geocoders.rb contains all the geocoder implemenations. All the gercoders
+inherit from a common base (class Geocoder) and implement the private method
+do_geocode.</p>
+
+<h2>WRITING YOUR OWN GEOCODERS</h2>
+
+<p>If you would like to write your own geocoders, you can do so by requiring 'geokit' or 'geokit/geocoders.rb' in a new file and subclassing the base class (which is class "Geocoder").
+You must then also require such extenal file back in your main geokit configuration.</p>
+
+<p>require "geokit"</p>
+
+<p>module Geokit
+    module Geocoders</p>
+
+<pre><code># Should be overriden as Geokit::Geocoders::external_key in your configuration file
+  @@external_key = 'REPLACE_WITH_YOUR_API_KEY'
+  __define_accessors
+
+# Replace name 'External' (below) with the name of your custom geocoder class
+# and use :external to specify this geocoder in your list of geocoders.
+  class ExternalGeocoder &lt; Geocoder
+    private
+    def self.do_geocode(address, options = {})
+      # Main geocoding method
+  end
+
+    def self.parse_http_resp(body) # :nodoc:
+      # Helper method to parse http response. See geokit/geocoders.rb.
+    end
+  end
+
+end
+</code></pre>
+
+<p>end</p>
+
+<h2>GOOGLE GROUP</h2>
+
+<p>Follow the Google Group for updates and discussion on Geokit: <a href="http://groups.google.com/group/geokit">http://groups.google.com/group/geokit</a></p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
