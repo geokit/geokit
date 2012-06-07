@@ -10,8 +10,9 @@ The Geokit gem provides:
 
 Combine this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-rails) to get location-based finders for your Rails app.
 
-* Geokit Documentation at Rubyforge [http://rubygeokit.org/](http://rubygeokit.org).
+* Geokit main site [http://rubygeokit.org/](http://rubygeokit.org).
 * Repository at Github: [http://github.com/imajes/geokit](http://github.com/imajes/geokit).
+* RDoc pages: [http://rdoc.info/github/imajes/geokit/master/frames](http://rdoc.info/github/imajes/geokit/master/frames)
 * Follow the Google Group for updates and discussion on Geokit: [http://groups.google.com/group/geokit](http://groups.google.com/group/geokit)
 
 ## INSTALL
