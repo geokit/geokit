@@ -16,7 +16,7 @@ Combine this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-
 
 ## INSTALL
 
-    sudo gem install geokit
+    gem install geokit
 
 ## QUICK START
 
@@ -233,7 +233,7 @@ You must then also require such extenal file back in your main geokit configurat
         private
         def self.do_geocode(address, options = {})
           # Main geocoding method
-        end
+      end
 
         def self.parse_http_resp(body) # :nodoc:
           # Helper method to parse http response. See geokit/geocoders.rb.
