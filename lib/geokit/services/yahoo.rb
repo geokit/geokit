@@ -22,7 +22,7 @@ module Geokit
 
         if results['ResultSet']['Error'] == '0' && results['ResultSet']['Result'] != nil
           geoloc = nil
-          extracted_geoloc = extract_geoloc(results['Results']['Result'])
+          extracted_geoloc = extract_geoloc(results['ResultSet']['Result'])
           if geoloc.nil?
             geoloc = extracted_geoloc
           else
