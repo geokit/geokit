@@ -20,15 +20,13 @@ module Geokit
       def self.json2GeoLoc(json, address)
         results = MultiJson.load(json)
 
-        if results['ResultSet']['Error'] == 0 && results['ResultSet']['Results'] != nil
+        if results['ResultSet']['Error'] == '0' && results['ResultSet']['Result'] != nil
           geoloc = nil
-          results['ResultSet']['Results'].each do |result|
-            extracted_geoloc = extract_geoloc(result)
-            if geoloc.nil?
-              geoloc = extracted_geoloc
-            else
-              geoloc.all.push(extracted_geoloc)
-            end
+          extracted_geoloc = extract_geoloc(results['Results']['Result'])
+          if geoloc.nil?
+            geoloc = extracted_geoloc
+          else
+            geoloc.all.push(extracted_geoloc)
           end
           return geoloc
         else
