@@ -16,7 +16,7 @@ module Geokit
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlng.ll)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
         #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
-        xml = res.body
+        xml = self.transcode_to_utf8(res.body)
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
         return self.xml2GeoLoc(xml)
       end
@@ -51,7 +51,7 @@ module Geokit
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml = res.body
+        xml = self.transcode_to_utf8(res.body)
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
         return self.xml2GeoLoc(xml, address)
       end
@@ -136,6 +136,16 @@ module Geokit
         res.success=true
 
         return res
+      end
+      
+      def self.transcode_to_utf8(body)
+        require 'iconv' unless String.method_defined?(:encode)
+        if String.method_defined?(:encode)
+          body.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+        else
+          ic = Iconv.new('UTF-8', 'UTF-8//IGNORE')
+          body = ic.iconv(body)
+        end        
       end
     end
   end
