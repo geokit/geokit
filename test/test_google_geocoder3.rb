@@ -428,7 +428,6 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
 
-puts res.to_hash.inspect
      assert_equal 9, res.accuracy
    end
 
@@ -479,7 +478,7 @@ puts res.to_hash.inspect
      res = Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
 
      assert_instance_of Geokit::Bounds, res.suggested_bounds
-     assert_equal Geokit::Bounds.new(Geokit::LatLng.new(37.7908019197085, -122.395348980292), Geokit::LatLng.new(37.7934998802915, -122.392651019708)), res.suggested_bounds
+     assert_equal Geokit::Bounds.new(Geokit::LatLng.new(37.7908019197085, -122.3953489802915), Geokit::LatLng.new(37.7934998802915, -122.3926510197085)), res.suggested_bounds
    end
 
    def test_service_unavailable
@@ -571,7 +570,7 @@ puts res.to_hash.inspect
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape("3961 V\u00EDa Marisol")}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      assert_raise Geokit::Geocoders::GeocodeError do
-       res=Geokit::Geocoders::GoogleGeocoder3.geocode(@address)
+       Geokit::Geocoders::GoogleGeocoder3.geocode("3961 V\u00EDa Marisol")
      end
    end
 end
