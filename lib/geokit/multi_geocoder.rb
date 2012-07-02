@@ -49,7 +49,7 @@ module Geokit
             res = klass.send :reverse_geocode, latlng
             return res if res.success?
           rescue => e
-            logger.error("An error has occurred during geocoding: #{e}\nAddress: #{address}. Provider: #{provider}")
+            logger.error("An error has occurred during geocoding: #{e}\nLatlng: #{latlng}. Provider: #{provider}")
           end
         end
         # If we get here, we failed completely.

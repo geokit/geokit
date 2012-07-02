@@ -9,11 +9,13 @@ require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
+    @header = {}
   end
 end
 
 class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
   def initialize
+    @header = {}
   end
 end
 
