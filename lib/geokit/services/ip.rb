@@ -36,9 +36,10 @@ module Geokit
         return GeoLoc.new if self.private_ip_address?(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         response = self.call_geocoder_service(url)
+        ensure_utf8_encoding(response)
         response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
       rescue
-        logger.error "Caught an error during HostIp geocoding call: "+$!
+        logger.error "Caught an error during HostIp geocoding call: " + $!.to_s
         return GeoLoc.new
       end
 
@@ -61,6 +62,27 @@ module Geokit
         res.country_code.chop!
         res.success = !(res.city =~ /\(.+\)/)
         res
+      end
+
+      # Forces UTF-8 encoding on the body
+      # Rails expects string input to be UTF-8
+      # hostip.info specifies the charset encoding in the headers
+      # thus extract encoding from headers and tell Rails about it by forcing it
+      def self.ensure_utf8_encoding(response)
+        if (enc_string = extract_charset(response))
+          if Encoding.aliases.values.include?(enc_string.upcase)
+            response.body.force_encoding(enc_string.upcase) if response.body.respond_to?(:force_encoding)
+            response.body.encode("UTF-8")
+          end
+        end
+      end
+
+      # Extracts charset out of the response headers
+      def self.extract_charset(response)
+        if (content_type = response['content-type'])
+          capture = content_type.match(/charset=(?<encoding>.+)/)
+          capture && capture['encoding']
+        end
       end
 
       # Checks whether the IP address belongs to a private address range.

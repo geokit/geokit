@@ -17,6 +17,13 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     Longitude: -88.4588
     EOF
 
+  IP_LATIN=<<-EOF
+    Country: BRAZIL (BR)
+    City: S\xE3o Jos\xE9 do Rio Pr\xEAto\n
+    Latitude: -20.8
+    Longitude: -49.3833
+    EOF
+
   IP_UNICODED=<<-EOF
     Country: SWEDEN (SE)
     City: Borås
@@ -69,6 +76,23 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "Bor\303\245s", location.city
     assert_nil location.state
     assert_equal "SE", location.country_code
+    assert_equal "hostip", location.provider
+    assert location.success?
+  end
+
+  def test_non_unicoded_lookup
+    success = MockSuccess.new
+    success.stubs(:body).returns(IP_LATIN)
+    success.stubs(:[]).with('content-type').returns('text/plain; charset=iso-8859-1')
+    url = 'http://api.hostip.info/get_html.php?ip=201.23.177.144&position=true'
+    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
+    location = GeoKit::Geocoders::IpGeocoder.geocode('201.23.177.144')
+    assert_not_nil location
+    assert_equal -20.8, location.lat
+    assert_equal -49.3833, location.lng
+    assert_equal "São José Do Rio Prêto", location.city
+    assert_nil location.state
+    assert_equal "BR", location.country_code
     assert_equal "hostip", location.provider
     assert location.success?
   end
