@@ -79,10 +79,8 @@ module Geokit
 
       # Extracts charset out of the response headers
       def self.extract_charset(response)
-        if (content_type = response['content-type'])
-          capture = content_type.match(/charset=(?<encoding>.+)/)
-          capture && capture['encoding']
-        end
+        # eg 'content-type'=> 'text/plain; charset=iso-8859-1'
+        response['content-type'] && response['content-type'].dup.gsub!(/.*charset=/,'')
       end
 
       # Checks whether the IP address belongs to a private address range.
