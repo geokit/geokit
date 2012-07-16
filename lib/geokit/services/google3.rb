@@ -91,7 +91,7 @@ module Geokit
 
       def self.json2GeoLoc(json, address="")
         ret=nil
-        results = MultiJson.load(json)
+        results = MultiJson.respond_to?(:load) ? MultiJson.load(json) : MultiJson.decode(json)
 
         if results['status'] == 'OVER_QUERY_LIMIT'
           raise Geokit::TooManyQueriesError
