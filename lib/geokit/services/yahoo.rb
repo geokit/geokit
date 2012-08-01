@@ -8,13 +8,22 @@ module Geokit
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
+        bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url="http://where.yahooapis.com/geocode?flags=J&appid=#{Geokit::Geocoders::yahoo}&q=#{Geokit::Inflector::url_escape(address_str)}"
+        url="http://where.yahooapis.com/geocode?flags=J&appid=#{Geokit::Geocoders::yahoo}&q=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}"
         res = self.call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "Yahoo geocoding. Address: #{address}. Result: #{json}"
         return self.json2GeoLoc(json, address)
+      end
+
+      def self.construct_bias_string_from_options(bias)
+        if bias.is_a?(String) or bias.is_a?(Symbol)
+          bias = "en_#{bias}" if bias.to_s.length == 2
+          # country code biasing
+          "&locale=#{bias.to_s}&gflags=L"
+        end
       end
 
       def self.json2GeoLoc(json, address)

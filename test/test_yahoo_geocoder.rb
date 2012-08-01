@@ -74,6 +74,15 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc))
   end
 
+ def test_country_code_biasing
+   response = MockSuccess.new
+   response.expects(:body).returns(YAHOO_FULL)
+
+   url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&locale=it_IT&gflags=L"
+   Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+   biased_result = Geokit::Geocoders::GoogleGeocoder3.geocode('Syracuse', :bias => 'it_IT')
+ end
+
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
     no_results_full_hash = {:street_address=>"ZZ", :city=>"ZZ", :state=>"ZZ"}
