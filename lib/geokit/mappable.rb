@@ -41,12 +41,18 @@ module Geokit
         formula = options[:formula] || Geokit::default_formula
         case formula
         when :sphere
+          error_classes = [Errno::EDOM]
+
+          # Ruby 1.9 raises {Math::DomainError}, but it is not defined in Ruby
+          # 1.8. Backwards-compatibly rescue both errors.
+          error_classes << Math::DomainError if defined?(Math::DomainError)
+
           begin
             units_sphere_multiplier(units) *
                 Math.acos( Math.sin(deg2rad(from.lat)) * Math.sin(deg2rad(to.lat)) +
                 Math.cos(deg2rad(from.lat)) * Math.cos(deg2rad(to.lat)) *
                 Math.cos(deg2rad(to.lng) - deg2rad(from.lng)))
-          rescue Errno::EDOM, Math::DomainError
+          rescue *error_classes
             0.0
           end
         when :flat
