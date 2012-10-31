@@ -38,6 +38,7 @@ module Geokit
     @@proxy_user = nil
     @@proxy_pass = nil
     @@request_timeout = nil
+    @@yandex = 'REPLACE_WITH_YOUR_YANDEX_KEY'
     @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@google_client_id = nil
