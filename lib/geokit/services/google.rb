@@ -113,6 +113,7 @@ module Geokit
 
         #extended -- false if not not available
         res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
+        res.sub_admin_area = doc.elements['.//SubAdministrativeAreaName'].text if doc.elements['.//SubAdministrativeAreaName']
         res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
         res.province = doc.elements['.//SubAdministrativeAreaName'].text if doc.elements['.//SubAdministrativeAreaName']
         res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
