@@ -166,6 +166,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     res=Geokit::Geocoders::GoogleGeocoder.geocode('via Sandro Pertini 8, Ossona, MI')
     assert_equal "Lombardy", res.state
     assert_equal "Milan", res.sub_admin_area
+    assert_equal "Milan", res.county
     assert_equal "Mesero", res.city
     assert_equal "45.4966243,8.8527131", res.ll
     assert !res.is_us?

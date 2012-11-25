@@ -356,7 +356,7 @@ module Geokit
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
     # Street number and street name are extracted from the street address attribute if they don't exist
-    attr_accessor :street_number, :street_name, :street_address, :city, :sub_admin_area, :state, :zip, :country_code, :country
+    attr_accessor :street_number, :street_name, :street_address, :city, :sub_admin_area, :county, :state, :zip, :country_code, :country
     attr_accessor :full_address, :all, :district, :province, :sub_premise, :neighborhood
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
@@ -379,6 +379,7 @@ module Geokit
       @street_name=nil
       @city=h[:city]
       @sub_admin_area=h[:sub_admin_area]
+      @county=h[:county]
       @state=h[:state]
       @zip=h[:zip]
       @country_code=h[:country_code]
@@ -420,7 +421,7 @@ module Geokit
     # gives you all the important fields as key-value pairs
     def hash
       res={}
-      [:success, :lat, :lng, :country_code, :city, :sub_admin_area, :state, :zip, :street_address, :province,
+      [:success, :lat, :lng, :country_code, :city, :sub_admin_area, :county, :state, :zip, :street_address, :province,
        :district, :provider, :full_address, :is_us?, :ll, :precision, :district_fips, :state_fips,
        :block_fips, :sub_premise].each { |s| res[s] = self.send(s.to_s) }
       res
@@ -436,6 +437,7 @@ module Geokit
     def sub_admin_area=(sub_admin_area)
       @sub_admin_area = Geokit::Inflector::titleize(sub_admin_area) if sub_admin_area
     end
+    alias county sub_admin_area
 
     # Sets the street address after capitalizing each word within the street address.
     def street_address=(address)
