@@ -32,12 +32,14 @@ module Geokit
           geoloc.full_address = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AddressLine"]
           geoloc.street_address = loc["name"]
 
-          locality = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["Locality"] || loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["Locality"]
+          locality = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["Locality"] || loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["Locality"] || loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["SubAdministrativeArea"]["Locality"] rescue nil
           geoloc.street_number = locality["Thoroughfare"]["Premise"]["PremiseNumber"] rescue nil
           geoloc.street_name = locality["Thoroughfare"]["ThoroughfareName"] rescue nil
           geoloc.city = locality["LocalityName"] rescue nil
           geoloc.state = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["AdministrativeAreaName"] rescue nil
-          geoloc.precision = loc["metaDataProperty"]["GeocoderMetaData"]["precision"].sub(/exact/, "building").sub(/number|near/, "address").sub(/other/, "zip+4")
+          geoloc.state ||= loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["Locality"]["LocalityName"] rescue nil
+          geoloc.precision = loc["metaDataProperty"]["GeocoderMetaData"]["precision"].sub(/exact/, "building").sub(/number|near/, "address").sub(/other/, "city")
+          geoloc.precision = "country" unless locality
         else
           logger.info "Yandex was unable to geocode address: " + address
         end
