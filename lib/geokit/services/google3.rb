@@ -61,7 +61,7 @@ module Geokit
         res = self.call_geocoder_service(submit_url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
 
-        json = res.body
+        json = res.body.force_encoding('UTF-8')
         logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
 
         return self.json2GeoLoc(json, address)
