@@ -60,7 +60,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
 
         json = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{json}"
+        logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(json)}"
 
         return self.json2GeoLoc(json, address)
       end
