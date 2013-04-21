@@ -6,6 +6,17 @@ module Geokit
 
       private
 
+      # Template method which does the reverse-geocode lookup.
+      def self.do_reverse_geocode(latlng)
+        latlng=LatLng.normalize(latlng)
+        url="http://www.mapquestapi.com/geocoding/v1/reverse?key=#{Geokit::Geocoders::mapquest}&location=#{latlng.lat},#{latlng.lng}"
+        res = self.call_geocoder_service(url)
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        json = res.body
+        logger.debug "MapQuest reverse-geocoding. LL: #{latlng}. Result: #{json}"
+        return self.json2GeoLoc(json, latlng)
+      end
+
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
