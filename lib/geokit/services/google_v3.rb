@@ -1,6 +1,6 @@
 module Geokit
   module Geocoders
-    class GoogleGeocoder3 < Geocoder
+    class GoogleV3Geocoder < Geocoder
 
       private
       # Template method which does the reverse-geocode lookup.

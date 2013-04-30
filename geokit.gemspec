@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
     "README.markdown", "Rakefile",  "lib/geokit.rb", "lib/geokit/geocoders.rb", "lib/geokit/inflectors.rb", 
     "lib/geokit/mappable.rb", "lib/geokit/multi_geocoder.rb", "lib/geokit/services/ca_geocoder.rb", 
     "lib/geokit/services/fcc.rb", "lib/geokit/services/geo_plugin.rb", "lib/geokit/services/geonames.rb", 
-    "lib/geokit/services/google.rb", "lib/geokit/services/google3.rb", "lib/geokit/services/ip.rb", 
+    "lib/geokit/services/google.rb", "lib/geokit/services/google_v3.rb", "lib/geokit/services/ip.rb", 
     "lib/geokit/services/us_geocoder.rb", "lib/geokit/services/yahoo.rb", "lib/geokit/version.rb"
   ]
 
