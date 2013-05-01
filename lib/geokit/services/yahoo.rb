@@ -29,7 +29,7 @@ module Geokit
       def self.json2GeoLoc(json, address)
         results = MultiJson.respond_to?(:load) ? MultiJson.load(json) : MultiJson.decode(json)
 
-        if results['ResultSet']['Error'] == 0 && results['ResultSet']['Results'] != nil
+        if results['ResultSet']['Error'] == 0 && results['ResultSet']['Results'] != nil && results['ResultSet']['Results'].first != nil
           geoloc = nil
           results['ResultSet']['Results'].each do |result|
             extracted_geoloc = extract_geoloc(result)
