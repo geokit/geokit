@@ -28,7 +28,7 @@ module Geokit
 
       def self.json2GeoLoc(json, address="")
         ret = nil
-        results = MultiJson.load(json)
+        results = MultiJson.respond_to?(:load) ? MultiJson.load(json) : MultiJson.decode(json)
 
         if results.has_key?('Err') and results['Err']["msg"] == 'There are no results for this location'
           return GeoLoc.new
