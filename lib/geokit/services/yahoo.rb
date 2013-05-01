@@ -29,7 +29,7 @@ module Geokit
       def self.json2GeoLoc(json, address)
         results = MultiJson.respond_to?(:load) ? MultiJson.load(json) : MultiJson.decode(json)
 
-        if results['ResultSet']['Error'] == 0 && results['ResultSet']['Results'] != nil && results['ResultSet']['Results'].first != nil
+        if results['ResultSet']['Error'].to_s == '0' && results['ResultSet']['Results'] != nil && results['ResultSet']['Results'].first != nil
           geoloc = nil
           results['ResultSet']['Results'].each do |result|
             extracted_geoloc = extract_geoloc(result)
@@ -61,7 +61,7 @@ module Geokit
         geoloc.state          = geoloc.is_us? ? result_json['statecode'] : result_json['state']
         geoloc.zip            = result_json['postal']
 
-        geoloc.precision = case result_json['quality']
+        geoloc.precision = case result_json['quality'].to_i
                            when 9,10         then 'country'
                            when 19..30       then 'state'
                            when 39,40        then 'city'
