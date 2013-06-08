@@ -393,6 +393,29 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
   end
 
+
+  # Example from:
+  # https://developers.google.com/maps/documentation/business/webservices#signature_examples
+  def test_google3_signature
+    cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+    query_string = '/maps/api/geocode/json?address=New+York&sensor=false&client=clientID'
+    signature = Geokit::Geocoders::GoogleGeocoder3.send(:sign_gmap_bus_api_url, query_string, cryptographic_key)
+    assert_equal 'KrU1TzVQM7Ur0i8i7K3huiw3MsA=', signature
+  end
+
+
+  # Example from:
+  # https://developers.google.com/maps/documentation/business/webservices#signature_examples
+  def test_google3_signature_and_url
+    Geokit::Geocoders::google_client_id = 'clientID'
+    Geokit::Geocoders::google_cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+    url = Geokit::Geocoders::GoogleGeocoder3.send(:submit_url, '/maps/api/geocode/json?address=New+York&sensor=false')
+    Geokit::Geocoders::google_client_id = nil
+    Geokit::Geocoders::google_cryptographic_key = nil
+    assert_equal 'http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID&signature=KrU1TzVQM7Ur0i8i7K3huiw3MsA=', url
+  end
+
+
   def test_google3_full_address
     response = MockSuccess.new
     response.expects(:body).returns(GOOGLE3_FULL)

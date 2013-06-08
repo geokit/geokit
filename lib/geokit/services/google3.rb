@@ -6,13 +6,7 @@ module Geokit
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
-        if !Geokit::Geocoders::google_client_id.nil? and !Geokit::Geocoders::google_cryptographic_key.nil?
-          urlToSign = "/maps/api/geocode/json?latlng=#{Geokit::Inflector::url_escape(latlng.ll)}&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}" + "&sensor=false"
-          signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
-          submit_url =  "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
-        else
-          submit_url = "http://maps.google.com/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}"
-        end
+        submit_url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
         res = self.call_geocoder_service(submit_url)
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
@@ -48,13 +42,7 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        if !Geokit::Geocoders::google_client_id.nil? and !Geokit::Geocoders::google_cryptographic_key.nil?
-          urlToSign = "/maps/api/geocode/json?address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}" + "&sensor=false"
-          signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
-          submit_url =  "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
-        else
-          submit_url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}"
-        end
+        submit_url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}")
 
         res = self.call_geocoder_service(submit_url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
@@ -65,17 +53,28 @@ module Geokit
         return self.json2GeoLoc(json, address)
       end
 
-            # This code comes from Googles Examples
+      # This code comes from Googles Examples
       # http://gmaps-samples.googlecode.com/svn/trunk/urlsigning/urlsigner.rb
       def self.sign_gmap_bus_api_url(urlToSign, google_cryptographic_key)
+        require 'base64'
+        require 'openssl'
         # Decode the private key
         rawKey = Base64.decode64(google_cryptographic_key.tr('-_','+/'))
         # create a signature using the private key and the URL
-        sha1 = HMAC::SHA1.new(rawKey)
-        sha1 << urlToSign
-        rawSignature = sha1.digest()
+        rawSignature = OpenSSL::HMAC.digest('sha1', rawKey, urlToSign)
         # encode the signature into base64 for url use form.
-        return Base64.encode64(rawSignature).tr('+/','-_')
+        return Base64.encode64(rawSignature).tr('+/','-_').gsub(/\n/, '')
+      end
+
+
+      def self.submit_url(query_string)
+        if !Geokit::Geocoders::google_client_id.nil? and !Geokit::Geocoders::google_cryptographic_key.nil?
+          urlToSign = query_string + "&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}"
+          signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
+          "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
+        else
+          "http://maps.google.com" + query_string
+        end
       end
 
 
