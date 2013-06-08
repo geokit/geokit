@@ -33,7 +33,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   <?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.0"><Response><name>100 spear st, san francisco, ca</name><Status><code>620</code><request>geocode</request></Status></Response></kml>
   EOF
   
-  GOOGLE_UTF8_RESULT=<<-EOF.force_encoding('ASCII-8BIT')
+  GOOGLE_UTF8_RESULT=<<-EOF
   <?xml version="1.0" encoding="UTF-8" ?>
   <kml xmlns="http://earth.google.com/kml/2.0"><Response>
     <name>Mosjøen, Norway</name>
@@ -249,7 +249,9 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   
   def test_utf8_encoding
     response = MockSuccess.new
-    response.expects(:body).returns(GOOGLE_UTF8_RESULT)
+    body = GOOGLE_UTF8_RESULT
+    body = body.force_encoding('ASCII-8BIT') if body.respond_to? :force_encoding
+    response.expects(:body).returns(body)
     url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@address_with_special_characters)}&output=xml&key=Google&oe=utf-8"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res=Geokit::Geocoders::GoogleGeocoder.geocode(@address_with_special_characters)

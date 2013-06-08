@@ -52,6 +52,7 @@ module Geokit
       #
       # then instantiates a GeoLoc instance to populate with location data.
       def self.parse_body(body) # :nodoc:
+        body = body.encode('UTF-8') if body.respond_to? :encode
         yaml = YAML.load(body)
         res = GeoLoc.new
         res.provider = 'hostip'
@@ -70,9 +71,12 @@ module Geokit
       # thus extract encoding from headers and tell Rails about it by forcing it
       def self.ensure_utf8_encoding(response)
         if (enc_string = extract_charset(response))
-          if Encoding.aliases.values.include?(enc_string.upcase)
+          if defined?(Encoding) && Encoding.aliases.values.include?(enc_string.upcase)
             response.body.force_encoding(enc_string.upcase) if response.body.respond_to?(:force_encoding)
             response.body.encode("UTF-8")
+          else
+            require 'iconv'
+            response.body.replace Iconv.conv("UTF8", "iso88591", response.body)
           end
         end
       end
