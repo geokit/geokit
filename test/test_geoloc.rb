@@ -63,9 +63,36 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     @loc.state = 'CA'
     @loc.zip = '94105'
     @loc.country_code = 'US'
-    assert_equal(
-      "--- !ruby/object:Geokit::GeoLoc\ncity: San Francisco\ncountry_code: US\nfull_address: \nlat: \nlng: \nprecision: unknown\nprovince: \nstate: CA\nstreet_address: \nstreet_name: \nstreet_number: \nsub_premise: \nsuccess: false\nzip: \'94105\'\n",
-      @loc.to_yaml)
+
+    yaml = YAML::parse(@loc.to_yaml)
+    case yaml.class.to_s
+    when 'YAML::Syck::Map', 'Syck::Map'
+      tag = yaml.type_id
+      children = yaml.value.sort_by{|k, v| k.value}.flatten.map(&:value)
+    when 'Psych::Nodes::Mapping'
+      tag = yaml.tag
+      children = yaml.children.map(&:value)
+    when 'Psych::Nodes::Document'
+      tag = yaml.root.tag
+      children = yaml.root.children.map(&:value)
+    end
+    assert_match /.*object:Geokit::GeoLoc$/, tag
+    assert_equal [
+      'city', 'San Francisco',
+      'country_code', 'US',
+      'full_address', '',
+      'lat', '',
+      'lng', '',
+      'precision', 'unknown',
+      'province', '',
+      'state', 'CA',
+      'street_address', '',
+      'street_name', '',
+      'street_number', '',
+      'sub_premise', '',
+      'success', 'false',
+      'zip', '94105'
+    ], children
   end
 
   def test_neighborhood
