@@ -62,8 +62,14 @@ module Geokit
           "&gl=#{bias.to_s.downcase}"
         elsif bias.is_a?(Bounds)
           # viewport biasing
-          "&ll=#{bias.center.ll}&spn=#{bias.to_span.ll}"
+          "&ll=#{precise_ll(bias.center)}&spn=#{precise_ll(bias.to_span)}"
         end
+      end
+
+      # Precision to 6 decimal places as per:
+      # https://developers.google.com/maps/documentation/staticmaps/?hl=en#Latlons
+      def self.precise_ll(loc)
+        "#{"%.6f" % loc.lat},#{"%.6f" % loc.lng}"
       end
 
       def self.xml2GeoLoc(xml, address="")

@@ -227,7 +227,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     response = MockSuccess.new
     response.expects(:body).returns(GOOGLE_BOUNDS_BIASED_RESULT)
 
-    url = "http://maps.google.com/maps/geo?q=Winnetka&output=xml&ll=34.19769320884902,-118.54716002778494&spn=0.2470479999999995,0.29491400000000567&key=Google&oe=utf-8"
+    url = "http://maps.google.com/maps/geo?q=Winnetka&output=xml&ll=34.197693,-118.547160&spn=0.247048,0.294914&key=Google&oe=utf-8"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
 
     bounds = Geokit::Bounds.normalize([34.074081, -118.694401], [34.321129, -118.399487])
