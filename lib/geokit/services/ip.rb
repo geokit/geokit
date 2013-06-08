@@ -84,8 +84,8 @@ module Geokit
       # Extracts charset out of the response headers
       def self.extract_charset(response)
         if (content_type = response['content-type'])
-          capture = content_type.match(/charset=(?<encoding>.+)/)
-          capture && capture['encoding']
+          capture = content_type.match(/charset=(.+)/)
+          capture && capture[1]
         end
       end
 
