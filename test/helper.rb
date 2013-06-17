@@ -9,7 +9,7 @@ rescue LoadError => e
 end
 
 require 'test/unit'
-require 'mocha'
+require 'mocha/setup'
 require 'net/http'
 
 if ENV['COVERAGE']
