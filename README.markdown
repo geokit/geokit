@@ -28,6 +28,7 @@ Combine this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-
 
 ## QUICK START
 
+```ruby
     irb> require 'rubygems'
     irb> require 'geokit'
     irb> a=Geokit::Geocoders::YahooGeocoder.geocode '140 Market St, San Francisco, CA'
@@ -46,6 +47,7 @@ Combine this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-
     irb(main):008:0> d=c.endpoint(90,10)     # what's 10 miles to the east of c?
     irb> d.ll
     => "37.7897825005142,-122.223214776155"
+```
 
 FYI, that `.ll` method means "latitude longitude".
 
@@ -55,6 +57,7 @@ See the RDOC more more ... there are also operations on rectangular bounds (e.g.
 
 If you're using this gem by itself, here are the configuration options:
 
+```ruby
     # These defaults are used in Geokit::Mappable.distance_to and in acts_as_mappable
     Geokit::default_units = :miles
     Geokit::default_formula = :sphere
@@ -119,6 +122,7 @@ If you're using this gem by itself, here are the configuration options:
     # The IP provider order. Valid symbols are :ip,:geo_plugin.
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
+```
 
 If you're using this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-rails), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
@@ -142,6 +146,7 @@ creates a template with these settings and places it in `config/initializers/geo
 
 The Google Geocoder sports a number of useful tricks that elevate it a little bit above the rest of the currently supported geocoders. For starters, it returns a `suggested_bounds` property for all your geocoded results, so you can more easily decide where and how to center a map on the places you geocode. Here's a quick example:
 
+```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('140 Market St, San Francisco, CA')
     irb> pp res.suggested_bounds
     #<Geokit::Bounds:0x53b36c
@@ -153,39 +158,49 @@ In addition, you can use viewport or country code biasing to make sure the geoco
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse')
     irb> res.full_address
     => "Syracuse, NY, USA"
+```
 
 Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
 
+```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
     irb> res.full_address
     => "Syracuse, Italy"
+```
 
 Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
 
+```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka')
     irb> res.full_address
     => "Winnetka, IL, USA"
+```
 
 Not it. What we can do is tell the geocoder to return results only from in and around LA.
 
+```ruby
     irb> la_bounds = Geokit::Geocoders::GoogleGeocoder.geocode('Los Angeles').suggested_bounds
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => la_bounds)
     irb> res.full_address
     => "Winnetka, California, USA"
+```
 
 
 ### The Multigeocoder
 Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders. Its configured by setting Geokit::Geocoders::provider_order, and Geokit::Geocoders::ip_provider_order. You should call the Multi-Geocoder with its :geocode method, supplying one address parameter which is either a real street address, or an ip address. For example:
 
+```ruby
     Geokit::Geocoders::MultiGeocoder.geocode("900 Sycamore Drive")
 
     Geokit::Geocoders::MultiGeocoder.geocode("12.12.12.12")
+```
 
 ## MULTIPLE RESULTS
 Some geocoding services will return multple results if the there isn't one clear result.
 Geoloc can capture multiple results through its "all" method. Currently only the Google geocoder
 supports multiple results:
 
+```ruby
     irb> geo=Geokit::Geocoders::GoogleGeocoder.geocode("900 Sycamore Drive")
     irb> geo.full_address
     => "900 Sycamore Dr, Arkadelphia, AR 71923, USA"
@@ -195,6 +210,7 @@ supports multiple results:
     900 Sycamore Dr, Burkburnett, TX 76354, USA
     900 Sycamore Dr, TN 38361, USA
     ....
+```
 
 geo.all is just an array of additional Geolocs, so do what you want with it. If you call .all on a
 geoloc that doesn't have any additional results, you will get  an array of one.
@@ -226,6 +242,7 @@ do_geocode.
 If you would like to write your own geocoders, you can do so by requiring 'geokit' or 'geokit/geocoders.rb' in a new file and subclassing the base class (which is class "Geocoder").
 You must then also require such extenal file back in your main geokit configuration.
 
+```ruby
   require "geokit"
 
   module Geokit
@@ -250,6 +267,7 @@ You must then also require such extenal file back in your main geokit configurat
 
     end
   end
+```
 
 ## GOOGLE GROUP
 
