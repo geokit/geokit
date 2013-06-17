@@ -79,119 +79,121 @@ module Geokit
 
 
       def self.construct_bias_string_from_options(bias)
-        if bias.is_a?(String) or bias.is_a?(Symbol)
+        case bias
+        when String, Symbol
           # country code biasing
           "&region=#{bias.to_s.downcase}"
-        elsif bias.is_a?(Bounds)
+        when Bounds
           # viewport biasing
           Geokit::Inflector::url_escape("&bounds=#{bias.sw.to_s}|#{bias.ne.to_s}")
         end
       end
 
       def self.json2GeoLoc(json, address="")
-        ret=nil
         results = MultiJson.load(json)
 
-        if results['status'] == 'OVER_QUERY_LIMIT'
-          raise Geokit::TooManyQueriesError
-        end
-        if results['status'] == 'ZERO_RESULTS'
-          return GeoLoc.new
+        case results['status']
+        when 'OVER_QUERY_LIMIT' then raise Geokit::TooManyQueriesError
+        when 'ZERO_RESULTS' then return GeoLoc.new
         end
         # this should probably be smarter.
         if results['status'] != 'OK'
           raise Geokit::Geocoders::GeocodeError
         end
-        # location_type stores additional data about the specified location.
-        # The following values are currently supported:
-        # "ROOFTOP" indicates that the returned result is a precise geocode
-        # for which we have location information accurate down to street
-        # address precision.
-        # "RANGE_INTERPOLATED" indicates that the returned result reflects an
-        # approximation (usually on a road) interpolated between two precise
-        # points (such as intersections). Interpolated results are generally
-        # returned when rooftop geocodes are unavailable for a street address.
-        # "GEOMETRIC_CENTER" indicates that the returned result is the
-        # geometric center of a result such as a polyline (for example, a
-        # street) or polygon (region).
-        # "APPROXIMATE" indicates that the returned result is approximate
 
-        # these do not map well. Perhaps we should guess better based on size
-        # of bounding box where it exists? Does it really matter?
-        accuracy = {
-          "ROOFTOP" => 9,
-          "RANGE_INTERPOLATED" => 8,
-          "GEOMETRIC_CENTER" => 5,
-          "APPROXIMATE" => 4
-        }
-
-        @unsorted = []
-
-        results['results'].each do |addr|
-          res = GeoLoc.new
-          res.provider = 'google3'
-          res.success = true
-          res.full_address = addr['formatted_address']
-
-          addr['address_components'].each do |comp|
-            case
-            when comp['types'].include?("subpremise")
-              res.sub_premise = comp['short_name']
-            when comp['types'].include?("street_number")
-              res.street_number = comp['short_name']
-            when comp['types'].include?("route")
-              res.street_name = comp['long_name']
-            when comp['types'].include?("locality")
-              res.city = comp['long_name']
-            when comp['types'].include?("administrative_area_level_1")
-              res.state = comp['short_name']
-              res.province = comp['short_name']
-            when comp['types'].include?("postal_code")
-              res.zip = comp['long_name']
-            when comp['types'].include?("country")
-              res.country_code = comp['short_name']
-              res.country = comp['long_name']
-            when comp['types'].include?("administrative_area_level_2")
-              res.district = comp['long_name']
-            when comp['types'].include?('neighborhood')
-              res.neighborhood = comp['short_name']
-            end
-          end
-          if res.street_name
-            res.street_address=[res.street_number,res.street_name].join(' ').strip
-          end
-          res.accuracy = accuracy[addr['geometry']['location_type']]
-          res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
-          # try a few overrides where we can
-          if res.sub_premise
-            res.accuracy = 9
-            res.precision = 'building'
-          end
-          if res.street_name && res.precision=='city'
-            res.precision = 'street'
-            res.accuracy = 7
-          end
-
-          res.lat=addr['geometry']['location']['lat'].to_f
-          res.lng=addr['geometry']['location']['lng'].to_f
-
-          ne=Geokit::LatLng.new(
-            addr['geometry']['viewport']['northeast']['lat'].to_f,
-            addr['geometry']['viewport']['northeast']['lng'].to_f
-          )
-          sw=Geokit::LatLng.new(
-            addr['geometry']['viewport']['southwest']['lat'].to_f,
-            addr['geometry']['viewport']['southwest']['lng'].to_f
-          )
-          res.suggested_bounds = Geokit::Bounds.new(sw,ne)
-
-          @unsorted << res
+        unsorted = results['results'].map do |addr|
+          single_json_to_geoloc(addr)
         end
 
-        all = @unsorted.sort_by { |a| a.accuracy }.reverse
+        all = unsorted.sort_by(&:accuracy).reverse
         encoded = all.first
         encoded.all = all
-        return encoded
+        encoded
+      end
+
+
+      # location_type stores additional data about the specified location.
+      # The following values are currently supported:
+      # "ROOFTOP" indicates that the returned result is a precise geocode
+      # for which we have location information accurate down to street
+      # address precision.
+      # "RANGE_INTERPOLATED" indicates that the returned result reflects an
+      # approximation (usually on a road) interpolated between two precise
+      # points (such as intersections). Interpolated results are generally
+      # returned when rooftop geocodes are unavailable for a street address.
+      # "GEOMETRIC_CENTER" indicates that the returned result is the
+      # geometric center of a result such as a polyline (for example, a
+      # street) or polygon (region).
+      # "APPROXIMATE" indicates that the returned result is approximate
+
+      # these do not map well. Perhaps we should guess better based on size
+      # of bounding box where it exists? Does it really matter?
+      ACCURACY = {
+        "ROOFTOP" => 9,
+        "RANGE_INTERPOLATED" => 8,
+        "GEOMETRIC_CENTER" => 5,
+        "APPROXIMATE" => 4
+      }
+
+      def self.single_json_to_geoloc(addr)
+        res = GeoLoc.new
+        res.provider = 'google3'
+        res.success = true
+        res.full_address = addr['formatted_address']
+
+        addr['address_components'].each do |comp|
+          case
+          when comp['types'].include?("subpremise")
+            res.sub_premise = comp['short_name']
+          when comp['types'].include?("street_number")
+            res.street_number = comp['short_name']
+          when comp['types'].include?("route")
+            res.street_name = comp['long_name']
+          when comp['types'].include?("locality")
+            res.city = comp['long_name']
+          when comp['types'].include?("administrative_area_level_1")
+            res.state = comp['short_name']
+            res.province = comp['short_name']
+          when comp['types'].include?("postal_code")
+            res.zip = comp['long_name']
+          when comp['types'].include?("country")
+            res.country_code = comp['short_name']
+            res.country = comp['long_name']
+          when comp['types'].include?("administrative_area_level_2")
+            res.district = comp['long_name']
+          when comp['types'].include?('neighborhood')
+            res.neighborhood = comp['short_name']
+          end
+        end
+        if res.street_name
+          res.street_address=[res.street_number,res.street_name].join(' ').strip
+        end
+        res.accuracy = ACCURACY[addr['geometry']['location_type']]
+        res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
+        # try a few overrides where we can
+        if res.sub_premise
+          res.accuracy = 9
+          res.precision = 'building'
+        end
+        if res.street_name && res.precision=='city'
+          res.precision = 'street'
+          res.accuracy = 7
+        end
+
+        res.lat=addr['geometry']['location']['lat'].to_f
+        res.lng=addr['geometry']['location']['lng'].to_f
+
+        ne=Geokit::LatLng.new(
+          addr['geometry']['viewport']['northeast']['lat'].to_f,
+          addr['geometry']['viewport']['northeast']['lng'].to_f
+        )
+        sw=Geokit::LatLng.new(
+          addr['geometry']['viewport']['southwest']['lat'].to_f,
+          addr['geometry']['viewport']['southwest']['lng'].to_f
+        )
+        res.suggested_bounds = Geokit::Bounds.new(sw,ne)
+
+        res
       end
     end
     Google3Geocoder = GoogleGeocoder3
