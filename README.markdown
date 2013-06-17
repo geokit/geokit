@@ -1,4 +1,11 @@
-## GEOKIT GEM DESCRIPTION
+Geokit
+======
+
+[![Build Status](https://travis-ci.org/geokit/geokit.png?branch=master)](https://travis-ci.org/geokit/geokit)
+[![Build Status](https://gemnasium.com/geokit/geokit.png?travis)](https://gemnasium.com/geokit/geokit)
+[![Build Status](https://codeclimate.com/github/geokit/geokit.png)](https://codeclimate.com/github/geokit/geokit)
+
+## DESCRIPTION
 
 The Geokit gem provides:
 
