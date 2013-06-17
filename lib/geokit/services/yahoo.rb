@@ -20,7 +20,7 @@ module Geokit
       def self.json2GeoLoc(json, address)
         results = MultiJson.load(json)
 
-        if results['ResultSet']['Error'] == 0 && results['ResultSet']['Results'] != nil && results['ResultSet']['Results'].first != nil
+        if results['ResultSet']['Error'].to_i == 0 && results['ResultSet']['Results'] != nil && results['ResultSet']['Results'].first != nil
           geoloc = nil
           results['ResultSet']['Results'].each do |result|
             extracted_geoloc = extract_geoloc(result)
