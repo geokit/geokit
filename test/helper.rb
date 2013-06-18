@@ -12,6 +12,9 @@ require 'test/unit'
 require 'mocha/setup'
 require 'net/http'
 
+require 'coveralls'
+Coveralls.wear!
+
 if ENV['COVERAGE']
   COVERAGE_THRESHOLD = 29
   require 'simplecov'
