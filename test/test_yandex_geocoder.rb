@@ -69,7 +69,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = Geokit::Geocoders::YandexGeocoder.geocode(@address)
 
     assert_equal "yandex", res.provider
-    assert_equal "zip+4", res.precision
+    assert_equal "city", res.precision
     assert_equal "Москва", res.city
     assert_equal 55.755773, res.lat
     assert_equal 37.617761, res.lng
