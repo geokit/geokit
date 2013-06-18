@@ -8,15 +8,11 @@ rescue LoadError => e
   puts "Error loading bundler (#{e.message}): \"gem install bundler\" for bundler support."
 end
 
-require 'test/unit'
-require 'mocha/setup'
-require 'net/http'
-
 require 'coveralls'
 Coveralls.wear!
 
 if ENV['COVERAGE']
-  COVERAGE_THRESHOLD = 29
+  COVERAGE_THRESHOLD = 84
   require 'simplecov'
   require 'simplecov-rcov'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
@@ -34,8 +30,11 @@ if ENV['COVERAGE']
   end
 end
 
-require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
+require 'test/unit'
+require 'mocha/setup'
+require 'net/http'
 
+require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
