@@ -6,6 +6,8 @@ rvm:
   - 1.9.3
   - 2.0.0
 script: "bundle exec rake coverage"
+before_install:
+  - gem install bundler
 notifications:
   email:
     - michael+geokit@noack.com.au
