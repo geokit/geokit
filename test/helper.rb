@@ -8,13 +8,13 @@ rescue LoadError => e
   puts "Error loading bundler (#{e.message}): \"gem install bundler\" for bundler support."
 end
 
-require 'coveralls'
-Coveralls.wear!
-
 if ENV['COVERAGE']
   COVERAGE_THRESHOLD = 84
   require 'simplecov'
   require 'simplecov-rcov'
+  require 'coveralls'
+  Coveralls.wear!
+
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
   SimpleCov.start do
     add_filter '/test/'
