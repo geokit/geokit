@@ -290,7 +290,7 @@ module Geokit
         else
           res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
           return res if res.success?
-          raise Geokit::Geocoders::GeocodeError.new("Geocoded #{thing} as #{result{.inspect")
+          raise Geokit::Geocoders::GeocodeError.new("Geocoded #{thing} as #{result.inspect}")
         end
       elsif thing.is_a?(Array) && thing.size==2
         return Geokit::LatLng.new(thing[0],thing[1])
@@ -551,12 +551,12 @@ module Geokit
       end
     end
   end
-  
+
   # A complex polygon made of multiple points.  End point must equal start point to close the poly.
   class Polygon
-    
+
     attr_accessor :poly_y, :poly_x
-    
+
     def initialize(points)
       # Pass in an array of Geokit::LatLng
       @poly_x = []
@@ -566,14 +566,14 @@ module Geokit
         @poly_x << point.lng
         @poly_y << point.lat
       end
-      
+
       # A Polygon must be 'closed', the last point equal to the first point
       if not @poly_x[0] == @poly_x[-1] or not @poly_y[0] == @poly_y[-1]
         # Append the first point to the array to close the polygon
         @poly_x << @poly_x[0]
         @poly_y << @poly_y[0]
       end
-      
+
     end
 
     def contains?(point)
@@ -589,12 +589,12 @@ module Geokit
             oddNodes = !oddNodes
           end
         end
- 
+
         j=i
       end
 
       oddNodes
     end # contains?
   end # class Polygon
-  
+
 end
