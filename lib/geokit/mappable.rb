@@ -290,7 +290,7 @@ module Geokit
         else
           res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
           return res if res.success?
-          raise Geokit::Geocoders::GeocodeError.new("Geocoded #{thing} as #{result.inspect}")
+          raise Geokit::Geocoders::GeocodeError.new("Geocoded #{thing} as #{res.inspect}")
         end
       elsif thing.is_a?(Array) && thing.size==2
         return Geokit::LatLng.new(thing[0],thing[1])
