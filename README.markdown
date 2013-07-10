@@ -17,10 +17,10 @@ The Geokit gem provides:
  * Rectangular bounds calculations: is a point within a given rectangular bounds?
  * Heading and midpoint calculations
 
-Combine this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-rails) to get location-based finders for your Rails app.
+Combine this gem with the [geokit-rails plugin](http://github.com/geokit/geokit-rails) to get location-based finders for your Rails app.
 
 * Geokit main site [http://rubygeokit.org/](http://rubygeokit.org).
-* Repository at Github: [http://github.com/imajes/geokit](http://github.com/imajes/geokit).
+* Repository at Github: [http://github.com/geokit/geokit](http://github.com/geokit/geokit).
 * RDoc pages: [http://rdoc.info/github/imajes/geokit/master/frames](http://rdoc.info/github/imajes/geokit/master/frames)
 * Follow the Google Group for updates and discussion on Geokit: [http://groups.google.com/group/geokit](http://groups.google.com/group/geokit)
 
@@ -126,7 +126,7 @@ If you're using this gem by itself, here are the configuration options:
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 ```
 
-If you're using this gem with the [geokit-rails plugin](http://github.com/imajes/geokit-rails), the plugin
+If you're using this gem with the [geokit-rails plugin](http://github.com/geokit/geokit-rails), the plugin
 creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
 
 ## SUPPORTED GEOCODERS
