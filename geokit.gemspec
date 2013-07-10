@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["michael+geokit@noack.com.au"]
   spec.description   = %q{Geokit provides geocoding and distance calculation in an easy-to-use API}
   spec.summary       = %q{Geokit: encoding and distance calculation gem}
-  spec.homepage      = "http://geokit.org"
+  spec.homepage      = "http://github.com/geokit/geokit"
   spec.license       = "MIT"
 
   spec.has_rdoc = true
