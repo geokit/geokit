@@ -57,7 +57,7 @@ module Geokit
         res = GeoLoc.new
         res.provider = 'hostip'
         res.city, res.state = yaml['City'].split(', ')
-        country, res.country_code = yaml['Country'].split(' (')
+        res.country, res.country_code = yaml['Country'].split(' (')
         res.lat = yaml['Latitude']
         res.lng = yaml['Longitude']
         res.country_code.chop!
