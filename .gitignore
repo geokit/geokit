@@ -7,3 +7,5 @@ nbproject
 Gemfile.lock
 *.idea
 coverage
+.bundle/
+vendor/bundle
