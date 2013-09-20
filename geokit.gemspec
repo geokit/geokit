@@ -16,7 +16,6 @@ Gem::Specification.new do |spec|
   spec.has_rdoc = true
   spec.rdoc_options = ["--main", "README.markdown"]
   spec.extra_rdoc_files = ["README.markdown"]
-  spec.extensions = 'ext/mkrf_conf.rb'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
