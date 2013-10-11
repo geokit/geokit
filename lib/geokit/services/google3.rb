@@ -41,8 +41,9 @@ module Geokit
       # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => bounds).state # => 'CA'
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
+        language_str = options[:language] ? "&language=#{options[:language]}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        submit_url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}")
+        submit_url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}#{language_str}")
 
         res = self.call_geocoder_service(submit_url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
