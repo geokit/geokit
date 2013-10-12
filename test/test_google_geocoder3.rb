@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__), 'helper')
 
 Geokit::Geocoders::google = 'Google'
@@ -371,6 +372,66 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
     } ]
   }
   /
+  GOOGLE3_LANGUAGE_RESPONSE_FR=%q/
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "Hanoï",
+                 "short_name" : "Hanoï",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Hoan Kiem District",
+                 "short_name" : "Hoan Kiem District",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Hanoï",
+                 "short_name" : "Hanoï",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "Vietnam",
+                 "short_name" : "VN",
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "formatted_address" : "Hanoï, Hoan Kiem District, Hanoï, Vietnam",
+           "geometry" : {
+              "bounds" : {
+                 "northeast" : {
+                    "lat" : 21.0502942,
+                    "lng" : 105.8764459
+                 },
+                 "southwest" : {
+                    "lat" : 20.9950991,
+                    "lng" : 105.7974815
+                 }
+              },
+              "location" : {
+                 "lat" : 21.0333333,
+                 "lng" : 105.85
+              },
+              "location_type" : "APPROXIMATE",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 21.0502942,
+                    "lng" : 105.8764459
+                 },
+                 "southwest" : {
+                    "lat" : 20.9950991,
+                    "lng" : 105.7974815
+                 }
+              }
+           },
+           "types" : [ "locality", "political" ]
+        }
+     ],
+     "status" : "OK"
+  }
+  /
   GOOGLE3_TOO_MANY=%q/
     {
        "status": "OVER_QUERY_LIMIT"
@@ -585,6 +646,18 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
      assert_equal 'IT', biased_result.country_code
      assert_equal 'Sicily', biased_result.state
+   end
+
+   def test_language_response
+     response = MockSuccess.new
+     response.expects(:body).returns(GOOGLE3_LANGUAGE_RESPONSE_FR)
+
+     url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Hanoi&language=FR"
+     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     language_result = Geokit::Geocoders::GoogleGeocoder3.geocode('Hanoi', :language => 'FR')
+
+     assert_equal 'VN', language_result.country_code
+     assert_equal 'Hanoï', language_result.city
    end
 
    def test_too_many_queries
