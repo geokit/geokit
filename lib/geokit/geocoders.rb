@@ -38,7 +38,8 @@ module Geokit
     @@proxy_user = nil
     @@proxy_pass = nil
     @@request_timeout = nil
-    @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
+    @@yahoo_consumer_key = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_KEY'
+    @@yahoo_consumer_secret = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_SECRET'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@google_client_id = nil
     @@google_cryptographic_key = nil
@@ -133,10 +134,11 @@ module Geokit
         uri = URI.parse(url)
         req = Net::HTTP::Get.new(url)
         req.basic_auth(uri.user, uri.password) if uri.userinfo
-        res = Net::HTTP::Proxy(GeoKit::Geocoders::proxy_addr,
+        res = Net::HTTP::new(uri.host, uri.port,
+                GeoKit::Geocoders::proxy_addr,
                 GeoKit::Geocoders::proxy_port,
                 GeoKit::Geocoders::proxy_user,
-                GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.get(uri.path + "?" + uri.query) }
+                GeoKit::Geocoders::proxy_pass).start { |http| http.request(req) }
         return res
       end
 
