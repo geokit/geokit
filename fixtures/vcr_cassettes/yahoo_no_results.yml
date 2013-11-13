@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://yboss.yahooapis.com/geo/placefinder?flags=J&oauth_consumer_key=dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--&oauth_nonce=2c5ad2f846&oauth_signature=h2eR3b0GSWsgqU2nJhd1jPP8ihI=&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1384355895&oauth_version=1.0&q=ZZ,%20ZZ,%20ZZ
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 13 Nov 2013 15:18:19 GMT
+      P3p:
+      - policyref="http://info.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR ADM DEV
+        TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi IND PHY
+        ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json
+      Cache-Control:
+      - private
+    body:
+      encoding: UTF-8
+      string: '{"bossresponse":{"responsecode":"200","placefinder":{"start":"0","count":"0","request":"flags=J&q=ZZ%2C%20ZZ%2C%20ZZ"}}}'
+    http_version: 
+  recorded_at: Wed, 13 Nov 2013 15:18:16 GMT
+recorded_with: VCR 2.7.0

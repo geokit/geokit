@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://yboss.yahooapis.com/geo/placefinder?flags=J&oauth_consumer_key=dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--&oauth_nonce=731410e6df&oauth_signature=%2Bde/2eYXvMPhoRu5MUdjhPct3xY=&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1384355278&oauth_version=1.0&q=San%20Francisco,%20CA
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 13 Nov 2013 15:08:00 GMT
+      P3p:
+      - policyref="http://info.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR ADM DEV
+        TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi IND PHY
+        ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json
+      Cache-Control:
+      - private
+    body:
+      encoding: UTF-8
+      string: '{"bossresponse":{"responsecode":"200","placefinder":{"start":"0","count":"1","request":"flags=J&q=San%20Francisco%2C%20CA","results":[{"quality":"40","latitude":"37.77713","longitude":"-122.41964","offsetlat":"37.77713","offsetlon":"-122.41964","radius":"8800","name":"","line1":"","line2":"San
+        Francisco, CA","line3":"","line4":"United States","house":"","street":"","xstreet":"","unittype":"","unit":"","postal":"","neighborhood":"","city":"San
+        Francisco","county":"San Francisco County","state":"California","country":"United
+        States","countrycode":"US","statecode":"CA","countycode":"","uzip":"94102","hash":"","woeid":"2487956","woetype":"7"}]}}}'
+    http_version: 
+  recorded_at: Wed, 13 Nov 2013 15:07:58 GMT
+recorded_with: VCR 2.7.0

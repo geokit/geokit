@@ -1,6 +1,7 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::yahoo = 'Yahoo'
+Geokit::Geocoders::yahoo_consumer_key = 'dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--'
+Geokit::Geocoders::yahoo_consumer_secret = 'SECRET'
 
 class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     YAHOO_FULL=<<-EOF.strip
@@ -23,55 +24,59 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     @yahoo_city_loc = Geokit::GeoLoc.new(@yahoo_city_hash)
   end
 
+  def assert_yahoo_url(expected_url)
+    assert_equal expected_url, TestHelper.get_last_url.gsub(/&oauth_[a-z_]+=[a-zA-Z0-9\-. %]+/, '').gsub('%20', '+')
+  end
+
   # the testing methods themselves
   def test_yahoo_full_address
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_FULL)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@full_address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_full') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
     do_full_address_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@full_address))
+    assert_yahoo_url url
+    end
   end
 
   def test_yahoo_full_address_accuracy
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_FULL)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@full_address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_full') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
     res = Geokit::Geocoders::YahooGeocoder.geocode(@full_address)
+    assert_yahoo_url url
     assert_equal 8, res.accuracy
+    end
   end
 
   def test_yahoo_full_address_with_geo_loc
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_FULL)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@full_address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_full') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
     do_full_address_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_full_loc))
+    assert_yahoo_url url
+    end
   end
 
   def test_yahoo_city
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_CITY)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_city') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@address))
+    assert_yahoo_url url
+    end
   end
 
   def test_yahoo_city_accuracy
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_CITY)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_city') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
     res = Geokit::Geocoders::YahooGeocoder.geocode(@address)
+    assert_yahoo_url url
     assert_equal 4, res.accuracy
+    end
   end
 
   def test_yahoo_city_with_geo_loc
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_CITY)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_city') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc))
+    assert_yahoo_url url
+    end
   end
 
   def test_no_results
@@ -79,18 +84,17 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     no_results_full_hash = {:street_address=>"ZZ", :city=>"ZZ", :state=>"ZZ"}
     no_results_full_loc = Geokit::GeoLoc.new(no_results_full_hash)
 
-    response = MockSuccess.new
-    response.expects(:body).returns(YAHOO_NO_RESULTS)
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(no_results_address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    VCR.use_cassette('yahoo_no_results') do
+    url = "http://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(no_results_address)}"
     result = Geokit::Geocoders::YahooGeocoder.geocode(no_results_address)
+    assert_yahoo_url url
     assert_equal ",", result.ll
+    end
   end
 
   def test_service_unavailable
     response = MockFailure.new
-    url = "http://where.yahooapis.com/geocode?flags=J&appid=Yahoo&q=#{Geokit::Inflector.url_escape(@address)}"
-    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    Geokit::Geocoders::YahooGeocoder.expects(:call_geocoder_service).returns(response)
     assert !Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc).success
   end
 
@@ -98,18 +102,19 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   # next two methods do the assertions for both address-level and city-level lookups
   def do_full_address_assertions(res)
+
     assert_equal "CA", res.state
     assert_equal "San Francisco", res.city
-    assert_equal "37.792406,-122.39411", res.ll
+    assert_array_in_delta [37.792332, -122.393791], res.to_a
     assert res.is_us?
-    assert_equal "100 Spear St, San Francisco, CA, 94105-1522, US", res.full_address
+    assert_equal "100 Spear St, San Francisco, CA, 94105-1578, US", res.full_address
     assert_equal "yahoo", res.provider
   end
 
   def do_city_assertions(res)
     assert_equal "CA", res.state
     assert_equal "San Francisco", res.city
-    assert_equal "37.7742,-122.417068", res.ll
+    assert_array_in_delta [37.77713, -122.41964], res.to_a
     assert res.is_us?
     assert_equal "San Francisco, CA, US", res.full_address
     assert_nil res.street_address

@@ -50,6 +50,10 @@ end
 
 class TestHelper
   def self.last_url(url)
+    @@url = url
+  end
+  def self.get_last_url
+    @@url
   end
 end
 
@@ -79,6 +83,14 @@ require 'vcr'
 VCR.configure do |c|
   c.cassette_library_dir = 'fixtures/vcr_cassettes'
   c.hook_into :webmock # or :fakeweb
+  # Yahoo BOSS Ignore changing params
+  c.default_cassette_options = {
+    :match_requests_on => [:method,
+      VCR.request_matchers.uri_without_params(
+        :oauth_nonce, :oauth_timestamp, :oauth_signature
+      )
+    ]
+  }
 end
 
 # Base class for testing geocoders.
