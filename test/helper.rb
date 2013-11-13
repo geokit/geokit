@@ -48,6 +48,39 @@ class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
   end
 end
 
+class TestHelper
+  def self.last_url(url)
+  end
+end
+
+Geokit::Geocoders::Geocoder.class_eval do
+  class << self
+    def call_geocoder_service_for_test(url)
+      TestHelper.last_url(url)
+      call_geocoder_service_old(url)
+    end
+
+    alias call_geocoder_service_old call_geocoder_service
+    alias call_geocoder_service call_geocoder_service_for_test
+  end
+end
+
+def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message='')
+  full_message = build_message(message, "<?> and\n<?> expected to be within\n<?> of each other.\n", expected_array, actual_array, delta)
+  assert_block(full_message) do
+    expected_array.zip(actual_array).all?{|expected_item, actual_item|
+      (expected_item.to_f - actual_item.to_f).abs <= delta.to_f
+    }
+  end
+end
+
+require 'vcr'
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'fixtures/vcr_cassettes'
+  c.hook_into :webmock # or :fakeweb
+end
+
 # Base class for testing geocoders.
 class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
 
