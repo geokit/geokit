@@ -6,20 +6,8 @@ Geokit::Geocoders::google_client_id = nil
 Geokit::Geocoders::google_cryptographic_key = nil
 Geokit::Geocoders::google_channel = nil
 
-
 class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
-  GOOGLE3_TOO_MANY=%q/
-    {
-       "status": "OVER_QUERY_LIMIT"
-    }
-  /
-  GOOGLE3_INVALID_REQUEST=%q/
-  {
-    "results" : [],
-    "status" : "INVALID_REQUEST"
-  }
-  /
   def setup
     super
     @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'
@@ -159,7 +147,6 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
    end
 
    def test_multiple_results
-     #Geokit::Geocoders::GoogleGeocoder3.do_geocode('via Sandro Pertini 8, Ossona, MI')
      VCR.use_cassette('google3_multi') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape('via Sandro Pertini 8, Ossona, MI')}"
      TestHelper.expects(:last_url).with(url)
@@ -186,7 +173,6 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
    end
   #
    def test_reverse_geocode
-     #Geokit::Geocoders::GoogleGeocoder3.do_reverse_geocode("40.4167413, -3.7032498")
      VCR.use_cassette('google3_reverse_madrid') do
      madrid = Geokit::GeoLoc.new
      madrid.lat, madrid.lng = "40.4167413", "-3.7032498"
@@ -232,7 +218,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
    def test_too_many_queries
      response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_TOO_MANY)
+     response.expects(:body).returns %q/{"status": "OVER_QUERY_LIMIT"}/
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      assert_raise Geokit::TooManyQueriesError do
@@ -242,7 +228,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
    def test_invalid_request
      response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_INVALID_REQUEST)
+     response.expects(:body).returns %q/{"results" : [], "status" : "INVALID_REQUEST"}/
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape("3961 V\u00EDa Marisol")}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      assert_raise Geokit::Geocoders::GeocodeError do
