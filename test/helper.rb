@@ -8,6 +8,8 @@ rescue LoadError => e
   puts "Error loading bundler (#{e.message}): \"gem install bundler\" for bundler support."
 end
 
+require 'geoip'
+
 if ENV['COVERAGE']
   COVERAGE_THRESHOLD = 84
   require 'simplecov'

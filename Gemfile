@@ -4,3 +4,4 @@ source "http://rubygems.org"
 gemspec
 
 gem 'mime-types', '< 2.0', :platforms => :ruby_18
+gem 'geoip' # for testing - only required for max_mind
