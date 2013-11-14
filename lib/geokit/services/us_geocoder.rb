@@ -41,7 +41,7 @@ module Geokit
           return GeoLoc.new
         end
         rescue
-          logger.error "Caught an error during geocoder.us geocoding call: "+$!
+          logger.error "Caught an error during geocoder.us geocoding call: "+$!.inspect
           return GeoLoc.new
 
       end
