@@ -52,8 +52,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     success = MockSuccess.new
     success.expects(:body).returns(IP_SUCCESS)
     url = 'http://api.hostip.info/get_html.php?ip=12.215.42.19&position=true'
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
-    location = GeoKit::Geocoders::IpGeocoder.geocode('12.215.42.19')
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
+    location = Geokit::Geocoders::IpGeocoder.geocode('12.215.42.19')
     assert_not_nil location
     assert_equal 41.7696, location.lat
     assert_equal(-88.4588, location.lng)
@@ -68,8 +68,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     success = MockSuccess.new
     success.expects(:body).returns(IP_UNICODED)
     url = 'http://api.hostip.info/get_html.php?ip=12.215.42.19&position=true'
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
-    location = GeoKit::Geocoders::IpGeocoder.geocode('12.215.42.19')
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
+    location = Geokit::Geocoders::IpGeocoder.geocode('12.215.42.19')
     assert_not_nil location
     assert_equal 57.7167, location.lat
     assert_equal 12.9167, location.lng
@@ -85,8 +85,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     success.stubs(:body).returns(IP_LATIN)
     success.stubs(:[]).with('content-type').returns('text/plain; charset=iso-8859-1')
     url = 'http://api.hostip.info/get_html.php?ip=201.23.177.144&position=true'
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
-    location = GeoKit::Geocoders::IpGeocoder.geocode('201.23.177.144')
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
+    location = Geokit::Geocoders::IpGeocoder.geocode('201.23.177.144')
     assert_not_nil location
     assert_equal -20.8, location.lat
     assert_equal -49.3833, location.lng
@@ -101,24 +101,24 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     failure = MockSuccess.new
     failure.expects(:body).returns(IP_FAILURE)
     url = 'http://api.hostip.info/get_html.php?ip=128.178.0.0&position=true'
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
-    location = GeoKit::Geocoders::IpGeocoder.geocode("128.178.0.0")
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
+    location = Geokit::Geocoders::IpGeocoder.geocode("128.178.0.0")
     assert_not_nil location
     assert !location.success?
   end
 
   def test_private_ips
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).never
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).never
     PRIVATE_IPS_TO_TEST.each do |ip|
-      location = GeoKit::Geocoders::IpGeocoder.geocode(ip)
+      location = Geokit::Geocoders::IpGeocoder.geocode(ip)
       assert_not_nil location
       assert !location.success?
     end
   end
 
   def test_invalid_ip
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).never
-    location = GeoKit::Geocoders::IpGeocoder.geocode("blah")
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).never
+    location = Geokit::Geocoders::IpGeocoder.geocode("blah")
     assert_not_nil location
     assert !location.success?
   end
@@ -126,8 +126,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_service_unavailable
     failure = MockFailure.new
     url = 'http://api.hostip.info/get_html.php?ip=12.215.42.19&position=true'
-    GeoKit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
-    location = GeoKit::Geocoders::IpGeocoder.geocode("12.215.42.19")
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
+    location = Geokit::Geocoders::IpGeocoder.geocode("12.215.42.19")
     assert_not_nil location
     assert !location.success?
   end

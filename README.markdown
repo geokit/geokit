@@ -11,7 +11,7 @@ Geokit
 
 The Geokit gem provides:
 
- * Distance calculations between two points on the earth. Calculate the distance in miles, kilometers, or nautical miles, with all the trigonometry abstracted away by GeoKit.
+ * Distance calculations between two points on the earth. Calculate the distance in miles, kilometers, or nautical miles, with all the trigonometry abstracted away by Geokit.
  * Geocoding from multiple providers. It supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and others. It provides a uniform response structure from all of them.
    It also provides a fail-over mechanism, in case your input fails to geocode in one service.
  * Rectangular bounds calculations: is a point within a given rectangular bounds?
