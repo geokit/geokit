@@ -1,4 +1,14 @@
-=== 1.6.5 / 2012-01-23
+## 1.7.0
+
+* Added Yahoo Boss, Yandex, RIPE and MaxMind Support
+* Integration tests for google/yahoo boss
+* Other minor fixes/improvements
+
+## 1.6.6
+
+* Minor fixes/improvements
+
+## 1.6.5 / 2012-01-23
 
 * first release by @imajes, thanks @andre for all the hard work!
 * normalized whitespace
@@ -7,65 +17,71 @@
 * switched to multi json for agnostic json support
 * removed hoe and replaced with bundler's gem harness
 
-=== 1.6.0 / 2011-05-27
+## 1.6.0 / 2011-05-27
 
 * added Google geocoder3 support (thanks @projectdx)
 * added FCC encoder support (thanks @paulschreiber)
 * various minor fixes.
 
-=== 1.5.0 / 2009-09-21
+## 1.5.0 / 2009-09-21
+
 * fixed jruby compatibility (thanks manalang)
 * added country name to Google reverse geocoder (thanks joahking)
 * added  DependentLocalityName as district, and SubAdministrativeAreaName as province (google geocoder only)
 * Google geocoder throws an error if you exceed geocoding rates (thanks drogus)
 
-=== 1.4.1 / 2009-06-15
+## 1.4.1 / 2009-06-15
+
 * Fixed Ruby 1.9.1 compat and load order (thanks Niels Ganser)
 
-=== 1.4.0 / 2009-05-27
+## 1.4.0 / 2009-05-27
+
 * Added country code/viewport biasing to GoogleGeocoder. Added Bounds#to_span method
 * Added suggested_bounds (Geokit::Bounds) property to GeoLoc. (Google geocoder only)
 * Added LatLng#reverse_geocode convenience method (thanks Tisho Georgiev for all three)
 
-=== 1.3.2 / 2009-05-27
+## 1.3.2 / 2009-05-27
+
 * Fixed blank address geocoding bug
 
-=== 1.3.1 / 2009-05-21
+## 1.3.1 / 2009-05-21
+
 * Support for External geocoders file (thanks dreamcat4)
 * Support multiple ip geocoders, including new setting for ip_provider_order (thanks dreamcat4)
 
-=== 1.3.0 / 2009-04-11
+## 1.3.0 / 2009-04-11
+
 * Added capability to define multiple API keys for different domains that may be pointing to the same application (thanks Glenn Powell)
 * Added numeric accuracy accessor for Yahoo and Google geocoders (thanks Andrew Fecheyr Lippens)
 * Implement #hash and #eql? on LatLng to allow for using it as a hash key (thanks Luke Melia and Ross Kaffenberger)
-*
 
-=== 1.2.6 / 2009-03-19
+## 1.2.6 / 2009-03-19
+
 * misc minor fixes
 
-=== 1.2.5 / 2009-02-25
+## 1.2.5 / 2009-02-25
 
 * fixed GeoLoc.to_yaml
 * fixed minor google geocoding bug
 * now periodically publishing the Geokit gem to Rubyforge. Still maintaining development and managing contributions at Github
 
-=== 1.2.4 / 2009-02-25
+## 1.2.4 / 2009-02-25
 
 * Improved Google geocoder in the Gem: Support for multiple geocoding results from the Google geocoder. (thanks github/pic)
 
-=== 1.2.3 / 2009-02-01
+## 1.2.3 / 2009-02-01
 
 * Adding GeoPluginGeocoder for IP geocoding (thanks github/xjunior)
 * Ruby 1.9.1 compatibility and Unicode fixes (thanks github/Nielsomat)
 * various bug fixes
 
-=== 1.2.1 / 2009-01-05
+## 1.2.1 / 2009-01-05
 
 * minor bug fixes
 * reverse geocoding added (Google only): res=Geokit::Geocoders::GoogleGeocoder.reverse_geocode "37.791821,-122.394679"
 * nautical miles added (in addition to miles and KM)
 
-=== 1.2.0 / 2008-12-01
+## 1.2.0 / 2008-12-01
 
 * Improved Geocoder.us support -- respects authentication, and can geocode city names or zipcodes alone
 * cross-meridian finds work correctly with bounds conditions
@@ -73,14 +89,17 @@
 * added Geonames geocoder
 * the gem and plugin are now hosted at Github.
 
-=== 1.1.1 / 2008-01-20
+## 1.1.1 / 2008-01-20
+
 * fixes for distance calculation (in-memory and database) when distances are either very small or 0. 
 * NOTE: older versions of MySQL/Postgres may not work. See readme for more info.
 
-=== 1.1.0 / 2007-12-07
+## 1.1.0 / 2007-12-07
+
 * Geokit is now Rails 2.0 / Edge friendly. 
 
-=== 1.0.0 / 2007-07-22
+## 1.0.0 / 2007-07-22
+
 * see http://earthcode.com/blog/2007/07/new_geokit_release.html
 * auto geocoding: an option to automatically geocode a model's address field on create
 * in-memory sort-by-distance for arrays of location objects
