@@ -1,3 +1,7 @@
+## 1.7.1
+
+* Remove geoip require from MaxMind to avoid new dependency issues
+
 ## 1.7.0
 
 * Added Yahoo Boss, Yandex, RIPE and MaxMind Support
