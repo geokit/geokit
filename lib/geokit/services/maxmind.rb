@@ -1,5 +1,3 @@
-require "geoip"
-
 module Geokit
   module Geocoders
 
