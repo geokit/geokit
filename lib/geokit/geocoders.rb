@@ -96,35 +96,33 @@ module Geokit
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
       def self.geocode(address, options = {})
-        res = do_geocode(address, options)
-        return res.nil? ? GeoLoc.new : res
+        do_geocode(address, options) || GeoLoc.new
       end
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
       def self.reverse_geocode(latlng)
-        res = do_reverse_geocode(latlng)
-        return res.success? ? res : GeoLoc.new
+        do_reverse_geocode(latlng) || GeoLoc.new
       end
 
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
         Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout
-        return self.do_get(url)
+        self.do_get(url)
       rescue TimeoutError
-        return nil
+        nil
       end
 
       # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
       # a call to reverse_geocode will return an empty GeoLoc. If you happen to be using MultiGeocoder,
       # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
       def self.do_reverse_geocode(latlng)
-        return GeoLoc.new
+        GeoLoc.new
       end
 
       protected
 
-      def self.logger()
+      def self.logger
         Geokit::Geocoders::logger
       end
 
@@ -135,12 +133,11 @@ module Geokit
         uri = URI.parse(url)
         req = Net::HTTP::Get.new(url)
         req.basic_auth(uri.user, uri.password) if uri.userinfo
-        res = Net::HTTP::new(uri.host, uri.port,
+        Net::HTTP::new(uri.host, uri.port,
                 Geokit::Geocoders::proxy_addr,
                 Geokit::Geocoders::proxy_port,
                 Geokit::Geocoders::proxy_user,
                 Geokit::Geocoders::proxy_pass).start { |http| http.request(req) }
-        return res
       end
     end
 
