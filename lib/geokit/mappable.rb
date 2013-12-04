@@ -286,23 +286,23 @@ module Geokit
       if thing.is_a?(String)
         thing.strip!
         if match=thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
-          return Geokit::LatLng.new(match[1],match[2])
+          Geokit::LatLng.new(match[1],match[2])
         else
           res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
           return res if res.success?
           raise Geokit::Geocoders::GeocodeError
         end
       elsif thing.is_a?(Array) && thing.size==2
-        return Geokit::LatLng.new(thing[0],thing[1])
+        Geokit::LatLng.new(thing[0],thing[1])
       elsif thing.is_a?(LatLng) # will also be true for GeoLocs
-        return thing
+        thing
       elsif thing.class.respond_to?(:acts_as_mappable) && thing.class.respond_to?(:distance_column_name)
-        return thing.to_lat_lng
+        thing.to_lat_lng
       elsif thing.respond_to? :to_lat_lng
-        return thing.to_lat_lng
+        thing.to_lat_lng
+      else
+        raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, Mappable, etc., but no dice.")
       end
-
-      raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, Mappable, etc., but no dice.")
     end
 
     # Reverse geocodes a LatLng object using the MultiGeocoder (default), or optionally
