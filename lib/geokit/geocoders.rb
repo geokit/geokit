@@ -142,18 +142,6 @@ module Geokit
                 Geokit::Geocoders::proxy_pass).start { |http| http.request(req) }
         return res
       end
-
-      # Adds subclass' geocode method making it conveniently available through
-      # the base class.
-      def self.inherited(clazz)
-        class_name = clazz.name.split('::').last
-        src = <<-END_SRC
-          def self.#{Geokit::Inflector.underscore(class_name)}(address, options = {})
-            #{class_name}.geocode(address, options)
-          end
-        END_SRC
-        class_eval(src)
-      end
     end
 
     # -------------------------------------------------------------------------------------------
