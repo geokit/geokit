@@ -142,9 +142,6 @@ If you're using this gem by itself, here are the configuration options:
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 ```
 
-If you're using this gem with the [geokit-rails plugin](http://github.com/geokit/geokit-rails), the plugin
-creates a template with these settings and places it in `config/initializers/geokit_config.rb`.
-
 ### Google Geocoder Tricks
 
 The Google Geocoder sports a number of useful tricks that elevate it a little bit above the rest of the currently supported geocoders. For starters, it returns a `suggested_bounds` property for all your geocoded results, so you can more easily decide where and how to center a map on the places you geocode. Here's a quick example:
