@@ -33,10 +33,7 @@ module Geokit
   #
   # Some of these geocoders require configuration. You don't have to provide it here. See the README.
   module Geocoders
-    @@proxy_addr = nil
-    @@proxy_port = nil
-    @@proxy_user = nil
-    @@proxy_pass = nil
+    @@proxy = nil
     @@request_timeout = nil
     @@yahoo_consumer_key = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_KEY'
     @@yahoo_consumer_secret = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_SECRET'
@@ -133,11 +130,12 @@ module Geokit
         uri = URI.parse(url)
         req = Net::HTTP::Get.new(url)
         req.basic_auth(uri.user, uri.password) if uri.userinfo
-        Net::HTTP::new(uri.host, uri.port,
-                Geokit::Geocoders::proxy_addr,
-                Geokit::Geocoders::proxy_port,
-                Geokit::Geocoders::proxy_user,
-                Geokit::Geocoders::proxy_pass).start { |http| http.request(req) }
+        net_http_args = [uri.host, uri.port]
+        if (proxy_uri_string = Geokit::Geocoders::proxy)
+          proxy_uri = URI.parse(proxy_uri_string)
+          net_http_args += [proxy_uri.host, proxy_uri.port, proxy_uri.user, proxy_uri.password]
+        end
+        Net::HTTP::new(*net_http_args).start { |http| http.request(req) }
       end
     end
 

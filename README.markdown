@@ -68,14 +68,11 @@ If you're using this gem by itself, here are the configuration options:
     # is in seconds.
     Geokit::Geocoders::request_timeout = 3
 
-    # These settings are used if web service calls must be routed through a proxy.
-    # These setting can be nil if not needed, otherwise, addr and port must be
+    # This setting can be used if web service calls must be routed through a proxy.
+    # These setting can be nil if not needed, otherwise, a valid URI must be
     # filled in at a minimum.  If the proxy requires authentication, the username
     # and password can be provided as well.
-    Geokit::Geocoders::proxy_addr = nil
-    Geokit::Geocoders::proxy_port = nil
-    Geokit::Geocoders::proxy_user = nil
-    Geokit::Geocoders::proxy_pass = nil
+    Geokit::Geocoders::proxy = 'https://user:password@host:port'
 
     # This is your yahoo application key for the Yahoo Geocoder.
     # See http://developer.yahoo.com/faq/index.html#appid
