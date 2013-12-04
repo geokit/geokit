@@ -265,8 +265,3 @@ You must then also require such extenal file back in your main geokit configurat
     end
   end
 ```
-
-## GOOGLE GROUP
-
-Follow the Google Group for updates and discussion on Geokit: http://groups.google.com/group/geokit
-
