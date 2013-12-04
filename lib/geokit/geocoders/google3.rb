@@ -69,7 +69,7 @@ module Geokit
 
 
       def self.submit_url(query_string)
-        if !Geokit::Geocoders::google_client_id.nil? and !Geokit::Geocoders::google_cryptographic_key.nil?
+        if !Geokit::Geocoders::google_client_id.nil? && !Geokit::Geocoders::google_cryptographic_key.nil?
           urlToSign = query_string + "&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}"
           signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
           "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"

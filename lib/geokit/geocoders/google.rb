@@ -57,7 +57,7 @@ module Geokit
       end
 
       def self.construct_bias_string_from_options(bias)
-        if bias.is_a?(String) or bias.is_a?(Symbol)
+        if bias.is_a?(String) || bias.is_a?(Symbol)
           # country code biasing
           "&gl=#{bias.to_s.downcase}"
         elsif bias.is_a?(Bounds)

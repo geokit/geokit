@@ -30,7 +30,7 @@ module Geokit
         ret = nil
         results = MultiJson.load(json)
 
-        if results.has_key?('Err') and results['Err']["msg"] == 'There are no results for this location'
+        if results.has_key?('Err') && results['Err']["msg"] == 'There are no results for this location'
           return GeoLoc.new
         end
         # this should probably be smarter.

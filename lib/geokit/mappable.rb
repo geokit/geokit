@@ -267,7 +267,7 @@ module Geokit
 
     # Returns true if both lat and lng attributes are defined
     def valid?
-      self.lat and self.lng
+      lat && lng
     end
 
     # A *class* method to take anything which can be inferred as a point and generate
@@ -319,7 +319,7 @@ module Geokit
     # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using => :google) # => #<Geokit::GeoLoc:0x12dac20 @state...>
     # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using => Geokit::Geocoders::GoogleGeocoder) # => #<Geokit::GeoLoc:0x12dac20 @state...>
     def reverse_geocode(options = { :using => Geokit::Geocoders::MultiGeocoder })
-      if options[:using].is_a?(String) or options[:using].is_a?(Symbol)
+      if options[:using].is_a?(String) || options[:using].is_a?(Symbol)
         provider = Geokit::Geocoders.const_get("#{Geokit::Inflector::camelize(options[:using].to_s)}Geocoder")
       elsif options[:using].respond_to?(:do_reverse_geocode)
         provider = options[:using]
@@ -433,10 +433,10 @@ module Geokit
 
     # Sets the street address after capitalizing each word within the street address.
     def street_address=(address)
-      if address and not ['google','google3'].include?(self.provider)
-        @street_address = Geokit::Inflector::titleize(address)
+      @street_address = if address && !['google','google3'].include?(provider)
+        Geokit::Inflector::titleize(address)
       else
-        @street_address = address
+        address
       end
     end
 
@@ -574,7 +574,7 @@ module Geokit
       end
       
       # A Polygon must be 'closed', the last point equal to the first point
-      if not @poly_x[0] == @poly_x[-1] or not @poly_y[0] == @poly_y[-1]
+      if @poly_x[0] != @poly_x[-1] || @poly_y[0] != @poly_y[-1]
         # Append the first point to the array to close the polygon
         @poly_x << @poly_x[0]
         @poly_y << @poly_y[0]
