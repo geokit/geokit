@@ -159,7 +159,7 @@ module Geokit
     # -------------------------------------------------------------------------------------------
     # "Regular" Address geocoders
     # -------------------------------------------------------------------------------------------
-    Dir[File.join(File.dirname(__FILE__), "/services/*.rb")].each {|f| require f}
+    Dir[File.join(File.dirname(__FILE__), "/geocoders/*.rb")].each {|f| require f}
 
     require File.join(File.dirname(__FILE__), 'multi_geocoder')
   end
