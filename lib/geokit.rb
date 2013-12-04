@@ -24,3 +24,7 @@ path = File.expand_path(File.dirname(__FILE__))
 $:.unshift path unless $:.include?(path)
 require 'geokit/geocoders'
 require 'geokit/mappable'
+require 'geokit/bounds'
+require 'geokit/lat_lng'
+require 'geokit/geo_loc'
+require 'geokit/polygon'

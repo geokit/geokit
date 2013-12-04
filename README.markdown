@@ -220,16 +220,15 @@ mappable.rb contains the Mappable module, which provides basic
 distance calculation methods, i.e., calculating the distance
 between two points.
 
-mappable.rb also contains LatLng, GeoLoc, and Bounds.
 LatLng is a simple container for latitude and longitude, but
 it's made more powerful by mixing in the above-mentioned Mappable
 module -- therefore, you can calculate easily the distance between two
 LatLng ojbects with `distance = first.distance_to(other)`
 
-GeoLoc (also in mappable.rb) represents an address or location which
+GeoLoc represents an address or location which
 has been geocoded. You can get the city, zipcode, street address, etc.
 from a GeoLoc object. GeoLoc extends LatLng, so you also get lat/lng
-AND the Mappable modeule goodness for free.
+AND the Mappable module goodness for free.
 
 geocoders.rb contains all the geocoder implemenations. All the gercoders
 inherit from a common base (class Geocoder) and implement the private method
