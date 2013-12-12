@@ -109,7 +109,8 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
        url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address)}"
        TestHelper.expects(:last_url).with(url)
        res=Geokit::Geocoders::GoogleGeocoder3.geocode(address)
-       assert_equal 4, res.accuracy
+       assert_equal nil, res.lat
+       assert_equal nil, res.lng
      end
    end
 
@@ -163,17 +164,8 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape('via Sandro Pertini 8, Ossona, MI')}"
      TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode('via Sandro Pertini 8, Ossona, MI')
-     assert_equal 5, res.all.size
+     assert_equal 1, res.all.size
      res = res.all[0]
-     assert_equal "Lombardy", res.state
-     assert_equal "Mesero", res.city
-     assert_array_in_delta [45.4966218, 8.852694], res.to_a
-     assert !res.is_us?
-     assert_equal "Via Sandro Pertini, 8, 20010 Mesero Milan, Italy", res.full_address
-     assert_equal "8 Via Sandro Pertini", res.street_address
-     assert_equal "google3", res.provider
-
-     res = res.all[4]
      assert_equal "Lombardy", res.state
      assert_equal "Ossona", res.city
      assert_array_in_delta [45.5074444, 8.90232], res.to_a

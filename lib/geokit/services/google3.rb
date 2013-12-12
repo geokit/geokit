@@ -107,6 +107,9 @@ module Geokit
           single_json_to_geoloc(addr)
         end
 
+        unsorted.reject! { |geoloc| !geoloc.success }
+        return GeoLoc.new if unsorted.empty?
+
         all = unsorted.sort_by(&:accuracy).reverse
         encoded = all.first
         encoded.all = all
@@ -140,6 +143,32 @@ module Geokit
       def self.single_json_to_geoloc(addr)
         res = GeoLoc.new
         res.provider = 'google3'
+        #alex+> Probably logic behind this could be best demonstrated on example:
+
+        # Case 1 with appartment number:
+        # http://maps.google.com/maps/api/geocode/json?sensor=false&address=112+Elm+St+apt.+4,Georgetown,+KY
+        #      partial_match: true
+        #      types: subpremise
+
+        # Case 2 - same as Case 1 but without appartment number:
+        # http://maps.google.com/maps/api/geocode/json?sensor=false&address=112+Elm+St,Georgetown,+KY
+        #      partial_match: false
+        #      types: street_address
+
+        # Case 3 - same as Case 2 but with different state:
+        # http://maps.google.com/maps/api/geocode/json?sensor=false&address=112+Elm+St,Georgetown,+WV
+        #  Google returns three addressess, each from different than WV state, and for each:
+        #      partial_match: true
+        #      types: street_address
+
+        # To summarize - for 'subpremise' addresses (with apt. numbers), the partial_match is going to be true in 99.99% cases, since google does not geocode apt. locations,
+        # For 'street_type' addresses, if partial_match is true it could be address which differs from requested in on of address component (country, state, street name, etc.)
+        # so it safe to dismiss such addresses, however for 'subpremise' kind of addresses dismissing would drop all of them
+        if addr['partial_match'].to_s.strip == 'true' && addr['types'].include?("street_address")
+          res.success = false
+          return res
+        end
+        #alex->
         res.success = true
         res.full_address = addr['formatted_address']
 
