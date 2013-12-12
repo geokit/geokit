@@ -103,6 +103,16 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      end
    end
 
+   def test_google3_city_accuracy_with_partial_match
+     VCR.use_cassette('google3_partial_match') do
+       address = "112 Elm St,Georgetown,WV"
+       url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address)}"
+       TestHelper.expects(:last_url).with(url)
+       res=Geokit::Geocoders::GoogleGeocoder3.geocode(address)
+       assert_equal 4, res.accuracy
+     end
+   end
+
    def test_google3_city_with_geo_loc
      VCR.use_cassette('google3_city') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
@@ -112,7 +122,9 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "San Francisco", res.city
      assert_equal "37.7749295,-122.4194155", res.ll
      assert res.is_us?
-     assert_equal "San Francisco, CA, USA", res.full_address
+
+
+       assert_equal "San Francisco, CA, USA", res.full_address
      assert_nil res.street_address
      assert_equal "google3", res.provider
      end

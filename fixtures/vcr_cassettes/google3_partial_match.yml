@@ -1,0 +1,129 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.google.com/maps/api/geocode/json?address=112%20Elm%20St,Georgetown,WV&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 12 Dec 2013 21:17:41 GMT
+      Expires:
+      - Fri, 13 Dec 2013 21:17:41 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: US-ASCII
+      string: ! "{\n   \"results\" : [\n      {\n         \"address_components\" :
+        [\n            {\n               \"long_name\" : \"112\",\n               \"short_name\"
+        : \"112\",\n               \"types\" : [ \"street_number\" ]\n            },\n
+        \           {\n               \"long_name\" : \"Elm Street\",\n               \"short_name\"
+        : \"Elm St\",\n               \"types\" : [ \"route\" ]\n            },\n
+        \           {\n               \"long_name\" : \"Georgetown\",\n               \"short_name\"
+        : \"Georgetown\",\n               \"types\" : [ \"locality\", \"political\"
+        ]\n            },\n            {\n               \"long_name\" : \"Essex\",\n
+        \              \"short_name\" : \"Essex\",\n               \"types\" : [ \"administrative_area_level_2\",
+        \"political\" ]\n            },\n            {\n               \"long_name\"
+        : \"Massachusetts\",\n               \"short_name\" : \"MA\",\n               \"types\"
+        : [ \"administrative_area_level_1\", \"political\" ]\n            },\n            {\n
+        \              \"long_name\" : \"United States\",\n               \"short_name\"
+        : \"US\",\n               \"types\" : [ \"country\", \"political\" ]\n            },\n
+        \           {\n               \"long_name\" : \"01833\",\n               \"short_name\"
+        : \"01833\",\n               \"types\" : [ \"postal_code\" ]\n            }\n
+        \        ],\n         \"formatted_address\" : \"112 Elm Street, Georgetown,
+        MA 01833, USA\",\n         \"geometry\" : {\n            \"bounds\" : {\n
+        \              \"northeast\" : {\n                  \"lat\" : 42.7120337,\n
+        \                 \"lng\" : -70.989632\n               },\n               \"southwest\"
+        : {\n                  \"lat\" : 42.7120261,\n                  \"lng\" :
+        -70.98964719999999\n               }\n            },\n            \"location\"
+        : {\n               \"lat\" : 42.7120261,\n               \"lng\" : -70.989632\n
+        \           },\n            \"location_type\" : \"RANGE_INTERPOLATED\",\n
+        \           \"viewport\" : {\n               \"northeast\" : {\n                  \"lat\"
+        : 42.71337888029149,\n                  \"lng\" : -70.98829061970849\n               },\n
+        \              \"southwest\" : {\n                  \"lat\" : 42.7106809197085,\n
+        \                 \"lng\" : -70.9909885802915\n               }\n            }\n
+        \        },\n         \"partial_match\" : true,\n         \"types\" : [ \"street_address\"
+        ]\n      },\n      {\n         \"address_components\" : [\n            {\n
+        \              \"long_name\" : \"112\",\n               \"short_name\" : \"112\",\n
+        \              \"types\" : [ \"street_number\" ]\n            },\n            {\n
+        \              \"long_name\" : \"Elm Street\",\n               \"short_name\"
+        : \"Elm St\",\n               \"types\" : [ \"route\" ]\n            },\n
+        \           {\n               \"long_name\" : \"Georgetown\",\n               \"short_name\"
+        : \"Georgetown\",\n               \"types\" : [ \"locality\", \"political\"
+        ]\n            },\n            {\n               \"long_name\" : \"Scott\",\n
+        \              \"short_name\" : \"Scott\",\n               \"types\" : [ \"administrative_area_level_2\",
+        \"political\" ]\n            },\n            {\n               \"long_name\"
+        : \"Kentucky\",\n               \"short_name\" : \"KY\",\n               \"types\"
+        : [ \"administrative_area_level_1\", \"political\" ]\n            },\n            {\n
+        \              \"long_name\" : \"United States\",\n               \"short_name\"
+        : \"US\",\n               \"types\" : [ \"country\", \"political\" ]\n            },\n
+        \           {\n               \"long_name\" : \"40324\",\n               \"short_name\"
+        : \"40324\",\n               \"types\" : [ \"postal_code\" ]\n            }\n
+        \        ],\n         \"formatted_address\" : \"112 Elm Street, Georgetown,
+        KY 40324, USA\",\n         \"geometry\" : {\n            \"location\" : {\n
+        \              \"lat\" : 38.2202165,\n               \"lng\" : -84.55115049999999\n
+        \           },\n            \"location_type\" : \"ROOFTOP\",\n            \"viewport\"
+        : {\n               \"northeast\" : {\n                  \"lat\" : 38.2215654802915,\n
+        \                 \"lng\" : -84.54980151970848\n               },\n               \"southwest\"
+        : {\n                  \"lat\" : 38.2188675197085,\n                  \"lng\"
+        : -84.5524994802915\n               }\n            }\n         },\n         \"partial_match\"
+        : true,\n         \"types\" : [ \"street_address\" ]\n      },\n      {\n
+        \        \"address_components\" : [\n            {\n               \"long_name\"
+        : \"112\",\n               \"short_name\" : \"112\",\n               \"types\"
+        : [ \"street_number\" ]\n            },\n            {\n               \"long_name\"
+        : \"Elm Street\",\n               \"short_name\" : \"Elm St\",\n               \"types\"
+        : [ \"route\" ]\n            },\n            {\n               \"long_name\"
+        : \"Georgetown\",\n               \"short_name\" : \"Georgetown\",\n               \"types\"
+        : [ \"locality\", \"political\" ]\n            },\n            {\n               \"long_name\"
+        : \"Pleasant\",\n               \"short_name\" : \"Pleasant\",\n               \"types\"
+        : [ \"administrative_area_level_3\", \"political\" ]\n            },\n            {\n
+        \              \"long_name\" : \"Brown\",\n               \"short_name\" :
+        \"Brown\",\n               \"types\" : [ \"administrative_area_level_2\",
+        \"political\" ]\n            },\n            {\n               \"long_name\"
+        : \"Ohio\",\n               \"short_name\" : \"OH\",\n               \"types\"
+        : [ \"administrative_area_level_1\", \"political\" ]\n            },\n            {\n
+        \              \"long_name\" : \"United States\",\n               \"short_name\"
+        : \"US\",\n               \"types\" : [ \"country\", \"political\" ]\n            },\n
+        \           {\n               \"long_name\" : \"45121\",\n               \"short_name\"
+        : \"45121\",\n               \"types\" : [ \"postal_code\" ]\n            }\n
+        \        ],\n         \"formatted_address\" : \"112 Elm Street, Georgetown,
+        OH 45121, USA\",\n         \"geometry\" : {\n            \"bounds\" : {\n
+        \              \"northeast\" : {\n                  \"lat\" : 38.8667089,\n
+        \                 \"lng\" : -83.89921529999999\n               },\n               \"southwest\"
+        : {\n                  \"lat\" : 38.8667075,\n                  \"lng\" :
+        -83.8992337\n               }\n            },\n            \"location\" :
+        {\n               \"lat\" : 38.8667075,\n               \"lng\" : -83.89921529999999\n
+        \           },\n            \"location_type\" : \"RANGE_INTERPOLATED\",\n
+        \           \"viewport\" : {\n               \"northeast\" : {\n                  \"lat\"
+        : 38.86805718029149,\n                  \"lng\" : -83.89787551970849\n               },\n
+        \              \"southwest\" : {\n                  \"lat\" : 38.86535921970849,\n
+        \                 \"lng\" : -83.9005734802915\n               }\n            }\n
+        \        },\n         \"partial_match\" : true,\n         \"types\" : [ \"street_address\"
+        ]\n      }\n   ],\n   \"status\" : \"OK\"\n}\n"
+    http_version: 
+  recorded_at: Thu, 12 Dec 2013 21:17:41 GMT
+recorded_with: VCR 2.8.0
