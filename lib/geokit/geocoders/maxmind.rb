@@ -26,7 +26,7 @@ module Geokit
           :city     => res.city_name,
           :state    => res.region_name,
           :zip      => res.postal_code,
-          :country_code => res.country_code3
+          :country_code => res.country_code2
         )
 
         loc.success = ( res.longitude.kind_of?(Numeric) && res.latitude.kind_of?(Numeric) )
