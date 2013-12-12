@@ -21,6 +21,7 @@ class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     res = Geokit::Geocoders::MaxmindGeocoder.geocode(@ip)
     assert_equal 'Adelaide', res.city
+    assert_equal true, res.success
     assert res.city
   end
 
