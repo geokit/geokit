@@ -1,0 +1,391 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.google.com/maps/api/geocode/json?address=via%20Sandro%20Pertini%208,%20Ossona,%20MI&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 13 Nov 2013 14:55:53 GMT
+      Expires:
+      - Thu, 14 Nov 2013 14:55:53 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "8",
+                       "short_name" : "8",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Via Sandro Pertini",
+                       "short_name" : "Via Sandro Pertini",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Mesero",
+                       "short_name" : "Mesero",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mesero",
+                       "short_name" : "Mesero",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Milan",
+                       "short_name" : "MI",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Lombardy",
+                       "short_name" : "Lombardy",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Italy",
+                       "short_name" : "IT",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "20010",
+                       "short_name" : "20010",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Via Sandro Pertini, 8, 20010 Mesero Milan, Italy",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 45.496774,
+                       "lng" : 8.852637
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 45.49812298029151,
+                          "lng" : 8.853985980291501
+                       },
+                       "southwest" : {
+                          "lat" : 45.49542501970851,
+                          "lng" : 8.851288019708496
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "8",
+                       "short_name" : "8",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Via Sandro Pertini",
+                       "short_name" : "Via Sandro Pertini",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Santo Stefano Ticino",
+                       "short_name" : "Santo Stefano Ticino",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Santo Stefano Ticino",
+                       "short_name" : "Santo Stefano Ticino",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Milan",
+                       "short_name" : "MI",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Lombardy",
+                       "short_name" : "Lombardy",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Italy",
+                       "short_name" : "IT",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "20010",
+                       "short_name" : "20010",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Via Sandro Pertini, 8, 20010 Santo Stefano Ticino Milan, Italy",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 45.488678,
+                       "lng" : 8.919173000000001
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 45.4900269802915,
+                          "lng" : 8.920521980291504
+                       },
+                       "southwest" : {
+                          "lat" : 45.4873290197085,
+                          "lng" : 8.917824019708499
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Via S. Pertini",
+                       "short_name" : "Via S. Pertini",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Ossona",
+                       "short_name" : "Ossona",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Ossona",
+                       "short_name" : "Ossona",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Milan",
+                       "short_name" : "MI",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Lombardy",
+                       "short_name" : "Lombardy",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Italy",
+                       "short_name" : "IT",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "20010",
+                       "short_name" : "20010",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Via S. Pertini, 20010 Ossona Milan, Italy",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 45.5085129,
+                          "lng" : 8.9024208
+                       },
+                       "southwest" : {
+                          "lat" : 45.5064874,
+                          "lng" : 8.901982
+                       }
+                    },
+                    "location" : {
+                       "lat" : 45.5075969,
+                       "lng" : 8.9022609
+                    },
+                    "location_type" : "GEOMETRIC_CENTER",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 45.5088491302915,
+                          "lng" : 8.903550380291502
+                       },
+                       "southwest" : {
+                          "lat" : 45.5061511697085,
+                          "lng" : 8.900852419708498
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "route" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "8",
+                       "short_name" : "8",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Via Sandro Pertini",
+                       "short_name" : "Via Sandro Pertini",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Bernate Ticino",
+                       "short_name" : "Bernate Ticino",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Milan",
+                       "short_name" : "MI",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Lombardy",
+                       "short_name" : "Lombardy",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Italy",
+                       "short_name" : "IT",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "20010",
+                       "short_name" : "20010",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Via Sandro Pertini, 8, 20010 Bernate Ticino, Milan, Italy",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 45.4887285,
+                          "lng" : 8.8274942
+                       },
+                       "southwest" : {
+                          "lat" : 45.4887173,
+                          "lng" : 8.827485099999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 45.4887285,
+                       "lng" : 8.827485099999999
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 45.4900718802915,
+                          "lng" : 8.828838630291502
+                       },
+                       "southwest" : {
+                          "lat" : 45.4873739197085,
+                          "lng" : 8.826140669708497
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "8",
+                       "short_name" : "8",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Via Sandro Pertini",
+                       "short_name" : "Via Sandro Pertini",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Casate",
+                       "short_name" : "Casate",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Bernate Ticino",
+                       "short_name" : "Bernate Ticino",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Milan",
+                       "short_name" : "MI",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Lombardy",
+                       "short_name" : "Lombardy",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Italy",
+                       "short_name" : "IT",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "20010",
+                       "short_name" : "20010",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Via Sandro Pertini, 8, 20010 Casate Milan, Italy",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 45.4894486,
+                          "lng" : 8.8285407
+                       },
+                       "southwest" : {
+                          "lat" : 45.4894444,
+                          "lng" : 8.828523299999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 45.4894444,
+                       "lng" : 8.828523299999999
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 45.4907954802915,
+                          "lng" : 8.829880980291502
+                       },
+                       "southwest" : {
+                          "lat" : 45.4880975197085,
+                          "lng" : 8.827183019708498
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 13 Nov 2013 14:55:51 GMT
+recorded_with: VCR 2.7.0

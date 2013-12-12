@@ -1,11 +1,42 @@
 # encoding: utf-8
 
+begin
+  require 'rubygems'
+  require 'bundler'
+  Bundler.setup
+rescue LoadError => e
+  puts "Error loading bundler (#{e.message}): \"gem install bundler\" for bundler support."
+end
+
+require 'geoip'
+
+if ENV['COVERAGE']
+  COVERAGE_THRESHOLD = 84
+  require 'simplecov'
+  require 'simplecov-rcov'
+  require 'coveralls'
+  Coveralls.wear!
+
+  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+  SimpleCov.start do
+    add_filter '/test/'
+    add_group 'lib', 'lib'
+  end
+  SimpleCov.at_exit do
+    SimpleCov.result.format!
+    percent = SimpleCov.result.covered_percent
+    unless percent >= COVERAGE_THRESHOLD
+      puts "Coverage must be above #{COVERAGE_THRESHOLD}%. It is #{"%.2f" % percent}%"
+      Kernel.exit(1)
+    end
+  end
+end
+
 require 'test/unit'
-require 'mocha'
+require 'mocha/setup'
 require 'net/http'
 
 require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
-
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
@@ -17,6 +48,51 @@ class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
   def initialize
     @header = {}
   end
+end
+
+class TestHelper
+  def self.last_url(url)
+    @@url = url
+  end
+  def self.get_last_url
+    @@url
+  end
+end
+
+Geokit::Geocoders::Geocoder.class_eval do
+  class << self
+    def call_geocoder_service_for_test(url)
+      TestHelper.last_url(url)
+      call_geocoder_service_old(url)
+    end
+
+    alias call_geocoder_service_old call_geocoder_service
+    alias call_geocoder_service call_geocoder_service_for_test
+  end
+end
+
+def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message='')
+  full_message = build_message(message, "<?> and\n<?> expected to be within\n<?> of each other.\n", expected_array, actual_array, delta)
+  assert_block(full_message) do
+    expected_array.zip(actual_array).all?{|expected_item, actual_item|
+      (expected_item.to_f - actual_item.to_f).abs <= delta.to_f
+    }
+  end
+end
+
+require 'vcr'
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'fixtures/vcr_cassettes'
+  c.hook_into :webmock # or :fakeweb
+  # Yahoo BOSS Ignore changing params
+  c.default_cassette_options = {
+    :match_requests_on => [:method,
+      VCR.request_matchers.uri_without_params(
+        :oauth_nonce, :oauth_timestamp, :oauth_signature
+      )
+    ]
+  }
 end
 
 # Base class for testing geocoders.

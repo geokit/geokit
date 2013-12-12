@@ -1,0 +1,120 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.google.com/maps/api/geocode/json?address=100%20Spear%20St%20Apt.%205,%20San%20Francisco,%20CA,%2094105,%20US&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 13 Nov 2013 14:55:52 GMT
+      Expires:
+      - Thu, 14 Nov 2013 14:55:52 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "5",
+                       "short_name" : "5",
+                       "types" : [ "subpremise" ]
+                    },
+                    {
+                       "long_name" : "100",
+                       "short_name" : "100",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Spear Street",
+                       "short_name" : "Spear St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "South Beach",
+                       "short_name" : "South Beach",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco",
+                       "short_name" : "SF",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco County",
+                       "short_name" : "San Francisco County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "94105",
+                       "short_name" : "94105",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "100 Spear Street #5, San Francisco, CA 94105, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 37.792524,
+                       "lng" : -122.3940868
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 37.7938729802915,
+                          "lng" : -122.3927378197085
+                       },
+                       "southwest" : {
+                          "lat" : 37.7911750197085,
+                          "lng" : -122.3954357802915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "subpremise" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 13 Nov 2013 14:55:50 GMT
+recorded_with: VCR 2.7.0

@@ -10,8 +10,8 @@ module Geokit
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
         query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
-        url = if GeoKit::Geocoders::geocoder_us
-          "http://#{GeoKit::Geocoders::geocoder_us}@geocoder.us/member/service/csv/geocode"
+        url = if Geokit::Geocoders::geocoder_us
+          "http://#{Geokit::Geocoders::geocoder_us}@geocoder.us/member/service/csv/geocode"
         else
           "http://geocoder.us/service/csv/geocode"
         end

@@ -6,3 +6,4 @@ nbproject
 *.swp
 Gemfile.lock
 *.idea
+coverage

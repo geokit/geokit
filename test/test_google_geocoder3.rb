@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__), 'helper')
 
 Geokit::Geocoders::google = 'Google'
@@ -5,383 +6,8 @@ Geokit::Geocoders::google_client_id = nil
 Geokit::Geocoders::google_cryptographic_key = nil
 Geokit::Geocoders::google_channel = nil
 
-
 class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
-  GOOGLE3_FULL=%q/
-    {
-       "results" : [
-          {
-             "address_components" : [
-                {
-                   "long_name" : "5",
-                   "short_name" : "5",
-                   "types" : [ "subpremise" ]
-                },
-                {
-                   "long_name" : "100",
-                   "short_name" : "100",
-                   "types" : [ "street_number" ]
-                },
-                {
-                   "long_name" : "Spear St",
-                   "short_name" : "Spear St",
-                   "types" : [ "route" ]
-                },
-                {
-                   "long_name" : "South Beach",
-                   "short_name" : "South Beach",
-                   "types" : [ "neighborhood", "political" ]
-                },
-                {
-                   "long_name" : "San Francisco",
-                   "short_name" : "SF",
-                   "types" : [ "locality", "political" ]
-                },
-                {
-                   "long_name" : "San Francisco",
-                   "short_name" : "San Francisco",
-                   "types" : [ "administrative_area_level_2", "political" ]
-                },
-                {
-                   "long_name" : "California",
-                   "short_name" : "CA",
-                   "types" : [ "administrative_area_level_1", "political" ]
-                },
-                {
-                   "long_name" : "United States",
-                   "short_name" : "US",
-                   "types" : [ "country", "political" ]
-                },
-                {
-                   "long_name" : "94105",
-                   "short_name" : "94105",
-                   "types" : [ "postal_code" ]
-                }
-             ],
-             "formatted_address" : "100 Spear St #5, San Francisco, CA 94105, USA",
-             "geometry" : {
-                "location" : {
-                   "lat" : 37.79215090,
-                   "lng" : -122.3940
-                },
-                "location_type" : "APPROXIMATE",
-                "viewport" : {
-                   "northeast" : {
-                      "lat" : 37.79349988029150,
-                      "lng" : -122.3926510197085
-                   },
-                   "southwest" : {
-                      "lat" : 37.79080191970850,
-                      "lng" : -122.3953489802915
-                   }
-                }
-             },
-             "partial_match" : true,
-             "types" : [ "subpremise" ]
-          }
-       ],
-       "status" : "OK"
-    }
-  /.strip
-
-  GOOGLE3_CITY=%q/
-  {
-    "status": "OK",
-    "results": [ {
-      "types": [ "locality", "political" ],
-      "formatted_address": "San Francisco, CA, USA",
-      "address_components": [ {
-        "long_name": "San Francisco",
-        "short_name": "San Francisco",
-        "types": [ "locality", "political" ]
-      }, {
-        "long_name": "San Francisco",
-        "short_name": "San Francisco",
-        "types": [ "administrative_area_level_2", "political" ]
-      }, {
-        "long_name": "California",
-        "short_name": "CA",
-        "types": [ "administrative_area_level_1", "political" ]
-      }, {
-        "long_name": "United States",
-        "short_name": "US",
-        "types": [ "country", "political" ]
-      } ],
-      "geometry": {
-        "location": {
-          "lat": 37.7749295,
-          "lng": -122.4194155
-        },
-        "location_type": "APPROXIMATE",
-        "viewport": {
-          "southwest": {
-            "lat": 37.7043396,
-            "lng": -122.5474749
-          },
-          "northeast": {
-            "lat": 37.8454521,
-            "lng": -122.2913561
-          }
-        },
-        "bounds": {
-          "southwest": {
-            "lat": 37.7034000,
-            "lng": -122.5270000
-          },
-          "northeast": {
-            "lat": 37.8120000,
-            "lng": -122.3482000
-          }
-        }
-      }
-    } ]
-  }
-  /.strip
-  GOOGLE3_MULTI=%q/
-    {
-      "status": "OK",
-      "results": [ {
-        "types": [ "street_address" ],
-        "formatted_address": "Via Sandro Pertini, 8, 20010 Mesero MI, Italy",
-        "address_components": [ {
-          "long_name": "8",
-          "short_name": "8",
-          "types": [ "street_number" ]
-        }, {
-          "long_name": "Via Sandro Pertini",
-          "short_name": "Via Sandro Pertini",
-          "types": [ "route" ]
-        }, {
-          "long_name": "Mesero",
-          "short_name": "Mesero",
-          "types": [ "locality", "political" ]
-        }, {
-          "long_name": "Milan",
-          "short_name": "MI",
-          "types": [ "administrative_area_level_2", "political" ]
-        }, {
-          "long_name": "Lombardy",
-          "short_name": "Lombardy",
-          "types": [ "administrative_area_level_1", "political" ]
-        }, {
-          "long_name": "Italy",
-          "short_name": "IT",
-          "types": [ "country", "political" ]
-        }, {
-          "long_name": "20010",
-          "short_name": "20010",
-          "types": [ "postal_code" ]
-        } ],
-        "geometry": {
-          "location": {
-            "lat": 45.4966218,
-            "lng": 8.8526940
-          },
-          "location_type": "RANGE_INTERPOLATED",
-          "viewport": {
-            "southwest": {
-              "lat": 45.4934754,
-              "lng": 8.8495559
-            },
-            "northeast": {
-              "lat": 45.4997707,
-              "lng": 8.8558512
-            }
-          },
-          "bounds": {
-            "southwest": {
-              "lat": 45.4966218,
-              "lng": 8.8526940
-            },
-            "northeast": {
-              "lat": 45.4966243,
-              "lng": 8.8527131
-            }
-          }
-        },
-        "partial_match": true
-      },
-      {
-         "types": [ "route" ],
-         "formatted_address": "Via Sandro Pertini, 20010 Ossona MI, Italy",
-         "address_components": [ {
-           "long_name": "Via Sandro Pertini",
-           "short_name": "Via Sandro Pertini",
-           "types": [ "route" ]
-         }, {
-           "long_name": "Ossona",
-           "short_name": "Ossona",
-           "types": [ "locality", "political" ]
-         }, {
-           "long_name": "Milan",
-           "short_name": "MI",
-           "types": [ "administrative_area_level_2", "political" ]
-         }, {
-           "long_name": "Lombardy",
-           "short_name": "Lombardy",
-           "types": [ "administrative_area_level_1", "political" ]
-         }, {
-           "long_name": "Italy",
-           "short_name": "IT",
-           "types": [ "country", "political" ]
-         }, {
-           "long_name": "20010",
-           "short_name": "20010",
-           "types": [ "postal_code" ]
-         } ],
-         "geometry": {
-           "location": {
-             "lat": 45.5074444,
-             "lng": 8.9023200
-           },
-           "location_type": "GEOMETRIC_CENTER",
-           "viewport": {
-             "southwest": {
-               "lat": 45.5043320,
-               "lng": 8.8990670
-             },
-             "northeast": {
-               "lat": 45.5106273,
-               "lng": 8.9053622
-             }
-           },
-           "bounds": {
-             "southwest": {
-               "lat": 45.5064427,
-               "lng": 8.9020024
-             },
-             "northeast": {
-               "lat": 45.5085166,
-               "lng": 8.9024268
-             }
-           }
-         }
-       }
-      ]
-    }
-  /.strip
-  GOOGLE3_REVERSE_MADRID=%q/
-  {
-    "status": "OK",
-    "results": [ {
-      "types": [ ],
-      "formatted_address": "Calle de las Carretas, 28013 Madrid, Spain",
-      "address_components": [ {
-        "long_name": "Calle de las Carretas",
-        "short_name": "Calle de las Carretas",
-        "types": [ "route" ]
-      }, {
-        "long_name": "Madrid",
-        "short_name": "Madrid",
-        "types": [ "locality", "political" ]
-      }, {
-        "long_name": "Madrid",
-        "short_name": "M",
-        "types": [ "administrative_area_level_2", "political" ]
-      }, {
-        "long_name": "Madrid",
-        "short_name": "Madrid",
-        "types": [ "administrative_area_level_1", "political" ]
-      }, {
-        "long_name": "Spain",
-        "short_name": "ES",
-        "types": [ "country", "political" ]
-      }, {
-        "long_name": "28013",
-        "short_name": "28013",
-        "types": [ "postal_code" ]
-      } ],
-      "geometry": {
-        "location": {
-          "lat": 40.4166824,
-          "lng": -3.7033411
-        },
-        "location_type": "APPROXIMATE",
-        "viewport": {
-          "southwest": {
-            "lat": 40.4135351,
-            "lng": -3.7064880
-          },
-          "northeast": {
-            "lat": 40.4198303,
-            "lng": -3.7001927
-          }
-        },
-        "bounds": {
-          "southwest": {
-            "lat": 40.4166419,
-            "lng": -3.7033685
-          },
-          "northeast": {
-            "lat": 40.4167235,
-            "lng": -3.7033122
-          }
-        }
-      }
-    } ]
-  }
-  /
-  GOOGLE3_COUNTRY_CODE_BIASED_RESULT=%q/
-  {
-    "status": "OK",
-    "results": [ {
-      "types": [ "administrative_area_level_2", "political" ],
-      "formatted_address": "Syracuse, Italy",
-      "address_components": [ {
-        "long_name": "Syracuse",
-        "short_name": "SR",
-        "types": [ "administrative_area_level_2", "political" ]
-      }, {
-        "long_name": "Sicily",
-        "short_name": "Sicily",
-        "types": [ "administrative_area_level_1", "political" ]
-      }, {
-        "long_name": "Italy",
-        "short_name": "IT",
-        "types": [ "country", "political" ]
-      } ],
-      "geometry": {
-        "location": {
-          "lat": 37.0630218,
-          "lng": 14.9856176
-        },
-        "location_type": "APPROXIMATE",
-        "viewport": {
-          "southwest": {
-            "lat": 36.7775664,
-            "lng": 14.4733800
-          },
-          "northeast": {
-            "lat": 37.3474070,
-            "lng": 15.4978552
-          }
-        },
-        "bounds": {
-          "southwest": {
-            "lat": 36.6441736,
-            "lng": 14.7724913
-          },
-          "northeast": {
-            "lat": 37.4125978,
-            "lng": 15.3367367
-          }
-        }
-      }
-    } ]
-  }
-  /
-  GOOGLE3_TOO_MANY=%q/
-    {
-       "status": "OVER_QUERY_LIMIT"
-    }
-  /
-  GOOGLE3_INVALID_REQUEST=%q/
-  {
-    "results" : [],
-    "status" : "INVALID_REQUEST"
-  }
-  /
   def setup
     super
     @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'
@@ -393,49 +19,70 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
   end
 
+
+  # Example from:
+  # https://developers.google.com/maps/documentation/business/webservices#signature_examples
+  def test_google3_signature
+    cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+    query_string = '/maps/api/geocode/json?address=New+York&sensor=false&client=clientID'
+    signature = Geokit::Geocoders::GoogleGeocoder3.send(:sign_gmap_bus_api_url, query_string, cryptographic_key)
+    assert_equal 'KrU1TzVQM7Ur0i8i7K3huiw3MsA=', signature
+  end
+
+
+  # Example from:
+  # https://developers.google.com/maps/documentation/business/webservices#signature_examples
+  def test_google3_signature_and_url
+    Geokit::Geocoders::google_client_id = 'clientID'
+    Geokit::Geocoders::google_cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+    url = Geokit::Geocoders::GoogleGeocoder3.send(:submit_url, '/maps/api/geocode/json?address=New+York&sensor=false')
+    Geokit::Geocoders::google_client_id = nil
+    Geokit::Geocoders::google_cryptographic_key = nil
+    assert_equal 'http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID&signature=KrU1TzVQM7Ur0i8i7K3huiw3MsA=', url
+  end
+
   def test_google3_full_address
-    response = MockSuccess.new
-    response.expects(:body).returns(GOOGLE3_FULL)
+    VCR.use_cassette('google3_full_short') do
     url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
-    Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+    TestHelper.expects(:last_url).with(url)
     res=Geokit::Geocoders::GoogleGeocoder3.geocode(@address)
     assert_equal "CA", res.state
     assert_equal "San Francisco", res.city
-    assert_equal "37.7921509,-122.394", res.ll # slightly dif from yahoo
+    assert_array_in_delta [37.7749295, -122.4194155], res.to_a # slightly dif from yahoo
     assert res.is_us?
-    assert_equal "100 Spear St #5, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
+    assert_equal "San Francisco, CA, USA", res.full_address #slightly different from yahoo
     assert_equal "google3", res.provider
+    end
   end
 
   def test_google3_full_address_with_geo_loc
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_FULL)
+     VCR.use_cassette('google3_full') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@full_address_short_zip)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
      assert_equal "CA", res.state
      assert_equal "San Francisco", res.city
-     assert_equal "37.7921509,-122.394", res.ll # slightly dif from yahoo
+     assert_array_in_delta [37.7921509, -122.394], res.to_a # slightly dif from yahoo
      assert res.is_us?
-     assert_equal "100 Spear St #5, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
+     assert_equal "100 Spear Street #5, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
      assert_equal "google3", res.provider
+     end
    end
 
    def test_google3_full_address_accuracy
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_FULL)
+     VCR.use_cassette('google3_full') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@full_address_short_zip)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
 
      assert_equal 9, res.accuracy
+     end
    end
 
    def test_google3_city
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_CITY)
+     VCR.use_cassette('google3_city') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.do_geocode(@address)
      assert_nil res.street_address
      assert_equal "CA", res.state
@@ -444,22 +91,22 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert res.is_us?
      assert_equal "San Francisco, CA, USA", res.full_address
      assert_equal "google3", res.provider
+     end
    end
 
    def test_google3_city_accuracy
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_CITY)
+     VCR.use_cassette('google3_city') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@address)
      assert_equal 4, res.accuracy
+     end
    end
 
    def test_google3_city_with_geo_loc
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_CITY)
+     VCR.use_cassette('google3_city') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode(@google_city_loc)
      assert_equal "CA", res.state
      assert_equal "San Francisco", res.city
@@ -468,18 +115,29 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "San Francisco, CA, USA", res.full_address
      assert_nil res.street_address
      assert_equal "google3", res.provider
+     end
    end
 
    def test_google3_suggested_bounds
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_FULL)
+     VCR.use_cassette('google3_full') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@full_address_short_zip)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res = Geokit::Geocoders::GoogleGeocoder3.geocode(@google_full_loc)
-
      assert_instance_of Geokit::Bounds, res.suggested_bounds
-     assert_equal Geokit::Bounds.new(Geokit::LatLng.new(37.7908019197085, -122.3953489802915), Geokit::LatLng.new(37.7934998802915, -122.3926510197085)), res.suggested_bounds
+     assert_array_in_delta [37.7908019197085, -122.3953489802915], res.suggested_bounds.sw.to_a
+     assert_array_in_delta [37.7934998802915, -122.3926510197085], res.suggested_bounds.ne.to_a
+     end
    end
+
+   def test_google3_suggested_bounds_url
+     bounds = Geokit::Bounds.new(
+       Geokit::LatLng.new(33.7036917, -118.6681759),
+       Geokit::LatLng.new(34.3373061, -118.1552891)
+     )
+     url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Winnetka&bounds=33.7036917%2C-118.6681759%7C34.3373061%2C-118.1552891"
+     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url)
+     Geokit::Geocoders::GoogleGeocoder3.geocode('Winnetka', :bias => bounds)
+  end
 
    def test_service_unavailable
      response = MockFailure.new
@@ -489,40 +147,37 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
    end
 
    def test_multiple_results
-     #Geokit::Geocoders::GoogleGeocoder3.do_geocode('via Sandro Pertini 8, Ossona, MI')
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_MULTI)
+     VCR.use_cassette('google3_multi') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape('via Sandro Pertini 8, Ossona, MI')}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.geocode('via Sandro Pertini 8, Ossona, MI')
+     assert_equal 5, res.all.size
+     res = res.all[0]
      assert_equal "Lombardy", res.state
      assert_equal "Mesero", res.city
-     assert_equal "45.4966218,8.852694", res.ll
+     assert_array_in_delta [45.4966218, 8.852694], res.to_a
      assert !res.is_us?
-     assert_equal "Via Sandro Pertini, 8, 20010 Mesero MI, Italy", res.full_address
+     assert_equal "Via Sandro Pertini, 8, 20010 Mesero Milan, Italy", res.full_address
      assert_equal "8 Via Sandro Pertini", res.street_address
      assert_equal "google3", res.provider
 
-     assert_equal 2, res.all.size
-     res = res.all[1]
+     res = res.all[4]
      assert_equal "Lombardy", res.state
      assert_equal "Ossona", res.city
-     assert_equal "45.5074444,8.90232", res.ll
+     assert_array_in_delta [45.5074444, 8.90232], res.to_a
      assert !res.is_us?
-     assert_equal "Via Sandro Pertini, 20010 Ossona MI, Italy", res.full_address
-     assert_equal "Via Sandro Pertini", res.street_address
+     assert_equal "Via S. Pertini, 20010 Ossona Milan, Italy", res.full_address
+     assert_equal "Via S. Pertini", res.street_address
      assert_equal "google3", res.provider
+     end
    end
   #
    def test_reverse_geocode
-     #Geokit::Geocoders::GoogleGeocoder3.do_reverse_geocode("40.4167413, -3.7032498")
+     VCR.use_cassette('google3_reverse_madrid') do
      madrid = Geokit::GeoLoc.new
      madrid.lat, madrid.lng = "40.4167413", "-3.7032498"
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_REVERSE_MADRID)
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(madrid.ll)}"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).
-       returns(response)
+     TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder3.do_reverse_geocode(madrid.ll)
 
      assert_equal madrid.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
@@ -531,32 +186,39 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      assert_equal "google3", res.provider
 
      assert_equal "Madrid", res.city
-     assert_equal "Madrid", res.state
+     assert_equal "Community of Madrid", res.state
 
      assert_equal "Spain", res.country
-     assert_equal "street", res.precision
-     assert_equal true, res.success
-
-     assert_equal "Calle de las Carretas, 28013 Madrid, Spain", res.full_address
      assert_equal "28013", res.zip
-     assert_equal "Calle de las Carretas", res.street_address
+     assert_equal true, res.success
+     end
    end
 
    def test_country_code_biasing
-     response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_COUNTRY_CODE_BIASED_RESULT)
-
+     VCR.use_cassette('google3_country_code_biased_result') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it"
-     Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
+     TestHelper.expects(:last_url).with(url)
      biased_result = Geokit::Geocoders::GoogleGeocoder3.geocode('Syracuse', :bias => 'it')
 
      assert_equal 'IT', biased_result.country_code
-     assert_equal 'Sicily', biased_result.state
+     assert_equal 'Sicilia', biased_result.state
+     end
+   end
+
+   def test_language_response
+     VCR.use_cassette('google3_language_response_fr') do
+     url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Hanoi&language=FR"
+     TestHelper.expects(:last_url).with(url)
+     language_result = Geokit::Geocoders::GoogleGeocoder3.geocode('Hanoi', :language => 'FR')
+
+     assert_equal 'VN', language_result.country_code
+     assert_equal 'Hanoï', language_result.city
+     end
    end
 
    def test_too_many_queries
      response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_TOO_MANY)
+     response.expects(:body).returns %q/{"status": "OVER_QUERY_LIMIT"}/
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      assert_raise Geokit::TooManyQueriesError do
@@ -566,7 +228,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
 
    def test_invalid_request
      response = MockSuccess.new
-     response.expects(:body).returns(GOOGLE3_INVALID_REQUEST)
+     response.expects(:body).returns %q/{"results" : [], "status" : "INVALID_REQUEST"}/
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape("3961 V\u00EDa Marisol")}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
      assert_raise Geokit::Geocoders::GeocodeError do

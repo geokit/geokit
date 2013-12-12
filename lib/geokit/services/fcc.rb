@@ -16,7 +16,7 @@ module Geokit
       # Template method which does the geocode lookup.
       #
       # ==== EXAMPLES
-      # ll=GeoKit::LatLng.new(40, -85)
+      # ll=Geokit::LatLng.new(40, -85)
       # Geokit::Geocoders::FCCGeocoder.geocode(ll) #
 
       # JSON result looks like this

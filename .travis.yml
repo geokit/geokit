@@ -1,10 +1,13 @@
-# http://about.travis-ci.org/docs/user/languages/ruby/
-
 language: ruby
-#bundler_args: --without development
 rvm:
   - ree
   - 1.8.7
   - 1.9.2
   - 1.9.3
-
+  - 2.0.0
+script: "bundle exec rake coverage"
+before_install:
+  - gem install bundler
+notifications:
+  email:
+    - michael+geokit@noack.com.au

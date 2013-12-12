@@ -452,6 +452,12 @@ module Geokit
       (instance_variables - ['@all', :@all]).sort
     end
 
+    def encode_with(coder)
+      to_yaml_properties.each do |name|
+        coder[name[1..-1].to_s] = instance_variable_get(name.to_s)
+      end
+    end
+
     # Returns a string representation of the instance.
     def to_s
       "Provider: #{provider}\nStreet: #{street_address}\nCity: #{city}\nState: #{state}\nZip: #{zip}\nLatitude: #{lat}\nLongitude: #{lng}\nCountry: #{country_code}\nSuccess: #{success}"
