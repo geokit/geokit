@@ -29,7 +29,7 @@ module Geokit
           :country_code => res.country_code3
         )
 
-        loc.success = ( res.longitude.is_a?(Float) && res.latitude.is_a?(Float) )
+        loc.success = ( res.longitude.kind_of?(Numeric) && res.latitude.kind_of?(Numeric) )
         loc
       end
     end
