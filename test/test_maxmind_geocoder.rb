@@ -17,10 +17,11 @@ class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
     city.stubs(:city_name).returns('Adelaide')
     city.stubs(:region_name).returns('Australia')
     city.stubs(:postal_code).returns('')
-    city.stubs(:country_code3).returns('AUS')
+    city.stubs(:country_code2).returns('AU')
 
     res = Geokit::Geocoders::MaxmindGeocoder.geocode(@ip)
     assert_equal 'Adelaide', res.city
+    assert_equal 'AU', res.country_code
     assert_equal true, res.success
     assert res.city
   end
@@ -35,10 +36,11 @@ class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
     city.stubs(:city_name).returns('Canelones')
     city.stubs(:region_name).returns('')
     city.stubs(:postal_code).returns('')
-    city.stubs(:country_code3).returns('URY')
+    city.stubs(:country_code2).returns('UR')
 
     res = Geokit::Geocoders::MaxmindGeocoder.geocode(@ip)
     assert_equal 'Canelones', res.city
+    assert_equal 'UR', res.country_code
     assert_equal true, res.success
     assert res.city
   end
