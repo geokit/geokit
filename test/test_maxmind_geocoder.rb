@@ -7,7 +7,7 @@ class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
     @ip = '118.210.47.142'
   end
 
-  def test_ip
+  def test_ip_from_autralia
     location = mock()
     city = mock()
     ::GeoIP.stubs(:new).with(anything).returns(location)
@@ -21,6 +21,25 @@ class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     res = Geokit::Geocoders::MaxmindGeocoder.geocode(@ip)
     assert_equal 'Adelaide', res.city
+    assert_equal true, res.success
+    assert res.city
+  end
+
+  def test_ip_from_south_america
+    location = mock()
+    city = mock()
+    ::GeoIP.stubs(:new).with(anything).returns(location)
+    location.expects(:city).with(@ip).returns(city)
+    city.stubs(:latitude).returns(-34)
+    city.stubs(:longitude).returns(-56)
+    city.stubs(:city_name).returns('Canelones')
+    city.stubs(:region_name).returns('')
+    city.stubs(:postal_code).returns('')
+    city.stubs(:country_code3).returns('URY')
+
+    res = Geokit::Geocoders::MaxmindGeocoder.geocode(@ip)
+    assert_equal 'Canelones', res.city
+    assert_equal true, res.success
     assert res.city
   end
 

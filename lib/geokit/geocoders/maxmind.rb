@@ -9,11 +9,10 @@ module Geokit
       private
 
       def self.do_geocode(ip, options = {})
-        # return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
-        return maxmind(ip)
+        maxmind(ip)
       rescue
         logger.error "Caught an error during MaxMind geocoding call: " + $!.to_s
-        return GeoLoc.new
+        GeoLoc.new
       end
 
 
@@ -30,9 +29,8 @@ module Geokit
           :country_code => res.country_code3
         )
 
-        # loc.success = res.city_name && res.city_name != ''
-        loc.success = (res.longitude > 0 && res.latitude > 0)
-        return loc
+        loc.success = ( res.longitude.kind_of?(Numeric) && res.latitude.kind_of?(Numeric) )
+        loc
       end
     end
   end
