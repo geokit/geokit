@@ -1,5 +1,3 @@
-require 'hmac-sha1'
-
 module Geokit
   module Geocoders
     class GoogleGeocoder3 < Geocoder
