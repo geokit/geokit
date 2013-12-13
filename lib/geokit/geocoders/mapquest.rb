@@ -14,7 +14,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "MapQuest reverse-geocoding. LL: #{latlng}. Result: #{json}"
-        json2GeoLoc(json, latlng)
+        parse_json(json, latlng)
       end
 
       # Template method which does the geocode lookup.
@@ -25,10 +25,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "Mapquest geocoding. Address: #{address}. Result: #{json}"
-        json2GeoLoc(json, address)
+        parse_json(json, address)
       end
 
-      def self.json2GeoLoc(json, address)
+      def self.parse_json(json, address)
         results = MultiJson.load(json)
 
         if results['info']['statuscode'] == 0

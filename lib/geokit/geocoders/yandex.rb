@@ -14,10 +14,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         # logger.debug "Yandex geocoding. Address: #{address}. Result: #{json}"
-        json2GeoLoc(json, address)
+        parse_json(json, address)
       end
 
-      def self.json2GeoLoc(json, address)
+      def self.parse_json(json, address)
         geoloc = GeoLoc.new
 
         result = MultiJson.load(json)

@@ -23,10 +23,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "Yahoo geocoding. Address: #{address}. Result: #{json}"
-        json2GeoLoc(json, address)
+        parse_json(json, address)
       end
 
-      def self.json2GeoLoc(json, address)
+      def self.parse_json(json, address)
         results = MultiJson.load(json)
 
         if results && results['bossresponse'] && results['bossresponse']['placefinder'] && results['bossresponse']['placefinder']['results'] && results['bossresponse']['placefinder']['results'].first != nil

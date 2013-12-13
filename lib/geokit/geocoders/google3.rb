@@ -11,7 +11,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{CGI.escape(json)}"
-        json2GeoLoc(json)
+        parse_json(json)
       end
 
       # Template method which does the geocode lookup.
@@ -51,7 +51,7 @@ module Geokit
         json = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(json)}"
 
-        json2GeoLoc(json, address)
+        parse_json(json, address)
       end
 
       # This code comes from Googles Examples
@@ -91,7 +91,7 @@ module Geokit
         end
       end
 
-      def self.json2GeoLoc(json, address="")
+      def self.parse_json(json, address="")
         results = MultiJson.load(json)
 
         case results['status']

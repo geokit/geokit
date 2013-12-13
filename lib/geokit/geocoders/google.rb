@@ -18,7 +18,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
-        xml2GeoLoc(xml)
+        parse_xml(xml)
       end
 
       # Template method which does the geocode lookup.
@@ -53,7 +53,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        xml2GeoLoc(xml, address)
+        parse_xml(xml, address)
       end
 
       def self.construct_bias_string_from_options(bias)
@@ -72,7 +72,7 @@ module Geokit
         "#{"%.6f" % loc.lat},#{"%.6f" % loc.lng}"
       end
 
-      def self.xml2GeoLoc(xml, address="")
+      def self.parse_xml(xml, address="")
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
