@@ -1,11 +1,11 @@
 module Geokit
   module Geocoders
     # Provides geocoding based upon an IP address.  The underlying web service is geoplugin.net
-    class GeoPluginGeocoder < Geocoder
+    class GeoPluginGeocoder < BaseIpGeocoder
       private
 
       def self.do_geocode(ip, options = {})
-        return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        return GeoLoc.new unless valid_ip?(ip)
         response = self.call_geocoder_service("http://www.geoplugin.net/xml.gp?ip=#{ip}")
         response.is_a?(Net::HTTPSuccess) ? parse_xml(response.body) : GeoLoc.new
       rescue
