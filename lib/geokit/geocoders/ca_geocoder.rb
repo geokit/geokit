@@ -21,13 +21,12 @@ module Geokit
        url = construct_request(address)
        res = call_geocoder_service(url)
        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-       parse_body(res.body, address)
+       xml = res.body
+       logger.debug "Geocoder.ca geocoding. Address: #{address}. Result: #{xml}"
+       parse :xml, xml, address
     end
 
-    def self.parse_body(xml, address)
-       logger.debug "Geocoder.ca geocoding. Address: #{address}. Result: #{xml}"
-       # Parse the document.
-       doc = REXML::Document.new(xml)
+    def self.parse_xml(doc, address)
        address.lat = doc.elements['//latt'].text
        address.lng = doc.elements['//longt'].text
        address.success = true

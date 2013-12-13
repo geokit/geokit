@@ -11,7 +11,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{CGI.escape(json)}"
-        parse_json(json)
+        parse :json, json
       end
 
       # Template method which does the geocode lookup.
@@ -51,7 +51,7 @@ module Geokit
         json = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(json)}"
 
-        parse_json(json, address)
+        parse :json, json, address
       end
 
       # This code comes from Googles Examples
@@ -91,9 +91,7 @@ module Geokit
         end
       end
 
-      def self.parse_json(json, address="")
-        results = MultiJson.load(json)
-
+      def self.parse_json(results, address="")
         case results['status']
         when 'OVER_QUERY_LIMIT' then raise Geokit::Geocoders::TooManyQueriesError
         when 'ZERO_RESULTS' then return GeoLoc.new

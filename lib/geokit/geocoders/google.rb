@@ -19,7 +19,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
-        parse_xml(xml)
+        parse :xml, xml
       end
 
       # Template method which does the geocode lookup.
@@ -55,7 +55,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        parse_xml(xml, address)
+        parse :xml, xml, address
       end
 
       def self.construct_bias_string_from_options(bias)
@@ -74,9 +74,7 @@ module Geokit
         "#{"%.6f" % loc.lat},#{"%.6f" % loc.lng}"
       end
 
-      def self.parse_xml(xml, address="")
-        doc=REXML::Document.new(xml)
-
+      def self.parse_xml(doc, address="")
         if doc.elements['//kml/Response/Status/code'].text == '200'
           geoloc = nil
           # Google can return multiple results as //Placemark elements.

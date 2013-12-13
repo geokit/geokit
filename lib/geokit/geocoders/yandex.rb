@@ -12,15 +12,12 @@ module Geokit
         url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex != 'REPLACE_WITH_YOUR_YANDEX_KEY'
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        # logger.debug "Yandex geocoding. Address: #{address}. Result: #{json}"
-        parse_json(json, address)
+        parse :json, res.body, address
       end
 
-      def self.parse_json(json, address)
+      def self.parse_json(result, address)
         geoloc = GeoLoc.new
 
-        result = MultiJson.load(json)
         if result["response"]["GeoObjectCollection"]["metaDataProperty"]["GeocoderResponseMetaData"]["found"].to_i > 0
           loc = result["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
 

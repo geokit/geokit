@@ -141,6 +141,14 @@ module Geokit
         end
         Net::HTTP::new(*net_http_args).start { |http| http.request(req) }
       end
+
+      def self.parse(format, body, *args)
+        case format
+        when :json then parse_json(MultiJson.load(body), *args)
+        when :xml  then parse_xml(REXML::Document.new(body), *args)
+        when :yaml then parse_yaml(YAML::load(body), *args)
+        end
+      end
     end
 
     # -------------------------------------------------------------------------------------------

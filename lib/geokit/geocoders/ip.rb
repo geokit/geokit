@@ -15,7 +15,9 @@ module Geokit
         res = call_geocoder_service(url)
         ensure_utf8_encoding(res)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse_body(res.body)
+        body = res.body
+        body = body.encode('UTF-8') if body.respond_to? :encode
+        parse :yaml, body
       end
 
       # Converts the body to YAML since its in the form of:
@@ -26,9 +28,7 @@ module Geokit
       # Longitude: -88.4588
       #
       # then instantiates a GeoLoc instance to populate with location data.
-      def self.parse_body(body) # :nodoc:
-        body = body.encode('UTF-8') if body.respond_to? :encode
-        yaml = YAML.load(body)
+      def self.parse_yaml(yaml) # :nodoc:
         res = GeoLoc.new
         res.provider = 'hostip'
         res.city, res.state = yaml['City'].split(', ')

@@ -11,7 +11,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
         logger.debug "FCC reverse-geocoding. LL: #{latlng}. Result: #{json}"
-        parse_json(json)
+        parse :json, json
       end
 
       # Template method which does the geocode lookup.
@@ -27,9 +27,7 @@ module Geokit
       # "State"=>{"name"=>"Indiana", "code"=>"IN", "FIPS"=>"18"},
       # "status"=>"OK"}
 
-      def self.parse_json(json, address="")
-        results = MultiJson.load(json)
-
+      def self.parse_json(results)
         if results.has_key?('Err') && results['Err']["msg"] == 'There are no results for this location'
           return GeoLoc.new
         end

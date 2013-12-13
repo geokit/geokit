@@ -9,11 +9,10 @@ module Geokit
         url = "http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse_json(res.body)
+        parse :json, res.body
       end
 
       def self.parse_json(json)
-        json = MultiJson.load(json)
         geo = GeoLoc.new
         data = json['data']['locations'][0]
 

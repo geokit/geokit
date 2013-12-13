@@ -9,11 +9,10 @@ module Geokit
         url = "http://www.geoplugin.net/xml.gp?ip=#{ip}"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse_xml(res.body)
+        parse :xml, res.body
       end
 
       def self.parse_xml(xml)
-        xml = REXML::Document.new(xml)
         geo = GeoLoc.new
         geo.provider='geoPlugin'
         geo.city = xml.elements['//geoplugin_city'].text
