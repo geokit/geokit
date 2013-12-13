@@ -29,9 +29,6 @@ module Geokit
        address.lng = doc.elements['//longt'].text
        address.success = true
        address
-     rescue
-       logger.error "Caught an error during Geocoder.ca geocoding call: "+$!
-       GeoLoc.new
      end
 
      # Formats the request in the format acceptable by the CA geocoder.

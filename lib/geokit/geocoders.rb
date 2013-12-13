@@ -10,9 +10,6 @@ require 'multi_json'
 module Geokit
   require File.join(File.dirname(__FILE__), 'inflectors')
 
-  class TooManyQueriesError < StandardError; end
-
-
   # Contains a range of geocoders:
   #
   # ### "regular" address geocoders
@@ -82,6 +79,7 @@ module Geokit
 
     # Error which is thrown in the event a geocoding error occurs.
     class GeocodeError < StandardError; end
+    class TooManyQueriesError < StandardError; end
 
     # -------------------------------------------------------------------------------------------
     # Geocoder Base class -- every geocoder should inherit from this
@@ -95,6 +93,11 @@ module Geokit
       # empty one with a failed success code.
       def self.geocode(address, options = {})
         do_geocode(address, options) || GeoLoc.new
+      rescue TooManyQueriesError, GeocodeError
+        raise
+      rescue
+        logger.error "Caught an error during #{self.class} geocoding call: "+$!
+        GeoLoc.new
       end
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an

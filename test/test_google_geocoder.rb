@@ -242,7 +242,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(GOOGLE_TOO_MANY)
     url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector.url_escape(@address)}&output=xml&key=Google&oe=utf-8"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    assert_raise Geokit::TooManyQueriesError do
+    assert_raise Geokit::Geocoders::TooManyQueriesError do
       res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
     end
   end

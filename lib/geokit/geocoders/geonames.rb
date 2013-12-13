@@ -44,9 +44,6 @@ module Geokit
           logger.info "Geonames was unable to geocode address: "+address
           GeoLoc.new
         end
-
-      rescue
-        logger.error "Caught an error during Geonames geocoding call: "+$!
       end
     end
   end

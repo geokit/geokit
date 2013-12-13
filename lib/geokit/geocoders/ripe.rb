@@ -8,9 +8,6 @@ module Geokit
         return GeoLoc.new unless valid_ip?(ip)
         response = self.call_geocoder_service("http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}")
         response.is_a?(Net::HTTPSuccess) ? parse_json(response.body) : GeoLoc.new
-      rescue
-        logger.error "Caught an error during GeoPluginGeocoder geocoding call: #{$!}"
-        GeoLoc.new
       end
 
       def self.parse_json(json)

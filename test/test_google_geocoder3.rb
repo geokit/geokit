@@ -221,7 +221,7 @@ class GoogleGeocoder3Test < BaseGeocoderTest #:nodoc: all
      response.expects(:body).returns %q/{"status": "OVER_QUERY_LIMIT"}/
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
      Geokit::Geocoders::GoogleGeocoder3.expects(:call_geocoder_service).with(url).returns(response)
-     assert_raise Geokit::TooManyQueriesError do
+     assert_raise Geokit::Geocoders::TooManyQueriesError do
        res=Geokit::Geocoders::GoogleGeocoder3.geocode(@address)
      end
    end

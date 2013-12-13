@@ -15,9 +15,6 @@ module Geokit
         response = self.call_geocoder_service(url)
         ensure_utf8_encoding(response)
         response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
-      rescue
-        logger.error "Caught an error during HostIp geocoding call: " + $!.to_s
-        GeoLoc.new
       end
 
       # Converts the body to YAML since its in the form of:

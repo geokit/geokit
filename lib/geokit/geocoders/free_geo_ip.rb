@@ -8,10 +8,6 @@ module Geokit
         return GeoLoc.new unless valid_ip?(ip)
         response = self.call_geocoder_service("http://freegeoip.net/xml/#{ip}")
         response.is_a?(Net::HTTPSuccess) ? parse_xml(response.body) : GeoLoc.new
-      rescue
-        #logger.error "Caught an error during FreeGeoIpGeocoder geocoding call: " + $!.inspect + $@.inspect
-        puts "Caught an error during FreeGeoIpGeocoder geocoding call: ", $!, $@
-        GeoLoc.new
       end
 
       def self.parse_xml(xml)

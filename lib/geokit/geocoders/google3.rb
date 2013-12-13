@@ -95,7 +95,7 @@ module Geokit
         results = MultiJson.load(json)
 
         case results['status']
-        when 'OVER_QUERY_LIMIT' then raise Geokit::TooManyQueriesError
+        when 'OVER_QUERY_LIMIT' then raise Geokit::Geocoders::TooManyQueriesError
         when 'ZERO_RESULTS' then return GeoLoc.new
         end
         # this should probably be smarter.

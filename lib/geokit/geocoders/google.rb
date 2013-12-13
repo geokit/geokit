@@ -92,18 +92,15 @@ module Geokit
           end
           geoloc
         elsif doc.elements['//kml/Response/Status/code'].text == '620'
-          raise Geokit::TooManyQueriesError
+          raise Geokit::Geocoders::TooManyQueriesError
         else
           logger.info "Google was unable to geocode address: "+address
           GeoLoc.new
         end
 
-      rescue Geokit::TooManyQueriesError
+      rescue Geokit::Geocoders::TooManyQueriesError
         # re-raise because of other rescue
-        raise Geokit::TooManyQueriesError, "Google returned a 620 status, too many queries. The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. If you're sending multiple requests in parallel or in a tight loop, use a timer or pause in your code to make sure you don't send the requests too quickly."
-      rescue
-        logger.error "Caught an error during Google geocoding call: "+$!
-        GeoLoc.new
+        raise Geokit::Geocoders::TooManyQueriesError, "Google returned a 620 status, too many queries. The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. If you're sending multiple requests in parallel or in a tight loop, use a timer or pause in your code to make sure you don't send the requests too quickly."
       end
 
       # extracts a single geoloc from a //placemark element in the google results xml

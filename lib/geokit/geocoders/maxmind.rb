@@ -10,9 +10,6 @@ module Geokit
 
       def self.do_geocode(ip, options = {})
         maxmind(ip)
-      rescue
-        logger.error "Caught an error during MaxMind geocoding call: " + $!.to_s
-        GeoLoc.new
       end
 
 
