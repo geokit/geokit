@@ -25,8 +25,10 @@ module Geokit
 
         xml=res.body
         logger.debug "Geonames geocoding. Address: #{address}. Result: #{xml}"
-        doc=REXML::Document.new(xml)
+        parse :xml, xml, address
+      end
 
+      def self.parse_xml(doc, address)
         if(doc.elements['//geonames/totalResultsCount'].text.to_i > 0)
           res=GeoLoc.new
 
