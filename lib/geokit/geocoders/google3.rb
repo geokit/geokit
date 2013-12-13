@@ -11,7 +11,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{CGI.escape(json)}"
-        return self.json2GeoLoc(json)
+        json2GeoLoc(json)
       end
 
       # Template method which does the geocode lookup.
@@ -51,7 +51,7 @@ module Geokit
         json = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(json)}"
 
-        return self.json2GeoLoc(json, address)
+        json2GeoLoc(json, address)
       end
 
       # This code comes from Googles Examples
@@ -64,7 +64,7 @@ module Geokit
         # create a signature using the private key and the URL
         rawSignature = OpenSSL::HMAC.digest('sha1', rawKey, urlToSign)
         # encode the signature into base64 for url use form.
-        return Base64.encode64(rawSignature).tr('+/','-_').gsub(/\n/, '')
+        Base64.encode64(rawSignature).tr('+/','-_').gsub(/\n/, '')
       end
 
 

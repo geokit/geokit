@@ -18,7 +18,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
-        return self.xml2GeoLoc(xml)
+        xml2GeoLoc(xml)
       end
 
       # Template method which does the geocode lookup.
@@ -53,7 +53,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        return self.xml2GeoLoc(xml, address)
+        xml2GeoLoc(xml, address)
       end
 
       def self.construct_bias_string_from_options(bias)
@@ -90,12 +90,12 @@ module Geokit
               geoloc.all.push(extracted_geoloc)
             end
           end
-          return geoloc
+          geoloc
         elsif doc.elements['//kml/Response/Status/code'].text == '620'
           raise Geokit::TooManyQueriesError
         else
           logger.info "Google was unable to geocode address: "+address
-          return GeoLoc.new
+          GeoLoc.new
         end
 
       rescue Geokit::TooManyQueriesError
@@ -103,7 +103,7 @@ module Geokit
         raise Geokit::TooManyQueriesError, "Google returned a 620 status, too many queries. The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. If you're sending multiple requests in parallel or in a tight loop, use a timer or pause in your code to make sure you don't send the requests too quickly."
       rescue
         logger.error "Caught an error during Google geocoding call: "+$!
-        return GeoLoc.new
+        GeoLoc.new
       end
 
       # extracts a single geoloc from a //placemark element in the google results xml
@@ -141,7 +141,7 @@ module Geokit
 
         res.success=true
 
-        return res
+        res
       end
       
       def self.transcode_to_utf8(body)

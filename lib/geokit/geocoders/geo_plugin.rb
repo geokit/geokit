@@ -7,10 +7,10 @@ module Geokit
       def self.do_geocode(ip, options = {})
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         response = self.call_geocoder_service("http://www.geoplugin.net/xml.gp?ip=#{ip}")
-        return response.is_a?(Net::HTTPSuccess) ? parse_xml(response.body) : GeoLoc.new
+        response.is_a?(Net::HTTPSuccess) ? parse_xml(response.body) : GeoLoc.new
       rescue
         logger.error "Caught an error during GeoPluginGeocoder geocoding call: "+$!
-        return GeoLoc.new
+        GeoLoc.new
       end
 
       def self.parse_xml(xml)
@@ -23,7 +23,7 @@ module Geokit
         geo.lat = xml.elements['//geoplugin_latitude'].text.to_f
         geo.lng = xml.elements['//geoplugin_longitude'].text.to_f
         geo.success = !!geo.city && !geo.city.empty?
-        return geo
+        geo
       end
     end
 

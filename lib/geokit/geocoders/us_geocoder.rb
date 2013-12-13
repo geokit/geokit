@@ -29,22 +29,21 @@ module Geokit
           res.lat,res.lng,res.city,res.state,res.zip=array
           res.country_code='US'
           res.success=true
-          return res
+          res
         elsif array.length == 6
           res=GeoLoc.new
           res.lat,res.lng,res.street_address,res.city,res.state,res.zip=array
           res.country_code='US'
           res.success=true
-          return res
+          res
         else
           logger.info "geocoder.us was unable to geocode address: "+address
-          return GeoLoc.new
+          GeoLoc.new
         end
-        rescue
-          logger.error "Caught an error during geocoder.us geocoding call: "+$!
-          return GeoLoc.new
-
+      rescue
+        logger.error "Caught an error during geocoder.us geocoding call: "+$!
+        GeoLoc.new
       end
     end
- end
+  end
 end

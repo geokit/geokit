@@ -23,7 +23,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "Yahoo geocoding. Address: #{address}. Result: #{json}"
-        return self.json2GeoLoc(json, address)
+        json2GeoLoc(json, address)
       end
 
       def self.json2GeoLoc(json, address)
@@ -39,10 +39,10 @@ module Geokit
               geoloc.all.push(extracted_geoloc)
             end
           end
-          return geoloc
+          geoloc
         else
           logger.info "Yahoo was unable to geocode address: " + address
-          return GeoLoc.new
+          GeoLoc.new
         end
       end
 
@@ -77,7 +77,7 @@ module Geokit
         geoloc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(geoloc.precision)
         geoloc.success = true
 
-        return geoloc
+        geoloc
       end
     end
   end
@@ -118,9 +118,8 @@ class OauthUtil
   end
   
   def percent_encode( string )
-    
     # ref http://snippets.dzone.com/posts/show/1260
-    return URI.escape( string, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]") ).gsub('*', '%2A')
+    URI.escape( string, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]") ).gsub('*', '%2A')
   end
   
   # @ref http://oauth.net/core/1.0/#rfc.section.9.2
@@ -190,6 +189,6 @@ class OauthUtil
     # add signature
     @params[ 'oauth_signature' ] = signature
     
-    return self
+    self
   end
 end

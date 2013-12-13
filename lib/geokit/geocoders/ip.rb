@@ -40,7 +40,7 @@ module Geokit
         response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
       rescue
         logger.error "Caught an error during HostIp geocoding call: " + $!.to_s
-        return GeoLoc.new
+        GeoLoc.new
       end
 
       # Converts the body to YAML since its in the form of:
@@ -95,7 +95,7 @@ module Geokit
       # the geocoding service. Such queries can occur frequently during
       # integration tests.
       def self.private_ip_address?(ip)
-        return NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
+        NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
       end
     end
   end

@@ -7,10 +7,10 @@ module Geokit
       def self.do_geocode(ip, options = {})
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         response = self.call_geocoder_service("http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}")
-        return response.is_a?(Net::HTTPSuccess) ? parse_json(response.body) : GeoLoc.new
+        response.is_a?(Net::HTTPSuccess) ? parse_json(response.body) : GeoLoc.new
       rescue
         logger.error "Caught an error during GeoPluginGeocoder geocoding call: #{$!}"
-        return GeoLoc.new
+        GeoLoc.new
       end
 
       def self.parse_json(json)
@@ -24,7 +24,7 @@ module Geokit
         geo.lat = data['latitude']
         geo.lng = data['longitude']
         geo.success = (data['status_code'] == 200)
-        return geo
+        geo
       end
     end
 

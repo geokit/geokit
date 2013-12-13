@@ -39,10 +39,10 @@ module Geokit
           res.state=doc.elements['//code/adminName1'].text if doc.elements['//code/adminName1']
           res.zip=doc.elements['//code/postalcode'].text if doc.elements['//code/postalcode']
           res.success=true
-          return res
+          res
         else
           logger.info "Geonames was unable to geocode address: "+address
-          return GeoLoc.new
+          GeoLoc.new
         end
 
       rescue

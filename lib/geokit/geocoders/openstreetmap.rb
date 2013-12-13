@@ -20,7 +20,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "OSM geocoding. Address: #{address}. Result: #{json}"
-        return self.json2GeoLoc(json, address)
+        json2GeoLoc(json, address)
       end
 
       def self.do_reverse_geocode(latlng, options = {})
@@ -36,7 +36,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "OSM reverse geocoding: Lat: #{latlng.lat}, Lng: #{latlng.lng}. Result: #{json}"
-        return self.json2GeoLoc(json, latlng)
+        json2GeoLoc(json, latlng)
       end
 
       def self.generate_param_for(param, value)
@@ -67,10 +67,10 @@ module Geokit
               geoloc.all.push(extract_geoloc)
             end
           end
-          return geoloc
+          geoloc
         else
           logger.info "OSM was unable to geocode #{obj}"
-          return GeoLoc.new
+          GeoLoc.new
         end
       end
 
@@ -112,7 +112,7 @@ module Geokit
 
         geoloc.success = true
 
-        return geoloc
+        geoloc
       end
     end
   end

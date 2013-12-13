@@ -28,10 +28,10 @@ module Geokit
        address.lat = doc.elements['//latt'].text
        address.lng = doc.elements['//longt'].text
        address.success = true
-       return address
+       address
      rescue
        logger.error "Caught an error during Geocoder.ca geocoding call: "+$!
-       return GeoLoc.new
+       GeoLoc.new
      end
 
      # Formats the request in the format acceptable by the CA geocoder.

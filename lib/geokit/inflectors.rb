@@ -23,8 +23,7 @@ module Geokit
     def snake_case(s)
       return s.downcase if s =~ /^[A-Z]+$/u
       s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/u, '_\&') =~ /_*(.*)/
-        return $+.downcase
-
+      $+.downcase
     end
 
     def url_escape(s)

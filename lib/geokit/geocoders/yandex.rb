@@ -14,7 +14,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         # logger.debug "Yandex geocoding. Address: #{address}. Result: #{json}"
-        return self.json2GeoLoc(json, address)
+        json2GeoLoc(json, address)
       end
 
       def self.json2GeoLoc(json, address)
@@ -44,7 +44,7 @@ module Geokit
           logger.info "Yandex was unable to geocode address: " + address
         end
 
-        return geoloc
+        geoloc
       end
     end
   end

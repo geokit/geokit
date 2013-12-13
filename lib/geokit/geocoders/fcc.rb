@@ -10,7 +10,7 @@ module Geokit
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
         logger.debug "FCC reverse-geocoding. LL: #{latlng}. Result: #{json}"
-        return self.json2GeoLoc(json)
+        json2GeoLoc(json)
       end
 
       # Template method which does the geocode lookup.
