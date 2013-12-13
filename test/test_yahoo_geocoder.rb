@@ -4,18 +4,6 @@ Geokit::Geocoders::yahoo_consumer_key = 'dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1
 Geokit::Geocoders::yahoo_consumer_secret = 'SECRET'
 
 class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
-    YAHOO_FULL=<<-EOF.strip
-      {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":87,"Found":1,"Results":[{"quality":87,"latitude":"37.792406","longitude":"-122.39411","offsetlat":"37.792332","offsetlon":"-122.394027","radius":500,"name":"","line1":"100 Spear St","line2":"San Francisco, CA  94105-1522","line3":"","line4":"United States","house":"100","street":"Spear St","xstreet":"","unittype":"","unit":"","postal":"94105-1522","neighborhood":"","city":"San Francisco","county":"San Francisco County","state":"California","country":"United States","countrycode":"US","statecode":"CA","countycode":"","uzip":"94105","hash":"0FA06819B5F53E75","woeid":12797156,"woetype":11}]}}
-    EOF
-
-    YAHOO_CITY=<<-EOF.strip
-      {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":40,"Found":1,"Results":[{"quality":40,"latitude":"37.7742","longitude":"-122.417068","offsetlat":"37.7742","offsetlon":"-122.417068","radius":10700,"name":"","line1":"","line2":"San Francisco, CA","line3":"","line4":"United States","house":"","street":"","xstreet":"","unittype":"","unit":"","postal":"","neighborhood":"","city":"San Francisco","county":"San Francisco County","state":"California","country":"United States","countrycode":"US","statecode":"CA","countycode":"","uzip":"94102","hash":"","woeid":2487956,"woetype":7}]}}
-    EOF
-
-    YAHOO_NO_RESULTS=<<-EOF.strip
-      {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":10,"Found":0}}
-    EOF
-
   def setup
     super
     @yahoo_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105-1522", :country_code=>"US"}
