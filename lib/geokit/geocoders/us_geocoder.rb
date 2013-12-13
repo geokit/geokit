@@ -22,6 +22,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body
         logger.debug "Geocoder.us geocoding. Address: #{address}. Result: #{data}"
+        parse_csv data
+      end
+
+      def self.parse_csv(data)
         array = data.chomp.split(',')
 
         if array.length == 5
@@ -37,7 +41,6 @@ module Geokit
           res.success=true
           res
         else
-          logger.info "geocoder.us was unable to geocode address: "+address
           GeoLoc.new
         end
       end
