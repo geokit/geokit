@@ -9,11 +9,6 @@ module Geokit
       private
 
       def self.do_geocode(ip, options = {})
-        maxmind(ip)
-      end
-
-
-      def self.maxmind(ip)
         res = GeoIP.new(Geokit::Geocoders::geoip_data_path).city(ip)
 
         loc = GeoLoc.new(
