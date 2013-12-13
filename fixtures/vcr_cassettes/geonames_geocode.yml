@@ -1,0 +1,304 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://ws.geonames.org/postalCodeSearch?maxRows=10&placename=Adelaide
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 13 Dec 2013 13:34:30 GMT
+      Server:
+      - Apache/2.2.17 (Linux/SUSE)
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - text/xml;charset=UTF-8
+    body:
+      encoding: US-ASCII
+      string: ! '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+        <geonames>
+
+        <totalResultsCount>178</totalResultsCount>
+
+        <code>
+
+        <postalcode>5000</postalcode>
+
+        <name>Adelaide</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-34.92686</lat>
+
+        <lng>138.59995</lng>
+
+        <adminCode1>SA</adminCode1>
+
+        <adminName1>South Australia</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>SA CITY SUBS</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>5001</postalcode>
+
+        <name>Adelaide</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-34.93333</lat>
+
+        <lng>138.6</lng>
+
+        <adminCode1>SA</adminCode1>
+
+        <adminName1>South Australia</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>SA CITY SUBS</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>5006</postalcode>
+
+        <name>North Adelaide</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-34.90844</lat>
+
+        <lng>138.59525</lng>
+
+        <adminCode1>SA</adminCode1>
+
+        <adminName1>South Australia</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>SA CITY SUBS</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>5760</postalcode>
+
+        <name>Adelaide</name>
+
+        <countryCode>ZA</countryCode>
+
+        <lat>-32.7</lat>
+
+        <lng>26.3</lng>
+
+        <adminCode1/>
+
+        <adminName1/>
+
+        <adminCode2/>
+
+        <adminName2/>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>0846</postalcode>
+
+        <name>Adelaide River</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-13.25</lat>
+
+        <lng>131.1</lng>
+
+        <adminCode1>NT</adminCode1>
+
+        <adminName1>Northern Territory</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>DARWIN</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>4000</postalcode>
+
+        <name>Brisbane Adelaide Street</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-27.46501</lat>
+
+        <lng>153.02339</lng>
+
+        <adminCode1>QLD</adminCode1>
+
+        <adminName1>Queensland</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>BRIS CITY CNTRY</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>4703</postalcode>
+
+        <name>Adelaide Park</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-23.11468</lat>
+
+        <lng>150.69673</lng>
+
+        <adminCode1>QLD</adminCode1>
+
+        <adminName1>Queensland</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>CENTRAL QLD</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>5005</postalcode>
+
+        <name>Adelaide University</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-34.91701</lat>
+
+        <lng>138.57708</lng>
+
+        <adminCode1>SA</adminCode1>
+
+        <adminName1>South Australia</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>SA CITY SUBS</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>5015</postalcode>
+
+        <name>Port Adelaide</name>
+
+        <countryCode>AU</countryCode>
+
+        <lat>-34.81551</lat>
+
+        <lng>138.52127</lng>
+
+        <adminCode1>SA</adminCode1>
+
+        <adminName1>South Australia</adminName1>
+
+        <adminCode2/>
+
+        <adminName2>SA CITY SUBS</adminName2>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        <code>
+
+        <postalcode>M5H</postalcode>
+
+        <name>Downtown Toronto (Richmond / Adelaide / King)</name>
+
+        <countryCode>CA</countryCode>
+
+        <lat>43.6496</lat>
+
+        <lng>-79.38334</lng>
+
+        <adminCode1>ON</adminCode1>
+
+        <adminName1>Ontario</adminName1>
+
+        <adminCode2/>
+
+        <adminName2/>
+
+        <adminCode3/>
+
+        <adminName3/>
+
+        </code>
+
+        </geonames>
+
+'
+    http_version: 
+  recorded_at: Fri, 13 Dec 2013 13:34:28 GMT
+recorded_with: VCR 2.7.0

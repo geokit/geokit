@@ -16,9 +16,16 @@ module Geokit
         geo = GeoLoc.new
         data = json['data']['locations'][0]
 
+        match = data['country'].match /([A-Z]+)(\(([A-Z]+)\))?/
+        if match[3]
+          geo.state = match[1]
+          geo.country_code = match[3]
+        else
+          geo.country_code = match[1]
+        end
+
         geo.provider='RIPE'
         geo.city = data['city']
-        geo.country_code = data['country']
         geo.lat = data['latitude']
         geo.lng = data['longitude']
         geo.success = (data['status_code'] == 200)

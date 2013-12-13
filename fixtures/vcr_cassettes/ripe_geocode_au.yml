@@ -1,0 +1,66 @@
+--- 
+http_interactions: 
+- request: 
+    method: get
+    uri: http://stat.ripe.net/data/geoloc/data.json?resource=118.210.24.54
+    body: 
+      encoding: US-ASCII
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Vary: 
+      - Cookie, Accept-Encoding
+      Content-Type: 
+      - application/json; charset=utf-8
+      Set-Cookie: 
+      - stat-session=8dcf7a7e881c4ec64aa1a7dfcc1335c9; expires=Fri, 27-Dec-2013 15:14:20 GMT; Max-Age=1209600; Path=/
+      Transfer-Encoding: 
+      - chunked
+      Date: 
+      - Fri, 13 Dec 2013 15:14:20 GMT
+      Server: 
+      - lighttpd/1.4.32
+    body: 
+      encoding: US-ASCII
+      string: |-
+        {
+            "cached": true, 
+            "data": {
+                "locations": [
+                    {
+                        "city": "Adelaide", 
+                        "country": "AU", 
+                        "covered_percentage": 100, 
+                        "latitude": -34.928699999999999, 
+                        "longitude": 138.5986, 
+                        "prefixes": [
+                            "118.210.16.0/20"
+                        ]
+                    }
+                ], 
+                "query_time": "2013-11-01T00:00:00", 
+                "resource": "118.210.24.54", 
+                "unknown_percentage": 0.0
+            }, 
+            "data_call_status": "supported", 
+            "messages": [], 
+            "process_time": 3, 
+            "query_id": "3dfcd85e-6409-11e3-a402-782bcb346712", 
+            "see_also": [], 
+            "server_id": "stat-app2", 
+            "status": "ok", 
+            "status_code": 200, 
+            "time": "2013-12-13T15:14:20.874304", 
+            "version": "2.0"
+        }
+    http_version: 
+  recorded_at: Fri, 13 Dec 2013 15:14:18 GMT
+recorded_with: VCR 2.8.0

@@ -1,0 +1,66 @@
+--- 
+http_interactions: 
+- request: 
+    method: get
+    uri: http://stat.ripe.net/data/geoloc/data.json?resource=74.125.237.209
+    body: 
+      encoding: US-ASCII
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Vary: 
+      - Cookie, Accept-Encoding
+      Content-Type: 
+      - application/json; charset=utf-8
+      Set-Cookie: 
+      - stat-session=36d43b5353a80b7f74c583a0bda4ea17; expires=Fri, 27-Dec-2013 15:12:05 GMT; Max-Age=1209600; Path=/
+      Transfer-Encoding: 
+      - chunked
+      Date: 
+      - Fri, 13 Dec 2013 15:12:05 GMT
+      Server: 
+      - lighttpd/1.4.32
+    body: 
+      encoding: US-ASCII
+      string: |-
+        {
+            "cached": true, 
+            "data": {
+                "locations": [
+                    {
+                        "city": "Mountain View", 
+                        "country": "CA(US)", 
+                        "covered_percentage": 100, 
+                        "latitude": 37.419199999999996, 
+                        "longitude": -122.0574, 
+                        "prefixes": [
+                            "74.125.192.0/18"
+                        ]
+                    }
+                ], 
+                "query_time": "2013-11-01T00:00:00", 
+                "resource": "74.125.237.209", 
+                "unknown_percentage": 0.0
+            }, 
+            "data_call_status": "supported", 
+            "messages": [], 
+            "process_time": 3, 
+            "query_id": "ed345b04-6408-11e3-9667-782bcb346712", 
+            "see_also": [], 
+            "server_id": "stat-app2", 
+            "status": "ok", 
+            "status_code": 200, 
+            "time": "2013-12-13T15:12:05.342893", 
+            "version": "2.0"
+        }
+    http_version: 
+  recorded_at: Fri, 13 Dec 2013 15:12:02 GMT
+recorded_with: VCR 2.8.0

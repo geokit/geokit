@@ -1,0 +1,38 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.geoplugin.net/xml.gp?ip=74.125.237.209
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - geoPlugin/3.2.6
+      Date:
+      - Fri, 13 Dec 2013 13:52:11 GMT
+      Content-Type:
+      - application/xml
+      Content-Length:
+      - '1164'
+      Connection:
+      - close
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<geoPlugin>\n\t<geoplugin_request>74.125.237.209</geoplugin_request>\n\t<geoplugin_status>200</geoplugin_status>\n\t<geoplugin_credit>Some
+        of the returned data includes GeoLite data created by MaxMind, available from
+        &lt;a href=\\'http://www.maxmind.com\\'&gt;http://www.maxmind.com&lt;/a&gt;.</geoplugin_credit>\n\t<geoplugin_city>Mountain
+        View</geoplugin_city>\n\t<geoplugin_region>CA</geoplugin_region>\n\t<geoplugin_areaCode>650</geoplugin_areaCode>\n\t<geoplugin_dmaCode>807</geoplugin_dmaCode>\n\t<geoplugin_countryCode>US</geoplugin_countryCode>\n\t<geoplugin_countryName>United
+        States</geoplugin_countryName>\n\t<geoplugin_continentCode>NA</geoplugin_continentCode>\n\t<geoplugin_latitude>37.419201</geoplugin_latitude>\n\t<geoplugin_longitude>-122.057404</geoplugin_longitude>\n\t<geoplugin_regionCode>CA</geoplugin_regionCode>\n\t<geoplugin_regionName>California</geoplugin_regionName>\n\t<geoplugin_currencyCode>USD</geoplugin_currencyCode>\n\t<geoplugin_currencySymbol>&amp;#36;</geoplugin_currencySymbol>\n\t<geoplugin_currencySymbol_UTF8>$</geoplugin_currencySymbol_UTF8>\n\t<geoplugin_currencyConverter>1</geoplugin_currencyConverter>\n</geoPlugin>\n"
+    http_version: 
+  recorded_at: Fri, 13 Dec 2013 13:52:08 GMT
+recorded_with: VCR 2.7.0

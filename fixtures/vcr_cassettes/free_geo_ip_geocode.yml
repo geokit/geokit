@@ -1,0 +1,36 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://freegeoip.net/xml/74.125.237.209
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 13 Dec 2013 13:02:44 GMT
+      Content-Length:
+      - '398'
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>\n <Ip>74.125.237.209</Ip>\n
+        <CountryCode>US</CountryCode>\n <CountryName>United States</CountryName>\n
+        <RegionCode>CA</RegionCode>\n <RegionName>California</RegionName>\n <City>Mountain
+        View</City>\n <ZipCode>94043</ZipCode>\n <Latitude>37.4192</Latitude>\n <Longitude>-122.0574</Longitude>\n
+        <MetroCode>807</MetroCode>\n <AreaCode>650</AreaCode>\n</Response>\n"
+    http_version: 
+  recorded_at: Fri, 13 Dec 2013 13:03:38 GMT
+recorded_with: VCR 2.7.0

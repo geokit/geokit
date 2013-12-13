@@ -11,7 +11,7 @@ end
 require 'geoip'
 
 if ENV['COVERAGE']
-  COVERAGE_THRESHOLD = 84
+  COVERAGE_THRESHOLD = 90
   require 'simplecov'
   require 'simplecov-rcov'
   require 'coveralls'
