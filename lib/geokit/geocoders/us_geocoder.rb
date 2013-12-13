@@ -17,7 +17,7 @@ module Geokit
         end
 
         url = "#{url}?#{query}"
-        res = self.call_geocoder_service(url)
+        res = call_geocoder_service(url)
 
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body

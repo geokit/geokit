@@ -10,7 +10,7 @@ module Geokit
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector::url_escape(address_str)}&format=json"
         url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex != 'REPLACE_WITH_YOUR_YANDEX_KEY'
-        res = self.call_geocoder_service(url)
+        res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         # logger.debug "Yandex geocoding. Address: #{address}. Result: #{json}"

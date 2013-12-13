@@ -12,7 +12,7 @@ module Geokit
       def self.do_geocode(ip, options = {})
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
-        response = self.call_geocoder_service(url)
+        response = call_geocoder_service(url)
         ensure_utf8_encoding(response)
         response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
       end

@@ -6,8 +6,8 @@ module Geokit
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
-        submit_url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
-        res = self.call_geocoder_service(submit_url)
+        url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
+        res = call_geocoder_service(url)
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         json = res.body
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{CGI.escape(json)}"
@@ -43,9 +43,9 @@ module Geokit
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         language_str = options[:language] ? "&language=#{options[:language]}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        submit_url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}#{language_str}")
+        url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}#{language_str}")
 
-        res = self.call_geocoder_service(submit_url)
+        res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
 
         json = res.body

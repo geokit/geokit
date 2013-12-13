@@ -13,13 +13,13 @@ module Geokit
         address_str.gsub!(/,/, " ")
         params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
 
-        if(Geokit::Geocoders::geonames)
-          url = "http://ws.geonames.net#{params}&username=#{Geokit::Geocoders::geonames}"
+        url = if Geokit::Geocoders::geonames
+          "http://ws.geonames.net#{params}&username=#{Geokit::Geocoders::geonames}"
         else
-          url = "http://ws.geonames.org#{params}"
+          "http://ws.geonames.org#{params}"
         end
 
-        res = self.call_geocoder_service(url)
+        res = call_geocoder_service(url)
 
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
 

@@ -14,9 +14,8 @@ module Geokit
 
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
-        #url="http://where.yahooapis.com/geocode?flags=J&appid=#{Geokit::Geocoders::yahoo}&q=#{Geokit::Inflector::url_escape(address_str)}"
-        url="http://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector::url_escape(address_str)}"
-        res = self.call_geocoder_service(url)
+        url = "http://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector::url_escape(address_str)}"
+        res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "OSM geocoding. Address: #{address}. Result: #{json}"
@@ -32,7 +31,7 @@ module Geokit
         options_str << generate_param_for_option(:osm_id, options)
         options_str << generate_param_for_option(:json_callback, options)
         url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1#{options_str}"
-        res = self.call_geocoder_service(url)
+        res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "OSM reverse geocoding: Lat: #{latlng.lat}, Lng: #{latlng.lng}. Result: #{json}"

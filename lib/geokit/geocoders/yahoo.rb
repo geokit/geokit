@@ -17,9 +17,9 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        submit_url = submit_url("?q=#{Geokit::Inflector::url_escape(address_str)}&flags=J")
+        url = submit_url("?q=#{Geokit::Inflector::url_escape(address_str)}&flags=J")
 
-        res = self.call_geocoder_service(submit_url)
+        res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "Yahoo geocoding. Address: #{address}. Result: #{json}"
