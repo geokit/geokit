@@ -28,7 +28,6 @@ module Geokit
       # "status"=>"OK"}
 
       def self.parse_json(json, address="")
-        ret = nil
         results = MultiJson.load(json)
 
         if results.has_key?('Err') && results['Err']["msg"] == 'There are no results for this location'
