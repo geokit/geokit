@@ -12,9 +12,9 @@ module Geokit
       def self.do_geocode(ip, options = {})
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
-        response = call_geocoder_service(url)
-        ensure_utf8_encoding(response)
-        response.is_a?(Net::HTTPSuccess) ? parse_body(response.body) : GeoLoc.new
+        res = call_geocoder_service(url)
+        ensure_utf8_encoding(res)
+        res.is_a?(Net::HTTPSuccess) ? parse_body(res.body) : GeoLoc.new
       end
 
       # Converts the body to YAML since its in the form of:
@@ -43,21 +43,21 @@ module Geokit
       # Rails expects string input to be UTF-8
       # hostip.info specifies the charset encoding in the headers
       # thus extract encoding from headers and tell Rails about it by forcing it
-      def self.ensure_utf8_encoding(response)
-        if (enc_string = extract_charset(response))
+      def self.ensure_utf8_encoding(res)
+        if (enc_string = extract_charset(res))
           if defined?(Encoding) && Encoding.aliases.values.include?(enc_string.upcase)
-            response.body.force_encoding(enc_string.upcase) if response.body.respond_to?(:force_encoding)
-            response.body.encode("UTF-8")
+            res.body.force_encoding(enc_string.upcase) if res.body.respond_to?(:force_encoding)
+            res.body.encode("UTF-8")
           else
             require 'iconv'
-            response.body.replace Iconv.conv("UTF8", "iso88591", response.body)
+            res.body.replace Iconv.conv("UTF8", "iso88591", res.body)
           end
         end
       end
 
       # Extracts charset out of the response headers
-      def self.extract_charset(response)
-        if (content_type = response['content-type'])
+      def self.extract_charset(res)
+        if (content_type = res['content-type'])
           capture = content_type.match(/charset=(.+)/)
           capture && capture[1]
         end
