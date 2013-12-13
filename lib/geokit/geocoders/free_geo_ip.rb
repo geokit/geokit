@@ -8,7 +8,8 @@ module Geokit
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://freegeoip.net/xml/#{ip}"
         res = call_geocoder_service(url)
-        res.is_a?(Net::HTTPSuccess) ? parse_xml(res.body) : GeoLoc.new
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        parse_xml(res.body)
       end
 
       def self.parse_xml(xml)

@@ -14,7 +14,8 @@ module Geokit
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         res = call_geocoder_service(url)
         ensure_utf8_encoding(res)
-        res.is_a?(Net::HTTPSuccess) ? parse_body(res.body) : GeoLoc.new
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        parse_body(res.body)
       end
 
       # Converts the body to YAML since its in the form of:
