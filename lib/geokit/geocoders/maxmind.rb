@@ -8,7 +8,7 @@ module Geokit
     class MaxmindGeocoder < Geocoder
       private
 
-      def self.do_geocode(ip, options = {})
+      def self.do_geocode(ip)
         res = GeoIP.new(Geokit::Geocoders::geoip_data_path).city(ip)
 
         loc = GeoLoc.new(

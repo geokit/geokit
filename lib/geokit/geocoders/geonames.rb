@@ -7,7 +7,7 @@ module Geokit
       private
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address, options = {})
+      def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         # geonames need a space seperated search string
         address_str.gsub!(/,/, " ")

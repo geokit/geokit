@@ -9,7 +9,7 @@ module Geokit
       # Given an IP address, returns a GeoLoc instance which contains latitude,
       # longitude, city, and country code.  Sets the success attribute to false if the ip
       # parameter does not match an ip address.
-      def self.do_geocode(ip, options = {})
+      def self.do_geocode(ip)
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
         res = call_geocoder_service(url)

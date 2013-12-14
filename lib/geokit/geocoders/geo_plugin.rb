@@ -4,7 +4,7 @@ module Geokit
     class GeoPluginGeocoder < BaseIpGeocoder
       private
 
-      def self.do_geocode(ip, options = {})
+      def self.do_geocode(ip)
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://www.geoplugin.net/xml.gp?ip=#{ip}"
         res = call_geocoder_service(url)

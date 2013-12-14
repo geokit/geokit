@@ -4,7 +4,7 @@ module Geokit
     class FreeGeoIpGeocoder < BaseIpGeocoder
       private
 
-      def self.do_geocode(ip, options = {})
+      def self.do_geocode(ip)
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://freegeoip.net/xml/#{ip}"
         res = call_geocoder_service(url)

@@ -4,7 +4,7 @@ module Geokit
     class RipeGeocoder < BaseIpGeocoder
       private
 
-      def self.do_geocode(ip, options = {})
+      def self.do_geocode(ip)
         return GeoLoc.new unless valid_ip?(ip)
         url = "http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}"
         res = call_geocoder_service(url)

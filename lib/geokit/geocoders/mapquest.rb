@@ -18,7 +18,7 @@ module Geokit
       end
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address, options = {})
+      def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "http://www.mapquestapi.com/geocoding/v1/address?key=#{Geokit::Geocoders::mapquest}&location=#{Geokit::Inflector::url_escape(address_str)}"
         res = call_geocoder_service(url)

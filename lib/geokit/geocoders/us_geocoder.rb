@@ -6,7 +6,7 @@ module Geokit
     class UsGeocoder < Geocoder
 
       private
-      def self.do_geocode(address, options = {})
+      def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
         query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"

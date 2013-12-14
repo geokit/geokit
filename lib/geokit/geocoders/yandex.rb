@@ -6,7 +6,7 @@ module Geokit
       private
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address, options = {})
+      def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector::url_escape(address_str)}&format=json"
         url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex != 'REPLACE_WITH_YOUR_YANDEX_KEY'

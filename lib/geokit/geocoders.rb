@@ -91,8 +91,8 @@ module Geokit
       # Main method which calls the do_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
-      def self.geocode(address, options = {})
-        do_geocode(address, options) || GeoLoc.new
+      def self.geocode(address, *args)
+        do_geocode(address, *args) || GeoLoc.new
       rescue TooManyQueriesError, GeocodeError
         raise
       rescue
