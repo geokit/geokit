@@ -69,8 +69,9 @@ module Geokit
 
 
       def self.submit_url(query_string)
-        if !Geokit::Geocoders::google_client_id.nil? && !Geokit::Geocoders::google_cryptographic_key.nil?
-          urlToSign = query_string + "&client=#{Geokit::Geocoders::google_client_id}" + "#{(!Geokit::Geocoders::google_channel.nil? ? ("&channel="+ Geokit::Geocoders::google_channel) : "")}"
+        if Geokit::Geocoders::google_client_id && Geokit::Geocoders::google_cryptographic_key
+          channel = Geokit::Geocoders::google_channel ? "&channel=#{Geokit::Geocoders::google_channel}" : ''
+          urlToSign = query_string + "&client=#{Geokit::Geocoders::google_client_id}" + channel
           signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
           "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
         else
@@ -141,6 +142,25 @@ module Geokit
         res.success = true
         res.full_address = addr['formatted_address']
 
+        set_address_components(res, addr)
+        set_precision(res, addr)
+        if res.street_name
+          res.street_address=[res.street_number,res.street_name].join(' ').strip
+        end
+
+        loc = addr['geometry']['location']
+        res.lat = loc['lat'].to_f
+        res.lng = loc['lng'].to_f
+
+        viewport = addr['geometry']['viewport']
+        ne = Geokit::LatLng.from_json(viewport['northeast'])
+        sw = Geokit::LatLng.from_json(viewport['southwest'])
+        res.suggested_bounds = Geokit::Bounds.new(sw, ne)
+
+        res
+      end
+
+      def self.set_address_components(res, addr)
         addr['address_components'].each do |comp|
           case
           when comp['types'].include?("subpremise")
@@ -165,9 +185,9 @@ module Geokit
             res.neighborhood = comp['short_name']
           end
         end
-        if res.street_name
-          res.street_address=[res.street_number,res.street_name].join(' ').strip
-        end
+      end
+
+      def self.set_precision(res, addr)
         res.accuracy = ACCURACY[addr['geometry']['location_type']]
         res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
         # try a few overrides where we can
@@ -179,21 +199,6 @@ module Geokit
           res.precision = 'street'
           res.accuracy = 7
         end
-
-        res.lat=addr['geometry']['location']['lat'].to_f
-        res.lng=addr['geometry']['location']['lng'].to_f
-
-        ne=Geokit::LatLng.new(
-          addr['geometry']['viewport']['northeast']['lat'].to_f,
-          addr['geometry']['viewport']['northeast']['lng'].to_f
-        )
-        sw=Geokit::LatLng.new(
-          addr['geometry']['viewport']['southwest']['lat'].to_f,
-          addr['geometry']['viewport']['southwest']['lng'].to_f
-        )
-        res.suggested_bounds = Geokit::Bounds.new(sw,ne)
-
-        res
       end
     end
     Google3Geocoder = GoogleGeocoder3

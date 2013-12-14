@@ -13,6 +13,10 @@ module Geokit
       @lng = lng
     end
 
+    def self.from_json(json)
+      new(json['lat'], json['lng'])
+    end
+
     # Latitude attribute setter; stored as a float.
     def lat=(lat)
       @lat = lat.to_f if lat
