@@ -110,34 +110,45 @@ module Geokit
         #basics
         res.lat=coordinates[1]
         res.lng=coordinates[0]
-        res.country_code=doc.elements['.//CountryNameCode'].text if doc.elements['.//CountryNameCode']
         res.provider='google'
 
         #extended -- false if not not available
-        res.city = doc.elements['.//LocalityName'].text if doc.elements['.//LocalityName']
-        res.state = doc.elements['.//AdministrativeAreaName'].text if doc.elements['.//AdministrativeAreaName']
-        res.province = doc.elements['.//SubAdministrativeAreaName'].text if doc.elements['.//SubAdministrativeAreaName']
-        res.full_address = doc.elements['.//address'].text if doc.elements['.//address'] # google provides it
-        res.zip = doc.elements['.//PostalCodeNumber'].text if doc.elements['.//PostalCodeNumber']
-        res.street_address = doc.elements['.//ThoroughfareName'].text if doc.elements['.//ThoroughfareName']
-        res.country = doc.elements['.//CountryName'].text if doc.elements['.//CountryName']
-        res.district = doc.elements['.//DependentLocalityName'].text if doc.elements['.//DependentLocalityName']
+        set_address_components(res, doc)
+        set_precision(res, doc)
+        set_bounds(res, doc)
+        res.success=true
+
+        res
+      end
+
+      def self.set_address_components(res, doc)
+        res.city           = doc.elements['.//LocalityName'].try(:text)
+        res.state          = doc.elements['.//AdministrativeAreaName'].try(:text)
+        res.province       = doc.elements['.//SubAdministrativeAreaName'].try(:text)
+        res.full_address   = doc.elements['.//address'].try(:text) # google provides it
+        res.zip            = doc.elements['.//PostalCodeNumber'].try(:text)
+        res.street_address = doc.elements['.//ThoroughfareName'].try(:text)
+        res.country        = doc.elements['.//CountryName'].try(:text)
+        res.country_code   = doc.elements['.//CountryNameCode'].try(:text)
+        res.district       = doc.elements['.//DependentLocalityName'].try(:text)
+      end
+
+      def self.set_precision(res, doc)
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
         res.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
         res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
+      end
 
+      def self.set_bounds(res, doc)
         # google returns a set of suggested boundaries for the geocoded result
         if suggested_bounds = doc.elements['//LatLonBox']
+          bounds = suggested_bounds.attributes
           res.suggested_bounds = Bounds.normalize(
-            [suggested_bounds.attributes['south'], suggested_bounds.attributes['west']],
-            [suggested_bounds.attributes['north'], suggested_bounds.attributes['east']])
+            [bounds['south'], bounds['west']],
+            [bounds['north'], bounds['east']])
         end
-
-        res.success=true
-
-        res
       end
       
       def self.transcode_to_utf8(body)
