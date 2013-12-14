@@ -12,10 +12,10 @@ module Geokit
         url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex != 'REPLACE_WITH_YOUR_YANDEX_KEY'
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body, address
+        parse :json, res.body
       end
 
-      def self.parse_json(result, address)
+      def self.parse_json(result)
         geoloc = GeoLoc.new
 
         if result["response"]["GeoObjectCollection"]["metaDataProperty"]["GeocoderResponseMetaData"]["found"].to_i > 0
@@ -37,8 +37,6 @@ module Geokit
           geoloc.state ||= loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["Locality"]["LocalityName"] rescue nil
           geoloc.precision = loc["metaDataProperty"]["GeocoderMetaData"]["precision"].sub(/exact/, "building").sub(/number|near/, "address").sub(/other/, "city")
           geoloc.precision = "country" unless locality
-        else
-          logger.info "Yandex was unable to geocode address: " + address
         end
 
         geoloc

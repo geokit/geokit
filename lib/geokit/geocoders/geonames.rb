@@ -25,10 +25,10 @@ module Geokit
 
         xml=res.body
         logger.debug "Geonames geocoding. Address: #{address}. Result: #{xml}"
-        parse :xml, xml, address
+        parse :xml, xml
       end
 
-      def self.parse_xml(doc, address)
+      def self.parse_xml(doc)
         if(doc.elements['//geonames/totalResultsCount'].text.to_i > 0)
           res=GeoLoc.new
 
@@ -43,7 +43,6 @@ module Geokit
           res.success=true
           res
         else
-          logger.info "Geonames was unable to geocode address: "+address
           GeoLoc.new
         end
       end

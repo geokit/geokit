@@ -55,7 +55,7 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = self.transcode_to_utf8(res.body)
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        parse :xml, xml, address
+        parse :xml, xml
       end
 
       def self.construct_bias_string_from_options(bias)
@@ -74,7 +74,7 @@ module Geokit
         "#{"%.6f" % loc.lat},#{"%.6f" % loc.lng}"
       end
 
-      def self.parse_xml(doc, address="")
+      def self.parse_xml(doc)
         if doc.elements['//kml/Response/Status/code'].text == '200'
           geoloc = nil
           # Google can return multiple results as //Placemark elements.
@@ -94,7 +94,6 @@ module Geokit
         elsif doc.elements['//kml/Response/Status/code'].text == '620'
           raise Geokit::Geocoders::TooManyQueriesError
         else
-          logger.info "Google was unable to geocode address: "+address
           GeoLoc.new
         end
 

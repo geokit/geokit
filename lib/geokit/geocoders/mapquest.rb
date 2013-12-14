@@ -25,10 +25,10 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "Mapquest geocoding. Address: #{address}. Result: #{json}"
-        parse :json, json, address
+        parse :json, json
       end
 
-      def self.parse_json(results, address)
+      def self.parse_json(results)
         if results['info']['statuscode'] == 0
           geoloc = nil
           results['results'].each do |result|
@@ -43,7 +43,6 @@ module Geokit
           end          
           geoloc
         else
-          logger.info "MapQuest was unable to geocode address: " + address
           GeoLoc.new
         end
       end

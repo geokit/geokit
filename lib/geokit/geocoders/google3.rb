@@ -51,7 +51,7 @@ module Geokit
         json = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(json)}"
 
-        parse :json, json, address
+        parse :json, json
       end
 
       # This code comes from Googles Examples
@@ -91,7 +91,7 @@ module Geokit
         end
       end
 
-      def self.parse_json(results, address="")
+      def self.parse_json(results)
         case results['status']
         when 'OVER_QUERY_LIMIT' then raise Geokit::Geocoders::TooManyQueriesError
         when 'ZERO_RESULTS' then return GeoLoc.new
