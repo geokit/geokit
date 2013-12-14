@@ -34,9 +34,9 @@ Combine this gem with the [geokit-rails plugin](http://github.com/geokit/geokit-
 * Geocoder.us - may require authentication if performing more than the free request limit.
 * Geocoder.ca - for Canada; may require authentication as well.
 * Geonames - a free geocoder
+* Bing
 * Yandex
-* MaxMind
-* RIPE
+* MapQuest
 
 ### address geocoders that also provide reverse geocoding
 * Google - requires an API key. Also supports multiple results and bounding box/country code biasing.
@@ -46,6 +46,9 @@ Combine this gem with the [geokit-rails plugin](http://github.com/geokit/geokit-
 ### IP address geocoders
 * IP - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
+* RIPE
+* MaxMind
+* freegeoip.net
 
 ## QUICK START
 

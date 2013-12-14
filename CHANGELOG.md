@@ -1,3 +1,13 @@
+## 1.8.0
+
+* Added Bing Geocoder
+* Added freegeoip.net Geocoder
+* Added MapQuest Geocoder
+* Added tests for various gateways
+* Greatly standarize, simplify and improve code
+* Reorganise files
+* MaxMind bug fixes
+
 ## 1.7.1
 
 * Remove geoip require from MaxMind to avoid new dependency issues
