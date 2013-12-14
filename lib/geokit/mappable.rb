@@ -87,23 +87,23 @@ module Geokit
       # an endpoint. Returns a LatLng instance. Typically, the instance method
       # will be used instead of this method.
       def endpoint(start,heading, distance, options={})
-        units = options[:units] || Geokit::default_units
-        radius = case units
-          when :kms; EARTH_RADIUS_IN_KMS
-          when :nms; EARTH_RADIUS_IN_NMS
-          else EARTH_RADIUS_IN_MILES
-        end
-        start=Geokit::LatLng.normalize(start)
-        lat=deg2rad(start.lat)
-        lng=deg2rad(start.lng)
-        heading=deg2rad(heading)
-        distance=distance.to_f
+        units   = options[:units] || Geokit::default_units
+        ratio   = distance.to_f / units_sphere_multiplier(units)
+        start   = Geokit::LatLng.normalize(start)
+        lat     = deg2rad(start.lat)
+        lng     = deg2rad(start.lng)
+        heading = deg2rad(heading)
 
-        end_lat=Math.asin(Math.sin(lat)*Math.cos(distance/radius) +
-                          Math.cos(lat)*Math.sin(distance/radius)*Math.cos(heading))
+        sin_ratio = Math.sin(ratio)
+        cos_ratio = Math.cos(ratio)
+        sin_lat = Math.sin(lat)
+        cos_lat = Math.cos(lat)
 
-        end_lng=lng+Math.atan2(Math.sin(heading)*Math.sin(distance/radius)*Math.cos(lat),
-                               Math.cos(distance/radius)-Math.sin(lat)*Math.sin(end_lat))
+        end_lat = Math.asin(sin_lat * cos_ratio +
+                            cos_lat * sin_ratio * Math.cos(heading))
+
+        end_lng = lng + Math.atan2(Math.sin(heading) * sin_ratio * cos_lat,
+                                   cos_ratio - sin_lat * Math.sin(end_lat))
 
         LatLng.new(rad2deg(end_lat),rad2deg(end_lng))
       end
