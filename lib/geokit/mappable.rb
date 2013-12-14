@@ -40,25 +40,32 @@ module Geokit
         units = options[:units] || Geokit::default_units
         formula = options[:formula] || Geokit::default_formula
         case formula
-        when :sphere
-          error_classes = [Errno::EDOM]
-
-          # Ruby 1.9 raises {Math::DomainError}, but it is not defined in Ruby
-          # 1.8. Backwards-compatibly rescue both errors.
-          error_classes << Math::DomainError if defined?(Math::DomainError)
-
-          begin
-            units_sphere_multiplier(units) *
-                Math.acos( Math.sin(deg2rad(from.lat)) * Math.sin(deg2rad(to.lat)) +
-                Math.cos(deg2rad(from.lat)) * Math.cos(deg2rad(to.lat)) *
-                Math.cos(deg2rad(to.lng) - deg2rad(from.lng)))
-          rescue *error_classes
-            0.0
-          end
-        when :flat
-          Math.sqrt((units_per_latitude_degree(units)*(from.lat-to.lat))**2 +
-              (units_per_longitude_degree(from.lat, units)*(from.lng-to.lng))**2)
+        when :sphere then distance_between_sphere(from, to, units)
+        when :flat   then distance_between_flat(from, to, units)
         end
+      end
+
+      def distance_between_sphere(from, to, units)
+        lat_sin = Math.sin(deg2rad(from.lat)) * Math.sin(deg2rad(to.lat))
+        lat_cos = Math.cos(deg2rad(from.lat)) * Math.cos(deg2rad(to.lat))
+        lng_cos = Math.cos(deg2rad(to.lng) - deg2rad(from.lng))
+        units_sphere_multiplier(units) * Math.acos(lat_sin + lat_cos * lng_cos)
+      rescue *math_error_classes
+        0.0
+      end
+
+      def distance_between_flat(from, to, units)
+        lat_length = units_per_latitude_degree(units) * (from.lat - to.lat)
+        lng_length = units_per_longitude_degree(from.lat, units) * (from.lng - to.lng)
+        Math.sqrt(lat_length ** 2 + lng_length ** 2)
+      end
+
+      def math_error_classes
+        error_classes = [Errno::EDOM]
+
+        # Ruby 1.9 raises {Math::DomainError}, but it is not defined in Ruby
+        # 1.8. Backwards-compatibly rescue both errors.
+        error_classes << Math::DomainError if defined?(Math::DomainError)
       end
 
       # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc)
