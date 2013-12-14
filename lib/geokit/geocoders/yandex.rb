@@ -8,11 +8,16 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector::url_escape(address_str)}&format=json"
-        url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex != 'REPLACE_WITH_YOUR_YANDEX_KEY'
+        url = submit_url(address_str)
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         parse :json, res.body
+      end
+
+      def self.submit_url(address_str)
+        url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector::url_escape(address_str)}&format=json"
+        url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex
+        url
       end
 
       def self.parse_json(result)
@@ -25,16 +30,19 @@ module Geokit
           geoloc.provider = "yandex"
           geoloc.lng = loc["Point"]["pos"].split(" ").first
           geoloc.lat = loc["Point"]["pos"].split(" ").last
-          geoloc.country_code = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["CountryNameCode"]
-          geoloc.full_address = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AddressLine"]
+
+          addr = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]
+          country = addr["Country"]
+          geoloc.country_code = country["CountryNameCode"]
+          geoloc.full_address = country["AddressLine"]
           geoloc.street_address = loc["name"]
 
-          locality = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["Locality"] || loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["Locality"] || loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["SubAdministrativeArea"]["Locality"] rescue nil
+          locality = country["Locality"] || country["AdministrativeArea"]["Locality"] || country["AdministrativeArea"]["SubAdministrativeArea"]["Locality"] rescue nil
           geoloc.street_number = locality["Thoroughfare"]["Premise"]["PremiseNumber"] rescue nil
           geoloc.street_name = locality["Thoroughfare"]["ThoroughfareName"] rescue nil
           geoloc.city = locality["LocalityName"] rescue nil
-          geoloc.state = loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["AdministrativeArea"]["AdministrativeAreaName"] rescue nil
-          geoloc.state ||= loc["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]["Locality"]["LocalityName"] rescue nil
+          geoloc.state = country["AdministrativeArea"]["AdministrativeAreaName"] rescue nil
+          geoloc.state ||= country["Locality"]["LocalityName"] rescue nil
           geoloc.precision = loc["metaDataProperty"]["GeocoderMetaData"]["precision"].sub(/exact/, "building").sub(/number|near/, "address").sub(/other/, "city")
           geoloc.precision = "country" unless locality
         end

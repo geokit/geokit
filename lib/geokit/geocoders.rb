@@ -34,7 +34,7 @@ module Geokit
     @@request_timeout = nil
     @@yahoo_consumer_key = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_KEY'
     @@yahoo_consumer_secret = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_SECRET'
-    @@yandex = 'REPLACE_WITH_YOUR_YANDEX_KEY'
+    @@yandex = nil
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@mapquest = 'REPLACE_WITH_YOUR_MAPQUEST_KEY'
     @@google_client_id = nil
