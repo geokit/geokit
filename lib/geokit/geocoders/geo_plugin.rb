@@ -13,15 +13,15 @@ module Geokit
       end
 
       def self.parse_xml(xml)
-        geo = GeoLoc.new
-        geo.provider='geoPlugin'
-        geo.city = xml.elements['//geoplugin_city'].text
-        geo.state = xml.elements['//geoplugin_region'].text
-        geo.country_code = xml.elements['//geoplugin_countryCode'].text
-        geo.lat = xml.elements['//geoplugin_latitude'].text.to_f
-        geo.lng = xml.elements['//geoplugin_longitude'].text.to_f
-        geo.success = !!geo.city && !geo.city.empty?
-        geo
+        loc = GeoLoc.new
+        loc.provider='geoPlugin'
+        loc.city = xml.elements['//geoplugin_city'].text
+        loc.state = xml.elements['//geoplugin_region'].text
+        loc.country_code = xml.elements['//geoplugin_countryCode'].text
+        loc.lat = xml.elements['//geoplugin_latitude'].text.to_f
+        loc.lng = xml.elements['//geoplugin_longitude'].text.to_f
+        loc.success = !!loc.city && !loc.city.empty?
+        loc
       end
     end
 

@@ -25,47 +25,44 @@ module Geokit
       end
 
       def self.parse_xml(doc)
-        if doc.elements['//Response/StatusCode'].try(:text) == '200'
-          geoloc = nil
-          # Bing can return multiple results as //Location elements.
-          # iterate through each and extract each location as a geoloc
-          doc.each_element('//Location') do |l|
-            extracted_geoloc = extract_location(l)
-            geoloc.nil? ? geoloc = extracted_geoloc : geoloc.all.push(extracted_geoloc)
-          end
-          geoloc
-        else
-          GeoLoc.new
+        return GeoLoc.new if doc.elements['//Response/StatusCode'].try(:text) != '200'
+        loc = nil
+        # Bing can return multiple results as //Location elements.
+        # iterate through each and extract each location as a geoloc
+        doc.each_element('//Location') do |l|
+          extracted_geoloc = extract_location(l)
+          loc.nil? ? loc = extracted_geoloc : loc.all.push(extracted_geoloc)
         end
+        loc
       end
 
       # extracts a single geoloc from a //Location element in the bing results xml
       def self.extract_location(doc)
-        res                 = GeoLoc.new
-        res.provider        = 'bing'
-        res.lat             = doc.elements['.//Latitude'].try(:text)
-        res.lng             = doc.elements['.//Longitude'].try(:text)
-        set_address_components(res, doc)
-        set_precision(res, doc)
-        set_bounds(res, doc)
-        res.success         = true
-        res
+        loc                 = GeoLoc.new
+        loc.provider        = 'bing'
+        loc.lat             = doc.elements['.//Latitude'].try(:text)
+        loc.lng             = doc.elements['.//Longitude'].try(:text)
+        set_address_components(loc, doc)
+        set_precision(loc, doc)
+        set_bounds(loc, doc)
+        loc.success         = true
+        loc
       end
 
-      def self.set_address_components(res, doc)
+      def self.set_address_components(loc, doc)
         # Fix for Germany, where often the locality is really sublocality so fallback to AdminDistrict2
-        res.city            = doc.elements['.//AdminDistrict2'].try(:text) || doc.elements['.//Locality'].try(:text)
-        res.state           = doc.elements['.//AdminDistrict'].try(:text)
-        res.province        = doc.elements['.//AdminDistrict2'].try(:text)
-        res.full_address    = doc.elements['.//FormattedAddress'].try(:text)
-        res.zip             = doc.elements['.//PostalCode'].try(:text)
-        res.street_address  = doc.elements['.//AddressLine'].try(:text)
-        res.country         = doc.elements['.//CountryRegion'].try(:text)
+        loc.city            = doc.elements['.//AdminDistrict2'].try(:text) || doc.elements['.//Locality'].try(:text)
+        loc.state           = doc.elements['.//AdminDistrict'].try(:text)
+        loc.province        = doc.elements['.//AdminDistrict2'].try(:text)
+        loc.full_address    = doc.elements['.//FormattedAddress'].try(:text)
+        loc.zip             = doc.elements['.//PostalCode'].try(:text)
+        loc.street_address  = doc.elements['.//AddressLine'].try(:text)
+        loc.country         = doc.elements['.//CountryRegion'].try(:text)
       end
 
-      def self.set_precision(res, doc)
+      def self.set_precision(loc, doc)
         if doc.elements['.//Confidence']
-          res.accuracy      = case doc.elements['.//Confidence'].text
+          loc.accuracy      = case doc.elements['.//Confidence'].text
           when 'High'    then 8
           when 'Medium'  then 5
           when 'Low'     then 2
@@ -74,7 +71,7 @@ module Geokit
         end
 
         if doc.elements['.//EntityType']
-          res.precision     = case doc.elements['.//EntityType'].text
+          loc.precision     = case doc.elements['.//EntityType'].text
           when 'Sovereign'      then 'country'
           when 'AdminDivision1' then 'state'
           when 'AdminDivision2' then 'state'
@@ -88,10 +85,10 @@ module Geokit
         end
       end
 
-      def self.set_bounds(res, doc)
+      def self.set_bounds(loc, doc)
         if suggested_bounds = doc.elements['.//BoundingBox']
           bounds = suggested_bounds.elements
-          res.suggested_bounds = Bounds.normalize(
+          loc.suggested_bounds = Bounds.normalize(
             [bounds['.//SouthLatitude'].text, bounds['.//WestLongitude'].text],
             [bounds['.//NorthLatitude'].text, bounds['.//EastLongitude'].text])
         end

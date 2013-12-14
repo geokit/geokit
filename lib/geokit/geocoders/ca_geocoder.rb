@@ -16,31 +16,31 @@ module Geokit
      private
 
      # Template method which does the geocode lookup.
-     def self.do_geocode(address)
-       raise ArgumentError('Geocoder.ca requires a GeoLoc argument') unless address.is_a?(GeoLoc)
-       url = construct_request(address)
+     def self.do_geocode(loc)
+       raise ArgumentError('Geocoder.ca requires a GeoLoc argument') unless loc.is_a?(GeoLoc)
+       url = submit_url(loc)
        res = call_geocoder_service(url)
        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
        xml = res.body
-       logger.debug "Geocoder.ca geocoding. Address: #{address}. Result: #{xml}"
-       parse :xml, xml, address
+       logger.debug "Geocoder.ca geocoding. Address: #{loc}. Result: #{xml}"
+       parse :xml, xml, loc
     end
 
-    def self.parse_xml(doc, address)
-       address.lat = doc.elements['//latt'].text
-       address.lng = doc.elements['//longt'].text
-       address.success = true
-       address
+    def self.parse_xml(doc, loc)
+       loc.lat = doc.elements['//latt'].text
+       loc.lng = doc.elements['//longt'].text
+       loc.success = true
+       loc
      end
 
      # Formats the request in the format acceptable by the CA geocoder.
-     def self.construct_request(location)
+     def self.submit_url(loc)
        args = []
-       args << "stno=#{location.street_number}" if location.street_address
-       args << "addresst=#{Geokit::Inflector::url_escape(location.street_name)}" if location.street_address
-       args << "city=#{Geokit::Inflector::url_escape(location.city)}" if location.city
-       args << "prov=#{location.state}" if location.state
-       args << "postal=#{location.zip}" if location.zip
+       args << "stno=#{loc.street_number}" if loc.street_address
+       args << "addresst=#{Geokit::Inflector::url_escape(loc.street_name)}" if loc.street_address
+       args << "city=#{Geokit::Inflector::url_escape(loc.city)}" if loc.city
+       args << "prov=#{loc.state}" if loc.state
+       args << "postal=#{loc.zip}" if loc.zip
        args << "auth=#{Geokit::Geocoders::geocoder_ca}" if Geokit::Geocoders::geocoder_ca
        args << "geoit=xml"
        'http://geocoder.ca/?' + args.join('&')

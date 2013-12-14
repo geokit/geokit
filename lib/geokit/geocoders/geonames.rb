@@ -29,22 +29,19 @@ module Geokit
       end
 
       def self.parse_xml(doc)
-        if(doc.elements['//geonames/totalResultsCount'].text.to_i > 0)
-          res=GeoLoc.new
+        return GeoLoc.new unless doc.elements['//geonames/totalResultsCount'].text.to_i > 0
+        loc=GeoLoc.new
 
-          # only take the first result
-          res.lat=doc.elements['//code/lat'].text if doc.elements['//code/lat']
-          res.lng=doc.elements['//code/lng'].text if doc.elements['//code/lng']
-          res.country_code=doc.elements['//code/countryCode'].text if doc.elements['//code/countryCode']
-          res.provider='genomes'
-          res.city=doc.elements['//code/name'].text if doc.elements['//code/name']
-          res.state=doc.elements['//code/adminName1'].text if doc.elements['//code/adminName1']
-          res.zip=doc.elements['//code/postalcode'].text if doc.elements['//code/postalcode']
-          res.success=true
-          res
-        else
-          GeoLoc.new
-        end
+        # only take the first result
+        loc.lat=doc.elements['//code/lat'].text if doc.elements['//code/lat']
+        loc.lng=doc.elements['//code/lng'].text if doc.elements['//code/lng']
+        loc.country_code=doc.elements['//code/countryCode'].text if doc.elements['//code/countryCode']
+        loc.provider='genomes'
+        loc.city=doc.elements['//code/name'].text if doc.elements['//code/name']
+        loc.state=doc.elements['//code/adminName1'].text if doc.elements['//code/adminName1']
+        loc.zip=doc.elements['//code/postalcode'].text if doc.elements['//code/postalcode']
+        loc.success=true
+        loc
       end
     end
   end

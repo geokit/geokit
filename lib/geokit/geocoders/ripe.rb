@@ -13,23 +13,27 @@ module Geokit
       end
 
       def self.parse_json(json)
-        geo = GeoLoc.new
+        loc = GeoLoc.new
         data = json['data']['locations'][0]
 
+        loc.provider='RIPE'
+        loc.lat = data['latitude']
+        loc.lng = data['longitude']
+        set_address_components(data, loc)
+        loc.success = (data['status_code'] == 200)
+        loc
+      end
+
+      def self.set_address_components(data, loc)
         match = data['country'].match /([A-Z]+)(\(([A-Z]+)\))?/
         if match[3]
-          geo.state = match[1]
-          geo.country_code = match[3]
+          loc.state = match[1]
+          loc.country_code = match[3]
         else
-          geo.country_code = match[1]
+          loc.country_code = match[1]
         end
 
-        geo.provider='RIPE'
-        geo.city = data['city']
-        geo.lat = data['latitude']
-        geo.lng = data['longitude']
-        geo.success = (data['status_code'] == 200)
-        geo
+        loc.city = data['city']
       end
     end
 

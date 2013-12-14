@@ -27,54 +27,54 @@ module Geokit
       end
 
       def self.parse_json(results)
-        if results && results['bossresponse'] && results['bossresponse']['placefinder'] && results['bossresponse']['placefinder']['results'] && results['bossresponse']['placefinder']['results'].first != nil
-          geoloc = nil
-          results['bossresponse']['placefinder']['results'].each do |result|
-            extracted_geoloc = extract_geoloc(result)
-            if geoloc.nil?
-              geoloc = extracted_geoloc
-            else
-              geoloc.all.push(extracted_geoloc)
-            end
+        boss_results = results && results['bossresponse'] && results['bossresponse']['placefinder'] && results['bossresponse']['placefinder']['results']
+        return GeoLoc.new unless boss_results && boss_results.first
+        loc = nil
+        boss_results.each do |result|
+          extracted_geoloc = extract_geoloc(result)
+          if loc.nil?
+            loc = extracted_geoloc
+          else
+            loc.all.push(extracted_geoloc)
           end
-          geoloc
-        else
-          GeoLoc.new
         end
+        loc
       end
 
       def self.extract_geoloc(result_json)
-        geoloc = GeoLoc.new
+        loc = GeoLoc.new
+        loc.lat      = result_json['latitude']
+        loc.lng      = result_json['longitude']
+        loc.provider = 'yahoo'
+        set_address_components(result_json, loc)
+        set_precision(result_json, loc)
+        loc.success  = true
+        loc
+      end
 
-        # basic
-        geoloc.lat            = result_json['latitude']
-        geoloc.lng            = result_json['longitude']
-        geoloc.country_code   = result_json['countrycode']
-        geoloc.provider       = 'yahoo'
+      def self.set_address_components(result_json, loc)
+        loc.country_code   = result_json['countrycode']
+        loc.street_address = result_json['line1'].to_s.empty? ? nil : result_json['line1']
+        loc.city           = result_json['city']
+        loc.state          = loc.is_us? ? result_json['statecode'] : result_json['state']
+        loc.zip            = result_json['postal']
+      end
 
-        # extended
-        geoloc.street_address = result_json['line1'].to_s.empty? ? nil : result_json['line1']
-        geoloc.city           = result_json['city']
-        geoloc.state          = geoloc.is_us? ? result_json['statecode'] : result_json['state']
-        geoloc.zip            = result_json['postal']
+      def self.set_precision(result_json, loc)
+        loc.precision = case result_json['quality'].to_i
+                        when 9,10         then 'country'
+                        when 19..30       then 'state'
+                        when 39,40        then 'city'
+                        when 49,50        then 'neighborhood'
+                        when 59,60,64     then 'zip'
+                        when 74,75        then 'zip+4'
+                        when 70..72       then 'street'
+                        when 80..87       then 'address'
+                        when 62,63,90,99  then 'building'
+                        else 'unknown'
+                        end
 
-        geoloc.precision = case result_json['quality'].to_i
-                           when 9,10         then 'country'
-                           when 19..30       then 'state'
-                           when 39,40        then 'city'
-                           when 49,50        then 'neighborhood'
-                           when 59,60,64     then 'zip'
-                           when 74,75        then 'zip+4'
-                           when 70..72       then 'street'
-                           when 80..87       then 'address'
-                           when 62,63,90,99  then 'building'
-                           else 'unknown'
-                           end
-
-        geoloc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(geoloc.precision)
-        geoloc.success = true
-
-        geoloc
+        loc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(loc.precision)
       end
     end
   end

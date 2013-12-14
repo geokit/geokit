@@ -75,28 +75,25 @@ module Geokit
       end
 
       def self.parse_xml(doc)
-        if doc.elements['//kml/Response/Status/code'].text == '200'
-          geoloc = nil
-          # Google can return multiple results as //Placemark elements.
-          # iterate through each and extract each placemark as a geoloc
-          doc.each_element('//Placemark') do |e|
-            extracted_geoloc = extract_placemark(e) # g is now an instance of GeoLoc
-            if geoloc.nil?
-              # first time through, geoloc is still nil, so we make it the geoloc we just extracted
-              geoloc = extracted_geoloc
-            else
-              # second (and subsequent) iterations, we push additional
-              # geolocs onto "geoloc.all"
-              geoloc.all.push(extracted_geoloc)
-            end
-          end
-          geoloc
-        elsif doc.elements['//kml/Response/Status/code'].text == '620'
-          raise Geokit::Geocoders::TooManyQueriesError
-        else
-          GeoLoc.new
-        end
+        code = doc.elements['//kml/Response/Status/code'].text
+        raise Geokit::Geocoders::TooManyQueriesError if code == '620'
+        return GeoLoc.new if code != '200'
 
+        loc = nil
+        # Google can return multiple results as //Placemark elements.
+        # iterate through each and extract each placemark as a geoloc
+        doc.each_element('//Placemark') do |e|
+          extracted_geoloc = extract_placemark(e) # g is now an instance of GeoLoc
+          if loc.nil?
+            # first time through, geoloc is still nil, so we make it the geoloc we just extracted
+            loc = extracted_geoloc
+          else
+            # second (and subsequent) iterations, we push additional
+            # geolocs onto "geoloc.all"
+            loc.all.push(extracted_geoloc)
+          end
+        end
+        loc
       rescue Geokit::Geocoders::TooManyQueriesError
         # re-raise because of other rescue
         raise Geokit::Geocoders::TooManyQueriesError, "Google returned a 620 status, too many queries. The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. If you're sending multiple requests in parallel or in a tight loop, use a timer or pause in your code to make sure you don't send the requests too quickly."
@@ -104,48 +101,48 @@ module Geokit
 
       # extracts a single geoloc from a //placemark element in the google results xml
       def self.extract_placemark(doc)
-        res = GeoLoc.new
+        loc = GeoLoc.new
         coordinates=doc.elements['.//coordinates'].text.to_s.split(',')
 
         #basics
-        res.lat=coordinates[1]
-        res.lng=coordinates[0]
-        res.provider='google'
+        loc.lat=coordinates[1]
+        loc.lng=coordinates[0]
+        loc.provider='google'
 
         #extended -- false if not not available
-        set_address_components(res, doc)
-        set_precision(res, doc)
-        set_bounds(res, doc)
-        res.success=true
+        set_address_components(loc, doc)
+        set_precision(loc, doc)
+        set_bounds(loc, doc)
+        loc.success=true
 
-        res
+        loc
       end
 
-      def self.set_address_components(res, doc)
-        res.city           = doc.elements['.//LocalityName'].try(:text)
-        res.state          = doc.elements['.//AdministrativeAreaName'].try(:text)
-        res.province       = doc.elements['.//SubAdministrativeAreaName'].try(:text)
-        res.full_address   = doc.elements['.//address'].try(:text) # google provides it
-        res.zip            = doc.elements['.//PostalCodeNumber'].try(:text)
-        res.street_address = doc.elements['.//ThoroughfareName'].try(:text)
-        res.country        = doc.elements['.//CountryName'].try(:text)
-        res.country_code   = doc.elements['.//CountryNameCode'].try(:text)
-        res.district       = doc.elements['.//DependentLocalityName'].try(:text)
+      def self.set_address_components(loc, doc)
+        loc.city           = doc.elements['.//LocalityName'].try(:text)
+        loc.state          = doc.elements['.//AdministrativeAreaName'].try(:text)
+        loc.province       = doc.elements['.//SubAdministrativeAreaName'].try(:text)
+        loc.full_address   = doc.elements['.//address'].try(:text) # google provides it
+        loc.zip            = doc.elements['.//PostalCodeNumber'].try(:text)
+        loc.street_address = doc.elements['.//ThoroughfareName'].try(:text)
+        loc.country        = doc.elements['.//CountryName'].try(:text)
+        loc.country_code   = doc.elements['.//CountryNameCode'].try(:text)
+        loc.district       = doc.elements['.//DependentLocalityName'].try(:text)
       end
 
-      def self.set_precision(res, doc)
+      def self.set_precision(loc, doc)
         # Translate accuracy into Yahoo-style token address, street, zip, zip+4, city, state, country
         # For Google, 1=low accuracy, 8=high accuracy
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
-        res.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
-        res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
+        loc.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+        loc.precision=%w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
       end
 
-      def self.set_bounds(res, doc)
+      def self.set_bounds(loc, doc)
         # google returns a set of suggested boundaries for the geocoded result
         if suggested_bounds = doc.elements['//LatLonBox']
           bounds = suggested_bounds.attributes
-          res.suggested_bounds = Bounds.normalize(
+          loc.suggested_bounds = Bounds.normalize(
             [bounds['south'], bounds['west']],
             [bounds['north'], bounds['east']])
         end

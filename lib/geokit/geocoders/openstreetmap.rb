@@ -55,61 +55,64 @@ module Geokit
           return GeoLoc.new if results['error']
           results = [results]
         end
-        unless results.empty?
-          geoloc = nil
-          results.each do |result|
-            extract_geoloc = extract_geoloc(result)
-            if geoloc.nil?
-              geoloc = extract_geoloc
-            else
-              geoloc.all.push(extract_geoloc)
-            end
+        return GeoLoc.new if results.empty?
+
+        loc = nil
+        results.each do |result|
+          extract_geoloc = extract_geoloc(result)
+          if loc.nil?
+            loc = extract_geoloc
+          else
+            loc.all.push(extract_geoloc)
           end
-          geoloc
-        else
-          GeoLoc.new
         end
+        loc
       end
 
       def self.extract_geoloc(result_json)
-        geoloc = GeoLoc.new
+        loc = GeoLoc.new
 
         # basic
-        geoloc.lat = result_json['lat']
-        geoloc.lng = result_json['lon']
+        loc.lat = result_json['lat']
+        loc.lng = result_json['lon']
 
-        geoloc.provider = 'osm'
-        geoloc.precision = result_json['class']
-        geoloc.accuracy = result_json['type']
+        loc.provider = 'osm'
 
+        set_address_components(result_json['address'], loc)
+        set_precision(result_json, loc)
+        set_bounds(result_json['boundingbox'], loc)
+        loc.success = true
+
+        loc
+      end
+
+      def self.set_address_components(address_data, loc)
+        return unless address_data
+        loc.country = address_data['country']
+        loc.country_code = address_data['country_code'].upcase if address_data['country_code']
+        loc.state = address_data['state']
+        loc.city = address_data['city']
+        loc.city = address_data['county'] if loc.city.nil? && address_data['county']
+        loc.zip = address_data['postcode']
+        loc.district = address_data['city_district']
+        loc.district = address_data['state_district'] if loc.district.nil? && address_data['state_district']
+        loc.street_address = "#{address_data['road']} #{address_data['house_number']}".strip if address_data['road']
+        loc.street_name = address_data['road']
+        loc.street_number = address_data['house_number']
+      end
+
+      def self.set_precision(result_json, loc)
         # Todo accuracy does not work as Yahoo and Google maps on OSM
-        #geoloc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(geoloc.precision)
-        #geoloc.full_address = result_json['display_name']
-        if result_json['address']
-          address_data = result_json['address']
+        #loc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(loc.precision)
+        loc.precision = result_json['class']
+        loc.accuracy = result_json['type']
+      end
 
-          geoloc.country = address_data['country']
-          geoloc.country_code = address_data['country_code'].upcase if address_data['country_code']
-          geoloc.state = address_data['state']
-          geoloc.city = address_data['city']
-          geoloc.city = address_data['county'] if geoloc.city.nil? && address_data['county']
-          geoloc.zip = address_data['postcode']
-          geoloc.district = address_data['city_district']
-          geoloc.district = address_data['state_district'] if geoloc.district.nil? && address_data['state_district']
-          geoloc.street_address = "#{address_data['road']} #{address_data['house_number']}".strip if address_data['road']
-          geoloc.street_name = address_data['road']
-          geoloc.street_number = address_data['house_number']
-        end
-
-        if result_json['boundingbox']
-          geoloc.suggested_bounds = Bounds.normalize(
-              [result_json['boundingbox'][0], result_json['boundingbox'][1]],
-              [result_json['boundingbox'][2], result_json['boundingbox'][3]])
-        end
-
-        geoloc.success = true
-
-        geoloc
+      def self.set_bounds(result_json, loc)
+        return unless result_json
+        loc.suggested_bounds = Bounds.normalize(
+            [result_json[0], result_json[1]],
+            [result_json[2], result_json[3]])
       end
     end
   end

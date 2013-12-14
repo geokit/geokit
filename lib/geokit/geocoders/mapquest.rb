@@ -29,44 +29,43 @@ module Geokit
       end
 
       def self.parse_json(results)
-        if results['info']['statuscode'] == 0
-          geoloc = nil
-          results['results'].each do |result|
-            result['locations'].each do |location|
-              extracted_geoloc = extract_geoloc(location)
-              if geoloc.nil?
-                geoloc = extracted_geoloc
-              else
-                geoloc.all.push(extracted_geoloc)
-              end
+        return GeoLoc.new unless results['info']['statuscode'] == 0
+        loc = nil
+        results['results'].each do |result|
+          result['locations'].each do |location|
+            extracted_geoloc = extract_geoloc(location)
+            if loc.nil?
+              loc = extracted_geoloc
+            else
+              loc.all.push(extracted_geoloc)
             end
-          end          
-          geoloc
-        else
-          GeoLoc.new
-        end
+          end
+        end          
+        loc
       end
 
       def self.extract_geoloc(result_json)
-        geoloc = GeoLoc.new
+        loc = GeoLoc.new
+        loc.lat            = result_json['latLng']['lat']
+        loc.lng            = result_json['latLng']['lng']
+        loc.provider       = 'mapquest'
+        set_address_components(result_json, loc)
+        set_precision(result_json, loc)
+        loc.success = true
+        loc
+      end
 
-        # basic
-        geoloc.lat            = result_json['latLng']['lat']
-        geoloc.lng            = result_json['latLng']['lng']
-        geoloc.country_code   = result_json['adminArea1']
-        geoloc.provider       = 'mapquest'
+      def self.set_address_components(result_json, loc)
+        loc.country_code   = result_json['adminArea1']
+        loc.street_address = result_json['street'].to_s.empty? ? nil : result_json['street']
+        loc.city           = result_json['adminArea5']
+        loc.state          = result_json['adminArea3']
+        loc.zip            = result_json['postalCode']
+      end
 
-        # extended
-        geoloc.street_address = result_json['street'].to_s.empty? ? nil : result_json['street']
-        geoloc.city           = result_json['adminArea5']
-        geoloc.state          = result_json['adminArea3']
-        geoloc.zip            = result_json['postalCode']
-
-        geoloc.precision = result_json['geocodeQuality']
-        geoloc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(geoloc.precision)
-        geoloc.success = true
-
-        geoloc
+      def self.set_precision(result_json, loc)
+        loc.precision = result_json['geocodeQuality']
+        loc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(loc.precision)
       end
     end
   end

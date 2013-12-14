@@ -28,21 +28,17 @@ module Geokit
       def self.parse_csv(data)
         array = data.chomp.split(',')
 
+        loc = GeoLoc.new
         if array.length == 5
-          res=GeoLoc.new
-          res.lat,res.lng,res.city,res.state,res.zip=array
-          res.country_code='US'
-          res.success=true
-          res
+          loc.lat,loc.lng,loc.city,loc.state,loc.zip=array
+          loc.country_code='US'
+          loc.success=true
         elsif array.length == 6
-          res=GeoLoc.new
-          res.lat,res.lng,res.street_address,res.city,res.state,res.zip=array
-          res.country_code='US'
-          res.success=true
-          res
-        else
-          GeoLoc.new
+          loc.lat,loc.lng,loc.street_address,loc.city,loc.state,loc.zip=array
+          loc.country_code='US'
+          loc.success=true
         end
+        loc
       end
     end
   end

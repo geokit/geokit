@@ -137,67 +137,67 @@ module Geokit
       }
 
       def self.single_json_to_geoloc(addr)
-        res = GeoLoc.new
-        res.provider = 'google3'
-        res.success = true
-        res.full_address = addr['formatted_address']
+        loc = GeoLoc.new
+        loc.provider = 'google3'
+        loc.success = true
+        loc.full_address = addr['formatted_address']
 
-        set_address_components(res, addr)
-        set_precision(res, addr)
-        if res.street_name
-          res.street_address=[res.street_number,res.street_name].join(' ').strip
+        set_address_components(loc, addr)
+        set_precision(loc, addr)
+        if loc.street_name
+          loc.street_address=[loc.street_number, loc.street_name].join(' ').strip
         end
 
-        loc = addr['geometry']['location']
-        res.lat = loc['lat'].to_f
-        res.lng = loc['lng'].to_f
+        ll = addr['geometry']['location']
+        loc.lat = ll['lat'].to_f
+        loc.lng = ll['lng'].to_f
 
         viewport = addr['geometry']['viewport']
         ne = Geokit::LatLng.from_json(viewport['northeast'])
         sw = Geokit::LatLng.from_json(viewport['southwest'])
-        res.suggested_bounds = Geokit::Bounds.new(sw, ne)
+        loc.suggested_bounds = Geokit::Bounds.new(sw, ne)
 
-        res
+        loc
       end
 
-      def self.set_address_components(res, addr)
+      def self.set_address_components(loc, addr)
         addr['address_components'].each do |comp|
           case
           when comp['types'].include?("subpremise")
-            res.sub_premise = comp['short_name']
+            loc.sub_premise = comp['short_name']
           when comp['types'].include?("street_number")
-            res.street_number = comp['short_name']
+            loc.street_number = comp['short_name']
           when comp['types'].include?("route")
-            res.street_name = comp['long_name']
+            loc.street_name = comp['long_name']
           when comp['types'].include?("locality")
-            res.city = comp['long_name']
+            loc.city = comp['long_name']
           when comp['types'].include?("administrative_area_level_1")
-            res.state = comp['short_name']
-            res.province = comp['short_name']
+            loc.state = comp['short_name']
+            loc.province = comp['short_name']
           when comp['types'].include?("postal_code")
-            res.zip = comp['long_name']
+            loc.zip = comp['long_name']
           when comp['types'].include?("country")
-            res.country_code = comp['short_name']
-            res.country = comp['long_name']
+            loc.country_code = comp['short_name']
+            loc.country = comp['long_name']
           when comp['types'].include?("administrative_area_level_2")
-            res.district = comp['long_name']
+            loc.district = comp['long_name']
           when comp['types'].include?('neighborhood')
-            res.neighborhood = comp['short_name']
+            loc.neighborhood = comp['short_name']
           end
         end
       end
 
-      def self.set_precision(res, addr)
-        res.accuracy = ACCURACY[addr['geometry']['location_type']]
-        res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
+      def self.set_precision(loc, addr)
+        loc.accuracy = ACCURACY[addr['geometry']['location_type']]
+        loc.precision=%w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
         # try a few overrides where we can
-        if res.sub_premise
-          res.accuracy = 9
-          res.precision = 'building'
+        if loc.sub_premise
+          loc.accuracy = 9
+          loc.precision = 'building'
         end
-        if res.street_name && res.precision=='city'
-          res.precision = 'street'
-          res.accuracy = 7
+        if loc.street_name && loc.precision=='city'
+          loc.precision = 'street'
+          loc.accuracy = 7
         end
       end
     end

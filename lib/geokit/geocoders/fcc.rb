@@ -36,18 +36,17 @@ module Geokit
           raise Geokit::Geocoders::GeocodeError
         end
 
-        res = GeoLoc.new
-        res.provider      = 'fcc'
-        res.success       = true
-        res.precision     = 'block'
-        res.country_code  = 'US'
-        res.district      = results['County']['name']
-        res.district_fips = results['County']['FIPS']
-        res.state         = results['State']['code']
-        res.state_fips    = results['State']['FIPS']
-        res.block_fips    = results['Block']['FIPS']
-
-        res
+        loc = GeoLoc.new
+        loc.provider      = 'fcc'
+        loc.success       = true
+        loc.precision     = 'block'
+        loc.country_code  = 'US'
+        loc.district      = results['County']['name']
+        loc.district_fips = results['County']['FIPS']
+        loc.state         = results['State']['code']
+        loc.state_fips    = results['State']['FIPS']
+        loc.block_fips    = results['Block']['FIPS']
+        loc
       end
     end
 

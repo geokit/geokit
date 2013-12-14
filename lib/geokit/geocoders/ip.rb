@@ -29,15 +29,15 @@ module Geokit
       #
       # then instantiates a GeoLoc instance to populate with location data.
       def self.parse_yaml(yaml) # :nodoc:
-        res = GeoLoc.new
-        res.provider = 'hostip'
-        res.city, res.state = yaml['City'].split(', ')
-        res.country, res.country_code = yaml['Country'].split(' (')
-        res.lat = yaml['Latitude']
-        res.lng = yaml['Longitude']
-        res.country_code.chop!
-        res.success = !(res.city =~ /\(.+\)/)
-        res
+        loc = GeoLoc.new
+        loc.provider = 'hostip'
+        loc.city, loc.state = yaml['City'].split(', ')
+        loc.country, loc.country_code = yaml['Country'].split(' (')
+        loc.lat = yaml['Latitude']
+        loc.lng = yaml['Longitude']
+        loc.country_code.chop!
+        loc.success = !(loc.city =~ /\(.+\)/)
+        loc
       end
 
       # Forces UTF-8 encoding on the body
