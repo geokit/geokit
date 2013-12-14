@@ -53,7 +53,7 @@ module Geokit
         url = "http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        xml = self.transcode_to_utf8(res.body)
+        xml = transcode_to_utf8(res.body)
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
         parse :xml, xml
       end
@@ -149,16 +149,6 @@ module Geokit
             [bounds['south'], bounds['west']],
             [bounds['north'], bounds['east']])
         end
-      end
-      
-      def self.transcode_to_utf8(body)
-        require 'iconv' unless String.method_defined?(:encode)
-        if String.method_defined?(:encode)
-          body.encode!('UTF-8', 'UTF-8', :invalid => :replace)
-        else
-          ic = Iconv.new('UTF-8', 'UTF-8//IGNORE')
-          body = ic.iconv(body)
-        end        
       end
     end
   end

@@ -32,6 +32,8 @@ module Geokit
   module Geocoders
     @@proxy = nil
     @@request_timeout = nil
+    @@bing = 'REPLACE_WITH_YOUR_BING_KEY'
+    @@bing_options = {}
     @@yahoo_consumer_key = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_KEY'
     @@yahoo_consumer_secret = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_SECRET'
     @@yandex = nil
@@ -147,6 +149,16 @@ module Geokit
         when :json then parse_json(MultiJson.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
         when :yaml then parse_yaml(YAML::load(body), *args)
+        end
+      end
+
+      def self.transcode_to_utf8(body)
+        require 'iconv' unless String.method_defined?(:encode)
+        if String.method_defined?(:encode)
+          body.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+        else
+          ic = Iconv.new('UTF-8', 'UTF-8//IGNORE')
+          body = ic.iconv(body)
         end
       end
     end
