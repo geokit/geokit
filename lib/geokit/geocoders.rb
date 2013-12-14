@@ -96,7 +96,7 @@ module Geokit
       rescue TooManyQueriesError, GeocodeError
         raise
       rescue
-        logger.error "Caught an error during #{self.class} geocoding call: "+$!
+        logger.error "Caught an error during #{self.class} geocoding call: #{$!}"
         GeoLoc.new
       end
       # Main method which calls the do_reverse_geocode template method which subclasses
