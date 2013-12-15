@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::google = 'Google'
 Geokit::Geocoders::google_client_id = nil
 Geokit::Geocoders::google_cryptographic_key = nil
 Geokit::Geocoders::google_channel = nil

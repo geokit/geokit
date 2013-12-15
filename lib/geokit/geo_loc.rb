@@ -101,7 +101,7 @@ module Geokit
 
     # Sets the street address after capitalizing each word within the street address.
     def street_address=(address)
-      @street_address = if address && !['google','google3'].include?(provider)
+      @street_address = if address && provider != 'google'
         Geokit::Inflector::titleize(address)
       else
         address
