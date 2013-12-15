@@ -1,6 +1,6 @@
 module Geokit
   module Geocoders
-    class GoogleGeocoder3 < Geocoder
+    class GoogleGeocoder < Geocoder
 
       private
       # Template method which does the reverse-geocode lookup.
@@ -138,7 +138,7 @@ module Geokit
 
       def self.single_json_to_geoloc(addr)
         loc = GeoLoc.new
-        loc.provider = 'google3'
+        loc.provider = 'google'
         loc.success = true
         loc.full_address = addr['formatted_address']
 
@@ -201,6 +201,5 @@ module Geokit
         end
       end
     end
-    Google3Geocoder = GoogleGeocoder3
   end
 end
