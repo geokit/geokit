@@ -17,11 +17,18 @@ The Geokit gem provides:
  * Rectangular bounds calculations: is a point within a given rectangular bounds?
  * Heading and midpoint calculations
 
-Combine this gem with the [geokit-rails plugin](http://github.com/geokit/geokit-rails) to get location-based finders for your Rails app.
+Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) to get location-based finders for your Rails app.
 
 * Repository at Github: [http://github.com/geokit/geokit](http://github.com/geokit/geokit).
 * RDoc pages: [http://rdoc.info/github/geokit/geokit/master/frames](http://rdoc.info/github/geokit/geokit/master/frames)
-* Follow the Google Group for updates and discussion on Geokit: [http://groups.google.com/group/geokit](http://groups.google.com/group/geokit)
+
+## COMMUNICATION
+
+* If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/geokit). (Tag 'geokit' and we'll be alerted)
+* If you **found a bug**, use GitHub issues.
+* If you **have an idea**, use GitHub issues.
+* If you'd like to **ask a general question**, use GitHub issues.
+* If you **want to contribute**, submit a pull request.
 
 ## INSTALL
 
