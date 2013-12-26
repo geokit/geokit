@@ -109,10 +109,12 @@ If you're using this gem by itself, here are the configuration options:
     # and http://developer.yahoo.com/maps/rest/V1/geocode.html
     Geokit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
 
-    # This is your Google Maps geocoder key.
+    # This is your Google Maps geocoder keys (all optional).
     # See http://www.google.com/apis/maps/signup.html
     # and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
-    Geokit::Geocoders::google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+    Geokit::Geocoders::google_client_id = ''
+    Geokit::Geocoders::google_cryptographic_key = ''
+    Geokit::Geocoders::google_channel = ''
 
     # You can also set multiple API KEYS for different domains that may be directed to this same application.
     # The domain from which the current user is being directed will automatically be updated for Geokit via
