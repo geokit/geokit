@@ -44,10 +44,9 @@ module Geokit
       end
 
       def self.extract_geoloc(result_json)
-        loc = GeoLoc.new
+        loc = new_loc
         loc.lat      = result_json['latitude']
         loc.lng      = result_json['longitude']
-        loc.provider = 'yahoo'
         set_address_components(result_json, loc)
         set_precision(result_json, loc)
         loc.success  = true

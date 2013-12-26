@@ -36,8 +36,7 @@ module Geokit
           raise Geokit::Geocoders::GeocodeError
         end
 
-        loc = GeoLoc.new
-        loc.provider      = 'fcc'
+        loc = new_loc
         loc.success       = true
         loc.precision     = 'block'
         loc.country_code  = 'US'

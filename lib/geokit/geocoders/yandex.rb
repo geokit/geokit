@@ -23,7 +23,7 @@ module Geokit
       end
 
       def self.parse_json(result)
-        loc = GeoLoc.new
+        loc = new_loc
 
         coll = result["response"]["GeoObjectCollection"]
         return loc unless coll["metaDataProperty"]["GeocoderResponseMetaData"]["found"].to_i > 0
@@ -31,7 +31,6 @@ module Geokit
         l = coll["featureMember"][0]["GeoObject"]
 
         loc.success = true
-        loc.provider = "yandex"
         loc.lng = l["Point"]["pos"].split(" ").first
         loc.lat = l["Point"]["pos"].split(" ").last
 

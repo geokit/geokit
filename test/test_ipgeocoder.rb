@@ -45,7 +45,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @success.provider = "hostip"
+    @success.provider = "ip"
   end
 
   def test_successful_lookup
@@ -60,7 +60,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "Sugar Grove", location.city
     assert_equal "IL", location.state
     assert_equal "US", location.country_code
-    assert_equal "hostip", location.provider
+    assert_equal "ip", location.provider
     assert location.success?
   end
 
@@ -76,7 +76,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "Bor\303\245s", location.city
     assert_nil location.state
     assert_equal "SE", location.country_code
-    assert_equal "hostip", location.provider
+    assert_equal "ip", location.provider
     assert location.success?
   end
 
@@ -93,7 +93,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "São José Do Rio Prêto", location.city
     assert_nil location.state
     assert_equal "BR", location.country_code
-    assert_equal "hostip", location.provider
+    assert_equal "ip", location.provider
     assert location.success?
   end
 

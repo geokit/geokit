@@ -22,8 +22,7 @@ module Geokit
       }
 
       def self.parse_xml(xml)
-        loc = GeoLoc.new
-        loc.provider = 'freegeoip'
+        loc = new_loc
         set_mappings(loc, xml.elements['Response'], XML_MAPPINGS)
         loc.success = !!loc.city && !loc.city.empty?
         loc

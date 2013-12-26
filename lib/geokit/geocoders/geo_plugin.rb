@@ -21,8 +21,7 @@ module Geokit
       }
 
       def self.parse_xml(xml)
-        loc = GeoLoc.new
-        loc.provider = 'geoPlugin'
+        loc = new_loc
         set_mappings(loc, xml.elements['geoPlugin'], XML_MAPPINGS)
         loc.success = !!loc.city && !loc.city.empty?
         loc

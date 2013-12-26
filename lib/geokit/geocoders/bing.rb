@@ -38,8 +38,7 @@ module Geokit
 
       # extracts a single geoloc from a //Location element in the bing results xml
       def self.extract_location(xml)
-        loc                 = GeoLoc.new
-        loc.provider        = 'bing'
+        loc                 = new_loc
         set_address_components(loc, xml)
         set_precision(loc, xml)
         set_bounds(loc, xml)

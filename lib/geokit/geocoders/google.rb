@@ -138,8 +138,7 @@ module Geokit
       }
 
       def self.single_json_to_geoloc(addr)
-        loc = GeoLoc.new
-        loc.provider = 'google'
+        loc = new_loc
         loc.success = true
         loc.full_address = addr['formatted_address']
 

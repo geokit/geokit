@@ -42,8 +42,7 @@ module Geokit
 
       def self.parse_xml(xml)
         return GeoLoc.new unless xml.elements['geonames/totalResultsCount'].text.to_i > 0
-        loc = GeoLoc.new
-        loc.provider = 'genomes'
+        loc = new_loc
         # only take the first result
         set_mappings(loc, xml.elements['geonames/code'], XML_MAPPINGS)
         loc.success = true

@@ -46,10 +46,9 @@ module Geokit
       end
 
       def self.extract_geoloc(result_json)
-        loc = GeoLoc.new
-        loc.lat            = result_json['latLng']['lat']
-        loc.lng            = result_json['latLng']['lng']
-        loc.provider       = 'mapquest'
+        loc = new_loc
+        loc.lat = result_json['latLng']['lat']
+        loc.lng = result_json['latLng']['lng']
         set_address_components(result_json, loc)
         set_precision(result_json, loc)
         loc.success = true

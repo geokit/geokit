@@ -11,15 +11,13 @@ module Geokit
       def self.do_geocode(ip)
         res = GeoIP.new(Geokit::Geocoders::geoip_data_path).city(ip)
 
-        loc = GeoLoc.new(
-          :provider => 'maxmind_city',
-          :lat      => res.latitude,
-          :lng      => res.longitude,
-          :city     => res.city_name,
-          :state    => res.region_name,
-          :zip      => res.postal_code,
-          :country_code => res.country_code2
-        )
+        loc = new_loc
+        loc.lat          = res.latitude
+        loc.lng          = res.longitude
+        loc.city         = res.city_name
+        loc.state        = res.region_name
+        loc.zip          = res.postal_code
+        loc.country_code = res.country_code2
 
         loc.success = ( res.longitude.kind_of?(Numeric) && res.latitude.kind_of?(Numeric) )
         loc

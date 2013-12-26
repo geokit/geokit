@@ -13,10 +13,9 @@ module Geokit
       end
 
       def self.parse_json(json)
-        loc = GeoLoc.new
+        loc = new_loc
         data = json['data']['locations'][0]
 
-        loc.provider='RIPE'
         loc.lat = data['latitude']
         loc.lng = data['longitude']
         set_address_components(data, loc)

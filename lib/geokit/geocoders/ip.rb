@@ -29,8 +29,7 @@ module Geokit
       #
       # then instantiates a GeoLoc instance to populate with location data.
       def self.parse_yaml(yaml) # :nodoc:
-        loc = GeoLoc.new
-        loc.provider = 'hostip'
+        loc = new_loc
         loc.city, loc.state = yaml['City'].split(', ')
         loc.country, loc.country_code = yaml['Country'].split(' (')
         loc.lat = yaml['Latitude']

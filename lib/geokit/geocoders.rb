@@ -107,6 +107,12 @@ module Geokit
         do_reverse_geocode(latlng) || GeoLoc.new
       end
 
+      def self.new_loc
+        loc = GeoLoc.new
+        loc.provider = Geokit::Inflector.underscore(name.split('::').last.gsub(/Geocoder$/, ''))
+        loc
+      end
+
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
         Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout

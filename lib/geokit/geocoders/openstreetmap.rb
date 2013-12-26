@@ -70,13 +70,11 @@ module Geokit
       end
 
       def self.extract_geoloc(result_json)
-        loc = GeoLoc.new
+        loc = new_loc
 
         # basic
         loc.lat = result_json['lat']
         loc.lng = result_json['lon']
-
-        loc.provider = 'osm'
 
         set_address_components(result_json['address'], loc)
         set_precision(result_json, loc)
