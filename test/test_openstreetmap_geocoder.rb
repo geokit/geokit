@@ -1,8 +1,6 @@
 # encoding: utf-8
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::osm = 'OSM'
-
 class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   OSM_FULL=<<-EOF.strip
       [{"place_id":"425554497","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","boundingbox":["37.792341","37.792441","-122.394074","-122.393974"],"lat":"37.792391","lon":"-122.394024","display_name":"100, Spear Street, Financial District, San Francisco, California, 94105, United States of America","class":"place","type":"house","address":{"house_number":"100","road":"Spear Street","place":"Financial District","city":"San Francisco","county":"San Francisco","state":"California","postcode":"94105","country":"United States of America","country_code":"us"}}]

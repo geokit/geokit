@@ -49,7 +49,6 @@ module Geokit
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
-    @@osm = 'REPLACE_WITH_YOUR_OSM_KEY' #if needed
 
     def self.__define_accessors
       class_variables.each do |v|
