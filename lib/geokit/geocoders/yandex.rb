@@ -9,14 +9,14 @@ module Geokit
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
-        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url(address_str)
+        url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         parse :json, res.body
       end
 
-      def self.submit_url(address_str)
+      def self.submit_url(address)
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector::url_escape(address_str)}&format=json"
         url += "&key=#{key}" if key
         url
