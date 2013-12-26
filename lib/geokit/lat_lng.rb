@@ -71,26 +71,33 @@ module Geokit
     #  5) a LatLng or GeoLoc (which is just passed through as-is)
     #  6) anything responding to to_lat_lng -- a LatLng will be extracted from it
     def self.normalize(thing,other=nil)
-      # if an 'other' thing is supplied, normalize the input by creating an array of two elements
-      thing=[thing,other] if other
+      return Geokit::LatLng.new(thing, other) if other
 
-      if thing.is_a?(String)
-        thing.strip!
-        if match=thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
-          Geokit::LatLng.new(match[1],match[2])
-        else
-          res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
-          return res if res.success?
-          raise Geokit::Geocoders::GeocodeError
-        end
-      elsif thing.is_a?(Array) && thing.size==2
+      case thing
+      when String
+        from_string(thing)
+      when Array
+        thing.size == 2 or raise ArgumentError.new("Must initialize with an Array with both latitude and longitude")
         Geokit::LatLng.new(thing[0],thing[1])
-      elsif thing.is_a?(LatLng) # will also be true for GeoLocs
+      when LatLng # will also be true for GeoLocs
         thing
-      elsif thing.respond_to? :to_lat_lng
-        thing.to_lat_lng
       else
-        raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, etc., but no dice.")
+        if thing.respond_to? :to_lat_lng
+          thing.to_lat_lng
+        else
+          raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, etc., but no dice.")
+        end
+      end
+    end
+
+    def self.from_string(thing)
+      thing.strip!
+      if match=thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
+        Geokit::LatLng.new(match[1],match[2])
+      else
+        res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
+        return res if res.success?
+        raise Geokit::Geocoders::GeocodeError
       end
     end
 
