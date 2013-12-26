@@ -69,7 +69,7 @@ module Geokit
     #  3) a string which can be geocoded on the fly
     #  4) an array in the format [37.1234,-129.1234]
     #  5) a LatLng or GeoLoc (which is just passed through as-is)
-    #  6) anything which acts_as_mappable -- a LatLng will be extracted from it
+    #  6) anything responding to to_lat_lng -- a LatLng will be extracted from it
     def self.normalize(thing,other=nil)
       # if an 'other' thing is supplied, normalize the input by creating an array of two elements
       thing=[thing,other] if other
@@ -87,12 +87,10 @@ module Geokit
         Geokit::LatLng.new(thing[0],thing[1])
       elsif thing.is_a?(LatLng) # will also be true for GeoLocs
         thing
-      elsif thing.class.respond_to?(:acts_as_mappable) && thing.class.respond_to?(:distance_column_name)
-        thing.to_lat_lng
       elsif thing.respond_to? :to_lat_lng
         thing.to_lat_lng
       else
-        raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, Mappable, etc., but no dice.")
+        raise ArgumentError.new("#{thing} (#{thing.class}) cannot be normalized to a LatLng. We tried interpreting it as an array, string, etc., but no dice.")
       end
     end
 

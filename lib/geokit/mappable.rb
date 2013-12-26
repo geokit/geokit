@@ -179,7 +179,7 @@ module Geokit
     # Extracts a LatLng instance. Use with models that are acts_as_mappable
     def to_lat_lng
       return self if instance_of?(Geokit::LatLng) || instance_of?(Geokit::GeoLoc)
-      return LatLng.new(send(self.class.lat_column_name),send(self.class.lng_column_name)) if self.class.respond_to?(:acts_as_mappable)
+      return LatLng.new(send(self.class.lat_column_name), send(self.class.lng_column_name))
       nil
     end
 
