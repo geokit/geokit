@@ -12,15 +12,19 @@ module Geokit
         parse :xml, res.body
       end
 
+      XML_MAPPINGS = {
+        :city         => 'City',
+        :state        => 'RegionCode',
+        :zip          => 'ZipCode',
+        :country_code => 'CountryCode',
+        :lat          => 'Latitude',
+        :lng          => 'Longitude'
+      }
+
       def self.parse_xml(xml)
         loc = GeoLoc.new
-        loc.provider='freegeoip'
-        loc.city = xml.elements['//City'].text
-        loc.state = xml.elements['//RegionCode'].text
-        loc.zip = xml.elements['//ZipCode'].text
-        loc.country_code = xml.elements['//CountryCode'].text
-        loc.lat = xml.elements['//Latitude'].text.to_f
-        loc.lng = xml.elements['//Longitude'].text.to_f
+        loc.provider = 'freegeoip'
+        set_mappings(loc, xml.elements['Response'], XML_MAPPINGS)
         loc.success = !!loc.city && !loc.city.empty?
         loc
       end

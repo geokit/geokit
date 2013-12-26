@@ -18,10 +18,41 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(@full_address)}?key=#{Geokit::Geocoders::bing}&o=xml"
     res = Geokit::Geocoders::BingGeocoder.geocode(@full_address)
     assert_equal "CA", res.state
-    assert_equal "San Francisco Co.", res.city
+    assert_equal "San Francisco", res.city
     assert_array_in_delta [37.792332, -122.393791], res.to_a
     assert res.country == 'United States'
     assert_equal "100 Spear St, San Francisco, CA 94105", res.full_address
+    assert_equal "bing", res.provider
+    assert_url url
+    end
+  end
+
+  def test_bing_full_address_au
+    address = '440 King William Street, Adelaide, Australia'
+    VCR.use_cassette('bing_full_au') do
+    url = "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{Geokit::Geocoders::bing}&o=xml"
+    res = Geokit::Geocoders::BingGeocoder.geocode(address)
+    assert_equal "SA", res.state
+    assert_equal "Adelaide", res.city
+    assert_array_in_delta [-34.934582, 138.600784], res.to_a
+    assert res.country == 'Australia'
+    assert_equal "402-440 King William St, Adelaide, SA 5000", res.full_address
+    assert_equal "Australia", res.country
+    assert_equal "bing", res.provider
+    assert_url url
+    end
+  end
+
+  def test_bing_full_address_de
+    address = "Platz der Republik 1, 11011 Berlin, Germany"
+    VCR.use_cassette('bing_full_de') do
+    url = "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{Geokit::Geocoders::bing}&o=xml"
+    res = Geokit::Geocoders::BingGeocoder.geocode(address)
+    assert_equal "BE", res.state
+    assert_equal "Berlin", res.city
+    assert_array_in_delta [52.518596, 13.375502], res.to_a
+    assert res.country == 'Germany'
+    assert_equal "Platz der Republik 1, 10557 Berlin", res.full_address
     assert_equal "bing", res.provider
     assert_url url
     end

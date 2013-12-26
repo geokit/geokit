@@ -1,0 +1,91 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://dev.virtualearth.net/REST/v1/Locations/Platz%20der%20Republik%201,%2011011%20Berlin,%20Germany?key=AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7&o=xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/xml; charset=utf-8
+      Server:
+      - Microsoft-IIS/8.0
+      X-Bm-Traceid:
+      - bae3195ab27846d899ef1bb63ddacdd9
+      X-Bm-Srv:
+      - SINM000009, SINMSNVM001117, SINMSNVM000134
+      X-Ms-Bm-Ws-Info:
+      - '0'
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Thu, 26 Dec 2013 09:52:37 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48UmVz
+        cG9uc2UgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNj
+        aGVtYS1pbnN0YW5jZSIgeG1sbnM6eHNkPSJodHRwOi8vd3d3LnczLm9yZy8y
+        MDAxL1hNTFNjaGVtYSIgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29m
+        dC5jb20vc2VhcmNoL2xvY2FsL3dzL3Jlc3QvdjEiPjxDb3B5cmlnaHQ+Q29w
+        eXJpZ2h0IMKpIDIwMTMgTWljcm9zb2Z0IGFuZCBpdHMgc3VwcGxpZXJzLiBB
+        bGwgcmlnaHRzIHJlc2VydmVkLiBUaGlzIEFQSSBjYW5ub3QgYmUgYWNjZXNz
+        ZWQgYW5kIHRoZSBjb250ZW50IGFuZCBhbnkgcmVzdWx0cyBtYXkgbm90IGJl
+        IHVzZWQsIHJlcHJvZHVjZWQgb3IgdHJhbnNtaXR0ZWQgaW4gYW55IG1hbm5l
+        ciB3aXRob3V0IGV4cHJlc3Mgd3JpdHRlbiBwZXJtaXNzaW9uIGZyb20gTWlj
+        cm9zb2Z0IENvcnBvcmF0aW9uLjwvQ29weXJpZ2h0PjxCcmFuZExvZ29Vcmk+
+        aHR0cDovL2Rldi52aXJ0dWFsZWFydGgubmV0L0JyYW5kaW5nL2xvZ29fcG93
+        ZXJlZF9ieS5wbmc8L0JyYW5kTG9nb1VyaT48U3RhdHVzQ29kZT4yMDA8L1N0
+        YXR1c0NvZGU+PFN0YXR1c0Rlc2NyaXB0aW9uPk9LPC9TdGF0dXNEZXNjcmlw
+        dGlvbj48QXV0aGVudGljYXRpb25SZXN1bHRDb2RlPlZhbGlkQ3JlZGVudGlh
+        bHM8L0F1dGhlbnRpY2F0aW9uUmVzdWx0Q29kZT48VHJhY2VJZD5iYWUzMTk1
+        YWIyNzg0NmQ4OTllZjFiYjYzZGRhY2RkOXxTSU5NMDAwMDA5fDAyLjAwLjE4
+        My4yMzAwfFNJTk1TTlZNMDAxMTE3LCBTSU5NU05WTTAwMDEzNDwvVHJhY2VJ
+        ZD48UmVzb3VyY2VTZXRzPjxSZXNvdXJjZVNldD48RXN0aW1hdGVkVG90YWw+
+        MTwvRXN0aW1hdGVkVG90YWw+PFJlc291cmNlcz48TG9jYXRpb24+PE5hbWU+
+        UGxhdHogZGVyIFJlcHVibGlrIDEsIDEwNTU3IEJlcmxpbjwvTmFtZT48UG9p
+        bnQ+PExhdGl0dWRlPjUyLjUxODU5NjwvTGF0aXR1ZGU+PExvbmdpdHVkZT4x
+        My4zNzU1MDI8L0xvbmdpdHVkZT48L1BvaW50PjxCb3VuZGluZ0JveD48U291
+        dGhMYXRpdHVkZT41Mi41MTQ3MzMyODI0MjkzMjY8L1NvdXRoTGF0aXR1ZGU+
+        PFdlc3RMb25naXR1ZGU+MTMuMzY3MDM4ODg2OTI3OTc8L1dlc3RMb25naXR1
+        ZGU+PE5vcnRoTGF0aXR1ZGU+NTIuNTIyNDU4NzE3NTcwNjc5PC9Ob3J0aExh
+        dGl0dWRlPjxFYXN0TG9uZ2l0dWRlPjEzLjM4Mzk2NTExMzA3MjAyODwvRWFz
+        dExvbmdpdHVkZT48L0JvdW5kaW5nQm94PjxFbnRpdHlUeXBlPkFkZHJlc3M8
+        L0VudGl0eVR5cGU+PEFkZHJlc3M+PEFkZHJlc3NMaW5lPlBsYXR6IGRlciBS
+        ZXB1YmxpayAxPC9BZGRyZXNzTGluZT48QWRtaW5EaXN0cmljdD5CRTwvQWRt
+        aW5EaXN0cmljdD48QWRtaW5EaXN0cmljdDI+U3RhZHQgQmVybGluPC9BZG1p
+        bkRpc3RyaWN0Mj48Q291bnRyeVJlZ2lvbj5HZXJtYW55PC9Db3VudHJ5UmVn
+        aW9uPjxGb3JtYXR0ZWRBZGRyZXNzPlBsYXR6IGRlciBSZXB1YmxpayAxLCAx
+        MDU1NyBCZXJsaW48L0Zvcm1hdHRlZEFkZHJlc3M+PExvY2FsaXR5PkJlcmxp
+        bjwvTG9jYWxpdHk+PFBvc3RhbENvZGU+MTA1NTc8L1Bvc3RhbENvZGU+PC9B
+        ZGRyZXNzPjxDb25maWRlbmNlPkhpZ2g8L0NvbmZpZGVuY2U+PE1hdGNoQ29k
+        ZT5Hb29kPC9NYXRjaENvZGU+PEdlb2NvZGVQb2ludD48TGF0aXR1ZGU+NTIu
+        NTE4NTk2PC9MYXRpdHVkZT48TG9uZ2l0dWRlPjEzLjM3NTUwMjwvTG9uZ2l0
+        dWRlPjxDYWxjdWxhdGlvbk1ldGhvZD5Sb29mdG9wPC9DYWxjdWxhdGlvbk1l
+        dGhvZD48VXNhZ2VUeXBlPkRpc3BsYXk8L1VzYWdlVHlwZT48L0dlb2NvZGVQ
+        b2ludD48R2VvY29kZVBvaW50PjxMYXRpdHVkZT41Mi41MTg1OTg8L0xhdGl0
+        dWRlPjxMb25naXR1ZGU+MTMuMzc0OTQ0MDAwMDAwMDAxPC9Mb25naXR1ZGU+
+        PENhbGN1bGF0aW9uTWV0aG9kPkludGVycG9sYXRpb248L0NhbGN1bGF0aW9u
+        TWV0aG9kPjxVc2FnZVR5cGU+RGlzcGxheTwvVXNhZ2VUeXBlPjxVc2FnZVR5
+        cGU+Um91dGU8L1VzYWdlVHlwZT48L0dlb2NvZGVQb2ludD48L0xvY2F0aW9u
+        PjwvUmVzb3VyY2VzPjwvUmVzb3VyY2VTZXQ+PC9SZXNvdXJjZVNldHM+PC9S
+        ZXNwb25zZT4=
+    http_version: 
+  recorded_at: Thu, 26 Dec 2013 09:52:37 GMT
+recorded_with: VCR 2.8.0

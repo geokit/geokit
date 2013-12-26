@@ -151,6 +151,12 @@ module Geokit
         end
       end
 
+      def self.set_mappings(loc, xml, mappings)
+        mappings.each_pair do |field, xml_field|
+          loc.send("#{field}=", xml.elements[xml_field].try(:text))
+        end
+      end
+
       def self.transcode_to_utf8(body)
         require 'iconv' unless String.method_defined?(:encode)
         if String.method_defined?(:encode)

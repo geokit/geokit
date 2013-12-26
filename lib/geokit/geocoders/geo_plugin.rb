@@ -12,14 +12,18 @@ module Geokit
         parse :xml, res.body
       end
 
+      XML_MAPPINGS = {
+        :city         => 'geoplugin_city',
+        :state        => 'geoplugin_region',
+        :country_code => 'geoplugin_countryCode',
+        :lat          => 'geoplugin_latitude',
+        :lng          => 'geoplugin_longitude'
+      }
+
       def self.parse_xml(xml)
         loc = GeoLoc.new
-        loc.provider='geoPlugin'
-        loc.city = xml.elements['//geoplugin_city'].text
-        loc.state = xml.elements['//geoplugin_region'].text
-        loc.country_code = xml.elements['//geoplugin_countryCode'].text
-        loc.lat = xml.elements['//geoplugin_latitude'].text.to_f
-        loc.lng = xml.elements['//geoplugin_longitude'].text.to_f
+        loc.provider = 'geoPlugin'
+        set_mappings(loc, xml.elements['geoPlugin'], XML_MAPPINGS)
         loc.success = !!loc.city && !loc.city.empty?
         loc
       end

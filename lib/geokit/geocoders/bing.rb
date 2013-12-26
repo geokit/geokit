@@ -40,8 +40,6 @@ module Geokit
       def self.extract_location(xml)
         loc                 = GeoLoc.new
         loc.provider        = 'bing'
-        loc.lat             = xml.elements['.//Latitude'].try(:text)
-        loc.lng             = xml.elements['.//Longitude'].try(:text)
         set_address_components(loc, xml)
         set_precision(loc, xml)
         set_bounds(loc, xml)
@@ -49,15 +47,20 @@ module Geokit
         loc
       end
 
+      XML_MAPPINGS = {
+        :street_address => 'Address/AddressLine',
+        :full_address   => 'Address/FormattedAddress',
+        :city           => 'Address/Locality',
+        :state          => 'Address/AdminDistrict',
+        :province       => 'Address/AdminDistrict2',
+        :zip            => 'Address/PostalCode',
+        :country        => 'Address/CountryRegion',
+        :lat            => 'Point/Latitude',
+        :lng            => 'Point/Longitude'
+      }
+
       def self.set_address_components(loc, xml)
-        # Fix for Germany, where often the locality is really sublocality so fallback to AdminDistrict2
-        loc.city            = xml.elements['.//AdminDistrict2'].try(:text) || xml.elements['.//Locality'].try(:text)
-        loc.state           = xml.elements['.//AdminDistrict'].try(:text)
-        loc.province        = xml.elements['.//AdminDistrict2'].try(:text)
-        loc.full_address    = xml.elements['.//FormattedAddress'].try(:text)
-        loc.zip             = xml.elements['.//PostalCode'].try(:text)
-        loc.street_address  = xml.elements['.//AddressLine'].try(:text)
-        loc.country         = xml.elements['.//CountryRegion'].try(:text)
+        set_mappings(loc, xml, XML_MAPPINGS)
       end
 
       def self.set_precision(loc, xml)

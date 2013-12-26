@@ -28,19 +28,22 @@ module Geokit
         parse :xml, xml
       end
 
-      def self.parse_xml(doc)
-        return GeoLoc.new unless doc.elements['//geonames/totalResultsCount'].text.to_i > 0
-        loc=GeoLoc.new
+      XML_MAPPINGS = {
+        :city         => 'name',
+        :state        => 'adminName1',
+        :zip          => 'postalcode',
+        :country_code => 'countryCode',
+        :lat          => 'lat',
+        :lng          => 'lng'
+      }
 
+      def self.parse_xml(xml)
+        return GeoLoc.new unless xml.elements['geonames/totalResultsCount'].text.to_i > 0
+        loc = GeoLoc.new
+        loc.provider = 'genomes'
         # only take the first result
-        loc.lat=doc.elements['//code/lat'].text if doc.elements['//code/lat']
-        loc.lng=doc.elements['//code/lng'].text if doc.elements['//code/lng']
-        loc.country_code=doc.elements['//code/countryCode'].text if doc.elements['//code/countryCode']
-        loc.provider='genomes'
-        loc.city=doc.elements['//code/name'].text if doc.elements['//code/name']
-        loc.state=doc.elements['//code/adminName1'].text if doc.elements['//code/adminName1']
-        loc.zip=doc.elements['//code/postalcode'].text if doc.elements['//code/postalcode']
-        loc.success=true
+        set_mappings(loc, xml.elements['geonames/code'], XML_MAPPINGS)
+        loc.success = true
         loc
       end
     end
