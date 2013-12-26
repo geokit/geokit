@@ -28,8 +28,9 @@ module Geokit
         l = coll["featureMember"][0]["GeoObject"]
 
         loc.success = true
-        loc.lng = l["Point"]["pos"].split(" ").first
-        loc.lat = l["Point"]["pos"].split(" ").last
+        ll = l["Point"]["pos"].split(" ")
+        loc.lng = ll.first
+        loc.lat = ll.last
 
         country = l["metaDataProperty"]["GeocoderMetaData"]["AddressDetails"]["Country"]
         locality = country["Locality"] || country["AdministrativeArea"]["Locality"] || country["AdministrativeArea"]["SubAdministrativeArea"]["Locality"] rescue nil
