@@ -8,22 +8,19 @@ module Geokit
 
       private
       def self.do_geocode(address)
-        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-
-        query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
-        url = if key
-          "http://#{key}@geocoder.us/member/service/csv/geocode"
-        else
-          "http://geocoder.us/service/csv/geocode"
-        end
-
-        url = "#{url}?#{query}"
+        url = submit_url(address)
         res = call_geocoder_service(url)
-
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body
         logger.debug "Geocoder.us geocoding. Address: #{address}. Result: #{data}"
         parse_csv data
+      end
+
+      def self.submit_url(address)
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+        query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
+        base = key ? "http://#{key}@geocoder.us/member" : "http://geocoder.us"
+        "#{base}/service/csv/geocode?#{query}"
       end
 
       def self.parse_csv(data)
