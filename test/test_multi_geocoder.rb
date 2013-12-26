@@ -79,7 +79,9 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_reverse_geocode_with_invalid_provider
     temp = Geokit::Geocoders::provider_order
     Geokit::Geocoders.provider_order = [:bogus]
-    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)
+    assert_raise NameError do
+      Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)
+    end
     Geokit::Geocoders.provider_order = temp
   end
 

@@ -27,8 +27,8 @@ module Geokit
         provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
 
         provider_order.each do |provider|
+          klass = geocoder(provider)
           begin
-            klass = Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
             res = klass.send :geocode, address, options
             return res if res.success?
           rescue => e
@@ -44,8 +44,8 @@ module Geokit
       # to try to reverse geocode a geographical point.
       def self.do_reverse_geocode(latlng)
         Geokit::Geocoders::provider_order.each do |provider|
+          klass = geocoder(provider)
           begin
-            klass = Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
             res = klass.send :reverse_geocode, latlng
             return res if res.success?
           rescue => e
@@ -54,6 +54,10 @@ module Geokit
         end
         # If we get here, we failed completely.
         GeoLoc.new
+      end
+
+      def self.geocoder(provider)
+        Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
       end
     end
   end
