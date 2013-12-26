@@ -1,3 +1,8 @@
+## 1.8.2
+
+* Fix due to name clash with dependency definitions in geokit 1.8.1
+* Standaride GeoLoc provider string
+
 ## 1.8.1
 
 * Change way keys/dependencies defined
