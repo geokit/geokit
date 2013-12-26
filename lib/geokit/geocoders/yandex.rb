@@ -3,6 +3,8 @@ module Geokit
     # Yandex geocoder implementation. Expects the Geokit::Geocoders::YANDEX variable to
     # contain a Yandex API key (optional). Conforms to the interface set by the Geocoder class.
     class YandexGeocoder < Geocoder
+      config :key
+
       private
 
       # Template method which does the geocode lookup.
@@ -16,7 +18,7 @@ module Geokit
 
       def self.submit_url(address_str)
         url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector::url_escape(address_str)}&format=json"
-        url += "&key=#{Geokit::Geocoders::yandex}" if Geokit::Geocoders::yandex
+        url += "&key=#{key}" if key
         url
       end
 

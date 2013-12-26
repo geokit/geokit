@@ -4,14 +4,15 @@
 module Geokit
  module Geocoders
     class UsGeocoder < Geocoder
+      config :key
 
       private
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
         query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
-        url = if Geokit::Geocoders::geocoder_us
-          "http://#{Geokit::Geocoders::geocoder_us}@geocoder.us/member/service/csv/geocode"
+        url = if key
+          "http://#{key}@geocoder.us/member/service/csv/geocode"
         else
           "http://geocoder.us/service/csv/geocode"
         end

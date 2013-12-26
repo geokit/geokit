@@ -12,6 +12,7 @@
 module Geokit
  module Geocoders
    class CaGeocoder < Geocoder
+     config :key
 
      private
 
@@ -41,7 +42,7 @@ module Geokit
        args << "city=#{Geokit::Inflector::url_escape(loc.city)}" if loc.city
        args << "prov=#{loc.state}" if loc.state
        args << "postal=#{loc.zip}" if loc.zip
-       args << "auth=#{Geokit::Geocoders::geocoder_ca}" if Geokit::Geocoders::geocoder_ca
+       args << "auth=#{key}" if key
        args << "geoit=xml"
        'http://geocoder.ca/?' + args.join('&')
      end

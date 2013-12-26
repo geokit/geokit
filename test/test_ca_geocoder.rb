@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::geocoder_ca = "SOMEKEYVALUE"
+Geokit::Geocoders::CaGeocoder::key = "SOMEKEYVALUE"
 
 class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
 

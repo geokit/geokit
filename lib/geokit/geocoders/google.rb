@@ -1,6 +1,7 @@
 module Geokit
   module Geocoders
     class GoogleGeocoder < Geocoder
+      config :client_id, :cryptographic_key, :channel
 
       private
       # Template method which does the reverse-geocode lookup.
@@ -69,10 +70,10 @@ module Geokit
 
 
       def self.submit_url(query_string)
-        if Geokit::Geocoders::google_client_id && Geokit::Geocoders::google_cryptographic_key
-          channel = Geokit::Geocoders::google_channel ? "&channel=#{Geokit::Geocoders::google_channel}" : ''
-          urlToSign = query_string + "&client=#{Geokit::Geocoders::google_client_id}" + channel
-          signature = sign_gmap_bus_api_url(urlToSign, Geokit::Geocoders::google_cryptographic_key)
+        if client_id && cryptographic_key
+          channel = channel ? "&channel=#{channel}" : ''
+          urlToSign = query_string + "&client=#{client_id}" + channel
+          signature = sign_gmap_bus_api_url(urlToSign, cryptographic_key)
           "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
         else
           "http://maps.google.com" + query_string

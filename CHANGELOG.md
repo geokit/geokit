@@ -1,3 +1,7 @@
+## 1.8.1
+
+* Change way keys/dependencies defined
+
 ## 1.8.0
 
 * Added Bing Geocoder

@@ -1,8 +1,6 @@
 # encoding: UTF-8
 require File.join(File.dirname(__FILE__), 'helper')
 
-# Geokit::Geocoders::yandex = 'yandex'
-
 class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     YANDEX_FULL=<<-EOF.strip
       {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Москва, улица Новый Арбат, дом 24","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Москва, улица Новый Арбат, 24","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Москва, улица Новый Арбат, 24","CountryNameCode":"RU","CountryName":"Россия","Locality":{"LocalityName":"Москва","Thoroughfare":{"ThoroughfareName":"улица Новый Арбат","Premise":{"PremiseNumber":"24"}}}}}}},"description":"Москва, Россия","name":"улица Новый Арбат, 24","boundedBy":{"Envelope":{"lowerCorner":"37.585565 55.751928","upperCorner":"37.589662 55.754238"}},"Point":{"pos":"37.587614 55.753083"}}}]}}}

@@ -107,14 +107,15 @@ If you're using this gem by itself, here are the configuration options:
     # This is your yahoo application key for the Yahoo Geocoder.
     # See http://developer.yahoo.com/faq/index.html#appid
     # and http://developer.yahoo.com/maps/rest/V1/geocode.html
-    Geokit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
+    Geokit::Geocoders::YahooGeocoder.key = 'REPLACE_WITH_YOUR_YAHOO_KEY'
+    Geokit::Geocoders::YahooGeocoder.secret = 'REPLACE_WITH_YOUR_YAHOO_SECRET'
 
     # This is your Google Maps geocoder keys (all optional).
     # See http://www.google.com/apis/maps/signup.html
     # and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
-    Geokit::Geocoders::google_client_id = ''
-    Geokit::Geocoders::google_cryptographic_key = ''
-    Geokit::Geocoders::google_channel = ''
+    Geokit::Geocoders::GoogleGeocoder.client_id = ''
+    Geokit::Geocoders::GoogleGeocoder.cryptographic_key = ''
+    Geokit::Geocoders::GoogleGeocoder.channel = ''
 
     # You can also set multiple API KEYS for different domains that may be directed to this same application.
     # The domain from which the current user is being directed will automatically be updated for Geokit via
@@ -127,7 +128,7 @@ If you're using this gem by itself, here are the configuration options:
     # usage tied to an account, the value should be set to username:password.
     # See http://geocoder.us
     # and http://geocoder.us/user/signup
-    Geokit::Geocoders::geocoder_us = false
+    Geokit::Geocoders::UsGeocoder.key = 'username:password'
 
     # This is your authorization key for geocoder.ca.
     # To use the free service, the value can be set to nil or false.  For
@@ -135,7 +136,13 @@ If you're using this gem by itself, here are the configuration options:
     # Geocoder.ca.
     # See http://geocoder.ca
     # and http://geocoder.ca/?register=1
-    Geokit::Geocoders::geocoder_ca = false
+    Geokit::Geocoders::CaGeocoder.key = 'KEY'
+
+    # Most other geocoders need either no setup or a key
+    Geokit::Geocoders::BingGeocoder.key = ''
+    Geokit::Geocoders::GeonamesGeocoder.key = ''
+    Geokit::Geocoders::MapQuestGeocoder.key = ''
+    Geokit::Geocoders::YandexGeocoder.key = ''
 
     # require "external_geocoder.rb"
     # Please see the section "writing your own geocoders" for more information.

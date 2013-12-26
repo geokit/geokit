@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::yahoo_consumer_key = 'dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--'
-Geokit::Geocoders::yahoo_consumer_secret = 'SECRET'
+Geokit::Geocoders::YahooGeocoder.key = 'dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--'
+Geokit::Geocoders::YahooGeocoder.secret = 'SECRET'
 
 class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup

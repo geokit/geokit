@@ -32,18 +32,6 @@ module Geokit
   module Geocoders
     @@proxy = nil
     @@request_timeout = nil
-    @@bing = 'REPLACE_WITH_YOUR_BING_KEY'
-    @@bing_options = {}
-    @@yahoo_consumer_key = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_KEY'
-    @@yahoo_consumer_secret = 'REPLACE_WITH_YOUR_YAHOO_BOSS_OAUTH_CONSUMER_SECRET'
-    @@yandex = nil
-    @@mapquest = 'REPLACE_WITH_YOUR_MAPQUEST_KEY'
-    @@google_client_id = nil
-    @@google_cryptographic_key = nil
-    @@google_channel = nil
-    @@geocoder_us = false
-    @@geocoder_ca = false
-    @@geonames = false
     @@provider_order = [:google,:us]
     @@ip_provider_order = [:geo_plugin,:ip]
     @@logger=Logger.new(STDOUT)
@@ -88,6 +76,19 @@ module Geokit
     # The Geocoder base class which defines the interface to be used by all
     # other geocoders.
     class Geocoder
+      def self.config(*attrs)
+        attrs.each do |attr|
+          class_eval <<-METHOD
+            @@#{attr} = nil
+            def self.#{attr}=(value)
+              @@#{attr} = value
+            end
+            def self.#{attr}
+              @@#{attr}
+            end
+          METHOD
+        end
+      end
       # Main method which calls the do_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.

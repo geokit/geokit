@@ -3,6 +3,7 @@ module Geokit
     # Bing geocoder implementation.  Requires the Geokit::Geocoders::bing variable to
     # contain a Bing Maps API key.  Conforms to the interface set by the Geocoder class.
     class BingGeocoder < Geocoder
+      config :key, :options
 
       private
 
@@ -17,11 +18,10 @@ module Geokit
       end
 
       def self.submit_url(address)
-        options = Geokit::Geocoders::bing_options
         culture = options && options[:culture]
         culture_string = culture ? "&c=#{culture}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address_str)}?key=#{Geokit::Geocoders::bing}#{culture_string}&o=xml"
+        "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address_str)}?key=#{key}#{culture_string}&o=xml"
       end
 
       def self.parse_xml(xml)

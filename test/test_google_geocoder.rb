@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::google_client_id = nil
-Geokit::Geocoders::google_cryptographic_key = nil
-Geokit::Geocoders::google_channel = nil
-
 class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
@@ -32,11 +28,11 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   # Example from:
   # https://developers.google.com/maps/documentation/business/webservices#signature_examples
   def test_google_signature_and_url
-    Geokit::Geocoders::google_client_id = 'clientID'
-    Geokit::Geocoders::google_cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
+    Geokit::Geocoders::GoogleGeocoder.client_id = 'clientID'
+    Geokit::Geocoders::GoogleGeocoder.cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
     url = Geokit::Geocoders::GoogleGeocoder.send(:submit_url, '/maps/api/geocode/json?address=New+York&sensor=false')
-    Geokit::Geocoders::google_client_id = nil
-    Geokit::Geocoders::google_cryptographic_key = nil
+    Geokit::Geocoders::GoogleGeocoder.client_id = nil
+    Geokit::Geocoders::GoogleGeocoder.cryptographic_key = nil
     assert_equal 'http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID&signature=KrU1TzVQM7Ur0i8i7K3huiw3MsA=', url
   end
 

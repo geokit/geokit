@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::geocoder_us = nil
+Geokit::Geocoders::UsGeocoder.key = nil
 
 class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
 

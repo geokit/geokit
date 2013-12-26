@@ -3,6 +3,7 @@ module Geokit
     # Another geocoding web service
     # http://www.geonames.org
     class GeonamesGeocoder < Geocoder
+      config :key
 
       private
 
@@ -23,8 +24,8 @@ module Geokit
         address_str.gsub!(/,/, " ")
         params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
 
-        if Geokit::Geocoders::geonames
-          "http://ws.geonames.net#{params}&username=#{Geokit::Geocoders::geonames}"
+        if key
+          "http://ws.geonames.net#{params}&username=#{key}"
         else
           "http://ws.geonames.org#{params}"
         end
