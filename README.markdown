@@ -62,10 +62,10 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 ```ruby
     irb> require 'rubygems'
     irb> require 'geokit'
-    irb> a=Geokit::Geocoders::YahooGeocoder.geocode '140 Market St, San Francisco, CA'
+    irb> a=Geokit::Geocoders::GoogleGeocoder.geocode '140 Market St, San Francisco, CA'
     irb> a.ll
      => 37.79363,-122.396116
-    irb> b=Geokit::Geocoders::YahooGeocoder.geocode '789 Geary St, San Francisco, CA'
+    irb> b=Geokit::Geocoders::GoogleGeocoder.geocode '789 Geary St, San Francisco, CA'
     irb> b.ll
      => 37.786217,-122.41619
     irb> a.distance_to(b)
