@@ -44,7 +44,8 @@ module Geokit
     # Returns true if the candidate object is logically equal.  Logical equivalence
     # is true if the lat and lng attributes are the same for both objects.
     def ==(other)
-      other.is_a?(LatLng) ? self.lat == other.lat && self.lng == other.lng : false
+      return false unless other.is_a?(LatLng)
+      lat == other.lat && lng == other.lng
     end
 
     def hash

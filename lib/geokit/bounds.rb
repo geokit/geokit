@@ -46,7 +46,8 @@ module Geokit
     # Returns true if the candidate object is logically equal.  Logical equivalence
     # is true if the lat and lng attributes are the same for both objects.
     def ==(other)
-      other.is_a?(Bounds) ? self.sw == other.sw && self.ne == other.ne : false
+      return false unless other.is_a?(Bounds)
+      sw == other.sw && ne == other.ne
     end
 
     # Equivalent to Google Maps API's .toSpan() method on GLatLng's.
