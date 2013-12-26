@@ -30,6 +30,11 @@ module Geokit
         /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
       end
 
+      def self.process(format, ip)
+        return GeoLoc.new unless valid_ip?(ip)
+        super(format, submit_url(ip))
+      end
+
       # Checks whether the IP address belongs to a private address range.
       #
       # This function is used to reduce the number of useless queries made to

@@ -5,11 +5,11 @@ module Geokit
       private
 
       def self.do_geocode(ip)
-        return GeoLoc.new unless valid_ip?(ip)
-        url = "http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}"
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body
+        process :json, ip
+      end
+
+      def self.submit_url(ip)
+        "http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}"
       end
 
       def self.parse_json(json)

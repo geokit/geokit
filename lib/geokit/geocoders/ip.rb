@@ -11,13 +11,17 @@ module Geokit
       # parameter does not match an ip address.
       def self.do_geocode(ip)
         return GeoLoc.new unless valid_ip?(ip)
-        url = "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
+        url = submit_url(ip)
         res = call_geocoder_service(url)
-        ensure_utf8_encoding(res)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        ensure_utf8_encoding(res)
         body = res.body
         body = body.encode('UTF-8') if body.respond_to? :encode
         parse :yaml, body
+      end
+
+      def self.submit_url(ip)
+        "http://api.hostip.info/get_html.php?ip=#{ip}&position=true"
       end
 
       # Converts the body to YAML since its in the form of:

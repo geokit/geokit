@@ -19,10 +19,7 @@ module Geokit
      # Template method which does the geocode lookup.
      def self.do_geocode(loc)
        raise ArgumentError('Geocoder.ca requires a GeoLoc argument') unless loc.is_a?(GeoLoc)
-       url = submit_url(loc)
-       res = call_geocoder_service(url)
-       return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-       parse :xml, res.body, loc
+       process :xml, submit_url(loc), loc
     end
 
     def self.parse_xml(xml, loc)

@@ -170,6 +170,12 @@ module Geokit
         end
       end
 
+      def self.process(format, url, *args)
+        res = call_geocoder_service(url)
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        parse format, res.body, *args
+      end
+
       def self.transcode_to_utf8(body)
         require 'iconv' unless String.method_defined?(:encode)
         if String.method_defined?(:encode)

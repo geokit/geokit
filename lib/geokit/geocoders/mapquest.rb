@@ -11,18 +11,14 @@ module Geokit
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
         url = "http://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{latlng.lat},#{latlng.lng}"
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body
+        process :json, url
       end
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "http://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=#{Geokit::Inflector::url_escape(address_str)}"
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body
+        process :json, url
       end
 
       def self.parse_json(results)

@@ -20,10 +20,7 @@ module Geokit
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
-        url = submit_url(address)
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body
+        process :json, submit_url(address)
       end
 
       def self.parse_json(results)

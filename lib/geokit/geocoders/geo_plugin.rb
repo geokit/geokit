@@ -5,11 +5,11 @@ module Geokit
       private
 
       def self.do_geocode(ip)
-        return GeoLoc.new unless valid_ip?(ip)
-        url = "http://www.geoplugin.net/xml.gp?ip=#{ip}"
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :xml, res.body
+        process :xml, ip
+      end
+
+      def self.submit_url(ip)
+        "http://www.geoplugin.net/xml.gp?ip=#{ip}"
       end
 
       XML_MAPPINGS = {

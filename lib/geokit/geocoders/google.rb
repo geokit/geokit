@@ -8,9 +8,7 @@ module Geokit
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
         url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body
+        process :json, url
       end
 
       # Template method which does the geocode lookup.
