@@ -3,6 +3,7 @@
 * Added Bing Geocoder
 * Added freegeoip.net Geocoder
 * Added MapQuest Geocoder
+* Remove Google (v2) Geocoder and rename Google3 (v3) to Google
 * Added tests for various gateways
 * Greatly standarize, simplify and improve code
 * Reorganise files
