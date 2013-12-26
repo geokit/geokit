@@ -8,10 +8,7 @@ module Geokit
 
       private
       def self.do_geocode(address)
-        url = submit_url(address)
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse_csv res.body
+        process :csv, submit_url(address)
       end
 
       def self.submit_url(address)
@@ -21,9 +18,7 @@ module Geokit
         "#{base}/service/csv/geocode?#{query}"
       end
 
-      def self.parse_csv(data)
-        array = data.chomp.split(',')
-
+      def self.parse_csv(array)
         loc = GeoLoc.new
         if array.length == 5
           loc.lat,loc.lng,loc.city,loc.state,loc.zip=array

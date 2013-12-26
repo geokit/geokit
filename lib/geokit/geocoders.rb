@@ -161,6 +161,7 @@ module Geokit
         when :json then parse_json(MultiJson.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
         when :yaml then parse_yaml(YAML::load(body), *args)
+        when :csv  then parse_csv(body.chomp.split(','), *args)
         end
       end
 
