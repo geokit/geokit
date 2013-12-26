@@ -5,20 +5,21 @@ module Geokit
     class YahooGeocoder < Geocoder
 
       private
-      def self.submit_url(query_string)
+      def self.submit_url(address)
+        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+        query_string = "?q=#{Geokit::Inflector::url_escape(address_str)}&flags=J"
+
         o = OauthUtil.new
         o.consumer_key = Geocoders::yahoo_consumer_key
         o.consumer_secret = Geocoders::yahoo_consumer_secret
         base = "http://yboss.yahooapis.com/geo/placefinder"
         parsed_url = URI.parse("#{base}#{query_string}")
-        "http://yboss.yahooapis.com/geo/placefinder?#{o.sign(parsed_url).query_string}"
+        "#{base}?#{o.sign(parsed_url).query_string}"
       end
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address, options = {})
-        address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url("?q=#{Geokit::Inflector::url_escape(address_str)}&flags=J")
-
+      def self.do_geocode(address)
+        url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
