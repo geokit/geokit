@@ -17,7 +17,7 @@ if ENV['COVERAGE']
   require 'coveralls'
   Coveralls.wear!
 
-  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
   SimpleCov.start do
     add_filter '/test/'
     add_group 'lib', 'lib'
