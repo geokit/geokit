@@ -10,9 +10,7 @@ module Geokit
         url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{CGI.escape(json)}"
-        parse :json, json
+        parse :json, res.body
       end
 
       # Template method which does the geocode lookup.
@@ -48,11 +46,7 @@ module Geokit
 
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-
-        json = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{CGI.escape(json)}"
-
-        parse :json, json
+        parse :json, res.body
       end
 
       # This code comes from Googles Examples

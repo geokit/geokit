@@ -13,9 +13,7 @@ module Geokit
         url = "http://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{latlng.lat},#{latlng.lng}"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        logger.debug "MapQuest reverse-geocoding. LL: #{latlng}. Result: #{json}"
-        parse :json, json, latlng
+        parse :json, res.body
       end
 
       # Template method which does the geocode lookup.
@@ -24,9 +22,7 @@ module Geokit
         url = "http://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=#{Geokit::Inflector::url_escape(address_str)}"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        logger.debug "Mapquest geocoding. Address: #{address}. Result: #{json}"
-        parse :json, json
+        parse :json, res.body
       end
 
       def self.parse_json(results)

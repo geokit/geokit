@@ -11,9 +11,7 @@ module Geokit
         url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        data = res.body
-        logger.debug "Geocoder.us geocoding. Address: #{address}. Result: #{data}"
-        parse_csv data
+        parse_csv res.body
       end
 
       def self.submit_url(address)

@@ -12,10 +12,7 @@ module Geokit
         url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-
-        xml = res.body
-        logger.debug "Geonames geocoding. Address: #{address}. Result: #{xml}"
-        parse :xml, xml
+        parse :xml, res.body
       end
 
       def self.submit_url(address)

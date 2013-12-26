@@ -22,9 +22,7 @@ module Geokit
        url = submit_url(loc)
        res = call_geocoder_service(url)
        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-       xml = res.body
-       logger.debug "Geocoder.ca geocoding. Address: #{loc}. Result: #{xml}"
-       parse :xml, xml, loc
+       parse :xml, res.body, loc
     end
 
     def self.parse_xml(xml, loc)

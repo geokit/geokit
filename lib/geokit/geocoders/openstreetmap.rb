@@ -17,9 +17,7 @@ module Geokit
         url = "http://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector::url_escape(address_str)}"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        logger.debug "OSM geocoding. Address: #{address}. Result: #{json}"
-        parse :json, json
+        parse :json, res.body
       end
 
       def self.do_reverse_geocode(latlng, options = {})
@@ -33,9 +31,7 @@ module Geokit
         url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1#{options_str}"
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        logger.debug "OSM reverse geocoding: Lat: #{latlng.lat}, Lng: #{latlng.lng}. Result: #{json}"
-        parse :json, json
+        parse :json, res.body
       end
 
       def self.generate_param_for(param, value)

@@ -93,23 +93,25 @@ module Geokit
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
       def self.geocode(address, *args)
+        logger.debug "#{provider_name} geocoding. address: #{address}, args #{args}"
         do_geocode(address, *args) || GeoLoc.new
       rescue TooManyQueriesError, GeocodeError
         raise
       rescue
-        logger.error "Caught an error during #{self.class} geocoding call: #{$!}"
+        logger.error "Caught an error during #{provider_name} geocoding call: #{$!}"
         GeoLoc.new
       end
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
       def self.reverse_geocode(latlng)
+        logger.debug "#{provider_name} geocoding. latlng: #{latlng}"
         do_reverse_geocode(latlng) || GeoLoc.new
       end
 
       def self.new_loc
         loc = GeoLoc.new
-        loc.provider = Geokit::Inflector.underscore(name.split('::').last.gsub(/Geocoder$/, ''))
+        loc.provider = Geokit::Inflector.underscore(provider_name)
         loc
       end
 
@@ -149,7 +151,12 @@ module Geokit
         Net::HTTP::new(*net_http_args).start { |http| http.request(req) }
       end
 
+      def self.provider_name
+        name.split('::').last.gsub(/Geocoder$/, '')
+      end
+
       def self.parse(format, body, *args)
+        logger.debug "#{provider_name} geocoding. Result: #{CGI.escape(body)}"
         case format
         when :json then parse_json(MultiJson.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)

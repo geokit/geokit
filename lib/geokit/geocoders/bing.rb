@@ -13,7 +13,6 @@ module Geokit
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = transcode_to_utf8(res.body)
-        logger.debug "Bing geocoding. Address: #{address}. Result: #{xml}"
         parse :xml, xml
       end
 

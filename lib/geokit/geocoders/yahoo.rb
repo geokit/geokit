@@ -23,9 +23,7 @@ module Geokit
         url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        json = res.body
-        logger.debug "Yahoo geocoding. Address: #{address}. Result: #{json}"
-        parse :json, json
+        parse :json, res.body
       end
 
       def self.parse_json(results)
