@@ -24,12 +24,12 @@ module Geokit
         "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address_str)}?key=#{Geokit::Geocoders::bing}#{culture_string}&o=xml"
       end
 
-      def self.parse_xml(doc)
-        return GeoLoc.new if doc.elements['//Response/StatusCode'].try(:text) != '200'
+      def self.parse_xml(xml)
+        return GeoLoc.new if xml.elements['//Response/StatusCode'].try(:text) != '200'
         loc = nil
         # Bing can return multiple results as //Location elements.
         # iterate through each and extract each location as a geoloc
-        doc.each_element('//Location') do |l|
+        xml.each_element('//Location') do |l|
           extracted_geoloc = extract_location(l)
           loc.nil? ? loc = extracted_geoloc : loc.all.push(extracted_geoloc)
         end
@@ -37,32 +37,32 @@ module Geokit
       end
 
       # extracts a single geoloc from a //Location element in the bing results xml
-      def self.extract_location(doc)
+      def self.extract_location(xml)
         loc                 = GeoLoc.new
         loc.provider        = 'bing'
-        loc.lat             = doc.elements['.//Latitude'].try(:text)
-        loc.lng             = doc.elements['.//Longitude'].try(:text)
-        set_address_components(loc, doc)
-        set_precision(loc, doc)
-        set_bounds(loc, doc)
+        loc.lat             = xml.elements['.//Latitude'].try(:text)
+        loc.lng             = xml.elements['.//Longitude'].try(:text)
+        set_address_components(loc, xml)
+        set_precision(loc, xml)
+        set_bounds(loc, xml)
         loc.success         = true
         loc
       end
 
-      def self.set_address_components(loc, doc)
+      def self.set_address_components(loc, xml)
         # Fix for Germany, where often the locality is really sublocality so fallback to AdminDistrict2
-        loc.city            = doc.elements['.//AdminDistrict2'].try(:text) || doc.elements['.//Locality'].try(:text)
-        loc.state           = doc.elements['.//AdminDistrict'].try(:text)
-        loc.province        = doc.elements['.//AdminDistrict2'].try(:text)
-        loc.full_address    = doc.elements['.//FormattedAddress'].try(:text)
-        loc.zip             = doc.elements['.//PostalCode'].try(:text)
-        loc.street_address  = doc.elements['.//AddressLine'].try(:text)
-        loc.country         = doc.elements['.//CountryRegion'].try(:text)
+        loc.city            = xml.elements['.//AdminDistrict2'].try(:text) || xml.elements['.//Locality'].try(:text)
+        loc.state           = xml.elements['.//AdminDistrict'].try(:text)
+        loc.province        = xml.elements['.//AdminDistrict2'].try(:text)
+        loc.full_address    = xml.elements['.//FormattedAddress'].try(:text)
+        loc.zip             = xml.elements['.//PostalCode'].try(:text)
+        loc.street_address  = xml.elements['.//AddressLine'].try(:text)
+        loc.country         = xml.elements['.//CountryRegion'].try(:text)
       end
 
-      def self.set_precision(loc, doc)
-        if doc.elements['.//Confidence']
-          loc.accuracy      = case doc.elements['.//Confidence'].text
+      def self.set_precision(loc, xml)
+        if xml.elements['.//Confidence']
+          loc.accuracy      = case xml.elements['.//Confidence'].text
           when 'High'    then 8
           when 'Medium'  then 5
           when 'Low'     then 2
@@ -70,8 +70,8 @@ module Geokit
           end
         end
 
-        if doc.elements['.//EntityType']
-          loc.precision     = case doc.elements['.//EntityType'].text
+        if xml.elements['.//EntityType']
+          loc.precision     = case xml.elements['.//EntityType'].text
           when 'Sovereign'      then 'country'
           when 'AdminDivision1' then 'state'
           when 'AdminDivision2' then 'state'
@@ -85,8 +85,8 @@ module Geokit
         end
       end
 
-      def self.set_bounds(loc, doc)
-        if suggested_bounds = doc.elements['.//BoundingBox']
+      def self.set_bounds(loc, xml)
+        if suggested_bounds = xml.elements['.//BoundingBox']
           bounds = suggested_bounds.elements
           loc.suggested_bounds = Bounds.normalize(
             [bounds['.//SouthLatitude'].text, bounds['.//WestLongitude'].text],

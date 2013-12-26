@@ -26,9 +26,9 @@ module Geokit
        parse :xml, xml, loc
     end
 
-    def self.parse_xml(doc, loc)
-       loc.lat = doc.elements['//latt'].text
-       loc.lng = doc.elements['//longt'].text
+    def self.parse_xml(xml, loc)
+       loc.lat = xml.elements['//latt'].text
+       loc.lng = xml.elements['//longt'].text
        loc.success = true
        loc
      end
