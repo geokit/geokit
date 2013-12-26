@@ -8,7 +8,7 @@ module Geokit
         latlng=LatLng.normalize(latlng)
         url = "http://data.fcc.gov/api/block/find?format=json&latitude=#{Geokit::Inflector::url_escape(latlng.lat.to_s)}&longitude=#{Geokit::Inflector::url_escape(latlng.lng.to_s)}"
         res = call_geocoder_service(url)
-        return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
+        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         json = res.body
         logger.debug "FCC reverse-geocoding. LL: #{latlng}. Result: #{json}"
         parse :json, json
