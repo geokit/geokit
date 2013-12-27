@@ -41,10 +41,7 @@ module Geokit
         language_str = options[:language] ? "&language=#{options[:language]}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}#{language_str}")
-
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse :json, res.body
+        process :json, url
       end
 
       # This code comes from Googles Examples
