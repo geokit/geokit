@@ -5,9 +5,10 @@ module Geokit
 
       private
       # Template method which does the reverse-geocode lookup.
-      def self.do_reverse_geocode(latlng)
+      def self.do_reverse_geocode(latlng, options = {})
         latlng=LatLng.normalize(latlng)
-        url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
+        language_str = options[:language] ? "&language=#{options[:language]}" : ''
+        url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}#{language_str}")
         process :json, url
       end
 
