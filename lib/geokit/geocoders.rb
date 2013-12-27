@@ -37,7 +37,6 @@ module Geokit
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
-    @@language = '' # defualt is english
     def self.__define_accessors
       class_variables.each do |v|
         sym = v.to_s.delete("@").to_sym
