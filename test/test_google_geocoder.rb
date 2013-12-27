@@ -30,10 +30,10 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_google_signature_and_url
     Geokit::Geocoders::GoogleGeocoder.client_id = 'clientID'
     Geokit::Geocoders::GoogleGeocoder.cryptographic_key = 'vNIXE0xscrmjlyV-12Nj_BvUPaw='
-    url = Geokit::Geocoders::GoogleGeocoder.send(:submit_url, '/maps/api/geocode/json?address=New+York&sensor=false')
+    url = Geokit::Geocoders::GoogleGeocoder.send(:submit_url, 'address=New+York')
     Geokit::Geocoders::GoogleGeocoder.client_id = nil
     Geokit::Geocoders::GoogleGeocoder.cryptographic_key = nil
-    assert_equal 'http://maps.googleapis.com/maps/api/geocode/json?address=New+York&sensor=false&client=clientID&signature=KrU1TzVQM7Ur0i8i7K3huiw3MsA=', url
+    assert_equal 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=New+York&client=clientID&signature=9mevp7SoVsSKzF9nj-vApMYbatg=', url
   end
 
   def test_google_full_address

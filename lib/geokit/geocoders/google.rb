@@ -4,18 +4,14 @@ module Geokit
       config :client_id, :cryptographic_key, :channel
 
       private
-      # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
-        url = submit_url("/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
+        url = submit_url("latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
         process :json, url
       end
 
-      # Template method which does the geocode lookup.
-      #
-      # Supports viewport/country code biasing
-      #
       # ==== OPTIONS
+      # * :language - See: https://developers.google.com/maps/documentation/geocoding
       # * :bias - This option makes the Google Geocoder return results biased to a particular
       #           country or viewport. Country code biasing is achieved by passing the ccTLD
       #           ('uk' for .co.uk, for example) as a :bias value. For a list of ccTLD's,
@@ -38,9 +34,8 @@ module Geokit
       # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => bounds).state # => 'CA'
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
-        language_str = options[:language] ? "&language=#{options[:language]}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url("/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}#{language_str}")
+        url = submit_url("address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}", options)
         process :json, url
       end
 
@@ -58,7 +53,9 @@ module Geokit
       end
 
 
-      def self.submit_url(query_string)
+      def self.submit_url(query_string, options = {})
+        language_str = options[:language] ? "&language=#{options[:language]}" : ''
+        query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{language_str}"
         if client_id && cryptographic_key
           channel_string = channel ? "&channel=#{channel}" : ''
           urlToSign = query_string + "&client=#{client_id}" + channel_string
