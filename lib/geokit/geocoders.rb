@@ -76,19 +76,6 @@ module Geokit
     # The Geocoder base class which defines the interface to be used by all
     # other geocoders.
     class Geocoder
-      def self.config(*attrs)
-        attrs.each do |attr|
-          class_eval <<-METHOD
-            @@#{attr} = nil
-            def self.#{attr}=(value)
-              @@#{attr} = value
-            end
-            def self.#{attr}
-              @@#{attr}
-            end
-          METHOD
-        end
-      end
       # Main method which calls the do_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
@@ -107,6 +94,28 @@ module Geokit
       def self.reverse_geocode(latlng, *args)
         logger.debug "#{provider_name} geocoding. latlng: #{latlng}, args #{args}"
         do_reverse_geocode(latlng, *args) || GeoLoc.new
+      end
+
+      protected
+
+      def self.logger
+        Geokit::Geocoders::logger
+      end
+
+      private
+
+      def self.config(*attrs)
+        attrs.each do |attr|
+          class_eval <<-METHOD
+            @@#{attr} = nil
+            def self.#{attr}=(value)
+              @@#{attr} = value
+            end
+            def self.#{attr}
+              @@#{attr}
+            end
+          METHOD
+        end
       end
 
       def self.new_loc
@@ -129,14 +138,6 @@ module Geokit
       def self.do_reverse_geocode(latlng)
         GeoLoc.new
       end
-
-      protected
-
-      def self.logger
-        Geokit::Geocoders::logger
-      end
-
-      private
 
       # Wraps the geocoder call around a proxy if necessary.
       def self.do_get(url)
