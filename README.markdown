@@ -266,19 +266,19 @@ You must then also require such extenal file back in your main geokit configurat
   module Geokit
     module Geocoders
 
-    # Should be overriden as Geokit::Geocoders::external_key in your configuration file
-      @@external_key = 'REPLACE_WITH_YOUR_API_KEY'
-      __define_accessors
+      # and use :my to specify this geocoder in your list of geocoders.
+      class MyGeocoder < Geocoder
 
-    # Replace name 'External' (below) with the name of your custom geocoder class
-    # and use :external to specify this geocoder in your list of geocoders.
-      class ExternalGeocoder < Geocoder
+        # Use via: Geokit::Geocoders::MyGeocoder.key = 'MY KEY'
+        config :key
+
         private
+
         def self.do_geocode(address, options = {})
           # Main geocoding method
-      end
+        end
 
-        def self.parse_http_resp(body) # :nodoc:
+        def self.parse_json(json)
           # Helper method to parse http response. See geokit/geocoders.rb.
         end
       end
