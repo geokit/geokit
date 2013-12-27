@@ -4,9 +4,11 @@ module Geokit
       config :client_id, :cryptographic_key, :channel
 
       private
-      def self.do_reverse_geocode(latlng)
+      # ==== OPTIONS
+      # * :language - See: https://developers.google.com/maps/documentation/geocoding
+      def self.do_reverse_geocode(latlng, options = {})
         latlng=LatLng.normalize(latlng)
-        url = submit_url("latlng=#{Geokit::Inflector::url_escape(latlng.ll)}")
+        url = submit_url("latlng=#{Geokit::Inflector::url_escape(latlng.ll)}", options)
         process :json, url
       end
 

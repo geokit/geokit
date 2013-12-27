@@ -104,9 +104,9 @@ module Geokit
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
-      def self.reverse_geocode(latlng)
-        logger.debug "#{provider_name} geocoding. latlng: #{latlng}"
-        do_reverse_geocode(latlng) || GeoLoc.new
+      def self.reverse_geocode(latlng, *args)
+        logger.debug "#{provider_name} geocoding. latlng: #{latlng}, args #{args}"
+        do_reverse_geocode(latlng, *args) || GeoLoc.new
       end
 
       def self.new_loc

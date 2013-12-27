@@ -189,6 +189,17 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      end
    end
 
+   def test_reverse_geocode_language
+     VCR.use_cassette('google_reverse_madrid_es') do
+     url = "http://maps.google.com/maps/api/geocode/json?sensor=false&latlng=40.416%2C-3.703&language=es"
+     TestHelper.expects(:last_url).with(url)
+     language_result = Geokit::Geocoders::GoogleGeocoder.reverse_geocode('40.416,-3.703', :language => 'es')
+
+     assert_equal 'ES', language_result.country_code
+     assert_equal 'Madrid', language_result.city
+     end
+   end
+
    def test_country_code_biasing
      VCR.use_cassette('google_country_code_biased_result') do
      url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it"
