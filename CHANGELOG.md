@@ -1,3 +1,7 @@
+## 1.8.3
+
+* Fix MultiGeocoder with geocoders that only have one argument
+
 ## 1.8.2
 
 * Fix due to name clash with dependency definitions in geokit 1.8.1
