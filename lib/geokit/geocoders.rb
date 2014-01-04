@@ -4,6 +4,7 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
+require 'active_support'
 
 require 'multi_json'
 
@@ -37,6 +38,7 @@ module Geokit
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
+    @@cache = nil#ActiveSupport::Cache::NullStore.new
 
     def self.__define_accessors
       class_variables.each do |v|
@@ -173,9 +175,14 @@ module Geokit
       end
 
       def self.process(format, url, *args)
-        res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        parse format, res.body, *args
+        cached = Geokit::Geocoders::cache.fetch(url) if Geokit::Geocoders::cache
+        unless cached
+          res = call_geocoder_service(url)
+          return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+          cached = res.body
+          Geokit::Geocoders::cache.write(url, cached) if Geokit::Geocoders::cache
+        end
+        parse format, cached, *args
       end
 
       def self.transcode_to_utf8(body)
