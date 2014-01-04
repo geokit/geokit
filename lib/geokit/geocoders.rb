@@ -4,7 +4,6 @@ require 'rexml/document'
 require 'yaml'
 require 'timeout'
 require 'logger'
-require 'active_support'
 
 require 'multi_json'
 
@@ -38,7 +37,7 @@ module Geokit
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
-    @@cache = nil#ActiveSupport::Cache::NullStore.new
+    @@cache = nil
 
     def self.__define_accessors
       class_variables.each do |v|
