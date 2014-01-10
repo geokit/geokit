@@ -61,11 +61,11 @@ module Geokit
       end
 
       def math_error_classes
-        error_classes = [Errno::EDOM]
-
-        # Ruby 1.9 raises {Math::DomainError}, but it is not defined in Ruby
-        # 1.8. Backwards-compatibly rescue both errors.
-        error_classes << Math::DomainError if defined?(Math::DomainError)
+        [Errno::EDOM].tap do |error_classes|
+          # Ruby 1.9 raises {Math::DomainError}, but it is not defined in Ruby
+          # 1.8. Backwards-compatibly rescue both errors.
+          error_classes << Math::DomainError if defined?(Math::DomainError)
+        end
       end
 
       # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc)
