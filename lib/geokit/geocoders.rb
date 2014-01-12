@@ -1,4 +1,5 @@
 require 'net/http'
+require 'geokit/net_adapter/net_http'
 require 'ipaddr'
 require 'rexml/document'
 require 'yaml'
@@ -37,6 +38,7 @@ module Geokit
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
+    @@net_adapter = Geokit::NetAdapter::NetHttp
 
     def self.__define_accessors
       class_variables.each do |v|
@@ -141,15 +143,7 @@ module Geokit
 
       # Wraps the geocoder call around a proxy if necessary.
       def self.do_get(url)
-        uri = URI.parse(url)
-        req = Net::HTTP::Get.new(url)
-        req.basic_auth(uri.user, uri.password) if uri.userinfo
-        net_http_args = [uri.host, uri.port]
-        if (proxy_uri_string = Geokit::Geocoders::proxy)
-          proxy_uri = URI.parse(proxy_uri_string)
-          net_http_args += [proxy_uri.host, proxy_uri.port, proxy_uri.user, proxy_uri.password]
-        end
-        Net::HTTP::new(*net_http_args).start { |http| http.request(req) }
+        Geokit::Geocoders::net_adapter.do_get(url)
       end
 
       def self.provider_name
