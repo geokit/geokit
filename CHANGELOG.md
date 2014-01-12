@@ -1,3 +1,8 @@
+## 1.8.4
+
+* Fix math error in ruby 1.8
+* Extract HTTP processing to allow different HTTP clients for caching, etc.
+
 ## 1.8.3
 
 * Fix MultiGeocoder with geocoders that only have one argument
