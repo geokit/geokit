@@ -1,5 +1,6 @@
 require 'net/http'
 require 'geokit/net_adapter/net_http'
+require 'geokit/net_adapter/typhoeus'
 require 'ipaddr'
 require 'rexml/document'
 require 'yaml'

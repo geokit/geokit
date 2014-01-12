@@ -42,6 +42,10 @@ class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
     @header = {}
   end
+
+  def success? # Typhoeus
+    true
+  end
 end
 
 class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all

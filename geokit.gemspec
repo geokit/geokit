@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'vcr'
   spec.add_development_dependency 'webmock' # used in vcr
+  spec.add_development_dependency 'typhoeus' # used in net_adapter
 end
