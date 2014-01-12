@@ -140,36 +140,41 @@ module Geokit
         loc.lat = ll['lat'].to_f
         loc.lng = ll['lng'].to_f
 
-        viewport = addr['geometry']['viewport']
-        ne = Geokit::LatLng.from_json(viewport['northeast'])
-        sw = Geokit::LatLng.from_json(viewport['southwest'])
-        loc.suggested_bounds = Geokit::Bounds.new(sw, ne)
+        set_bounds(loc, addr)
 
         loc
       end
 
+      def self.set_bounds(loc, addr)
+        viewport = addr['geometry']['viewport']
+        ne = Geokit::LatLng.from_json(viewport['northeast'])
+        sw = Geokit::LatLng.from_json(viewport['southwest'])
+        loc.suggested_bounds = Geokit::Bounds.new(sw, ne)
+      end
+
       def self.set_address_components(loc, addr)
         addr['address_components'].each do |comp|
+          types = comp['types']
           case
-          when comp['types'].include?("subpremise")
+          when types.include?("subpremise")
             loc.sub_premise = comp['short_name']
-          when comp['types'].include?("street_number")
+          when types.include?("street_number")
             loc.street_number = comp['short_name']
-          when comp['types'].include?("route")
+          when types.include?("route")
             loc.street_name = comp['long_name']
-          when comp['types'].include?("locality")
+          when types.include?("locality")
             loc.city = comp['long_name']
-          when comp['types'].include?("administrative_area_level_1")
+          when types.include?("administrative_area_level_1")
             loc.state = comp['short_name']
             loc.province = comp['short_name']
-          when comp['types'].include?("postal_code")
+          when types.include?("postal_code")
             loc.zip = comp['long_name']
-          when comp['types'].include?("country")
+          when types.include?("country")
             loc.country_code = comp['short_name']
             loc.country = comp['long_name']
-          when comp['types'].include?("administrative_area_level_2")
+          when types.include?("administrative_area_level_2")
             loc.district = comp['long_name']
-          when comp['types'].include?('neighborhood')
+          when types.include?('neighborhood')
             loc.neighborhood = comp['short_name']
           end
         end
