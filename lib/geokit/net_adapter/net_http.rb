@@ -12,6 +12,10 @@ module Geokit
         end
         Net::HTTP::new(*net_http_args).start { |http| http.request(req) }
       end
+
+      def self.success?(response)
+        response.is_a?(Net::HTTPSuccess)
+      end
     end
   end
 end

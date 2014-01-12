@@ -143,7 +143,11 @@ module Geokit
 
       # Wraps the geocoder call around a proxy if necessary.
       def self.do_get(url)
-        Geokit::Geocoders::net_adapter.do_get(url)
+        net_adapter.do_get(url)
+      end
+
+      def self.net_adapter
+        Geokit::Geocoders::net_adapter
       end
 
       def self.provider_name
@@ -168,7 +172,7 @@ module Geokit
 
       def self.process(format, url, *args)
         res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        return GeoLoc.new unless net_adapter.success?(res)
         parse format, res.body, *args
       end
 

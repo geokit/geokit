@@ -13,7 +13,7 @@ module Geokit
         return GeoLoc.new unless valid_ip?(ip)
         url = submit_url(ip)
         res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        return GeoLoc.new unless net_adapter.success?(res)
         ensure_utf8_encoding(res)
         body = res.body
         body = body.encode('UTF-8') if body.respond_to? :encode

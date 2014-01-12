@@ -11,7 +11,7 @@ module Geokit
       def self.do_geocode(address)
         url = submit_url(address)
         res = call_geocoder_service(url)
-        return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
+        return GeoLoc.new unless net_adapter.success?(res)
         xml = transcode_to_utf8(res.body)
         parse :xml, xml
       end
