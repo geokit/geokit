@@ -30,9 +30,13 @@ module Geokit
       y = point.lat
 
       for i in (0..j)
-        if (@poly_y[i] < y && @poly_y[j] >= y ||
-            @poly_y[j] < y && @poly_y[i] >= y)
-          if (@poly_x[i] + (y - @poly_y[i]) / (@poly_y[j] - @poly_y[i]) * (@poly_x[j] - @poly_x[i]) < x)
+        yi = @poly_y[i]
+        xi = @poly_x[i]
+        yj = @poly_y[j]
+        xj = @poly_x[j]
+        if (yi < y && yj >= y ||
+            yj < y && yi >= y)
+          if (xi + (y - yi) / (yj - yi) * (xj - xi) < x)
             oddNodes = !oddNodes
           end
         end
