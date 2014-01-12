@@ -93,8 +93,8 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     #puts "\t Does poly_x[0] (#{@open_polygon.poly_x[0]}) == poly_x[-1] (#{@open_polygon.poly_x[-1]}) ?"
     #puts "\t Does poly_y[0] (#{@open_polygon.poly_y[0]}) == poly_y[-1] (#{@open_polygon.poly_y[-1]}) ?"
 
-    assert @open_polygon.poly_x[0] == @open_polygon.poly_x[-1]
-    assert @open_polygon.poly_y[0] == @open_polygon.poly_y[-1]
+    assert @open_polygon.points[0].lng == @open_polygon.points[-1].lng
+    assert @open_polygon.points[0].lat == @open_polygon.points[-1].lat
 
   end
 
