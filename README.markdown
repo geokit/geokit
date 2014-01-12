@@ -159,6 +159,11 @@ If you're using this gem by itself, here are the configuration options:
     # The IP provider order. Valid symbols are :ip,:geo_plugin.
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
+
+    # caching
+    # to enable caching of api results reference a cache object that responses to fetch and write such as active supports cache
+    # Geokit::Geocoders::cache = Rails.cache
+    Geokit::Geocoders::cache = nil
 ```
 
 ### Google Geocoder Tricks
