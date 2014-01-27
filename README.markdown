@@ -46,7 +46,7 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * MapQuest
 
 ### address geocoders that also provide reverse geocoding
-* Google - requires an API key. Also supports multiple results and bounding box/country code biasing.
+* Google - Supports multiple results and bounding box/country code biasing.  Also supports Maps API for Business keys; see the configuration section below.
 * FCC
 * Open Street Map
 
@@ -56,6 +56,15 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * RIPE
 * MaxMind
 * freegeoip.net
+
+### HTTPS-supporting geocoders
+* Google
+* Yahoo
+* Bing
+* FCC
+* MapQuest
+
+Options to control the use of HTTPS are described below in the Configuration section.
 
 ## QUICK START
 
@@ -159,6 +168,16 @@ If you're using this gem by itself, here are the configuration options:
     # The IP provider order. Valid symbols are :ip,:geo_plugin.
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
+
+	# Disable HTTPS globally.  This option can also be set on individual
+	# geocoder classes.
+    Geokit::Geocoders::secure = false 
+    
+    # Control verification of the server certificate for geocoders using HTTPS
+    Geokit::Geocoders::ssl_verify_mode = OpenSSL::SSL::VERIFY_(PEER/NONE) 
+    # Setting this to VERIFY_NONE may be needed on systems that don't have 
+    # a complete or up to date root certificate store. Only applies to
+    # the Net::HTTP adapter.
 ```
 
 ### Google Geocoder Tricks

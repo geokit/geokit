@@ -4,6 +4,7 @@ module Geokit
     # contain a Yahoo API key.  Conforms to the interface set by the Geocoder class.
     class YahooGeocoder < Geocoder
       config :key, :secret
+      self.secure = true
 
       private
       def self.submit_url(address)
@@ -13,7 +14,7 @@ module Geokit
         o = OauthUtil.new
         o.consumer_key = key
         o.consumer_secret = secret
-        base = "http://yboss.yahooapis.com/geo/placefinder"
+        base = "#{protocol}://yboss.yahooapis.com/geo/placefinder"
         parsed_url = URI.parse("#{base}#{query_string}")
         "#{base}?#{o.sign(parsed_url).query_string}"
       end

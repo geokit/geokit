@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=via%20Sandro%20Pertini%208,%20Ossona,%20MI&sensor=false
+    uri: https://maps.google.com/maps/api/geocode/json?address=via%20Sandro%20Pertini%208,%20Ossona,%20MI&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 13 Nov 2013 14:55:53 GMT
+      - Sun, 26 Jan 2014 05:46:39 GMT
       Expires:
-      - Thu, 14 Nov 2013 14:55:53 GMT
+      - Mon, 27 Jan 2014 05:46:39 GMT
       Cache-Control:
       - public, max-age=86400
       Vary:
@@ -36,6 +36,8 @@ http_interactions:
       - 1; mode=block
       X-Frame-Options:
       - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
       Transfer-Encoding:
       - chunked
     body:
@@ -387,5 +389,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Wed, 13 Nov 2013 14:55:51 GMT
-recorded_with: VCR 2.7.0
+  recorded_at: Sun, 26 Jan 2014 05:46:39 GMT
+recorded_with: VCR 2.8.0

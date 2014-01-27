@@ -2,6 +2,7 @@ module Geokit
   module Geocoders
     # Provides geocoding based upon an IP address.  The underlying web service is geoplugin.net
     class RipeGeocoder < BaseIpGeocoder
+      self.secure = false # supports HTTPS, but Net::HTTPS doesn't like the server
       private
 
       def self.do_geocode(ip)
@@ -9,7 +10,7 @@ module Geokit
       end
 
       def self.submit_url(ip)
-        "http://stat.ripe.net/data/geoloc/data.json?resource=#{ip}"
+        "#{protocol}://stat.ripe.net/data/geoloc/data.json?resource=#{ip}"
       end
 
       def self.parse_json(json)

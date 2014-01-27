@@ -12,7 +12,7 @@ class FCCGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_fcc_reverse_geocode
     VCR.use_cassette('fcc_reverse_geocode') do
-    url = "http://data.fcc.gov/api/block/find?format=json&latitude=34.05&longitude=-118.25"
+    url = "https://data.fcc.gov/api/block/find?format=json&latitude=34.05&longitude=-118.25"
     res = Geokit::Geocoders::FCCGeocoder.reverse_geocode(@la)
     assert_url url
     assert_equal res.country_code, 'US'

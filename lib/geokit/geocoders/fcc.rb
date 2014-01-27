@@ -1,12 +1,13 @@
 module Geokit
   module Geocoders
     class FCCGeocoder < Geocoder
+      self.secure = true
 
       private
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
-        url = "http://data.fcc.gov/api/block/find?format=json&latitude=#{Geokit::Inflector::url_escape(latlng.lat.to_s)}&longitude=#{Geokit::Inflector::url_escape(latlng.lng.to_s)}"
+        url = "#{protocol}://data.fcc.gov/api/block/find?format=json&latitude=#{Geokit::Inflector::url_escape(latlng.lat.to_s)}&longitude=#{Geokit::Inflector::url_escape(latlng.lng.to_s)}"
         process :json, url
       end
 

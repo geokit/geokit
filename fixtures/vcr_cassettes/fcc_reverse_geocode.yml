@@ -2,13 +2,15 @@
 http_interactions:
 - request:
     method: get
-    uri: http://data.fcc.gov/api/block/find?format=json&latitude=34.05&longitude=-118.25
+    uri: https://data.fcc.gov/api/block/find?format=json&latitude=34.05&longitude=-118.25
     body:
       encoding: US-ASCII
       string: ''
     headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
-      - ! '*/*'
+      - '*/*'
       User-Agent:
       - Ruby
   response:
@@ -19,7 +21,7 @@ http_interactions:
       Server:
       - Sun-Java-System-Web-Server/7.0
       Date:
-      - Fri, 13 Dec 2013 13:40:26 GMT
+      - Sun, 26 Jan 2014 05:57:32 GMT
       Content-Type:
       - application/json
       Via:
@@ -29,9 +31,9 @@ http_interactions:
       Transfer-Encoding:
       - chunked
     body:
-      encoding: US-ASCII
-      string: ! '{"Block":{"FIPS":"060372073012003"},"County":{"FIPS":"06037","name":"Los
+      encoding: UTF-8
+      string: '{"Block":{"FIPS":"060372073012003"},"County":{"FIPS":"06037","name":"Los
         Angeles"},"State":{"FIPS":"06","code":"CA","name":"California"},"status":"OK","executionTime":"11"}'
     http_version: 
-  recorded_at: Fri, 13 Dec 2013 13:46:20 GMT
-recorded_with: VCR 2.7.0
+  recorded_at: Sun, 26 Jan 2014 05:57:38 GMT
+recorded_with: VCR 2.8.0

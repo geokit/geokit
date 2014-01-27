@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://yboss.yahooapis.com/geo/placefinder?flags=J&oauth_consumer_key=dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--&oauth_nonce=731410e6df&oauth_signature=%2Bde/2eYXvMPhoRu5MUdjhPct3xY=&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1384355278&oauth_version=1.0&q=San%20Francisco,%20CA
+    uri: https://yboss.yahooapis.com/geo/placefinder?flags=J&oauth_consumer_key=dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--&oauth_nonce=731410e6df&oauth_signature=%2Bde/2eYXvMPhoRu5MUdjhPct3xY=&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1384355278&oauth_version=1.0&q=San%20Francisco,%20CA
     body:
       encoding: US-ASCII
       string: ''

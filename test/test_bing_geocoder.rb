@@ -16,7 +16,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_full_address
     VCR.use_cassette('bing_full') do
     key = Geokit::Geocoders::BingGeocoder.key
-    url = "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(@full_address)}?key=#{key}&o=xml"
+    url = "https://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(@full_address)}?key=#{key}&o=xml"
     res = Geokit::Geocoders::BingGeocoder.geocode(@full_address)
     assert_equal "CA", res.state
     assert_equal "San Francisco", res.city
@@ -32,7 +32,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     address = '440 King William Street, Adelaide, Australia'
     VCR.use_cassette('bing_full_au') do
     key = Geokit::Geocoders::BingGeocoder.key
-    url = "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{key}&o=xml"
+    url = "https://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{key}&o=xml"
     res = Geokit::Geocoders::BingGeocoder.geocode(address)
     assert_equal "SA", res.state
     assert_equal "Adelaide", res.city
@@ -49,7 +49,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     address = "Platz der Republik 1, 11011 Berlin, Germany"
     VCR.use_cassette('bing_full_de') do
     key = Geokit::Geocoders::BingGeocoder.key
-    url = "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{key}&o=xml"
+    url = "https://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{key}&o=xml"
     res = Geokit::Geocoders::BingGeocoder.geocode(address)
     assert_equal "BE", res.state
     assert_equal "Berlin", res.city

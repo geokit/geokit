@@ -2,48 +2,42 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?language=es&latlng=40.416,-3.703&sensor=false
+    uri: https://maps.google.com/maps/api/geocode/json?language=es&latlng=40.416,-3.703&sensor=false
     body:
       encoding: US-ASCII
       string: ''
     headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
-      - ! '*/*'
+      - '*/*'
       User-Agent:
       - Ruby
   response:
     status:
       code: 200
-      message: !binary |-
-        T0s=
+      message: OK
     headers:
-      !binary "Q29udGVudC1UeXBl":
-      - !binary |-
-        YXBwbGljYXRpb24vanNvbjsgY2hhcnNldD1VVEYtOA==
-      !binary "RGF0ZQ==":
-      - !binary |-
-        RnJpLCAyNyBEZWMgMjAxMyAxMToyNDoyMyBHTVQ=
-      !binary "RXhwaXJlcw==":
-      - !binary |-
-        U2F0LCAyOCBEZWMgMjAxMyAxMToyNDoyMyBHTVQ=
-      !binary "Q2FjaGUtQ29udHJvbA==":
-      - !binary |-
-        cHVibGljLCBtYXgtYWdlPTg2NDAw
-      !binary "QWNjZXNzLUNvbnRyb2wtQWxsb3ctT3JpZ2lu":
-      - !binary |-
-        Kg==
-      !binary "U2VydmVy":
-      - !binary |-
-        bWFmZQ==
-      !binary "WC1Yc3MtUHJvdGVjdGlvbg==":
-      - !binary |-
-        MTsgbW9kZT1ibG9jaw==
-      !binary "WC1GcmFtZS1PcHRpb25z":
-      - !binary |-
-        U0FNRU9SSUdJTg==
-      !binary "VHJhbnNmZXItRW5jb2Rpbmc=":
-      - !binary |-
-        Y2h1bmtlZA==
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 26 Jan 2014 05:46:39 GMT
+      Expires:
+      - Mon, 27 Jan 2014 05:46:39 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
+      Transfer-Encoding:
+      - chunked
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -459,5 +453,5 @@ http_interactions:
         dHlwZXMiIDogWyAiY291bnRyeSIsICJwb2xpdGljYWwiIF0KICAgICAgfQog
         ICBdLAogICAic3RhdHVzIiA6ICJPSyIKfQo=
     http_version: 
-  recorded_at: Fri, 27 Dec 2013 11:24:21 GMT
+  recorded_at: Sun, 26 Jan 2014 05:46:40 GMT
 recorded_with: VCR 2.8.0
