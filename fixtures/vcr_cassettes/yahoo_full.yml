@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://yboss.yahooapis.com/geo/placefinder?flags=J&oauth_consumer_key=dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--&oauth_nonce=7a0ce94e38&oauth_signature=aTamhmDusxM4xYZXWocDEb5YmyE=&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1384355278&oauth_version=1.0&q=100%20Spear%20St,%20San%20Francisco,%20CA,%2094105-1522,%20US
+    uri: https://yboss.yahooapis.com/geo/placefinder?flags=J&oauth_consumer_key=dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--&oauth_nonce=7a0ce94e38&oauth_signature=aTamhmDusxM4xYZXWocDEb5YmyE=&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1384355278&oauth_version=1.0&q=100%20Spear%20St,%20San%20Francisco,%20CA,%2094105-1522,%20US
     body:
       encoding: US-ASCII
       string: ''

@@ -10,7 +10,13 @@ module Geokit
           proxy_uri = URI.parse(proxy_uri_string)
           net_http_args += [proxy_uri.host, proxy_uri.port, proxy_uri.user, proxy_uri.password]
         end
-        Net::HTTP::new(*net_http_args).start { |http| http.request(req) }
+        http = Net::HTTP::new(*net_http_args)
+        if uri.scheme == 'https'
+          http.use_ssl = true
+          http.verify_mode = Geokit::Geocoders.ssl_verify_mode
+        end
+        http.set_debug_output STDOUT
+        http.start { |http| http.request(req) }
       end
 
       def self.success?(response)

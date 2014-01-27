@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=San%20Francisco,%20CA&sensor=false
+    uri: https://maps.google.com/maps/api/geocode/json?address=San%20Francisco,%20CA&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 13 Nov 2013 14:55:52 GMT
+      - Sun, 26 Jan 2014 05:46:39 GMT
       Expires:
-      - Thu, 14 Nov 2013 14:55:52 GMT
+      - Mon, 27 Jan 2014 05:46:39 GMT
       Cache-Control:
       - public, max-age=86400
       Vary:
@@ -36,6 +36,8 @@ http_interactions:
       - 1; mode=block
       X-Frame-Options:
       - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
       Transfer-Encoding:
       - chunked
     body:
@@ -71,7 +73,7 @@ http_interactions:
                     "bounds" : {
                        "northeast" : {
                           "lat" : 37.9297707,
-                          "lng" : -122.3279149
+                          "lng" : -122.3279148
                        },
                        "southwest" : {
                           "lat" : 37.6933354,
@@ -100,5 +102,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Wed, 13 Nov 2013 14:55:50 GMT
-recorded_with: VCR 2.7.0
+  recorded_at: Sun, 26 Jan 2014 05:46:39 GMT
+recorded_with: VCR 2.8.0

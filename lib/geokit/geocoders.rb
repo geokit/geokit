@@ -40,6 +40,8 @@ module Geokit
     @@logger.level=Logger::INFO
     @@domain = nil
     @@net_adapter = Geokit::NetAdapter::NetHttp
+    @@secure = true
+    @@ssl_verify_mode = OpenSSL::SSL::VERIFY_PEER
 
     def self.__define_accessors
       class_variables.each do |v|
@@ -121,6 +123,10 @@ module Geokit
         end
       end
 
+      def self.inherited(base)
+        base.config :secure
+      end
+
       def self.new_loc
         loc = GeoLoc.new
         loc.provider = Geokit::Inflector.underscore(provider_name)
@@ -140,6 +146,14 @@ module Geokit
       # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
       def self.do_reverse_geocode(latlng)
         GeoLoc.new
+      end
+
+      def self.use_https?
+        self.secure && Geokit::Geocoders.secure
+      end
+
+      def self.protocol
+        use_https? ? 'https' : 'http'
       end
 
       # Wraps the geocoder call around a proxy if necessary.

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=100%20Spear%20St%20Apt.%205,%20San%20Francisco,%20CA,%2094105,%20US&sensor=false
+    uri: https://maps.google.com/maps/api/geocode/json?address=100%20Spear%20St%20Apt.%205,%20San%20Francisco,%20CA,%2094105,%20US&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 13 Nov 2013 14:55:52 GMT
+      - Sun, 26 Jan 2014 05:46:39 GMT
       Expires:
-      - Thu, 14 Nov 2013 14:55:52 GMT
+      - Mon, 27 Jan 2014 05:46:39 GMT
       Cache-Control:
       - public, max-age=86400
       Vary:
@@ -36,6 +36,8 @@ http_interactions:
       - 1; mode=block
       X-Frame-Options:
       - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
       Transfer-Encoding:
       - chunked
     body:
@@ -59,11 +61,6 @@ http_interactions:
                        "long_name" : "Spear Street",
                        "short_name" : "Spear St",
                        "types" : [ "route" ]
-                    },
-                    {
-                       "long_name" : "South Beach",
-                       "short_name" : "South Beach",
-                       "types" : [ "neighborhood", "political" ]
                     },
                     {
                        "long_name" : "San Francisco",
@@ -94,18 +91,18 @@ http_interactions:
                  "formatted_address" : "100 Spear Street #5, San Francisco, CA 94105, USA",
                  "geometry" : {
                     "location" : {
-                       "lat" : 37.792524,
-                       "lng" : -122.3940868
+                       "lat" : 37.7921384,
+                       "lng" : -122.3938563
                     },
                     "location_type" : "APPROXIMATE",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 37.7938729802915,
-                          "lng" : -122.3927378197085
+                          "lat" : 37.7934873802915,
+                          "lng" : -122.3925073197085
                        },
                        "southwest" : {
-                          "lat" : 37.7911750197085,
-                          "lng" : -122.3954357802915
+                          "lat" : 37.7907894197085,
+                          "lng" : -122.3952052802915
                        }
                     }
                  },
@@ -116,5 +113,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Wed, 13 Nov 2013 14:55:50 GMT
-recorded_with: VCR 2.7.0
+  recorded_at: Sun, 26 Jan 2014 05:46:39 GMT
+recorded_with: VCR 2.8.0

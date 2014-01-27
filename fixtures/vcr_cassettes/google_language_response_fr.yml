@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=Hanoi&language=FR&sensor=false
+    uri: https://maps.google.com/maps/api/geocode/json?address=Hanoi&language=FR&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 13 Nov 2013 14:55:53 GMT
+      - Sun, 26 Jan 2014 05:46:39 GMT
       Expires:
-      - Thu, 14 Nov 2013 14:55:53 GMT
+      - Mon, 27 Jan 2014 05:46:39 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -34,6 +34,8 @@ http_interactions:
       - 1; mode=block
       X-Frame-Options:
       - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
       Transfer-Encoding:
       - chunked
     body:
@@ -60,23 +62,23 @@ http_interactions:
         w68sIEhvYW4gS2llbSBEaXN0cmljdCwgSGFub8OvLCBWaWV0bmFtIiwKICAg
         ICAgICAgImdlb21ldHJ5IiA6IHsKICAgICAgICAgICAgImJvdW5kcyIgOiB7
         CiAgICAgICAgICAgICAgICJub3J0aGVhc3QiIDogewogICAgICAgICAgICAg
-        ICAgICAibGF0IiA6IDIxLjA1MDI5NDIsCiAgICAgICAgICAgICAgICAgICJs
-        bmciIDogMTA1Ljg3NjQ0NTkKICAgICAgICAgICAgICAgfSwKICAgICAgICAg
+        ICAgICAibGF0IiA6IDIxLjA1MDI5NDMsCiAgICAgICAgICAgICAgICAgICJs
+        bmciIDogMTA1Ljg3NjQ0NTgKICAgICAgICAgICAgICAgfSwKICAgICAgICAg
         ICAgICAgInNvdXRod2VzdCIgOiB7CiAgICAgICAgICAgICAgICAgICJsYXQi
-        IDogMjAuOTk1MDk5MSwKICAgICAgICAgICAgICAgICAgImxuZyIgOiAxMDUu
-        Nzk3NDgxNQogICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0sCiAgICAg
-        ICAgICAgICJsb2NhdGlvbiIgOiB7CiAgICAgICAgICAgICAgICJsYXQiIDog
-        MjEuMDMzMzMzMywKICAgICAgICAgICAgICAgImxuZyIgOiAxMDUuODUKICAg
-        ICAgICAgICAgfSwKICAgICAgICAgICAgImxvY2F0aW9uX3R5cGUiIDogIkFQ
-        UFJPWElNQVRFIiwKICAgICAgICAgICAgInZpZXdwb3J0IiA6IHsKICAgICAg
-        ICAgICAgICAgIm5vcnRoZWFzdCIgOiB7CiAgICAgICAgICAgICAgICAgICJs
-        YXQiIDogMjEuMDUwMjk0MiwKICAgICAgICAgICAgICAgICAgImxuZyIgOiAx
-        MDUuODc2NDQ1OQogICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgICAi
-        c291dGh3ZXN0IiA6IHsKICAgICAgICAgICAgICAgICAgImxhdCIgOiAyMC45
-        OTUwOTkxLAogICAgICAgICAgICAgICAgICAibG5nIiA6IDEwNS43OTc0ODE1
-        CiAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICB9LAog
-        ICAgICAgICAidHlwZXMiIDogWyAibG9jYWxpdHkiLCAicG9saXRpY2FsIiBd
-        CiAgICAgIH0KICAgXSwKICAgInN0YXR1cyIgOiAiT0siCn0K
+        IDogMjAuOTk1MDk5LAogICAgICAgICAgICAgICAgICAibG5nIiA6IDEwNS43
+        OTc0ODE1CiAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfSwKICAgICAg
+        ICAgICAgImxvY2F0aW9uIiA6IHsKICAgICAgICAgICAgICAgImxhdCIgOiAy
+        MS4wMzMzMzMzLAogICAgICAgICAgICAgICAibG5nIiA6IDEwNS44NQogICAg
+        ICAgICAgICB9LAogICAgICAgICAgICAibG9jYXRpb25fdHlwZSIgOiAiQVBQ
+        Uk9YSU1BVEUiLAogICAgICAgICAgICAidmlld3BvcnQiIDogewogICAgICAg
+        ICAgICAgICAibm9ydGhlYXN0IiA6IHsKICAgICAgICAgICAgICAgICAgImxh
+        dCIgOiAyMS4wNTAyOTQzLAogICAgICAgICAgICAgICAgICAibG5nIiA6IDEw
+        NS44NzY0NDU4CiAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICJz
+        b3V0aHdlc3QiIDogewogICAgICAgICAgICAgICAgICAibGF0IiA6IDIwLjk5
+        NTA5OSwKICAgICAgICAgICAgICAgICAgImxuZyIgOiAxMDUuNzk3NDgxNQog
+        ICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICAgfSwKICAg
+        ICAgICAgInR5cGVzIiA6IFsgImxvY2FsaXR5IiwgInBvbGl0aWNhbCIgXQog
+        ICAgICB9CiAgIF0sCiAgICJzdGF0dXMiIDogIk9LIgp9Cg==
     http_version: 
-  recorded_at: Wed, 13 Nov 2013 14:55:51 GMT
-recorded_with: VCR 2.7.0
+  recorded_at: Sun, 26 Jan 2014 05:46:39 GMT
+recorded_with: VCR 2.8.0

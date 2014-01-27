@@ -2,6 +2,7 @@ module Geokit
   module Geocoders
     class GoogleGeocoder < Geocoder
       config :client_id, :cryptographic_key, :channel
+      self.secure = true
 
       private
       # ==== OPTIONS
@@ -62,9 +63,9 @@ module Geokit
           channel_string = channel ? "&channel=#{channel}" : ''
           urlToSign = query_string + "&client=#{client_id}" + channel_string
           signature = sign_gmap_bus_api_url(urlToSign, cryptographic_key)
-          "http://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
+          "#{protocol}://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
         else
-          "http://maps.google.com" + query_string
+          "#{protocol}://maps.google.com" + query_string
         end
       end
 

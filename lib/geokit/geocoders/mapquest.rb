@@ -4,20 +4,21 @@ module Geokit
     # contain a MapQuest API key.  Conforms to the interface set by the Geocoder class.
     class MapQuestGeocoder < Geocoder
       config :key
+      self.secure = true
 
       private
 
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
-        url = "http://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{latlng.lat},#{latlng.lng}"
+        url = "#{protocol}://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{latlng.lat},#{latlng.lng}"
         process :json, url
       end
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = "http://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=#{Geokit::Inflector::url_escape(address_str)}"
+        url = "#{protocol}://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=#{Geokit::Inflector::url_escape(address_str)}"
         process :json, url
       end
 

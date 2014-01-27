@@ -4,6 +4,7 @@ module Geokit
     # contain a Bing Maps API key.  Conforms to the interface set by the Geocoder class.
     class BingGeocoder < Geocoder
       config :key, :options
+      self.secure = true
 
       private
 
@@ -20,7 +21,7 @@ module Geokit
         culture = options && options[:culture]
         culture_string = culture ? "&c=#{culture}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        "http://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address_str)}?key=#{key}#{culture_string}&o=xml"
+        "#{protocol}://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address_str)}?key=#{key}#{culture_string}&o=xml"
       end
 
       def self.parse_xml(xml)
