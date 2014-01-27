@@ -15,7 +15,6 @@ module Geokit
           http.use_ssl = true
           http.verify_mode = Geokit::Geocoders.ssl_verify_mode
         end
-        http.set_debug_output STDOUT
         http.start { |http| http.request(req) }
       end
 
