@@ -70,7 +70,7 @@ module Geokit
     #  4) an array in the format [37.1234,-129.1234]
     #  5) a LatLng or GeoLoc (which is just passed through as-is)
     #  6) anything responding to to_lat_lng -- a LatLng will be extracted from it
-    def self.normalize(thing,other=nil)
+    def self.normalize(thing, other=nil)
       return Geokit::LatLng.new(thing, other) if other
 
       case thing
@@ -78,7 +78,7 @@ module Geokit
         from_string(thing)
       when Array
         thing.size == 2 or raise ArgumentError.new("Must initialize with an Array with both latitude and longitude")
-        Geokit::LatLng.new(thing[0],thing[1])
+        Geokit::LatLng.new(thing[0], thing[1])
       when LatLng # will also be true for GeoLocs
         thing
       else
@@ -93,7 +93,7 @@ module Geokit
     def self.from_string(thing)
       thing.strip!
       if match=thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
-        Geokit::LatLng.new(match[1],match[2])
+        Geokit::LatLng.new(match[1], match[2])
       else
         res = Geokit::Geocoders::MultiGeocoder.geocode(thing)
         return res if res.success?
