@@ -23,8 +23,7 @@ module Geokit
       # The failover approach is crucial for production-grade apps, but is rarely used.
       # 98% of your geocoding calls will be successful with the first call
       def self.do_geocode(address, *args)
-        geocode_ip = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.match(address)
-        provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
+        provider_order = provider_order_for(address, args)
 
         provider_order.each do |provider|
           klass = geocoder(provider)
@@ -58,6 +57,18 @@ module Geokit
 
       def self.geocoder(provider)
         Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
+      end
+
+      def self.provider_order_for(address, args)
+        if args.last.is_a?(Hash) && args.last.key?(:provider_order)
+          args.last.delete(:provider_order)
+        else
+          if /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.match(address)
+            Geokit::Geocoders::ip_provider_order
+          else
+            Geokit::Geocoders::provider_order
+          end
+        end
       end
     end
   end
