@@ -101,11 +101,10 @@ module Geokit
           raise Geokit::Geocoders::GeocodeError
         end
 
-        unsorted = results['results'].map do |addr|
+        all = results['results'].map do |addr|
           single_json_to_geoloc(addr)
         end
 
-        all = unsorted.sort_by(&:accuracy).reverse
         encoded = all.first
         encoded.all = all
         encoded
