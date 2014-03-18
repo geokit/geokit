@@ -92,4 +92,11 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode("")
     Geokit::Geocoders.provider_order = t1 # reset to orig values
   end
+
+  def test_custom_provider_order
+    Geokit::Geocoders::YahooGeocoder.expects(:geocode).with(@address, {}).returns(@success)
+    Geokit::Geocoders::GoogleGeocoder.expects(:geocode).never
+    Geokit::Geocoders::UsGeocoder.expects(:geocode).never
+    assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address, :provider_order => [:yahoo, :google, :us])
+  end
 end
