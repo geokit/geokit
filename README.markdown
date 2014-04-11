@@ -206,7 +206,7 @@ Not exactly what we were looking for. We know that Syracuse is in Italy, so we c
     => "Syracuse, Italy"
 ```
 
-Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
+Alternatively, we can specify the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
 
 ```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka')
