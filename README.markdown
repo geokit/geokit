@@ -277,7 +277,7 @@ do_geocode.
 ## WRITING YOUR OWN GEOCODERS
 
 If you would like to write your own geocoders, you can do so by requiring 'geokit' or 'geokit/geocoders.rb' in a new file and subclassing the base class (which is class "Geocoder").
-You must then also require such extenal file back in your main geokit configuration.
+You must then also require such external file back in your main geokit configuration.
 
 ```ruby
   require "geokit"
