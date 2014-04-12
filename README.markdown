@@ -206,7 +206,7 @@ Not exactly what we were looking for. We know that Syracuse is in Italy, so we c
     => "Syracuse, Italy"
 ```
 
-Alternatively, we can speficy the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
+Alternatively, we can specify the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.
 
 ```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka')
@@ -277,7 +277,7 @@ do_geocode.
 ## WRITING YOUR OWN GEOCODERS
 
 If you would like to write your own geocoders, you can do so by requiring 'geokit' or 'geokit/geocoders.rb' in a new file and subclassing the base class (which is class "Geocoder").
-You must then also require such extenal file back in your main geokit configuration.
+You must then also require such external file back in your main geokit configuration.
 
 ```ruby
   require "geokit"
