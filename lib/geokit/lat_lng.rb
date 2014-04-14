@@ -32,6 +32,16 @@ module Geokit
       "#{lat},#{lng}"
     end
 
+    # returns latitude as [ degree, minute, second ] array
+    def lat_dms
+      self.class.decimal_to_dms(lat)
+    end
+
+    # returns longitude as [ degree, minute, second ] array
+    def lng_dms
+      self.class.decimal_to_dms(lng)
+    end
+
     #returns a string with comma-separated lat,lng values
     def to_s
       ll

@@ -127,6 +127,19 @@ module Geokit
         raise Geokit::Geocoders::GeocodeError
       end
 
+      # Given a decimal degree like -87.660333
+      # return a 3-element array like [ -87, 39, 37.198... ]
+      def decimal_to_dms(deg)
+        return false unless deg.is_a?(Numeric)
+        # seconds is 0...3599.999, representing the entire fractional part.
+        seconds = (deg.abs % 1.0) * 3600.0
+        [
+            deg.to_i,               # degrees as positive or negative integer
+            (seconds / 60).to_i,    # minutes as positive integer
+            (seconds % 60)          # seconds as positive float
+        ]
+      end
+      
       protected
 
       def deg2rad(degrees)

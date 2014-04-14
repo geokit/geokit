@@ -216,4 +216,22 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_equal "Porscheplatz 1, 45127 Essen, Deutschland", res.full_address #slightly different from yahoo
     assert_equal "google", res.provider
   end
+
+  def test_to_dms
+    point = Geokit::LatLng.new(41.957254, -87.660333)
+
+    dms = point.lat_dms
+    assert_kind_of Array, dms
+    assert_equal 3, dms.length
+    assert_kind_of Numeric, dms.length
+    assert_equal [41, 57], dms[0, 2]
+    assert_equal 26, dms[2].round
+
+    dms = point.lng_dms
+    assert_kind_of Array, dms
+    assert_equal 3, dms.length
+    assert_kind_of Numeric, dms.length
+    assert_equal [-87, 39], dms[0, 2]
+    assert_equal 37, dms[2].round
+  end
 end
