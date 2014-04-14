@@ -37,7 +37,7 @@ module Geokit
       self.class.decimal_to_dms(lat)
     end
 
-    # returns latitude as [ degree, minute, second ] array
+    # returns longitude as [ degree, minute, second ] array
     def lng_dms
       self.class.decimal_to_dms(lng)
     end
