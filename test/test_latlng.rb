@@ -224,15 +224,14 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_kind_of Array, dms
     assert_equal 3, dms.length
     assert_kind_of Numeric, dms.length
-    assert_equal [ 41, 57 ], dms[0,2]
+    assert_equal [41,57], dms[0,2]
     assert_equal 26.1, dms[2].round(1)
 
     dms = point.lng_dms
     assert_kind_of Array, dms
     assert_equal 3, dms.length
     assert_kind_of Numeric, dms.length
-    assert_equal [ -87, 39 ], dms[0,2]
+    assert_equal [-87,39], dms[0,2]
     assert_equal 37.2, dms[2].round(1)
-
   end
 end
