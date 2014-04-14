@@ -129,7 +129,7 @@ module Geokit
 
       # Given a decimal degree like -87.660333
       # return a 3-element array like [ -87, 39, 37.198... ]
-      def decimal_to_dms deg
+      def decimal_to_dms(deg)
         return false unless deg.is_a?(Numeric)
         # seconds is 0...3599.999, representing the entire fractional part.
         seconds = (deg.abs % 1.0) * 3600.0
