@@ -44,6 +44,7 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Bing
 * Yandex
 * MapQuest
+* Geocod.io
 
 ### address geocoders that also provide reverse geocoding
 * Google - Supports multiple results and bounding box/country code biasing.  Also supports Maps API for Business keys; see the configuration section below.
