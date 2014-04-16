@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.geocod.io/v1/geocode?api_key=723d41115152d224fd74727df34727c444537f7&q=1%20Infinite%20Loop,%20Cupertino,%20CA%2095014
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.1
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - no-cache
+      Date:
+      - Wed, 16 Apr 2014 03:24:19 GMT
+      Access-Control-Allow-Origin:
+      - '*'
+    body:
+      encoding: UTF-8
+      string: '{"input":{"address_components":{"number":"1","street":"Infinite","suffix":"Loop","city":"Cupertino","state":"CA","zip":"95014"},"formatted_address":"1
+        Infinite Loop, Cupertino, CA 95014"},"results":[{"address_components":{"number":"1","street":"Infinite","suffix":"Loop","city":"Cupertino","county":"Santa
+        Clara County","state":"CA","zip":"95014"},"formatted_address":"1 Infinite
+        Loop, Cupertino, CA 95014","location":{"lat":37.331669,"lng":-122.03074},"accuracy":1}]}'
+    http_version: 
+  recorded_at: Wed, 16 Apr 2014 03:24:19 GMT
+recorded_with: VCR 2.9.0
