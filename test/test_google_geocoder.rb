@@ -36,6 +36,13 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=New+York&client=clientID&signature=9mevp7SoVsSKzF9nj-vApMYbatg=', url
   end
 
+  def test_google_api_key
+    Geokit::Geocoders::GoogleGeocoder.api_key = 'someKey'
+    url = Geokit::Geocoders::GoogleGeocoder.send(:submit_url, 'address=New+York')
+    Geokit::Geocoders::GoogleGeocoder.api_key = nil
+    assert_equal 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=New+York&key=someKey', url
+  end
+
   def test_google_insecure_url
     Geokit::Geocoders.secure = false
     url = Geokit::Geocoders::GoogleGeocoder.send(:submit_url, 'address=New+York')

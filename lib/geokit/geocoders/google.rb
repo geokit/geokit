@@ -1,7 +1,7 @@
 module Geokit
   module Geocoders
     class GoogleGeocoder < Geocoder
-      config :client_id, :cryptographic_key, :channel
+      config :client_id, :cryptographic_key, :channel, :api_key
       self.secure = true
 
       private
@@ -64,6 +64,9 @@ module Geokit
           urlToSign = query_string + "&client=#{client_id}" + channel_string
           signature = sign_gmap_bus_api_url(urlToSign, cryptographic_key)
           "#{protocol}://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
+        elsif api_key
+          url_with_key = query_string + "&key=#{api_key}"
+          "#{protocol}://maps.googleapis.com" + url_with_key
         else
           "#{protocol}://maps.google.com" + query_string
         end
