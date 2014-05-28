@@ -89,8 +89,9 @@ module Geokit
         do_geocode(address, *args) || GeoLoc.new
       rescue TooManyQueriesError, GeocodeError
         raise
-      rescue
+      rescue => e
         logger.error "Caught an error during #{provider_name} geocoding call: #{$!}"
+        logger.error e.backtrace.join("\n")
         GeoLoc.new
       end
       # Main method which calls the do_reverse_geocode template method which subclasses
