@@ -17,10 +17,12 @@ module Geokit
         loc = new_loc
         data = json['data']['locations'][0]
 
-        loc.lat = data['latitude']
-        loc.lng = data['longitude']
-        set_address_components(data, loc)
-        loc.success = (data['status_code'] == 200)
+        if data
+          loc.lat = data['latitude']
+          loc.lng = data['longitude']
+          set_address_components(data, loc)
+          loc.success = data && (data['status_code'] == 200)
+        end
         loc
       end
 

@@ -11,6 +11,13 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal expected_url, TestHelper.get_last_url.gsub(/&oauth_[a-z_]+=[a-zA-Z0-9\-. %]+/, '').gsub('%20', '+')
   end
 
+  def test_45
+    VCR.use_cassette('ripe_geocode_45') do
+      res = Geokit::Geocoders::RipeGeocoder.geocode('45.45.45.45')
+      assert !res.success
+    end
+  end
+
   def test_ripe_geocode
     VCR.use_cassette('ripe_geocode') do
       url = "http://stat.ripe.net/data/geoloc/data.json?resource=#{@ip}"

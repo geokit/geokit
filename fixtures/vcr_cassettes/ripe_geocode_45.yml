@@ -1,0 +1,45 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://stat.ripe.net/data/geoloc/data.json?resource=45.45.45.45
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Vary:
+      - Cookie, Accept-Encoding
+      Content-Length:
+      - '274'
+      Content-Type:
+      - application/json; charset=utf-8
+      Set-Cookie:
+      - stat-session=31cebc7bc2ff5c195bcad049a37ab4b2; expires=Wed, 11-Jun-2014 10:59:59
+        GMT; httponly; Max-Age=1209600; Path=/
+      Date:
+      - Wed, 28 May 2014 10:59:59 GMT
+      Server:
+      - lighttpd/1.4.32
+    body:
+      encoding: UTF-8
+      string: "{\n    \"cached\": true, \n    \"data\": {\n        \"locations\":
+        [], \n        \"query_time\": \"2014-05-01T00:00:00\", \n        \"resource\":
+        \"45.45.45.45\", \n        \"unknown_percentage\": 100.0\n    }, \n    \"data_call_status\":
+        \"supported\", \n    \"messages\": [], \n    \"process_time\": 7, \n    \"query_id\":
+        \"35d010ee-e657-11e3-adde-782bcb346712\", \n    \"see_also\": [], \n    \"server_id\":
+        \"stat-app2\", \n    \"status\": \"ok\", \n    \"status_code\": 200, \n    \"time\":
+        \"2014-05-28T10:59:59.069345\", \n    \"version\": \"2.0\"\n}"
+    http_version: 
+  recorded_at: Wed, 28 May 2014 10:59:59 GMT
+recorded_with: VCR 2.8.0
