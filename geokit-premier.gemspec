@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency('json_pure')
   s.add_dependency('hoe')
   
-  s.add_development_dependency('rspec')
+  s.add_development_dependency('rspec', '>= 2.14.1')
   s.add_development_dependency('autotest')
   s.add_development_dependency('ZenTest')
   s.add_development_dependency('standalone_migrations')

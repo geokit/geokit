@@ -1,5 +1,5 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'lib/geokit'
+require './lib/geokit'
 require 'rubygems'
 require 'irb'
 require 'irb/completion'

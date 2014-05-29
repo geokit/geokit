@@ -110,8 +110,8 @@ describe "Geocoder" do
     }
 
     it "returns the most relevant result first" do
-      JSON.stub!(:decode).and_return(raw_results)
-      JSON.stub!(:parse).and_return(raw_results)
+      JSON.stub(:decode).and_return(raw_results)
+      JSON.stub(:parse).and_return(raw_results)
 
       results = Geokit::Geocoders::GoogleGeocoder3.json2GeoLoc('mock-json-string')
 
