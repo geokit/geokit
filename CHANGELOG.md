@@ -1,3 +1,12 @@
+## 1.8.5
+
+* HTTPS on Google, Bing, Yahoo and MapQuest
+* Added Geocod.io Geocoder
+* Can use Google Key on free geocoder
+* Fix bug in RIPE geocoder where no locations returned
+* provider_order option for MultiGeocoder
+* dms return methods (degree, minute, second)
+
 ## 1.8.4
 
 * Fix math error in ruby 1.8
