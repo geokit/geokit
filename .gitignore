@@ -4,3 +4,4 @@ pkg
 .idea
 .bundle
 .rvmrc
+Gemfile.lock
