@@ -62,28 +62,31 @@ module Geokit
         set_mappings(loc, xml, XML_MAPPINGS)
       end
 
+      ACCURACY_MAP = {
+        'High'   => 8,
+        'Medium' => 5,
+        'Low'    => 2
+      }
+
+      PRECISION_MAP = {
+        'Sovereign'      => 'country',
+        'CountryRegion'  => 'country',
+        'AdminDivision1' => 'state',
+        'AdminDivision2' => 'state',
+        'PopulatedPlace' => 'city',
+        'Postcode1'      => 'zip',
+        'Postcode2'      => 'zip',
+        'RoadBlock'      => 'street',
+        'Address'        => 'address'
+      }
+
       def self.set_precision(loc, xml)
         if xml.elements['.//Confidence']
-          loc.accuracy      = case xml.elements['.//Confidence'].text
-          when 'High'    then 8
-          when 'Medium'  then 5
-          when 'Low'     then 2
-          else             0
-          end
+          loc.accuracy = ACCURACY_MAP[xml.elements['.//Confidence'].text] || 0
         end
 
         if xml.elements['.//EntityType']
-          loc.precision     = case xml.elements['.//EntityType'].text
-          when 'Sovereign'      then 'country'
-          when 'AdminDivision1' then 'state'
-          when 'AdminDivision2' then 'state'
-          when 'PopulatedPlace' then 'city'
-          when 'Postcode1'      then 'zip'
-          when 'Postcode2'      then 'zip'
-          when 'RoadBlock'      then 'street'
-          when 'Address'        then 'address'
-          else                    'unkown'
-          end
+          loc.precision = PRECISION_MAP[xml.elements['.//EntityType'].text] || 'unknown'
         end
       end
 

@@ -57,6 +57,26 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert res.country == 'Germany'
     assert_equal "Platz der Republik 1, 10557 Berlin", res.full_address
     assert_equal "bing", res.provider
+    assert_equal 'address', res.precision
+    assert_equal 8, res.accuracy
+    assert_url url
+    end
+  end
+
+  def test_bing_country
+    address = "Australia"
+    VCR.use_cassette('bing_au') do
+    key = Geokit::Geocoders::BingGeocoder.key
+    url = "https://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address)}?key=#{key}&o=xml"
+    res = Geokit::Geocoders::BingGeocoder.geocode(address)
+    assert_equal nil, res.state
+    assert_equal nil, res.city
+    assert_array_in_delta [-25.585, 134.504], res.to_a
+    assert res.country == 'Australia'
+    assert_equal 'Australia', res.full_address
+    assert_equal "bing", res.provider
+    assert_equal 'country', res.precision
+    assert_equal 8, res.accuracy
     assert_url url
     end
   end

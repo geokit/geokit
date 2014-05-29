@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluur2d0125,2s=o5-9a8lhz&location=100%20Spear%20St%20Apt.%205,%20San%20Francisco,%20CA,%2094105,%20US
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Set-Cookie:
+      - JSESSIONID=A737A4684852AE01983F5AA9FA4321C4; Path=/; HttpOnly
+      Expires:
+      - Mon, 20 Dec 1998 01:00:00 GMT
+      Last-Modified:
+      - Thu, 29 May 2014 13:38:05 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Pragma:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET,POST
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 29 May 2014 13:38:04 GMT
+    body:
+      encoding: UTF-8
+      string: "{\"info\":{\"statuscode\":0,\"copyright\":{\"text\":\"\\u00A9 2014
+        MapQuest, Inc.\",\"imageUrl\":\"https://api.mqcdn.com/res/mqlogo.gif\",\"imageAltText\":\"\\u00A9
+        2014 MapQuest, Inc.\"},\"messages\":[]},\"options\":{\"maxResults\":-1,\"thumbMaps\":true,\"ignoreLatLngInput\":false},\"results\":[{\"providedLocation\":{\"location\":\"100
+        Spear St Apt. 5, San Francisco, CA, 94105, US\"},\"locations\":[{\"street\":\"100
+        Spear St, APT 5\",\"adminArea5\":\"San Francisco\",\"adminArea5Type\":\"City\",\"adminArea4\":\"San
+        Francisco\",\"adminArea4Type\":\"County\",\"adminArea3\":\"CA\",\"adminArea3Type\":\"State\",\"adminArea1\":\"US\",\"adminArea1Type\":\"Country\",\"postalCode\":\"94105-1500\",\"geocodeQualityCode\":\"P1AAA\",\"geocodeQuality\":\"POINT\",\"dragPoint\":false,\"sideOfStreet\":\"R\",\"linkId\":\"68400005996374\",\"unknownInput\":\"\",\"type\":\"s\",\"latLng\":{\"lat\":37.792305,\"lng\":-122.393776},\"displayLatLng\":{\"lat\":37.79215,\"lng\":-122.394},\"mapUrl\":\"https://www.mapquestapi.com/staticmap/v4/getmap?key=Fmjtd|luur2d0125,2s=o5-9a8lhz&type=map&size=225,160&pois=purple-1,37.792305,-122.393776,0,0,|&center=37.792305,-122.393776&zoom=15&rand=-150371976\"}]}]}"
+    http_version: 
+  recorded_at: Thu, 29 May 2014 13:38:05 GMT
+recorded_with: VCR 2.8.0

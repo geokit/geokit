@@ -1,0 +1,86 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://dev.virtualearth.net/REST/v1/Locations/Australia?key=AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7&o=xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/xml; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.0
+      X-Bm-Traceid:
+      - c94bd5877eb348d28caf0cab56de8c48
+      X-Bm-Srv:
+      - BN20121762, BN2SCH020131230
+      X-Ms-Bm-Ws-Info:
+      - '0'
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Thu, 29 May 2014 13:58:44 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48UmVz
+        cG9uc2UgeG1sbnM6eHNkPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNj
+        aGVtYSIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNj
+        aGVtYS1pbnN0YW5jZSIgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29m
+        dC5jb20vc2VhcmNoL2xvY2FsL3dzL3Jlc3QvdjEiPjxDb3B5cmlnaHQ+Q29w
+        eXJpZ2h0IMKpIDIwMTQgTWljcm9zb2Z0IGFuZCBpdHMgc3VwcGxpZXJzLiBB
+        bGwgcmlnaHRzIHJlc2VydmVkLiBUaGlzIEFQSSBjYW5ub3QgYmUgYWNjZXNz
+        ZWQgYW5kIHRoZSBjb250ZW50IGFuZCBhbnkgcmVzdWx0cyBtYXkgbm90IGJl
+        IHVzZWQsIHJlcHJvZHVjZWQgb3IgdHJhbnNtaXR0ZWQgaW4gYW55IG1hbm5l
+        ciB3aXRob3V0IGV4cHJlc3Mgd3JpdHRlbiBwZXJtaXNzaW9uIGZyb20gTWlj
+        cm9zb2Z0IENvcnBvcmF0aW9uLjwvQ29weXJpZ2h0PjxCcmFuZExvZ29Vcmk+
+        aHR0cDovL2Rldi52aXJ0dWFsZWFydGgubmV0L0JyYW5kaW5nL2xvZ29fcG93
+        ZXJlZF9ieS5wbmc8L0JyYW5kTG9nb1VyaT48U3RhdHVzQ29kZT4yMDA8L1N0
+        YXR1c0NvZGU+PFN0YXR1c0Rlc2NyaXB0aW9uPk9LPC9TdGF0dXNEZXNjcmlw
+        dGlvbj48QXV0aGVudGljYXRpb25SZXN1bHRDb2RlPlZhbGlkQ3JlZGVudGlh
+        bHM8L0F1dGhlbnRpY2F0aW9uUmVzdWx0Q29kZT48VHJhY2VJZD5jOTRiZDU4
+        NzdlYjM0OGQyOGNhZjBjYWI1NmRlOGM0OHxCTjIwMTIxNzYyfDAyLjAwLjE1
+        MS4yMDAwfEJOMlNDSDAyMDEzMTIzMDwvVHJhY2VJZD48UmVzb3VyY2VTZXRz
+        PjxSZXNvdXJjZVNldD48RXN0aW1hdGVkVG90YWw+MTwvRXN0aW1hdGVkVG90
+        YWw+PFJlc291cmNlcz48TG9jYXRpb24+PE5hbWU+QXVzdHJhbGlhPC9OYW1l
+        PjxQb2ludD48TGF0aXR1ZGU+LTI1LjU4NTI0MTMxNzc0OTAyMzwvTGF0aXR1
+        ZGU+PExvbmdpdHVkZT4xMzQuNTA0MTE5ODczMDQ2ODg8L0xvbmdpdHVkZT48
+        L1BvaW50PjxCb3VuZGluZ0JveD48U291dGhMYXRpdHVkZT4tNDQuMDc1NTMx
+        MDA1ODU5Mzc1PC9Tb3V0aExhdGl0dWRlPjxXZXN0TG9uZ2l0dWRlPjEwMS4z
+        OTg3MTk3ODc1OTc2NjwvV2VzdExvbmdpdHVkZT48Tm9ydGhMYXRpdHVkZT4t
+        MTAuNjg0NDY3MzE1NjczODI4PC9Ob3J0aExhdGl0dWRlPjxFYXN0TG9uZ2l0
+        dWRlPjE2Mi4yNDEyODcyMzE0NDUzMTwvRWFzdExvbmdpdHVkZT48L0JvdW5k
+        aW5nQm94PjxFbnRpdHlUeXBlPkNvdW50cnlSZWdpb248L0VudGl0eVR5cGU+
+        PEFkZHJlc3M+PENvdW50cnlSZWdpb24+QXVzdHJhbGlhPC9Db3VudHJ5UmVn
+        aW9uPjxGb3JtYXR0ZWRBZGRyZXNzPkF1c3RyYWxpYTwvRm9ybWF0dGVkQWRk
+        cmVzcz48L0FkZHJlc3M+PENvbmZpZGVuY2U+SGlnaDwvQ29uZmlkZW5jZT48
+        TWF0Y2hDb2RlPkdvb2Q8L01hdGNoQ29kZT48R2VvY29kZVBvaW50PjxMYXRp
+        dHVkZT4tMjUuNTg1MjQxMzE3NzQ5MDIzPC9MYXRpdHVkZT48TG9uZ2l0dWRl
+        PjEzNC41MDQxMTk4NzMwNDY4ODwvTG9uZ2l0dWRlPjxDYWxjdWxhdGlvbk1l
+        dGhvZD5Sb29mdG9wPC9DYWxjdWxhdGlvbk1ldGhvZD48VXNhZ2VUeXBlPkRp
+        c3BsYXk8L1VzYWdlVHlwZT48L0dlb2NvZGVQb2ludD48L0xvY2F0aW9uPjwv
+        UmVzb3VyY2VzPjwvUmVzb3VyY2VTZXQ+PC9SZXNvdXJjZVNldHM+PC9SZXNw
+        b25zZT4=
+    http_version: 
+  recorded_at: Thu, 29 May 2014 13:58:44 GMT
+recorded_with: VCR 2.8.0

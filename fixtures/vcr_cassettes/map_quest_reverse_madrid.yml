@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.mapquestapi.com/geocoding/v1/reverse?key=Fmjtd%7Cluur2d0125,2s=o5-9a8lhz&location=40.4167413,-3.7032498
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Set-Cookie:
+      - JSESSIONID=3BC67F1FAE87C7DA0C84F86919DF3E1E; Path=/; HttpOnly
+      Expires:
+      - Mon, 20 Dec 1998 01:00:00 GMT
+      Last-Modified:
+      - Thu, 29 May 2014 13:38:06 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Pragma:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET,POST
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 29 May 2014 13:38:06 GMT
+    body:
+      encoding: UTF-8
+      string: "{\"info\":{\"statuscode\":0,\"copyright\":{\"text\":\"\\u00A9 2014
+        MapQuest, Inc.\",\"imageUrl\":\"https://api.mqcdn.com/res/mqlogo.gif\",\"imageAltText\":\"\\u00A9
+        2014 MapQuest, Inc.\"},\"messages\":[]},\"options\":{\"maxResults\":1,\"thumbMaps\":true,\"ignoreLatLngInput\":false},\"results\":[{\"providedLocation\":{\"latLng\":{\"lat\":40.4167413,\"lng\":-3.7032498}},\"locations\":[{\"street\":\"\",\"adminArea5\":\"Madrid\",\"adminArea5Type\":\"City\",\"adminArea4\":\"\\u00C1rea
+        metropolitana de Madrid y Corredor del Henares\",\"adminArea4Type\":\"County\",\"adminArea3\":\"Comunidad
+        de Madrid\",\"adminArea3Type\":\"State\",\"adminArea1\":\"ES\",\"adminArea1Type\":\"Country\",\"postalCode\":\"28014\",\"geocodeQualityCode\":\"Z1XAA\",\"geocodeQuality\":\"ZIP\",\"dragPoint\":false,\"sideOfStreet\":\"N\",\"linkId\":\"0\",\"unknownInput\":\"\",\"type\":\"s\",\"latLng\":{\"lat\":40.41686,\"lng\":-3.70348},\"displayLatLng\":{\"lat\":40.41686,\"lng\":-3.70348},\"mapUrl\":\"https://www.mapquestapi.com/staticmap/v4/getmap?key=Fmjtd|luur2d0125,2s=o5-9a8lhz&type=map&size=225,160&pois=purple-1,40.41685975,-3.70348049982096,0,0,|&center=40.41685975,-3.70348049982096&zoom=15&rand=-639817840\"}]}]}"
+    http_version: 
+  recorded_at: Thu, 29 May 2014 13:38:06 GMT
+recorded_with: VCR 2.8.0

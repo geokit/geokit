@@ -11,7 +11,7 @@ end
 require 'geoip'
 
 if ENV['COVERAGE']
-  COVERAGE_THRESHOLD = 91
+  COVERAGE_THRESHOLD = 95
   require 'simplecov'
   require 'simplecov-rcov'
   require 'coveralls'
@@ -110,6 +110,7 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
 
   # Defines common test fixtures.
   def setup
+    Geokit::Geocoders::request_timeout = 10
     @address = 'San Francisco, CA'
     @full_address = '100 Spear St, San Francisco, CA, 94105-1522, US'
     @full_address_short_zip = '100 Spear St, San Francisco, CA, 94105, US'
