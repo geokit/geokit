@@ -11,13 +11,13 @@ module Geokit
   class TooManyQueriesError < StandardError; end
 
   module Inflector
-   
+
     extend self
-   
+
     def titleize(word)
       humanize(underscore(word)).gsub(/\b([a-z])/u) { $1.capitalize }
     end
-   
+
     def underscore(camel_cased_word)
       camel_cased_word.to_s.gsub(/::/, '/').
       gsub(/([A-Z]+)([A-Z][a-z])/u,'\1_\2').
@@ -25,52 +25,52 @@ module Geokit
       tr("-", "_").
       downcase
     end
-   
+
     def humanize(lower_case_and_underscored_word)
       lower_case_and_underscored_word.to_s.gsub(/_id$/, "").gsub(/_/, " ").capitalize
     end
-    
+
     def snake_case(s)
       return s.downcase if s =~ /^[A-Z]+$/u
       s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/u, '_\&') =~ /_*(.*)/
         return $+.downcase
-      
+
     end
-    
+
     def url_escape(s)
       URI.escape(s)
     end
-    
+
     def camelize(str)
       str.split('_').map {|w| w.capitalize}.join
     end
-  end  
-  
+  end
+
   # Contains a range of geocoders:
-  # 
-  # ### "regular" address geocoders 
+  #
+  # ### "regular" address geocoders
   # * Yahoo Geocoder - requires an API key.
   # * Geocoder.us - may require authentication if performing more than the free request limit.
   # * Geocoder.ca - for Canada; may require authentication as well.
   # * Geonames - a free geocoder
   #
-  # ### address geocoders that also provide reverse geocoding 
+  # ### address geocoders that also provide reverse geocoding
   # * Google Geocoder - requires an API key.
-  #  
-  # ### IP address geocoders 
+  #
+  # ### IP address geocoders
   # * IP Geocoder - geocodes an IP address using hostip.info's web service.
   # * Geoplugin.net -- another IP address geocoder
   #
   # ### The Multigeocoder
   # * Multi Geocoder - provides failover for the physical location geocoders.
-  # 
+  #
   # Some of these geocoders require configuration. You don't have to provide it here. See the README.
   module Geocoders
     @@proxy_addr = nil
     @@proxy_port = nil
     @@proxy_user = nil
     @@proxy_pass = nil
-    @@request_timeout = nil    
+    @@request_timeout = nil
     @@yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     @@google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
     @@google_client_id = nil #only used for premier accounts
@@ -83,9 +83,9 @@ module Geokit
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil
-    
+
     def self.__define_accessors
-      class_variables.each do |v| 
+      class_variables.each do |v|
         sym = v.to_s.delete("@").to_sym
         unless self.respond_to? sym
           module_eval <<-EOS, __FILE__, __LINE__
@@ -100,7 +100,7 @@ module Geokit
               end
               value
             end
-          
+
             def self.#{sym}=(obj)
               @@#{sym} = obj
             end
@@ -110,38 +110,38 @@ module Geokit
     end
 
     __define_accessors
-    
+
     # Error which is thrown in the event a geocoding error occurs.
     class GeocodeError < StandardError; end
 
     # -------------------------------------------------------------------------------------------
     # Geocoder Base class -- every geocoder should inherit from this
-    # -------------------------------------------------------------------------------------------    
-    
+    # -------------------------------------------------------------------------------------------
+
     # The Geocoder base class which defines the interface to be used by all
     # other geocoders.
-    class Geocoder   
+    class Geocoder
       # Main method which calls the do_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
-      def self.geocode(address, options = {}) 
+      def self.geocode(address, options = {})
         res = do_geocode(address, options)
         return res.nil? ? GeoLoc.new : res
-      end  
+      end
       # Main method which calls the do_reverse_geocode template method which subclasses
       # are responsible for implementing.  Returns a populated GeoLoc or an
       # empty one with a failed success code.
       def self.reverse_geocode(latlng)
         res = do_reverse_geocode(latlng)
-        return res.success? ? res : GeoLoc.new        
+        return res.success? ? res : GeoLoc.new
       end
-      
+
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
-        Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout        
+        Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout
         return self.do_get(url)
       rescue TimeoutError
-        return nil  
+        return nil
       end
 
       # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
@@ -157,7 +157,7 @@ module Geokit
         url_to_sign = uri.path + "?" + uri.query
         decoded_key = Geocoder.urlsafe_decode64(private_key)
 
-        sha1_digest  = OpenSSL::Digest::Digest.new('sha1')
+        sha1_digest  = OpenSSL::Digest.new('sha1')
         signature = OpenSSL::HMAC.digest(sha1_digest,decoded_key,url_to_sign)
         encoded_signature = Geocoder.urlsafe_encode64(signature)
         signed_url = "#{uri.scheme}://#{uri.host}#{uri.path}?#{uri.query}&signature=#{encoded_signature}".strip!
@@ -181,14 +181,14 @@ module Geokit
 
       protected
 
-      def self.logger() 
+      def self.logger()
         Geokit::Geocoders::logger
       end
-      
+
       private
-      
+
       # Wraps the geocoder call around a proxy if necessary.
-      def self.do_get(url) 
+      def self.do_get(url)
         uri = URI.parse(url)
         req = Net::HTTP::Get.new(url)
         req.basic_auth(uri.user, uri.password) if uri.userinfo
@@ -198,8 +198,8 @@ module Geokit
                 GeoKit::Geocoders::proxy_pass).start(uri.host, uri.port) { |http| http.get(uri.path + "?" + uri.query) }
         return res
       end
-      
-      # Adds subclass' geocode method making it conveniently available through 
+
+      # Adds subclass' geocode method making it conveniently available through
       # the base class.
       def self.inherited(clazz)
         class_name = clazz.name.split('::').last
@@ -214,10 +214,10 @@ module Geokit
 
     # -------------------------------------------------------------------------------------------
     # "Regular" Address geocoders
-    # -------------------------------------------------------------------------------------------    
-    
+    # -------------------------------------------------------------------------------------------
+
     # Geocoder CA geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_CA variable to
-    # contain true or false based upon whether authentication is to occur.  Conforms to the 
+    # contain true or false based upon whether authentication is to occur.  Conforms to the
     # interface set by the Geocoder class.
     #
     # Returns a response like:
@@ -239,15 +239,15 @@ module Geokit
         xml = res.body
         logger.debug "Geocoder.ca geocoding. Address: #{address}. Result: #{xml}"
         # Parse the document.
-        doc = REXML::Document.new(xml)    
+        doc = REXML::Document.new(xml)
         address.lat = doc.elements['//latt'].text
         address.lng = doc.elements['//longt'].text
         address.success = true
         return address
       rescue
         logger.error "Caught an error during Geocoder.ca geocoding call: "+$!
-        return GeoLoc.new  
-      end  
+        return GeoLoc.new
+      end
 
       # Formats the request in the format acceptable by the CA geocoder.
       def self.construct_request(location)
@@ -265,60 +265,60 @@ module Geokit
       def self.add_ampersand(url)
         url && url.length > 0 ? "&" : ""
       end
-    end    
-    
+    end
+
     # Geocoder Us geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_US variable to
-    # contain true or false based upon whether authentication is to occur.  Conforms to the 
+    # contain true or false based upon whether authentication is to occur.  Conforms to the
     # interface set by the Geocoder class.
     class UsGeocoder < Geocoder
 
       private
       def self.do_geocode(address, options = {})
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        
+
         query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector::url_escape(address_str)}"
-        url = if GeoKit::Geocoders::geocoder_us         
+        url = if GeoKit::Geocoders::geocoder_us
           "http://#{GeoKit::Geocoders::geocoder_us}@geocoder.us/member/service/csv/geocode"
         else
           "http://geocoder.us/service/csv/geocode"
         end
-        
-        url = "#{url}?#{query}"  
+
+        url = "#{url}?#{query}"
         res = self.call_geocoder_service(url)
-        
+
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         data = res.body
         logger.debug "Geocoder.us geocoding. Address: #{address}. Result: #{data}"
         array = data.chomp.split(',')
-        
+
         if array.length == 5
           res=GeoLoc.new
           res.lat,res.lng,res.city,res.state,res.zip=array
           res.country_code='US'
           res.success=true
           return res
-        elsif array.length == 6  
-          res=GeoLoc.new 
+        elsif array.length == 6
+          res=GeoLoc.new
           res.lat,res.lng,res.street_address,res.city,res.state,res.zip=array
           res.country_code='US'
-          res.success=true 
+          res.success=true
           return res
-        else 
+        else
           logger.info "geocoder.us was unable to geocode address: "+address
-          return GeoLoc.new      
+          return GeoLoc.new
         end
-        rescue 
+        rescue
           logger.error "Caught an error during geocoder.us geocoding call: "+$!
           return GeoLoc.new
 
       end
     end
-    
+
     # Yahoo geocoder implementation.  Requires the Geokit::Geocoders::YAHOO variable to
     # contain a Yahoo API key.  Conforms to the interface set by the Geocoder class.
     class YahooGeocoder < Geocoder
 
-      private 
+      private
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
@@ -333,11 +333,11 @@ module Geokit
         if doc.elements['//ResultSet']
           res=GeoLoc.new
 
-          #basic      
+          #basic
           res.lat=doc.elements['//Latitude'].text
           res.lng=doc.elements['//Longitude'].text
           res.country_code=doc.elements['//Country'].text
-          res.provider='yahoo'  
+          res.provider='yahoo'
 
           #extended - false if not available
           res.city=doc.elements['//City'].text if doc.elements['//City'] && doc.elements['//City'].text != nil
@@ -349,12 +349,12 @@ module Geokit
           res.accuracy=%w{unknown country state state city zip zip+4 street address building}.index(res.precision)
           res.success=true
           return res
-        else 
+        else
           logger.info "Yahoo was unable to geocode address: "+address
           return GeoLoc.new
-        end   
+        end
 
-        rescue 
+        rescue
           logger.info "Caught an error during Yahoo geocoding call: "+$!
           return GeoLoc.new
       end
@@ -364,47 +364,47 @@ module Geokit
     # http://www.geonames.org
     class GeonamesGeocoder < Geocoder
 
-      private 
-      
+      private
+
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         # geonames need a space seperated search string
         address_str.gsub!(/,/, " ")
         params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
-        
+
         if(GeoKit::Geocoders::geonames)
           url = "http://ws.geonames.net#{params}&username=#{GeoKit::Geocoders::geonames}"
         else
           url = "http://ws.geonames.org#{params}"
         end
-        
+
         res = self.call_geocoder_service(url)
-        
+
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
-        
+
         xml=res.body
         logger.debug "Geonames geocoding. Address: #{address}. Result: #{xml}"
         doc=REXML::Document.new(xml)
-        
+
         if(doc.elements['//geonames/totalResultsCount'].text.to_i > 0)
           res=GeoLoc.new
-        
+
           # only take the first result
           res.lat=doc.elements['//code/lat'].text if doc.elements['//code/lat']
           res.lng=doc.elements['//code/lng'].text if doc.elements['//code/lng']
           res.country_code=doc.elements['//code/countryCode'].text if doc.elements['//code/countryCode']
-          res.provider='genomes'  
+          res.provider='genomes'
           res.city=doc.elements['//code/name'].text if doc.elements['//code/name']
           res.state=doc.elements['//code/adminName1'].text if doc.elements['//code/adminName1']
           res.zip=doc.elements['//code/postalcode'].text if doc.elements['//code/postalcode']
           res.success=true
           return res
-        else 
+        else
           logger.info "Geonames was unable to geocode address: "+address
           return GeoLoc.new
         end
-        
+
         rescue
           logger.error "Caught an error during Geonames geocoding call: "+$!
       end
@@ -418,18 +418,18 @@ module Geokit
     # contain a Google API key.  Conforms to the interface set by the Geocoder class.
     class GoogleGeocoder < Geocoder
 
-      private 
-      
+      private
+
       # Template method which does the reverse-geocode lookup.
-      def self.do_reverse_geocode(latlng) 
+      def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)
         res = self.call_geocoder_service("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(latlng.ll)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8")
         #        res = Net::HTTP.get_response(URI.parse("http://maps.google.com/maps/geo?ll=#{Geokit::Inflector::url_escape(address_str)}&output=xml&key=#{Geokit::Geocoders::google}&oe=utf-8"))
         return GeoLoc.new unless (res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPOK))
         xml = res.body
         logger.debug "Google reverse-geocoding. LL: #{latlng}. Result: #{xml}"
-        return self.xml2GeoLoc(xml)        
-      end  
+        return self.xml2GeoLoc(xml)
+      end
 
       # Template method which does the geocode lookup.
       #
@@ -438,7 +438,7 @@ module Geokit
       # ==== OPTIONS
       # * :bias - This option makes the Google Geocoder return results biased to a particular
       #           country or viewport. Country code biasing is achieved by passing the ccTLD
-      #           ('uk' for .co.uk, for example) as a :bias value. For a list of ccTLD's, 
+      #           ('uk' for .co.uk, for example) as a :bias value. For a list of ccTLD's,
       #           look here: http://en.wikipedia.org/wiki/CcTLD. By default, the geocoder
       #           will be biased to results within the US (ccTLD .com).
       #
@@ -461,9 +461,9 @@ module Geokit
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
         logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
-        return self.xml2GeoLoc(xml, address)        
+        return self.xml2GeoLoc(xml, address)
       end
-      
+
       # Determine the Google API url based on the google api key, or based on the client / private key for premier users
       def self.geocode_url(address,options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
@@ -476,8 +476,8 @@ module Geokit
           "http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8"
         end
       end
-      
-      
+
+
       def self.construct_bias_string_from_options(bias)
         if bias.is_a?(String) or bias.is_a?(Symbol)
           # country code biasing
@@ -487,24 +487,24 @@ module Geokit
           "&ll=#{bias.center.ll}&spn=#{bias.to_span.ll}"
         end
       end
-      
+
       def self.xml2GeoLoc(xml, address="")
         doc=REXML::Document.new(xml)
 
         if doc.elements['//kml/Response/Status/code'].text == '200'
           geoloc = nil
-          # Google can return multiple results as //Placemark elements. 
+          # Google can return multiple results as //Placemark elements.
           # iterate through each and extract each placemark as a geoloc
           doc.each_element('//Placemark') do |e|
             extracted_geoloc = extract_placemark(e) # g is now an instance of GeoLoc
-            if geoloc.nil? 
+            if geoloc.nil?
               # first time through, geoloc is still nil, so we make it the geoloc we just extracted
-              geoloc = extracted_geoloc 
+              geoloc = extracted_geoloc
             else
-              # second (and subsequent) iterations, we push additional 
-              # geolocs onto "geoloc.all" 
-              geoloc.all.push(extracted_geoloc) 
-            end  
+              # second (and subsequent) iterations, we push additional
+              # geolocs onto "geoloc.all"
+              geoloc.all.push(extracted_geoloc)
+            end
           end
           return geoloc
         elsif doc.elements['//kml/Response/Status/code'].text == '620'
@@ -520,7 +520,7 @@ module Geokit
       rescue
         logger.error "Caught an error during Google geocoding call: "+$!
         return GeoLoc.new
-      end  
+      end
 
       # extracts a single geoloc from a //placemark element in the google results xml
       def self.extract_placemark(doc)
@@ -547,14 +547,14 @@ module Geokit
         address_details=doc.elements['.//*[local-name() = "AddressDetails"]']
         res.accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
         res.precision=%w{unknown country state state city zip zip+4 street address building}[res.accuracy]
-        
+
         # google returns a set of suggested boundaries for the geocoded result
-        if suggested_bounds = doc.elements['//LatLonBox']  
+        if suggested_bounds = doc.elements['//LatLonBox']
           res.suggested_bounds = Bounds.normalize(
-                                  [suggested_bounds.attributes['south'], suggested_bounds.attributes['west']], 
+                                  [suggested_bounds.attributes['south'], suggested_bounds.attributes['west']],
                                   [suggested_bounds.attributes['north'], suggested_bounds.attributes['east']])
         end
-        
+
         res.success=true
 
         return res
@@ -565,11 +565,11 @@ module Geokit
     # -------------------------------------------------------------------------------------------
     # IP Geocoders
     # -------------------------------------------------------------------------------------------
-  
+
     # Provides geocoding based upon an IP address.  The underlying web service is geoplugin.net
     class GeoPluginGeocoder < Geocoder
       private
-      
+
       def self.do_geocode(ip, options = {})
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         response = self.call_geocoder_service("http://www.geoplugin.net/xml.gp?ip=#{ip}")
@@ -596,7 +596,7 @@ module Geokit
     # Provides geocoding based upon an IP address.  The underlying web service is a hostip.info
     # which sources their data through a combination of publicly available information as well
     # as community contributions.
-    class IpGeocoder < Geocoder 
+    class IpGeocoder < Geocoder
 
       # A number of non-routable IP ranges.
       #
@@ -619,11 +619,11 @@ module Geokit
 	IPAddr.new('240.0.0.0/4')     # Reserved for future use
       ].freeze
 
-      private 
+      private
 
       # Given an IP address, returns a GeoLoc instance which contains latitude,
-      # longitude, city, and country code.  Sets the success attribute to false if the ip 
-      # parameter does not match an ip address.  
+      # longitude, city, and country code.  Sets the success attribute to false if the ip
+      # parameter does not match an ip address.
       def self.do_geocode(ip, options = {})
         return GeoLoc.new unless /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
         return GeoLoc.new if self.private_ip_address?(ip)
@@ -649,7 +649,7 @@ module Geokit
         res.provider = 'hostip'
         res.city, res.state = yaml['City'].split(', ')
         country, res.country_code = yaml['Country'].split(' (')
-        res.lat = yaml['Latitude'] 
+        res.lat = yaml['Latitude']
         res.lng = yaml['Longitude']
         res.country_code.chop!
         res.success = !(res.city =~ /\(.+\)/)
@@ -665,33 +665,33 @@ module Geokit
 	return NON_ROUTABLE_IP_RANGES.any? { |range| range.include?(ip) }
       end
     end
-    
+
     # -------------------------------------------------------------------------------------------
     # The Multi Geocoder
-    # -------------------------------------------------------------------------------------------    
-    
+    # -------------------------------------------------------------------------------------------
+
     # Provides methods to geocode with a variety of geocoding service providers, plus failover
     # among providers in the order you configure. When 2nd parameter is set 'true', perform
     # ip location lookup with 'address' as the ip address.
-    # 
+    #
     # Goal:
     # - homogenize the results of multiple geocoders
-    # 
+    #
     # Limitations:
     # - currently only provides the first result. Sometimes geocoders will return multiple results.
     # - currently discards the "accuracy" component of the geocoding calls
-    class MultiGeocoder < Geocoder       
+    class MultiGeocoder < Geocoder
 
       private
-      # This method will call one or more geocoders in the order specified in the 
+      # This method will call one or more geocoders in the order specified in the
       # configuration until one of the geocoders work.
-      # 
+      #
       # The failover approach is crucial for production-grade apps, but is rarely used.
-      # 98% of your geocoding calls will be successful with the first call  
+      # 98% of your geocoding calls will be successful with the first call
       def self.do_geocode(address, options = {})
         geocode_ip = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.match(address)
         provider_order = geocode_ip ? Geokit::Geocoders::ip_provider_order : Geokit::Geocoders::provider_order
-        
+
         provider_order.each do |provider|
           begin
             klass = Geokit::Geocoders.const_get "#{Geokit::Inflector::camelize(provider.to_s)}Geocoder"
@@ -704,8 +704,8 @@ module Geokit
         # If we get here, we failed completely.
         GeoLoc.new
       end
-      
-      # This method will call one or more geocoders in the order specified in the 
+
+      # This method will call one or more geocoders in the order specified in the
       # configuration until one of the geocoders work, only this time it's going
       # to try to reverse geocode a geographical point.
       def self.do_reverse_geocode(latlng)
@@ -721,6 +721,6 @@ module Geokit
         # If we get here, we failed completely.
         GeoLoc.new
       end
-    end   
+    end
   end
 end
