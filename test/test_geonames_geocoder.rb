@@ -1,5 +1,7 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
+Geokit::Geocoders::GeonamesGeocoder.key = 'geokit'
+
 class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
@@ -12,7 +14,8 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_geonames_geocode
     VCR.use_cassette('geonames_geocode') do
-    url = "http://ws.geonames.org/postalCodeSearch?placename=#{@city}&maxRows=10"
+    key = Geokit::Geocoders::GeonamesGeocoder.key
+    url = "http://ws.geonames.org/postalCodeSearch?placename=#{@city}&maxRows=10&username=#{key}"
     res = Geokit::Geocoders::GeonamesGeocoder.geocode(@city)
     assert_url url
     assert_equal res.country_code, 'AU'
