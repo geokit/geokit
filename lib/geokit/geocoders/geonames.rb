@@ -21,7 +21,7 @@ module Geokit
         if key
           "http://ws.geonames.net#{params}&username=#{key}"
         else
-          "http://ws.geonames.org#{params}"
+          "http://ws.geonames.org#{params}&username=#{key}"
         end
       end
 
