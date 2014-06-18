@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://ws.geonames.org/postalCodeSearch?maxRows=10&placename=Adelaide
+    uri: http://api.geonames.org/postalCodeSearch?maxRows=10&placename=Adelaide&username=demo
     body:
       encoding: US-ASCII
       string: ''

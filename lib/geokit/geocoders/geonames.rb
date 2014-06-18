@@ -3,7 +3,7 @@ module Geokit
     # Another geocoding web service
     # http://www.geonames.org
     class GeonamesGeocoder < Geocoder
-      config :key
+      config :key, :premium
 
       private
 
@@ -13,15 +13,19 @@ module Geokit
       end
 
       def self.submit_url(address)
+        if key.nil? || key.empty?
+          raise Geokit::Geocoders::GeocodeError.new('Geonames requires a key to use their service.')
+        end
+        
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         # geonames need a space seperated search string
         address_str.gsub!(/,/, " ")
         params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
 
-        if key
+        if premium
           "http://ws.geonames.net#{params}&username=#{key}"
         else
-          "http://ws.geonames.org#{params}"
+          "http://api.geonames.org#{params}&username=#{key}"
         end
       end
 
@@ -35,7 +39,8 @@ module Geokit
       }
 
       def self.parse_xml(xml)
-        return GeoLoc.new unless xml.elements['geonames/totalResultsCount'].text.to_i > 0
+        count = xml.elements['geonames/totalResultsCount']
+        return GeoLoc.new unless !count.nil? && count.text.to_i > 0
         loc = new_loc
         # only take the first result
         set_mappings(loc, xml.elements['geonames/code'], XML_MAPPINGS)
