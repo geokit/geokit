@@ -152,11 +152,20 @@ If you're using this gem by itself, here are the configuration options:
     # and http://geocoder.ca/?register=1
     Geokit::Geocoders::CaGeocoder.key = 'KEY'
 
+    # This is your username key for geonames.
+    # To use this service either free or premium, you must register a key.
+    # See http://www.geonames.org
+    Geokit::Geocoders::GeonamesGeocoder.key = 'KEY'
+
     # Most other geocoders need either no setup or a key
     Geokit::Geocoders::BingGeocoder.key = ''
-    Geokit::Geocoders::GeonamesGeocoder.key = ''
     Geokit::Geocoders::MapQuestGeocoder.key = ''
     Geokit::Geocoders::YandexGeocoder.key = ''
+
+    # Geonames has a free service and a premium service, each using a different URL
+    # GeonamesGeocoder.premium = true will use http://ws.geonames.net (premium)
+    # GeonamesGeocoder.premium = false will use http://api.geonames.org (free)
+    Geokit::Geocoders::GeonamesGeocoder.premium = false
 
     # require "external_geocoder.rb"
     # Please see the section "writing your own geocoders" for more information.
