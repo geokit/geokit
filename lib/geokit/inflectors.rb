@@ -20,12 +20,6 @@ module Geokit
       lower_case_and_underscored_word.to_s.gsub(/_id$/, "").gsub(/_/, " ").capitalize
     end
 
-    def snake_case(s)
-      return s.downcase if s =~ /^[A-Z]+$/u
-      s.gsub(/([A-Z]+)(?=[A-Z][a-z]?)|\B[A-Z]/u, '_\&') =~ /_*(.*)/
-      $+.downcase
-    end
-
     def url_escape(s)
       CGI.escape(s)
     end
