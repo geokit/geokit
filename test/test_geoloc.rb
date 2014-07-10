@@ -86,6 +86,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
       'precision', 'unknown',
       'province', '',
       'state', 'CA',
+      'state_code', '',
       'street_address', '',
       'street_name', '',
       'street_number', '',

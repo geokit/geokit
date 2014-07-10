@@ -26,6 +26,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_url url
       assert_equal res.country_code, 'AU'
       assert_equal res.state, 'South Australia'
+      assert_equal res.state_code, 'SA'
       assert_equal res.city, 'Adelaide'
     end
   end

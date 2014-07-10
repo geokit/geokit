@@ -32,6 +32,7 @@ module Geokit
       XML_MAPPINGS = {
         :city         => 'name',
         :state        => 'adminName1',
+        :state_code   => 'adminCode1',
         :zip          => 'postalcode',
         :country_code => 'countryCode',
         :lat          => 'lat',
