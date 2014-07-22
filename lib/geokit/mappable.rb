@@ -12,7 +12,7 @@ module Geokit
   #
   # Distance units supported are :miles, :kms, and :nms.
   module Mappable
-    PI_DIV_RAD = 0.0174
+    PI_DIV_RAD = Math::PI / 180
     KMS_PER_MILE = 1.609
     NMS_PER_MILE = 0.868976242
     EARTH_RADIUS_IN_MILES = 3963.19
