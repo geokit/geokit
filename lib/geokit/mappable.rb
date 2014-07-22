@@ -12,25 +12,19 @@ module Geokit
   #
   # Distance units supported are :miles, :kms, and :nms.
   module Mappable
-    PI_DIV_RAD = Math::PI / 180
-    KMS_PER_METER   = 1 / 1000.0
-    MILES_PER_METER = 1 / 1609.0
-    NMS_PER_METER   = 0.0005400722448725917
-    EARTH_RADIUS_IN_METERS = 6376772.71
-    EARTH_RADIUS_IN_MILES  = EARTH_RADIUS_IN_METERS * MILES_PER_METER
-    EARTH_RADIUS_IN_KMS    = EARTH_RADIUS_IN_METERS * KMS_PER_METER
-    EARTH_RADIUS_IN_NMS    = EARTH_RADIUS_IN_METERS * NMS_PER_METER
-    METERS_PER_LATITUDE_DEGREE = 111181.9
-    MILES_PER_LATITUDE_DEGREE  = METERS_PER_LATITUDE_DEGREE * MILES_PER_METER
-    KMS_PER_LATITUDE_DEGREE    = METERS_PER_LATITUDE_DEGREE * KMS_PER_METER
-    NMS_PER_LATITUDE_DEGREE    = METERS_PER_LATITUDE_DEGREE * NMS_PER_METER
-
     # Mix below class methods into the includer.
     def self.included(receiver) # :nodoc:
       receiver.extend ClassMethods
     end
 
     module ClassMethods #:nodoc:
+      PI_DIV_RAD = Math::PI / 180
+      EARTH_RADIUS_IN_METERS = 6376772.71
+      METERS_PER_LATITUDE_DEGREE = 111181.9
+
+      EARTH_RADIUS = {}
+      PER_LATITUDE_DEGREE = {}
+
       # Returns the distance between two points.  The from and to parameters are
       # required to have lat and lng attributes.  Valid options are:
       # :units - valid values are :miles, :kms, :nms (Geokit::default_units is the default)
@@ -154,23 +148,24 @@ module Geokit
         (rad2deg(rad)+360)%360
       end
 
+      def self.register_unit(key, in_meters)
+        EARTH_RADIUS[key] = EARTH_RADIUS_IN_METERS * in_meters
+        PER_LATITUDE_DEGREE[key] = METERS_PER_LATITUDE_DEGREE * in_meters
+      end
+
+      register_unit :kms,   1 / 1000.0
+      register_unit :miles, 1 / 1609.0
+      register_unit :nms,   0.0005400722448725917
+
       # Returns the multiplier used to obtain the correct distance units.
       # TODO make more accurate by coping http://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
       def units_sphere_multiplier(units)
-        case units
-          when :kms; EARTH_RADIUS_IN_KMS
-          when :nms; EARTH_RADIUS_IN_NMS
-          when :miles; EARTH_RADIUS_IN_MILES
-        end
+        EARTH_RADIUS[units]
       end
 
       # Returns the number of units per latitude degree.
       def units_per_latitude_degree(units)
-        case units
-          when :kms; KMS_PER_LATITUDE_DEGREE
-          when :nms; NMS_PER_LATITUDE_DEGREE
-          when :miles; MILES_PER_LATITUDE_DEGREE
-        end
+        PER_LATITUDE_DEGREE[units]
       end
 
       # Returns the number units per longitude degree.
