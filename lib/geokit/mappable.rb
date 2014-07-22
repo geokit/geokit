@@ -140,8 +140,6 @@ module Geokit
         ]
       end
       
-      protected
-
       def deg2rad(degrees)
         degrees.to_f / 180.0 * Math::PI
       end
