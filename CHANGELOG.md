@@ -1,6 +1,8 @@
 ## 1.8.6
 
 * Drop Ruby 1.8 support
+* Make meter centric
+* Add meters as a unit
 
 ## 1.8.5
 
