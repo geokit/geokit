@@ -24,7 +24,6 @@ module Geokit
     MILES_PER_LATITUDE_DEGREE  = METERS_PER_LATITUDE_DEGREE * MILES_PER_METER
     KMS_PER_LATITUDE_DEGREE    = METERS_PER_LATITUDE_DEGREE * KMS_PER_METER
     NMS_PER_LATITUDE_DEGREE    = METERS_PER_LATITUDE_DEGREE * NMS_PER_METER
-    LATITUDE_DEGREES = EARTH_RADIUS_IN_METERS / METERS_PER_LATITUDE_DEGREE
 
     # Mix below class methods into the includer.
     def self.included(receiver) # :nodoc:
@@ -176,12 +175,7 @@ module Geokit
 
       # Returns the number units per longitude degree.
       def units_per_longitude_degree(lat, units)
-        meters_per_longitude_degree = (LATITUDE_DEGREES/MILES_PER_METER * Math.cos(lat * PI_DIV_RAD)).abs
-        case units
-          when :kms; meters_per_longitude_degree * KMS_PER_METER
-          when :nms; meters_per_longitude_degree * NMS_PER_METER
-          when :miles; meters_per_longitude_degree * MILES_PER_METER
-        end
+        units_sphere_multiplier(units) * Math.cos(lat * PI_DIV_RAD) * PI_DIV_RAD
       end
     end
 

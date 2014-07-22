@@ -1,5 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
+# Test distances from http://www.csgnetwork.com/degreelenllavcalc.html
 class MappableTest < Test::Unit::TestCase #:nodoc: all
   class TestMappable
     include Geokit::Mappable
@@ -27,31 +28,31 @@ class MappableTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_units_per_longitude_degree_miles
-    delta = 0.00001
-    assert_in_delta 57.354410, TestMappable.units_per_longitude_degree(  0, :miles), delta
-    assert_in_delta 55.400110, TestMappable.units_per_longitude_degree( 15, :miles), delta
-    assert_in_delta 49.670379, TestMappable.units_per_longitude_degree( 30, :miles), delta
-    assert_in_delta 40.555695, TestMappable.units_per_longitude_degree( 45, :miles), delta
-    assert_in_delta 28.677207, TestMappable.units_per_longitude_degree( 60, :miles), delta
-    assert_in_delta 14.844415, TestMappable.units_per_longitude_degree( 75, :miles), delta
+    delta = 0.2
+    assert_in_delta 69.170565, TestMappable.units_per_longitude_degree(  0, :miles), delta
+    assert_in_delta 66.828621, TestMappable.units_per_longitude_degree( 15, :miles), delta
+    assert_in_delta 59.953655, TestMappable.units_per_longitude_degree( 30, :miles), delta
+    assert_in_delta 48.993036, TestMappable.units_per_longitude_degree( 45, :miles), delta
+    assert_in_delta 34.672430, TestMappable.units_per_longitude_degree( 60, :miles), delta
+    assert_in_delta 17.958830, TestMappable.units_per_longitude_degree( 75, :miles), delta
     assert_in_delta  0.000000, TestMappable.units_per_longitude_degree( 90, :miles), delta
   end
 
   def test_units_per_longitude_degree_kms
-    delta = 0.00001
-    assert_in_delta 92.283252, TestMappable.units_per_longitude_degree(  0, :kms), delta
-    assert_in_delta 89.138776, TestMappable.units_per_longitude_degree( 15, :kms), delta
-    assert_in_delta 79.919641, TestMappable.units_per_longitude_degree( 30, :kms), delta
-    assert_in_delta 65.254113, TestMappable.units_per_longitude_degree( 45, :kms), delta
-    assert_in_delta 46.141626, TestMappable.units_per_longitude_degree( 60, :kms), delta
-    assert_in_delta 23.884663, TestMappable.units_per_longitude_degree( 75, :kms), delta
-    assert_in_delta  0.000000, TestMappable.units_per_longitude_degree( 90, :kms), delta
+    delta = 0.2
+    assert_in_delta 111.319458, TestMappable.units_per_longitude_degree(  0, :kms), delta
+    assert_in_delta 107.550455, TestMappable.units_per_longitude_degree( 15, :kms), delta
+    assert_in_delta  96.486248, TestMappable.units_per_longitude_degree( 30, :kms), delta
+    assert_in_delta  78.846806, TestMappable.units_per_longitude_degree( 45, :kms), delta
+    assert_in_delta  55.799979, TestMappable.units_per_longitude_degree( 60, :kms), delta
+    assert_in_delta  28.901993, TestMappable.units_per_longitude_degree( 75, :kms), delta
+    assert_in_delta   0.000000, TestMappable.units_per_longitude_degree( 90, :kms), delta
   end
 
   def test_units_per_longitude_degree_nms
-    delta = 0.00001
-    assert_in_delta 49.839623, TestMappable.units_per_longitude_degree(  0, :nms), delta
-    assert_in_delta 35.241935, TestMappable.units_per_longitude_degree( 45, :nms), delta
+    delta = 0.2
+    assert_in_delta 60.107578, TestMappable.units_per_longitude_degree(  0, :nms), delta
+    assert_in_delta 42.573784, TestMappable.units_per_longitude_degree( 45, :nms), delta
     assert_in_delta  0.000000, TestMappable.units_per_longitude_degree( 90, :nms), delta
   end
 
