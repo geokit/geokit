@@ -1,3 +1,7 @@
+## 1.8.6
+
+* Drop Ruby 1.8 support
+
 ## 1.8.5
 
 * HTTPS on Google, Bing, Yahoo and MapQuest
