@@ -13,15 +13,18 @@ module Geokit
   # Distance units supported are :miles, :kms, and :nms.
   module Mappable
     PI_DIV_RAD = Math::PI / 180
-    KMS_PER_MILE = 1.609
-    NMS_PER_MILE = 0.868976242
-    EARTH_RADIUS_IN_MILES = 3963.19
-    EARTH_RADIUS_IN_KMS = EARTH_RADIUS_IN_MILES * KMS_PER_MILE
-    EARTH_RADIUS_IN_NMS = EARTH_RADIUS_IN_MILES * NMS_PER_MILE
-    MILES_PER_LATITUDE_DEGREE = 69.1
-    KMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * KMS_PER_MILE
-    NMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * NMS_PER_MILE
-    LATITUDE_DEGREES = EARTH_RADIUS_IN_MILES / MILES_PER_LATITUDE_DEGREE
+    KMS_PER_METER   = 1 / 1000.0
+    MILES_PER_METER = 1 / 1609.0
+    NMS_PER_METER   = 0.0005400722448725917
+    EARTH_RADIUS_IN_METERS = 6376772.71
+    EARTH_RADIUS_IN_MILES  = EARTH_RADIUS_IN_METERS * MILES_PER_METER
+    EARTH_RADIUS_IN_KMS    = EARTH_RADIUS_IN_METERS * KMS_PER_METER
+    EARTH_RADIUS_IN_NMS    = EARTH_RADIUS_IN_METERS * NMS_PER_METER
+    METERS_PER_LATITUDE_DEGREE = 111181.9
+    MILES_PER_LATITUDE_DEGREE  = METERS_PER_LATITUDE_DEGREE * MILES_PER_METER
+    KMS_PER_LATITUDE_DEGREE    = METERS_PER_LATITUDE_DEGREE * KMS_PER_METER
+    NMS_PER_LATITUDE_DEGREE    = METERS_PER_LATITUDE_DEGREE * NMS_PER_METER
+    LATITUDE_DEGREES = EARTH_RADIUS_IN_METERS / METERS_PER_LATITUDE_DEGREE
 
     # Mix below class methods into the includer.
     def self.included(receiver) # :nodoc:
@@ -173,11 +176,11 @@ module Geokit
 
       # Returns the number units per longitude degree.
       def units_per_longitude_degree(lat, units)
-        miles_per_longitude_degree = (LATITUDE_DEGREES * Math.cos(lat * PI_DIV_RAD)).abs
+        meters_per_longitude_degree = (LATITUDE_DEGREES/MILES_PER_METER * Math.cos(lat * PI_DIV_RAD)).abs
         case units
-          when :kms; miles_per_longitude_degree * KMS_PER_MILE
-          when :nms; miles_per_longitude_degree * NMS_PER_MILE
-          when :miles; miles_per_longitude_degree
+          when :kms; meters_per_longitude_degree * KMS_PER_METER
+          when :nms; meters_per_longitude_degree * NMS_PER_METER
+          when :miles; meters_per_longitude_degree * MILES_PER_METER
         end
       end
     end
