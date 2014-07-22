@@ -77,6 +77,11 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_in_delta 6.39, @loc_a.distance_to(@loc_e, :units => :kms, :formula => :flat), 0.4
   end
 
+  def test_distance_between_diff_with_meters_and_flat
+    assert_in_delta 6390, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :meters, :formula => :flat), 2
+    assert_in_delta 6390, @loc_a.distance_to(@loc_e, :units => :meters, :formula => :flat), 2
+  end
+
   def test_distance_between_diff_with_nms_and_flat
     assert_in_delta 3.334, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :nms, :formula => :flat), 0.4
     assert_in_delta 3.334, @loc_a.distance_to(@loc_e, :units => :nms, :formula => :flat), 0.4

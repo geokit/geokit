@@ -153,6 +153,7 @@ module Geokit
         PER_LATITUDE_DEGREE[key] = METERS_PER_LATITUDE_DEGREE * in_meters
       end
 
+      register_unit :meters, 1
       register_unit :kms,   1 / 1000.0
       register_unit :miles, 1 / 1609.0
       register_unit :nms,   0.0005400722448725917
