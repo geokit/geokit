@@ -153,6 +153,7 @@ module Geokit
       end
 
       # Returns the multiplier used to obtain the correct distance units.
+      # TODO make more accurate by coping http://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
       def units_sphere_multiplier(units)
         case units
           when :kms; EARTH_RADIUS_IN_KMS
