@@ -157,7 +157,7 @@ module Geokit
         case units
           when :kms; EARTH_RADIUS_IN_KMS
           when :nms; EARTH_RADIUS_IN_NMS
-          else EARTH_RADIUS_IN_MILES
+          when :miles; EARTH_RADIUS_IN_MILES
         end
       end
 
@@ -166,7 +166,7 @@ module Geokit
         case units
           when :kms; KMS_PER_LATITUDE_DEGREE
           when :nms; NMS_PER_LATITUDE_DEGREE
-          else MILES_PER_LATITUDE_DEGREE
+          when :miles; MILES_PER_LATITUDE_DEGREE
         end
       end
 
@@ -176,7 +176,7 @@ module Geokit
         case units
           when :kms; miles_per_longitude_degree * KMS_PER_MILE
           when :nms; miles_per_longitude_degree * NMS_PER_MILE
-          else miles_per_longitude_degree
+          when :miles; miles_per_longitude_degree
         end
       end
     end
