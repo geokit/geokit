@@ -60,7 +60,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
 
   def test_to_yaml
     @loc.city = 'San Francisco'
-    @loc.state = 'CA'
+    @loc.state_code = 'CA'
     @loc.zip = '94105'
     @loc.country_code = 'US'
 
@@ -85,8 +85,9 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
       'lng', '',
       'precision', 'unknown',
       'province', '',
-      'state', 'CA',
-      'state_code', '',
+      'state', '',
+      'state_code', 'CA',
+      'state_name', '',
       'street_address', '',
       'street_name', '',
       'street_number', '',

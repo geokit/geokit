@@ -25,7 +25,8 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
       res = Geokit::Geocoders::GeonamesGeocoder.geocode(@city)
       assert_url url
       assert_equal res.country_code, 'AU'
-      assert_equal res.state, 'South Australia'
+      assert_equal res.state, 'SA'
+      assert_equal res.state_name, 'South Australia'
       assert_equal res.state_code, 'SA'
       assert_equal res.city, 'Adelaide'
     end

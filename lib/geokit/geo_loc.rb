@@ -24,7 +24,7 @@ module Geokit
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
     # Street number and street name are extracted from the street address attribute if they don't exist
-    attr_accessor :street_number, :street_name, :street_address, :city, :state, :state_code, :zip, :country_code, :country
+    attr_accessor :street_number, :street_name, :street_address, :city, :state, :state_name, :state_code, :zip, :country_code, :country
     attr_accessor :full_address, :all, :district, :province, :sub_premise, :neighborhood
     # Attributes set upon return from geocoding.  Success will be true for successful
     # geocode lookups.  The provider will be set to the name of the providing geocoder.
@@ -48,6 +48,7 @@ module Geokit
       @city=h[:city]
       @state=h[:state]
       @state_code=h[:state_code]
+      @state_name=h[:state_name]
       @zip=h[:zip]
       @country_code=h[:country_code]
       @province = h[:province]
@@ -55,6 +56,10 @@ module Geokit
       @precision='unknown'
       @full_address=nil
       super(h[:lat],h[:lng])
+    end
+
+    def state
+      @state || @state_code || @state_name
     end
 
     # Returns true if geocoded to the United States.

@@ -47,7 +47,7 @@ module Geokit
         loc.street_number = locality["Thoroughfare"]["Premise"]["PremiseNumber"] rescue nil
         loc.street_name = locality["Thoroughfare"]["ThoroughfareName"] rescue nil
         loc.city = locality["LocalityName"] rescue nil
-        loc.state = country["AdministrativeArea"]["AdministrativeAreaName"] rescue nil
+        loc.state_name = country["AdministrativeArea"]["AdministrativeAreaName"] rescue nil
         loc.state ||= country["Locality"]["LocalityName"] rescue nil
       end
 

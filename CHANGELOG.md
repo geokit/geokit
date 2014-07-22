@@ -3,6 +3,7 @@
 * Drop Ruby 1.8 support
 * Make meter centric
 * Add meters as a unit
+* Use state_name/state_code instead of state
 
 ## 1.8.5
 

@@ -29,7 +29,7 @@ module Geokit
       def self.set_address_components(data, loc)
         match = data['country'].match /([A-Z]+)(\(([A-Z]+)\))?/
         if match[3]
-          loc.state = match[1]
+          loc.state_code = match[1]
           loc.country_code = match[3]
         else
           loc.country_code = match[1]

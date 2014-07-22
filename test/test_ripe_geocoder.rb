@@ -25,6 +25,7 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_url url
       assert_equal res.city, 'Mountain View'
       assert_equal res.state, 'CA'
+      assert_equal res.state_code, 'CA'
       assert_equal res.country_code, 'US'
     end
   end
@@ -36,6 +37,7 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_url url
       assert_equal res.city, 'Adelaide'
       assert_equal res.state, nil
+      assert_equal res.state_code, nil
       assert_equal res.country_code, 'AU'
     end
   end
