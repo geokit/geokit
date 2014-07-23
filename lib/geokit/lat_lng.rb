@@ -4,6 +4,15 @@ module Geokit
 
     attr_accessor :lat, :lng
 
+    # Provide users with the ability to use :latitude and :longitude
+    # to access the lat/lng instance variables.
+    # Alias the attr_accessor :lat to :latitude
+    alias_method :latitude, :lat
+    alias_method :latitude=, :lat=
+    # Alias the attr_accessor :lng to :longitude
+    alias_method :longitude, :lng
+    alias_method :longitude=, :lng=
+
     # Accepts latitude and longitude or instantiates an empty instance
     # if lat and lng are not provided. Converted to floats if provided
     def initialize(lat=nil, lng=nil)

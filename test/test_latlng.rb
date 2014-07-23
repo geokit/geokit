@@ -27,6 +27,22 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     location
   end
 
+  def test_existance_of_latitude_alias
+    assert_respond_to(@loc_a, :latitude)
+  end
+
+  def test_existance_of_longitude_alias
+    assert_respond_to(@loc_a, :longitude)
+  end
+
+  def test_that_lat_and_latitude_are_same_object
+    assert_same(@loc_a.lat, @loc_a.latitude)
+  end
+
+  def test_that_lng_and_longitude_are_same_object
+    assert_same(@loc_a.lng, @loc_a.longitude)
+  end
+
   def test_distance_between_same_using_defaults
     assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a)
     assert_equal 0, @loc_a.distance_to(@loc_a)
