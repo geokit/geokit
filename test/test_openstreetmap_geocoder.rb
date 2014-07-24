@@ -61,6 +61,14 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address))
   end
 
+  def test_osm_city_with_accept_language
+    response = MockSuccess.new
+    response.expects(:body).returns(OSM_CITY)
+    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address,{:'accept-language'=>'pt-br'}))
+  end
+
   def test_osm_city_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
@@ -127,6 +135,18 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "28026", res.zip
     assert_equal "Calle Del Doctor Tolosa Latour", res.street_address
   end
+
+  def test_reverse_geo_code_with_accept_language
+    response = MockSuccess.new
+    response.expects(:body).returns(OSM_REVERSE_MADRID)
+    location = Geokit::GeoLoc.new
+    # Madrid
+    location.lat, location.lng = "40.4167413", "-3.7032498"
+    url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}&accept-language=pt-br"
+    Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll, {:'accept-language'=>'pt-br'})
+  end
+
 
   def test_service_unavailable
     response = MockFailure.new

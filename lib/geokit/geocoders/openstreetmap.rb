@@ -11,6 +11,9 @@ module Geokit
         options_str << generate_param_for_option(:json_callback, options)
         options_str << generate_param_for_option(:countrycodes, options)
         options_str << generate_param_for_option(:viewbox, options)
+        options_str << generate_param_for_option(:'accept-language', options)
+        options_str << generate_param_for_option(:email, options)
+
 
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
@@ -22,6 +25,8 @@ module Geokit
         latlng = LatLng.normalize(latlng)
         options_str = generate_param_for(:lat, latlng.lat)
         options_str << generate_param_for(:lon, latlng.lng)
+        options_str << generate_param_for_option(:'accept-language', options)
+        options_str << generate_param_for_option(:email, options)
         options_str << generate_param_for_option(:zoom, options)
         options_str << generate_param_for_option(:osm_type, options)
         options_str << generate_param_for_option(:osm_id, options)
