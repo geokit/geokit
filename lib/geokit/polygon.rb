@@ -36,5 +36,31 @@ module Geokit
 
       oddNodes
     end # contains?
+
+    def centroid
+      centroid_lat = 0.0
+      centroid_lng = 0.0
+      signed_area = 0.0
+
+      # Iterate over each element in the list but the last item as it's
+      # calculated by the i+1 logic
+      @points[0...-1].each_index { |i|
+        x0 = @points[i].lat
+        y0 = @points[i].lng
+        x1 = @points[i+1].lat
+        y1 = @points[i+1].lng
+        a = x0*y1 - x1*y0
+        signed_area += a
+        centroid_lat += (x0 + x1)*a
+        centroid_lng += (y0 + y1)*a
+      }
+
+      signed_area *= 0.5
+      centroid_lat /= (6.0*signed_area)
+      centroid_lng /= (6.0*signed_area)
+      
+      Geokit::LatLng.new(centroid_lat, centroid_lng)
+    end # end centroid
+
   end # class Polygon
 end

@@ -15,6 +15,8 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @points = [@p1, @p2, @p3, @p4, @p5]
     @polygon = Geokit::Polygon.new(@points)
 
+    @polygon_centroid = Geokit::LatLng.new(45.27463866133501, -93.41400121829719)
+
     @point_inside = Geokit::LatLng.new(45.27428243796789, -93.41648483416066)
     @point_outside = Geokit::LatLng.new(45.45411010558687, -93.78151703160256)
 
@@ -34,6 +36,8 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @complex_points = [@c1, @c2, @c3, @c4, @c5, @c6, @c7, @c8, @c9, @c10, @c11]
     @complex_polygon = Geokit::Polygon.new(@complex_points)
 
+    @complex_polygon_centroid = Geokit::LatLng.new(45.43622702936517, -93.5352210389731)
+
     #Test three points that should be "inside" this complex shape
     @complex_inside_one = Geokit::LatLng.new(45.52438983143154, -93.59818268101662)
     @complex_inside_two = Geokit::LatLng.new(45.50321887154943, -93.37845611851662)
@@ -52,6 +56,8 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
 
     @open_points = [@op1, @op2, @op3, @op4]
     @open_polygon = Geokit::Polygon.new(@open_points)
+
+    @open_polygon_centroid = Geokit::LatLng.new(44.95912726688109, -92.7068888186181)
 
   end
 
@@ -95,7 +101,18 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
 
     assert @open_polygon.points[0].lng == @open_polygon.points[-1].lng
     assert @open_polygon.points[0].lat == @open_polygon.points[-1].lat
+  end
 
+  def test_centroid_for_simple_poly
+    assert_equal(@polygon.centroid, @polygon_centroid)
+  end
+
+  def test_centroid_for_complex_poly
+    assert_equal(@complex_polygon.centroid, @complex_polygon_centroid)
+  end
+
+  def test_centroid_for_open_poly
+    assert_equal(@open_polygon.centroid, @open_polygon_centroid)
   end
 
 end
