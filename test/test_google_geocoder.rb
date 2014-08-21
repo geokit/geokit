@@ -103,6 +103,22 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      end
    end
 
+   def test_google_sublocality
+     @address = "682 prospect place Brooklyn ny 11216"
+     VCR.use_cassette('google_sublocality') do
+     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
+     TestHelper.expects(:last_url).with(url)
+     res=Geokit::Geocoders::GoogleGeocoder.do_geocode(@address)
+     assert_equal "682 Prospect Place", res.street_address
+     assert_equal "NY", res.state
+     assert_equal "Brooklyn", res.city
+     assert_equal "40.6745812,-73.9541582", res.ll
+     assert res.is_us?
+     assert_equal "682 Prospect Place, Brooklyn, NY 11216, USA", res.full_address
+     assert_equal "google", res.provider
+     end
+   end
+
    def test_google_city_accuracy
      VCR.use_cassette('google_city') do
      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"

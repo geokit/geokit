@@ -181,6 +181,8 @@ module Geokit
             loc.district = comp['long_name']
           when types.include?('neighborhood')
             loc.neighborhood = comp['short_name']
+          when types.include?("sublocality")
+            loc.city = comp['long_name'] if loc.city.nil?
           end
         end
       end

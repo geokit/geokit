@@ -1,0 +1,126 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=682%20prospect%20place%20Brooklyn%20ny%2011216&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 26 Jan 2014 05:46:39 GMT
+      Expires:
+      - Mon, 27 Jan 2014 05:46:39 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+       {
+         "results" : [
+            {
+               "address_components" : [
+                  {
+                     "long_name" : "682",
+                     "short_name" : "682",
+                     "types" : [ "street_number" ]
+                  },
+                  {
+                     "long_name" : "Prospect Place",
+                     "short_name" : "Prospect Pl",
+                     "types" : [ "route" ]
+                  },
+                  {
+                     "long_name" : "Crown Heights",
+                     "short_name" : "Crown Heights",
+                     "types" : [ "neighborhood", "political" ]
+                  },
+                  {
+                     "long_name" : "Brooklyn",
+                     "short_name" : "Brooklyn",
+                     "types" : [ "sublocality_level_1", "sublocality", "political" ]
+                  },
+                  {
+                     "long_name" : "Kings County",
+                     "short_name" : "Kings County",
+                     "types" : [ "administrative_area_level_2", "political" ]
+                  },
+                  {
+                     "long_name" : "New York",
+                     "short_name" : "NY",
+                     "types" : [ "administrative_area_level_1", "political" ]
+                  },
+                  {
+                     "long_name" : "United States",
+                     "short_name" : "US",
+                     "types" : [ "country", "political" ]
+                  },
+                  {
+                     "long_name" : "11216",
+                     "short_name" : "11216",
+                     "types" : [ "postal_code" ]
+                  }
+               ],
+               "formatted_address" : "682 Prospect Place, Brooklyn, NY 11216, USA",
+               "geometry" : {
+                  "bounds" : {
+                     "northeast" : {
+                        "lat" : 40.6745947,
+                        "lng" : -73.9541534
+                     },
+                     "southwest" : {
+                        "lat" : 40.6745812,
+                        "lng" : -73.95415819999999
+                     }
+                  },
+                  "location" : {
+                     "lat" : 40.6745812,
+                     "lng" : -73.95415819999999
+                  },
+                  "location_type" : "RANGE_INTERPOLATED",
+                  "viewport" : {
+                     "northeast" : {
+                        "lat" : 40.6759369302915,
+                        "lng" : -73.95280681970848
+                     },
+                     "southwest" : {
+                        "lat" : 40.6732389697085,
+                        "lng" : -73.95550478029149
+                     }
+                  }
+               },
+               "types" : [ "street_address" ]
+            }
+         ],
+         "status" : "OK"
+         }
+    http_version:
+  recorded_at: Sun, 26 Jan 2014 05:46:39 GMT
+recorded_with: VCR 2.8.0
