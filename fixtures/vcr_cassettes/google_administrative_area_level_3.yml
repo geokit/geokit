@@ -1,0 +1,111 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=8%20Barkwood%20Lane,%20Clifton%20Park,%20NY%2012065&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 21 Aug 2014 19:05:13 GMT
+      Expires:
+      - Fri, 22 Aug 2014 19:05:13 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "8",
+                       "short_name" : "8",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Barkwood Lane",
+                       "short_name" : "Barkwood Ln",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Clifton Park",
+                       "short_name" : "Clifton Park",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Saratoga County",
+                       "short_name" : "Saratoga County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New York",
+                       "short_name" : "NY",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "12065",
+                       "short_name" : "12065",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "8 Barkwood Lane, Clifton Park, NY 12065, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 42.829583,
+                       "lng" : -73.788174
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 42.8309319802915,
+                          "lng" : -73.78682501970849
+                       },
+                       "southwest" : {
+                          "lat" : 42.8282340197085,
+                          "lng" : -73.78952298029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Thu, 21 Aug 2014 19:05:18 GMT
+recorded_with: VCR 2.9.2
