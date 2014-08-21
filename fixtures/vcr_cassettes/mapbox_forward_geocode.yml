@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/1714+14th+Street+NW,+Washington,+DC.json?access_token=
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/vnd.geo+json; charset=utf-8
+      Content-Length:
+      - '1243'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=3600
+      Date:
+      - Thu, 21 Aug 2014 05:42:19 GMT
+      Etag:
+      - '"9363c6116c867d7a272693e81eb6c456"'
+      Last-Modified:
+      - Thu, 21 Aug 2014 05:42:19 GMT
+      Server:
+      - nginx
+      X-Powered-By:
+      - Express
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 25e6ff20e328e7479b6db9fee82a8d60.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - QRVX5xyBFaHKip4ALpz6ZPtpDGVGm9FDjn_DleC3PMmCUXyfABDeCw==
+    body:
+      encoding: UTF-8
+      string: '{"type":"FeatureCollection","query":["1714","14th","street","nw","washington","dc"],"features":[{"id":"city.20001","type":"Feature","text":"Washington","place_name":"Washington,
+        20002, District of Columbia, United States","relevance":0.3233333333333333,"center":[-76.992695,38.899393],"geometry":{"type":"Point","coordinates":[-76.992695,38.899393]},"bbox":[-77.11976790632382,38.80310600134152,-76.90938401684849,38.99555498159024],"properties":{"title":"Washington"},"context":[{"id":"postcode-us.3962709191","text":"20002"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"city.21154","type":"Feature","text":"Street","place_name":"Street,
+        21154, Maryland, United States","relevance":0.16666666666666666,"center":[-76.344429,39.645749],"geometry":{"type":"Point","coordinates":[-76.344429,39.645749]},"bbox":[-76.49929286959762,39.59802207980489,-76.22835205150847,39.693469713854434],"properties":{"title":"Street"},"context":[{"id":"postcode-us.2234502147","text":"21154"},{"id":"province.928365533","text":"Maryland"},{"id":"country.4150104525","text":"United
+        States"}]}],"attribution":"<a href=''https://www.mapbox.com/about/maps/''
+        target=''_blank''>&copy; Mapbox</a>"}'
+    http_version: 
+  recorded_at: Thu, 21 Aug 2014 05:42:19 GMT
+recorded_with: VCR 2.9.2

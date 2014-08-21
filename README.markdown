@@ -161,6 +161,7 @@ If you're using this gem by itself, here are the configuration options:
     Geokit::Geocoders::BingGeocoder.key = ''
     Geokit::Geocoders::MapQuestGeocoder.key = ''
     Geokit::Geocoders::YandexGeocoder.key = ''
+    Geokit::Geocoders::MapboxGeocoder.key = 'ACCESS_TOKEN'
 
     # Geonames has a free service and a premium service, each using a different URL
     # GeonamesGeocoder.premium = true will use http://ws.geonames.net (premium)
