@@ -45,11 +45,13 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Yandex
 * MapQuest
 * Geocod.io
+* Mapbox - requires an access token
 
 ### address geocoders that also provide reverse geocoding
 * Google - Supports multiple results and bounding box/country code biasing.  Also supports Maps API for Business keys; see the configuration section below.
 * FCC
 * Open Street Map
+* Mapbox
 
 ### IP address geocoders
 * IP - geocodes an IP address using hostip.info's web service.
@@ -64,6 +66,7 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Bing
 * FCC
 * MapQuest
+* Mapbox
 
 Options to control the use of HTTPS are described below in the Configuration section.
 
@@ -161,6 +164,7 @@ If you're using this gem by itself, here are the configuration options:
     Geokit::Geocoders::BingGeocoder.key = ''
     Geokit::Geocoders::MapQuestGeocoder.key = ''
     Geokit::Geocoders::YandexGeocoder.key = ''
+    Geokit::Geocoders::MapboxGeocoder.key = 'ACCESS_TOKEN'
 
     # Geonames has a free service and a premium service, each using a different URL
     # GeonamesGeocoder.premium = true will use http://ws.geonames.net (premium)
