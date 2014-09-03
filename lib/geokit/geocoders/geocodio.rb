@@ -28,7 +28,7 @@ module Geokit
             loc.all.push(create_new_loc(address))
           end
         end
-
+        loc.success = true
         loc
       end
 
