@@ -1,7 +1,7 @@
 module Geokit
   module Geocoders
-    # MapQuest geocoder implementation.  Requires the Geokit::Geocoders::mapquest variable to
-    # contain a MapQuest API key.  Conforms to the interface set by the Geocoder class.
+    # MapQuest geocoder implementation.  Requires the Geokit::Geocoders::MapQuestGeocoder:key
+    # variable to contain a MapQuest API key.  Conforms to the interface set by the Geocoder class.
     class MapQuestGeocoder < Geocoder
       config :key
       self.secure = true

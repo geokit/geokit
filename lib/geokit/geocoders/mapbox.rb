@@ -1,6 +1,6 @@
 module Geokit
   module Geocoders
-    # Mapbox geocoder implementation.  Requires the Geokit::Geocoders::MapboxGeocoder variable to
+    # Mapbox geocoder implementation.  Requires the Geokit::Geocoders::MapboxGeocoder:key variable to
     # contain a Mapbox access token.  Conforms to the interface set by the Geocoder class.
     class MapboxGeocoder < Geocoder
       config :key
