@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&no_annotations=1&query=40.4167413,-3.7032498
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 03 Sep 2014 14:12:59 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - '*'
+      X-Ratelimit-Limit:
+      - '2500'
+      X-Ratelimit-Remaining:
+      - '2465'
+      X-Ratelimit-Reset:
+      - '1409788800'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=utf-8
+    body:
+      encoding: UTF-8
+      string: '{"licenses":[{"name":"CC-BY-SA","url":"http://creativecommons.org/licenses/by-sa/3.0/"},{"name":"ODbL","url":"http://opendatacommons.org/licenses/odbl/summary/"}],"rate":{"limit":2500,"remaining":2465,"reset":1409788800},"results":[{"bounds":{"northeast":{"lat":40.4679786,"lng":-3.6835385},"southwest":{"lat":40.4060007,"lng":-3.7033912}},"components":{"address29":"C-3
+        C-4","city":"Madrid","city_district":"Chamber\u00ed","country":"Spain","country_code":"ES","county":"\u00c1rea
+        metropolitana de Madrid y Corredor del Henares","postcode":28036,"road":"Calle
+        de Zurbano","state":"Community of Madrid","suburb":"Chamber\u00ed"},"confidence":7,"formatted":"Calle
+        de Zurbano, Chamber\u00ed, Chamber\u00ed, Madrid, \u00c1rea metropolitana
+        de Madrid y Corredor del Henares, 28036, Community of Madrid, Spain, C-3 C-4","geometry":{"lat":40.4341975,"lng":-3.6930528}}],"status":{"code":200,"message":"OK"},"thanks":"For
+        using an OpenCage Data API","timestamp":{"created_http":"Wed, 03 Sep 2014
+        14:12:59 GMT","created_unix":1409753579},"total_results":1,"we_are_hiring":"http://lokku.com/#jobs"}'
+    http_version: 
+  recorded_at: Wed, 03 Sep 2014 14:08:02 GMT
+recorded_with: VCR 2.9.2

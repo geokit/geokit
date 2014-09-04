@@ -1,0 +1,66 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&language=es&no_annotations=1&query=London
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 03 Sep 2014 14:32:11 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      X-Ratelimit-Limit:
+      - '2500'
+      X-Ratelimit-Remaining:
+      - '2458'
+      X-Ratelimit-Reset:
+      - '1409788800'
+      Access-Control-Allow-Origin:
+      - '*'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=utf-8
+    body:
+      encoding: UTF-8
+      string: '{"licenses":[{"name":"CC-BY-SA","url":"http://creativecommons.org/licenses/by-sa/3.0/"},{"name":"ODbL","url":"http://opendatacommons.org/licenses/odbl/summary/"}],"rate":{"limit":2500,"remaining":2458,"reset":1409788800},"results":[{"bounds":{"northeast":{"lat":51.6918741,"lng":0.3340155},"southwest":{"lat":51.2867602,"lng":-0.510375}},"components":{"city":"Londres","country":"Reino
+        Unido","country_code":"gb","county":"Londres","state":"Inglaterra","state_district":"Greater
+        London"},"confidence":1,"formatted":"Londres, Reino Unido","geometry":{"lat":51.5073219,"lng":-0.1276474}},{"bounds":{"northeast":{"lat":43.148097,"lng":-81.0860295},"southwest":{"lat":42.828097,"lng":-81.4060295}},"components":{"city":"London","country":"Canad\u00e1","country_code":"CA","state":"Ontario"},"confidence":3,"formatted":"London,
+        Ontario, Canad\u00e1","geometry":{"lat":42.988097,"lng":-81.2460295}},{"bounds":{"northeast":{"lat":37.15226,"lng":-84.0359569},"southwest":{"lat":37.079759,"lng":-84.1262619}},"components":{"city":"London","country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Laurel County","state":"Kentucky"},"confidence":7,"formatted":"London,
+        Laurel County, Kentucky, Estados Unidos de Am\u00e9rica","geometry":{"lat":37.1289771,"lng":-84.0832646}},{"bounds":{"northeast":{"lat":43.0677775,"lng":-88.9928881},"southwest":{"lat":43.0277775,"lng":-89.0328881}},"components":{"country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Dane County","hamlet":"London","state":"Wisconsin"},"confidence":7,"formatted":"London,
+        Dane County, Wisconsin, Estados Unidos de Am\u00e9rica","geometry":{"lat":43.0477775,"lng":-89.0128881}},{"bounds":{"northeast":{"lat":39.921786,"lng":-83.3899969},"southwest":{"lat":39.85928,"lng":-83.4789229}},"components":{"city":"London","country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Madison County","state":"Ohio"},"confidence":7,"formatted":"London,
+        Madison County, Ohio, Estados Unidos de Am\u00e9rica","geometry":{"lat":39.8864493,"lng":-83.448253}},{"bounds":{"northeast":{"lat":36.4884367,"lng":-119.4385394},"southwest":{"lat":36.4734452,"lng":-119.4497698}},"components":{"country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Tulare County","state":"California","village":"London"},"confidence":8,"formatted":"London,
+        Tulare County, California, Estados Unidos de Am\u00e9rica","geometry":{"lat":36.4760619,"lng":-119.4431785}},{"bounds":{"northeast":{"lat":35.33814,"lng":-93.1873749},"southwest":{"lat":35.315577,"lng":-93.2726929}},"components":{"city":"London","country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Pope County","state":"Arkansas"},"confidence":7,"formatted":"London,
+        Pope County, Arkansas, Estados Unidos de Am\u00e9rica","geometry":{"lat":35.326859,"lng":-93.2405016007635}},{"bounds":{"northeast":{"lat":38.2143567,"lng":-81.3486944},"southwest":{"lat":38.1743567,"lng":-81.3886944}},"components":{"country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Kanawha County","hamlet":"London","state":"Virginia
+        Occidental"},"confidence":7,"formatted":"London, Kanawha County, Virginia
+        Occidental, Estados Unidos de Am\u00e9rica","geometry":{"lat":38.1943567,"lng":-81.3686944}},{"bounds":{"northeast":{"lat":41.1636709,"lng":-80.1286716},"southwest":{"lat":41.1236709,"lng":-80.1686716}},"components":{"country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Mercer County","hamlet":"London","state":"Pensilvania"},"confidence":7,"formatted":"London,
+        Mercer County, Pensilvania, Estados Unidos de Am\u00e9rica","geometry":{"lat":41.1436709,"lng":-80.1486716}},{"bounds":{"northeast":{"lat":32.2509892,"lng":-94.9243839},"southwest":{"lat":32.2109892,"lng":-94.9643839}},"components":{"country":"Estados
+        Unidos de Am\u00e9rica","country_code":"US","county":"Rusk County","hamlet":"London","state":"Texas"},"confidence":7,"formatted":"London,
+        Rusk County, Texas, Estados Unidos de Am\u00e9rica","geometry":{"lat":32.2309892,"lng":-94.9443839}}],"status":{"code":200,"message":"OK"},"thanks":"For
+        using an OpenCage Data API","timestamp":{"created_http":"Wed, 03 Sep 2014
+        14:32:11 GMT","created_unix":1409754731},"total_results":10,"we_are_hiring":"http://lokku.com/#jobs"}'
+    http_version: 
+  recorded_at: Wed, 03 Sep 2014 14:27:15 GMT
+recorded_with: VCR 2.9.2
