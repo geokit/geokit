@@ -33,8 +33,8 @@ module Geokit
       def self.submit_url(loc)
         args = []
         args << "stno=#{loc.street_number}" if loc.street_address
-        args << "addresst=#{Geokit::Inflector::url_escape(loc.street_name)}" if loc.street_address
-        args << "city=#{Geokit::Inflector::url_escape(loc.city)}" if loc.city
+        args << "addresst=#{Geokit::Inflector.url_escape(loc.street_name)}" if loc.street_address
+        args << "city=#{Geokit::Inflector.url_escape(loc.city)}" if loc.city
         args << "prov=#{loc.state}" if loc.state
         args << "postal=#{loc.zip}" if loc.zip
         args << "auth=#{key}" if key

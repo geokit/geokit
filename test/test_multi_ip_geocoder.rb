@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::ip_provider_order=[:geo_plugin,:ip]
+Geokit::Geocoders.ip_provider_order=[:geo_plugin,:ip]
 
 class MultiIpGeocoderTest < BaseGeocoderTest #:nodoc: all
 
@@ -29,7 +29,7 @@ class MultiIpGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_invalid_provider
-    temp = Geokit::Geocoders::ip_provider_order
+    temp = Geokit::Geocoders.ip_provider_order
     Geokit::Geocoders.ip_provider_order = [:bogus]
     assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode(@ip_address)
     Geokit::Geocoders.ip_provider_order = temp

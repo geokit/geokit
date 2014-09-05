@@ -18,7 +18,7 @@ module Geokit
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "#{protocol}://api.opencagedata.com/geocode/v1/json?"
         url += "key=#{key}#{options_str}&"
-        url += "query=#{Geokit::Inflector::url_escape(address_str)}&"
+        url += "query=#{Geokit::Inflector.url_escape(address_str)}&"
         url += 'no_annotations=1'
         process :json, url
       end
@@ -31,11 +31,11 @@ module Geokit
       end
 
       def self.generate_param_for(param, value)
-        "&#{param}=#{Geokit::Inflector::url_escape(value.to_s)}"
+        "&#{param}=#{Geokit::Inflector.url_escape(value.to_s)}"
       end
 
       def self.generate_param_for_option(param, options)
-        options[param] ? "&#{param}=#{Geokit::Inflector::url_escape(options[param])}" : ''
+        options[param] ? "&#{param}=#{Geokit::Inflector.url_escape(options[param])}" : ''
       end
 
       def self.generate_bool_param_for_option(param, options)

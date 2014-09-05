@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::provider_order=[:google, :bing, :us]
+Geokit::Geocoders.provider_order=[:google, :bing, :us]
 
 class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
 
@@ -35,7 +35,7 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_invalid_provider
-    temp = Geokit::Geocoders::provider_order
+    temp = Geokit::Geocoders.provider_order
     Geokit::Geocoders.provider_order = [:bogus]
     assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode(@address)
     Geokit::Geocoders.provider_order = temp
@@ -77,7 +77,7 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_reverse_geocode_with_invalid_provider
-    temp = Geokit::Geocoders::provider_order
+    temp = Geokit::Geocoders.provider_order
     Geokit::Geocoders.provider_order = [:bogus]
     assert_raise NameError do
       Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)

@@ -9,7 +9,7 @@ module Geokit
       private
       def self.submit_url(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        query_string = "?q=#{Geokit::Inflector::url_escape(address_str)}&flags=J"
+        query_string = "?q=#{Geokit::Inflector.url_escape(address_str)}&flags=J"
 
         o = OauthUtil.new
         o.consumer_key = key

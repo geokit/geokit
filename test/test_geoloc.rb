@@ -64,7 +64,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     @loc.zip = '94105'
     @loc.country_code = 'US'
 
-    yaml = YAML::parse(@loc.to_yaml)
+    yaml = YAML.parse(@loc.to_yaml)
     case yaml.class.to_s
     when 'YAML::Syck::Map', 'Syck::Map'
       tag = yaml.type_id

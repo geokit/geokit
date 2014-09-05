@@ -20,7 +20,7 @@ module Geokit
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url =  "#{protocol}://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/"
-        url += "#{Geokit::Inflector::url_escape(address_str)}.json?access_token=#{key}"
+        url += "#{Geokit::Inflector.url_escape(address_str)}.json?access_token=#{key}"
         process :json, url
       end
 

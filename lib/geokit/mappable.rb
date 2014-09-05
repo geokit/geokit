@@ -33,8 +33,8 @@ module Geokit
         from=Geokit::LatLng.normalize(from)
         to=Geokit::LatLng.normalize(to)
         return 0.0 if from == to # fixes a "zero-distance" bug
-        units = options[:units] || Geokit::default_units
-        formula = options[:formula] || Geokit::default_formula
+        units = options[:units] || Geokit.default_units
+        formula = options[:formula] || Geokit.default_formula
         case formula
         when :sphere then distance_between_sphere(from, to, units)
         when :flat   then distance_between_flat(from, to, units)
@@ -81,7 +81,7 @@ module Geokit
       # an endpoint. Returns a LatLng instance. Typically, the instance method
       # will be used instead of this method.
       def endpoint(start,heading, distance, options={})
-        units   = options[:units] || Geokit::default_units
+        units   = options[:units] || Geokit.default_units
         ratio   = distance.to_f / units_sphere_multiplier(units)
         start   = Geokit::LatLng.normalize(start)
         lat     = deg2rad(start.lat)

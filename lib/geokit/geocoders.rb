@@ -105,7 +105,7 @@ module Geokit
       protected
 
       def self.logger
-        Geokit::Geocoders::logger
+        Geokit::Geocoders.logger
       end
 
       private
@@ -136,7 +136,7 @@ module Geokit
 
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
-        Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout
+        Timeout.timeout(Geokit::Geocoders.request_timeout) { return self.do_get(url) } if Geokit::Geocoders.request_timeout
         self.do_get(url)
       rescue TimeoutError
         nil
@@ -163,7 +163,7 @@ module Geokit
       end
 
       def self.net_adapter
-        Geokit::Geocoders::net_adapter
+        Geokit::Geocoders.net_adapter
       end
 
       def self.provider_name
@@ -175,7 +175,7 @@ module Geokit
         case format
         when :json then parse_json(MultiJson.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
-        when :yaml then parse_yaml(YAML::load(body), *args)
+        when :yaml then parse_yaml(YAML.load(body), *args)
         when :csv  then parse_csv(body.chomp.split(','), *args)
         end
       end

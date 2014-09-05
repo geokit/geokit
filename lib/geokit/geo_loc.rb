@@ -101,13 +101,13 @@ module Geokit
 
     # Sets the city after capitalizing each word within the city name.
     def city=(city)
-      @city = Geokit::Inflector::titleize(city) if city
+      @city = Geokit::Inflector.titleize(city) if city
     end
 
     # Sets the street address after capitalizing each word within the street address.
     def street_address=(address)
       @street_address = if address && provider != 'google'
-        Geokit::Inflector::titleize(address)
+        Geokit::Inflector.titleize(address)
       else
         address
       end

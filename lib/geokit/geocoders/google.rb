@@ -9,7 +9,7 @@ module Geokit
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
       def self.do_reverse_geocode(latlng, options = {})
         latlng=LatLng.normalize(latlng)
-        url = submit_url("latlng=#{Geokit::Inflector::url_escape(latlng.ll)}", options)
+        url = submit_url("latlng=#{Geokit::Inflector.url_escape(latlng.ll)}", options)
         process :json, url
       end
 
@@ -38,7 +38,7 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url("address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}", options)
+        url = submit_url("address=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}", options)
         process :json, url
       end
 
@@ -78,7 +78,7 @@ module Geokit
           "&region=#{bias.to_s.downcase}"
         when Bounds
           # viewport biasing
-          url_escaped_string = Geokit::Inflector::url_escape("#{bias.sw}|#{bias.ne}")
+          url_escaped_string = Geokit::Inflector.url_escape("#{bias.sw}|#{bias.ne}")
           "&bounds=#{url_escaped_string}"
         end
       end
