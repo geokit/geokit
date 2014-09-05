@@ -6,8 +6,8 @@ Geokit::Geocoders::YahooGeocoder.secret = 'SECRET'
 class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
-    @yahoo_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105-1522", :country_code=>"US"}
-    @yahoo_city_hash = {:city=>"San Francisco", :state=>"CA"}
+    @yahoo_full_hash = {street_address: "100 Spear St", city: "San Francisco", state: "CA", zip: "94105-1522", country_code: "US"}
+    @yahoo_city_hash = {city: "San Francisco", state: "CA"}
     @yahoo_full_loc = Geokit::GeoLoc.new(@yahoo_full_hash)
     @yahoo_city_loc = Geokit::GeoLoc.new(@yahoo_city_hash)
   end
@@ -69,7 +69,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
-    no_results_full_hash = {:street_address=>"ZZ", :city=>"ZZ", :state=>"ZZ"}
+    no_results_full_hash = {street_address: "ZZ", city: "ZZ", state: "ZZ"}
     no_results_full_loc = Geokit::GeoLoc.new(no_results_full_hash)
 
     VCR.use_cassette('yahoo_no_results') do

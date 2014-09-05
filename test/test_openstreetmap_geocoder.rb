@@ -20,8 +20,8 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @osm_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
-    @osm_city_hash = {:city=>"San Francisco", :state=>"CA"}
+    @osm_full_hash = {street_address: "100 Spear St", city: "San Francisco", state: "CA", zip: "94105", country_code: "US"}
+    @osm_city_hash = {city: "San Francisco", state: "CA"}
     @osm_full_loc = Geokit::GeoLoc.new(@osm_full_hash)
     @osm_city_loc = Geokit::GeoLoc.new(@osm_city_hash)
   end

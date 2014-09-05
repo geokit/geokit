@@ -94,7 +94,7 @@ VCR.configure do |c|
   c.hook_into :webmock # or :fakeweb
   # Yahoo BOSS Ignore changing params
   c.default_cassette_options = {
-    :match_requests_on => [:method,
+    match_requests_on: [:method,
       VCR.request_matchers.uri_without_params(
         :oauth_nonce, :oauth_timestamp, :oauth_signature
       )
@@ -119,7 +119,7 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     @full_address_short_zip = '100 Spear St, San Francisco, CA, 94105, US'
 
     @latlng = Geokit::LatLng.new(37.7742, -122.417068)
-    @success = Geokit::GeoLoc.new({:city=>"SAN FRANCISCO", :state=>"CA", :country_code=>"US", :lat=>@latlng.lat, :lng=>@latlng.lng})
+    @success = Geokit::GeoLoc.new({city: "SAN FRANCISCO", state: "CA", country_code: "US", lat: @latlng.lat, lng: @latlng.lng})
     @success.success = true
   end
 

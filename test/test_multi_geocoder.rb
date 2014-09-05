@@ -97,6 +97,6 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::YahooGeocoder.expects(:geocode).with(@address, {}).returns(@success)
     Geokit::Geocoders::GoogleGeocoder.expects(:geocode).never
     Geokit::Geocoders::UsGeocoder.expects(:geocode).never
-    assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address, :provider_order => [:yahoo, :google, :us])
+    assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:yahoo, :google, :us])
   end
 end

@@ -5,8 +5,8 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
     @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'
-    @google_full_hash = {:street_address=>"100 Spear St Apt. 5", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
-    @google_city_hash = {:city=>"San Francisco", :state=>"CA"}
+    @google_full_hash = {street_address: "100 Spear St Apt. 5", city: "San Francisco", state: "CA", zip: "94105", country_code: "US"}
+    @google_city_hash = {city: "San Francisco", state: "CA"}
 
     @google_full_loc = Geokit::GeoLoc.new(@google_full_hash)
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)

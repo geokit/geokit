@@ -13,11 +13,11 @@ module Geokit
       end
 
       XML_MAPPINGS = {
-        :city         => 'geoplugin_city',
-        :state        => 'geoplugin_region',
-        :country_code => 'geoplugin_countryCode',
-        :lat          => 'geoplugin_latitude',
-        :lng          => 'geoplugin_longitude'
+        city:         'geoplugin_city',
+        state:        'geoplugin_region',
+        country_code: 'geoplugin_countryCode',
+        lat:          'geoplugin_latitude',
+        lng:          'geoplugin_longitude'
       }
 
       def self.parse_xml(xml)

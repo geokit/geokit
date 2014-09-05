@@ -5,8 +5,8 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @opencage_full_hash = {:street_address=>"100 Spear St", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
-    @opencage_city_hash = {:city=>"San Francisco", :state=>"CA"}
+    @opencage_full_hash = {street_address: "100 Spear St", city: "San Francisco", state: "CA", zip: "94105", country_code: "US"}
+    @opencage_city_hash = {city: "San Francisco", state: "CA"}
     @opencage_full_loc = Geokit::GeoLoc.new(@opencage_full_hash)
     @opencage_city_loc = Geokit::GeoLoc.new(@opencage_city_hash)
 
@@ -107,7 +107,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette('opencage_language_response_es') do
       url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&language=es&query=London&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
-      language_result = Geokit::Geocoders::OpencageGeocoder.geocode('London', :language => "es")
+      language_result = Geokit::Geocoders::OpencageGeocoder.geocode('London', language: "es")
 
       assert_equal "Londres", language_result.city
     end

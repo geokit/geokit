@@ -10,14 +10,14 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
 
   def valid_reverse_geocoding_result
     location = Geokit::GeoLoc.new({
-      :city => "Essen",
-      :country_code => "DE",
-      :lat => 51.4578329,
-      :lng => 7.0166848,
-      :provider => "google",
-      :state => "Nordrhein-Westfalen",
-      :street_address => "Porscheplatz 1",
-      :zip => "45127"
+      city: "Essen",
+      country_code: "DE",
+      lat: 51.4578329,
+      lng: 7.0166848,
+      provider: "google",
+      state: "Nordrhein-Westfalen",
+      street_address: "Porscheplatz 1",
+      zip: "45127"
     })
 
     location.full_address = "Porscheplatz 1, 45127 Essen, Deutschland"
@@ -49,33 +49,33 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_distance_between_same_with_miles_and_flat
-    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :miles, :formula => :flat)
-    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :miles, :formula => :flat)
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, units: :miles, formula: :flat)
+    assert_equal 0, @loc_a.distance_to(@loc_a, units: :miles, formula: :flat)
   end
 
   def test_distance_between_same_with_kms_and_flat
-    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :kms, :formula => :flat)
-    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :kms, :formula => :flat)
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, units: :kms, formula: :flat)
+    assert_equal 0, @loc_a.distance_to(@loc_a, units: :kms, formula: :flat)
   end
 
   def test_distance_between_same_with_nms_and_flat
-    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :nms, :formula => :flat)
-    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :nms, :formula => :flat)
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, units: :nms, formula: :flat)
+    assert_equal 0, @loc_a.distance_to(@loc_a, units: :nms, formula: :flat)
   end
 
   def test_distance_between_same_with_miles_and_sphere
-    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :miles, :formula => :sphere)
-    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :miles, :formula => :sphere)
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, units: :miles, formula: :sphere)
+    assert_equal 0, @loc_a.distance_to(@loc_a, units: :miles, formula: :sphere)
   end
 
   def test_distance_between_same_with_kms_and_sphere
-    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :kms, :formula => :sphere)
-    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :kms, :formula => :sphere)
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, units: :kms, formula: :sphere)
+    assert_equal 0, @loc_a.distance_to(@loc_a, units: :kms, formula: :sphere)
   end
 
   def test_distance_between_same_with_nms_and_sphere
-    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, :units => :nms, :formula => :sphere)
-    assert_equal 0, @loc_a.distance_to(@loc_a, :units => :nms, :formula => :sphere)
+    assert_equal 0, Geokit::LatLng.distance_between(@loc_a, @loc_a, units: :nms, formula: :sphere)
+    assert_equal 0, @loc_a.distance_to(@loc_a, units: :nms, formula: :sphere)
   end
 
   def test_distance_between_diff_using_defaults
@@ -84,47 +84,47 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_distance_between_diff_with_miles_and_flat
-    assert_in_delta 3.97, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :miles, :formula => :flat), 0.2
-    assert_in_delta 3.97, @loc_a.distance_to(@loc_e, :units => :miles, :formula => :flat), 0.2
+    assert_in_delta 3.97, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :miles, formula: :flat), 0.2
+    assert_in_delta 3.97, @loc_a.distance_to(@loc_e, units: :miles, formula: :flat), 0.2
   end
 
   def test_distance_between_diff_with_kms_and_flat
-    assert_in_delta 6.39, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :kms, :formula => :flat), 0.4
-    assert_in_delta 6.39, @loc_a.distance_to(@loc_e, :units => :kms, :formula => :flat), 0.4
+    assert_in_delta 6.39, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :kms, formula: :flat), 0.4
+    assert_in_delta 6.39, @loc_a.distance_to(@loc_e, units: :kms, formula: :flat), 0.4
   end
 
   def test_distance_between_diff_with_meters_and_flat
-    assert_in_delta 6390, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :meters, :formula => :flat), 2
-    assert_in_delta 6390, @loc_a.distance_to(@loc_e, :units => :meters, :formula => :flat), 2
+    assert_in_delta 6390, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :meters, formula: :flat), 2
+    assert_in_delta 6390, @loc_a.distance_to(@loc_e, units: :meters, formula: :flat), 2
   end
 
   def test_distance_between_diff_with_nms_and_flat
-    assert_in_delta 3.334, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :nms, :formula => :flat), 0.4
-    assert_in_delta 3.334, @loc_a.distance_to(@loc_e, :units => :nms, :formula => :flat), 0.4
+    assert_in_delta 3.334, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :nms, formula: :flat), 0.4
+    assert_in_delta 3.334, @loc_a.distance_to(@loc_e, units: :nms, formula: :flat), 0.4
   end
 
   def test_distance_between_diff_with_miles_and_sphere
-    assert_in_delta 3.97, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :miles, :formula => :sphere), 0.01
-    assert_in_delta 3.97, @loc_a.distance_to(@loc_e, :units => :miles, :formula => :sphere), 0.01
+    assert_in_delta 3.97, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :miles, formula: :sphere), 0.01
+    assert_in_delta 3.97, @loc_a.distance_to(@loc_e, units: :miles, formula: :sphere), 0.01
   end
 
   def test_distance_between_diff_with_kms_and_sphere
-    assert_in_delta 6.39, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :kms, :formula => :sphere), 0.01
-    assert_in_delta 6.39, @loc_a.distance_to(@loc_e, :units => :kms, :formula => :sphere), 0.01
+    assert_in_delta 6.39, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :kms, formula: :sphere), 0.01
+    assert_in_delta 6.39, @loc_a.distance_to(@loc_e, units: :kms, formula: :sphere), 0.01
   end
 
   def test_distance_between_diff_with_nms_and_sphere
-    assert_in_delta 3.454, Geokit::LatLng.distance_between(@loc_a, @loc_e, :units => :nms, :formula => :sphere), 0.01
-    assert_in_delta 3.454, @loc_a.distance_to(@loc_e, :units => :nms, :formula => :sphere), 0.01
+    assert_in_delta 3.454, Geokit::LatLng.distance_between(@loc_a, @loc_e, units: :nms, formula: :sphere), 0.01
+    assert_in_delta 3.454, @loc_a.distance_to(@loc_e, units: :nms, formula: :sphere), 0.01
   end
 
   def test_manually_mixed_in
     assert_equal 0, Geokit::LatLng.distance_between(@point, @point)
     assert_equal 0, @point.distance_to(@point)
     assert_equal 0, @point.distance_to(@loc_a)
-    assert_in_delta 3.97, @point.distance_to(@loc_e, :units => :miles, :formula => :flat), 0.2
-    assert_in_delta 6.39, @point.distance_to(@loc_e, :units => :kms, :formula => :flat), 0.4
-    assert_in_delta 3.334, @point.distance_to(@loc_e, :units => :nms, :formula => :flat), 0.4
+    assert_in_delta 3.97, @point.distance_to(@loc_e, units: :miles, formula: :flat), 0.2
+    assert_in_delta 6.39, @point.distance_to(@loc_e, units: :kms, formula: :flat), 0.4
+    assert_in_delta 3.334, @point.distance_to(@loc_e, units: :nms, formula: :flat), 0.4
   end
 
   def test_heading_between
@@ -213,7 +213,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   def test_reverse_geocoding_using_specific_geocoder
     point = Geokit::LatLng.new(51.4578329, 7.0166848)
     Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with(point).returns(valid_reverse_geocoding_result)
-    res = point.reverse_geocode(:using => Geokit::Geocoders::GoogleGeocoder)
+    res = point.reverse_geocode(using: Geokit::Geocoders::GoogleGeocoder)
 
     assert_equal "Nordrhein-Westfalen", res.state
     assert_equal "Essen", res.city
@@ -227,7 +227,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   def test_reverse_geocoding_using_specific_geocoder_short_syntax
     point = Geokit::LatLng.new(51.4578329, 7.0166848)
     Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with(point).returns(valid_reverse_geocoding_result)
-    res = point.reverse_geocode(:using => :google)
+    res = point.reverse_geocode(using: :google)
 
     assert_equal "Nordrhein-Westfalen", res.state
     assert_equal "Essen", res.city

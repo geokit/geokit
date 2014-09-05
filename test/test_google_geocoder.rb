@@ -7,8 +7,8 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     super
     @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'
     @full_address_short_zip = '100 Spear St Apt. 5, San Francisco, CA, 94105, US'
-    @google_full_hash = {:street_address=>"100 Spear St Apt. 5", :city=>"San Francisco", :state=>"CA", :zip=>"94105", :country_code=>"US"}
-    @google_city_hash = {:city=>"San Francisco", :state=>"CA"}
+    @google_full_hash = {street_address: "100 Spear St Apt. 5", city: "San Francisco", state: "CA", zip: "94105", country_code: "US"}
+    @google_city_hash = {city: "San Francisco", state: "CA"}
 
     @google_full_loc = Geokit::GeoLoc.new(@google_full_hash)
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
@@ -159,7 +159,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     )
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Winnetka&bounds=33.7036917%2C-118.6681759%7C34.3373061%2C-118.1552891"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url)
-    Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => bounds)
+    Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', bias: bounds)
   end
 
   def test_service_unavailable
@@ -221,7 +221,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette('google_reverse_madrid_es') do
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&latlng=40.416%2C-3.703&language=es"
     TestHelper.expects(:last_url).with(url)
-    language_result = Geokit::Geocoders::GoogleGeocoder.reverse_geocode('40.416,-3.703', :language => 'es')
+    language_result = Geokit::Geocoders::GoogleGeocoder.reverse_geocode('40.416,-3.703', language: 'es')
 
     assert_equal 'ES', language_result.country_code
     assert_equal 'Madrid', language_result.city
@@ -232,7 +232,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette('google_country_code_biased_result') do
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it"
     TestHelper.expects(:last_url).with(url)
-    biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
+    biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', bias: 'it')
 
     assert_equal 'IT', biased_result.country_code
     assert_equal 'Sicilia', biased_result.state
@@ -243,7 +243,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette('google_language_response_fr') do
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Hanoi&language=FR"
     TestHelper.expects(:last_url).with(url)
-    language_result = Geokit::Geocoders::GoogleGeocoder.geocode('Hanoi', :language => 'FR')
+    language_result = Geokit::Geocoders::GoogleGeocoder.geocode('Hanoi', language: 'FR')
 
     assert_equal 'VN', language_result.country_code
     assert_equal 'Hanoï', language_result.city

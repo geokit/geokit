@@ -8,7 +8,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @us_full_hash = {:city=>"San Francisco", :state=>"CA"}
+    @us_full_hash = {city: "San Francisco", state: "CA"}
     @us_full_loc = Geokit::GeoLoc.new(@us_full_hash)
   end
 

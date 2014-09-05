@@ -10,7 +10,7 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
   EOF
 
   def setup
-    @ca_full_hash = {:street_address=>"2105 West 32nd Avenue",:city=>"Vancouver", :state=>"BC"}
+    @ca_full_hash = {street_address: "2105 West 32nd Avenue",city: "Vancouver", state: "BC"}
     @ca_full_loc = Geokit::GeoLoc.new(@ca_full_hash)
   end
 

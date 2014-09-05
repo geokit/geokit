@@ -16,7 +16,7 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     @full_address_short_zip = '100 Spear St, San Francisco, CA, 94105, US'
 
     @latlng = Geokit::LatLng.new(37.7742, -122.417068)
-    @success = Geokit::GeoLoc.new({:city=>"SAN FRANCISCO", :state=>"CA", :country_code=>"US", :lat=>@latlng.lat, :lng=>@latlng.lng})
+    @success = Geokit::GeoLoc.new({city: "SAN FRANCISCO", state: "CA", country_code: "US", lat: @latlng.lat, lng: @latlng.lng})
     @success.success = true
   end
 

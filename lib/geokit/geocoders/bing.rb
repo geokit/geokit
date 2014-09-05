@@ -47,15 +47,15 @@ module Geokit
       end
 
       XML_MAPPINGS = {
-        :street_address => 'Address/AddressLine',
-        :full_address   => 'Address/FormattedAddress',
-        :city           => 'Address/Locality',
-        :state          => 'Address/AdminDistrict',
-        :province       => 'Address/AdminDistrict2',
-        :zip            => 'Address/PostalCode',
-        :country        => 'Address/CountryRegion',
-        :lat            => 'Point/Latitude',
-        :lng            => 'Point/Longitude'
+        street_address: 'Address/AddressLine',
+        full_address:   'Address/FormattedAddress',
+        city:           'Address/Locality',
+        state:          'Address/AdminDistrict',
+        province:       'Address/AdminDistrict2',
+        zip:            'Address/PostalCode',
+        country:        'Address/CountryRegion',
+        lat:            'Point/Latitude',
+        lng:            'Point/Longitude'
       }
 
       def self.set_address_components(loc, xml)
