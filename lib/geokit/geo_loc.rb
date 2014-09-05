@@ -20,7 +20,6 @@ module Geokit
   #     puts geo.all.first        # all is just an array or additional geolocs,
   #                                 so do what you want with it
   class GeoLoc < LatLng
-
     # Location attributes.  Full address is a concatenation of all values.  For example:
     # 100 Spear St, San Francisco, CA, 94101, US
     # Street number and street name are extracted from the street address attribute if they don't exist

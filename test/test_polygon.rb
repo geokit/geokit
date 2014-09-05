@@ -2,9 +2,7 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class PolygonTest < Test::Unit::TestCase #:nodoc: all
-
   def setup
-
     #Create a simple square-ish polygon for easy testing
     @p1 = Geokit::LatLng.new(45.3142533036254, -93.47527313511819)
     @p2 = Geokit::LatLng.new(45.31232182518015, -93.34893036168069)
@@ -110,5 +108,4 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @open_polygon_centroid = Geokit::LatLng.new(44.95912726688109, -92.7068888186181)
     assert_equal(@open_polygon.centroid, @open_polygon_centroid)
   end
-
 end

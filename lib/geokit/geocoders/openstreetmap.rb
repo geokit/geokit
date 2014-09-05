@@ -2,7 +2,6 @@ module Geokit
   module Geocoders
     # Open Street Map geocoder implementation.
     class OSMGeocoder < Geocoder
-
       private
 
       # Template method which does the geocode lookup.

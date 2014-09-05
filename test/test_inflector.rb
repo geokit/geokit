@@ -2,7 +2,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class InflectorTest < Test::Unit::TestCase #:nodoc: all
-
   def test_titleize
     assert_equal 'Sugar Grove', Geokit::Inflector.titleize('Sugar Grove')
     assert_equal 'Sugar Grove', Geokit::Inflector.titleize('Sugar grove')

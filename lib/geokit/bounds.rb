@@ -61,7 +61,6 @@ module Geokit
     end
 
     class <<self
-
       # returns an instance of bounds which completely encompases the given circle
       def from_point_and_radius(point,radius,options={})
         point=LatLng.normalize(point)

@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), 'helper')
 Geokit::Geocoders::UsGeocoder.key = nil
 
 class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   GEOCODER_US_FULL='37.792528,-122.393981,100 Spear St,San Francisco,CA,94105'
 
   def setup

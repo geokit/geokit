@@ -1,7 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class LatLngTest < Test::Unit::TestCase #:nodoc: all
-
   def setup
     @loc_a = Geokit::LatLng.new(32.918593,-96.958444)
     @loc_e = Geokit::LatLng.new(32.969527,-96.990159)

@@ -1,7 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class BoundsTest < Test::Unit::TestCase #:nodoc: all
-
   def setup
     # This is the area in Texas
     @sw = Geokit::LatLng.new(32.91663,-96.982841)
@@ -16,7 +15,6 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
     @inside_cm_2=Geokit::LatLng.new(35,-175)
     @east_of_cm=Geokit::LatLng.new(35,-165)
     @west_of_cm=Geokit::LatLng.new(35,165)
-
   end
 
   def test_equality

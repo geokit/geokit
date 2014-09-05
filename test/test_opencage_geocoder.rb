@@ -2,7 +2,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     super
     @opencage_full_hash = {street_address: '100 Spear St', city: 'San Francisco', state: 'CA', zip: '94105', country_code: 'US'}
@@ -14,11 +13,9 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     # is not advised
     key = 'someopencageapikey'
     Geokit::Geocoders::OpencageGeocoder.key = key
-
   end
 
   def test_opencage_full_address
-
     VCR.use_cassette('opencage_full') do
       url = 'https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=100+Spear+St%2C+San+Francisco%2C+CA%2C+94105%2C+US&no_annotations=1'
       TestHelper.expects(:last_url).with(url)
@@ -34,7 +31,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_opencage_city
-
     VCR.use_cassette('opencage_city') do
       url = 'https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=San+Francisco%2C+CA&no_annotations=1'
       TestHelper.expects(:last_url).with(url)
@@ -50,7 +46,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_opencage_reverse
-
     VCR.use_cassette('opencage_reverse_madrid') do
 
       location = Geokit::GeoLoc.new
@@ -76,7 +71,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_opencage_reverse2
-
     VCR.use_cassette('opencage_reverse_prilep') do
 
       location = Geokit::GeoLoc.new
@@ -103,7 +97,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   # check if the results are in Spanish if &language=es
   def test_language_response
-
     VCR.use_cassette('opencage_language_response_es') do
       url = 'https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&language=es&query=London&no_annotations=1'
       TestHelper.expects(:last_url).with(url)
@@ -112,5 +105,4 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal 'Londres', language_result.city
     end
   end
-
 end

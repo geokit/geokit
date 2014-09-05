@@ -217,7 +217,5 @@ module Geokit
     def midpoint_to(other, options={})
       self.class.midpoint_between(self,other,options)
     end
-
   end
-
 end

@@ -1,7 +1,6 @@
 module Geokit
   # A complex polygon made of multiple points.  End point must equal start point to close the poly.
   class Polygon
-
     attr_accessor :points
 
     # Pass in an array of Geokit::LatLng
@@ -69,6 +68,5 @@ module Geokit
 
       Geokit::LatLng.new(centroid_lat, centroid_lng)
     end # end calculate_centroid
-
   end # class Polygon
 end

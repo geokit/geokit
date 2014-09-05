@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), 'helper')
 Geokit::Geocoders::BingGeocoder.key = 'AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7'
 
 class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     super
   end

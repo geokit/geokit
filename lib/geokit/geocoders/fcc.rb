@@ -45,6 +45,5 @@ module Geokit
         loc
       end
     end
-
   end
 end

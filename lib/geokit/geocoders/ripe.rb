@@ -38,6 +38,5 @@ module Geokit
         loc.city = data['city']
       end
     end
-
   end
 end

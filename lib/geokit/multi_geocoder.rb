@@ -15,7 +15,6 @@ module Geokit
     # - currently only provides the first result. Sometimes geocoders will return multiple results.
     # - currently discards the "accuracy" component of the geocoding calls
     class MultiGeocoder < Geocoder
-
       private
       # This method will call one or more geocoders in the order specified in the
       # configuration until one of the geocoders work.

@@ -1,7 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class GeoLocTest < Test::Unit::TestCase #:nodoc: all
-
   def setup
     @loc = Geokit::GeoLoc.new
   end

@@ -2,7 +2,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   IP_FAILURE=<<-EOF
     Country: SWITZERLAND (CH)
     City: (Unknown City)

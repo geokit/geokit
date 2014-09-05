@@ -2,7 +2,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     super
     @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'

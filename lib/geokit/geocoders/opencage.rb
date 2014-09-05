@@ -10,7 +10,6 @@ module Geokit
 
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
-
         options_str = generate_param_for_option(:language, options)
         options_str << generate_param_for_option(:bounds, options)
         options_str << generate_param_for_option(:min_confidence, options)
@@ -43,7 +42,6 @@ module Geokit
       end
 
       def self.parse_json(results)
-
         return GeoLoc.new if results.empty?
         if results.is_a?(Hash)
           return GeoLoc.new unless results['status']['message'] == 'OK'

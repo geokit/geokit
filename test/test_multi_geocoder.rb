@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), 'helper')
 Geokit::Geocoders.provider_order=[:google, :bing, :us]
 
 class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     super
     @failure = Geokit::GeoLoc.new

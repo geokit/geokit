@@ -42,5 +42,4 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_url url
     end
   end
-
 end

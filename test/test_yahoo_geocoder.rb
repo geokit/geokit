@@ -90,7 +90,6 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   # next two methods do the assertions for both address-level and city-level lookups
   def do_full_address_assertions(res)
-
     assert_equal 'CA', res.state
     assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.792332, -122.393791], res.to_a

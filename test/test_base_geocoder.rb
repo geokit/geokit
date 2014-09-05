@@ -2,7 +2,6 @@ require File.join(File.dirname(__FILE__), 'helper')
 
 # Base class for testing geocoders.
 class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
-
   class Geokit::Geocoders::TestGeocoder < Geokit::Geocoders::Geocoder
     def self.do_get(url)
       sleep(2)

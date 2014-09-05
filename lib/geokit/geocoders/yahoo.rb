@@ -90,7 +90,6 @@ require 'openssl'
 require 'base64'
 
 class OauthUtil
-
   attr_accessor :consumer_key, :consumer_secret, :token, :token_secret, :req_method,
                 :sig_method, :oauth_version, :callback_url, :params, :req_url, :base_str
 
@@ -146,7 +145,6 @@ class OauthUtil
 
   # organize params & create signature
   def sign( parsed_url )
-
     @params = {
       'oauth_consumer_key' => @consumer_key,
       'oauth_nonce' => nonce,

@@ -55,5 +55,4 @@ class MappableTest < Test::Unit::TestCase #:nodoc: all
     assert_in_delta 42.573784, TestMappable.units_per_longitude_degree( 45, :nms), delta
     assert_in_delta  0.000000, TestMappable.units_per_longitude_degree( 90, :nms), delta
   end
-
 end
