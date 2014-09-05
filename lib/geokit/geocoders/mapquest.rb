@@ -10,7 +10,7 @@ module Geokit
 
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
-        latlng=LatLng.normalize(latlng)
+        latlng = LatLng.normalize(latlng)
         url = "#{protocol}://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{latlng.lat},#{latlng.lng}"
         process :json, url
       end

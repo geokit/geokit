@@ -30,8 +30,8 @@ module Geokit
       # :units - valid values are :miles, :kms, :nms (Geokit::default_units is the default)
       # :formula - valid values are :flat or :sphere (Geokit::default_formula is the default)
       def distance_between(from, to, options={})
-        from=Geokit::LatLng.normalize(from)
-        to=Geokit::LatLng.normalize(to)
+        from = Geokit::LatLng.normalize(from)
+        to = Geokit::LatLng.normalize(to)
         return 0.0 if from == to # fixes a "zero-distance" bug
         units = options[:units] || Geokit.default_units
         formula = options[:formula] || Geokit.default_formula
@@ -53,7 +53,7 @@ module Geokit
       def distance_between_flat(from, to, units)
         lat_length = units_per_latitude_degree(units) * (from.lat - to.lat)
         lng_length = units_per_longitude_degree(from.lat, units) * (from.lng - to.lng)
-        Math.sqrt(lat_length ** 2 + lng_length ** 2)
+        Math.sqrt(lat_length**2 + lng_length**2)
       end
 
       # Ruby 1.9 raises {Math::DomainError}, but it is not defined in Ruby 1.8
@@ -66,14 +66,14 @@ module Geokit
       # from the first point to the second point. Typicaly, the instance methods will be used
       # instead of this method.
       def heading_between(from, to)
-        from=Geokit::LatLng.normalize(from)
-        to=Geokit::LatLng.normalize(to)
+        from = Geokit::LatLng.normalize(from)
+        to = Geokit::LatLng.normalize(to)
 
-        d_lng=deg2rad(to.lng-from.lng)
-        from_lat=deg2rad(from.lat)
-        to_lat=deg2rad(to.lat)
-        y=Math.sin(d_lng) * Math.cos(to_lat)
-        x=Math.cos(from_lat)*Math.sin(to_lat)-Math.sin(from_lat)*Math.cos(to_lat)*Math.cos(d_lng)
+        d_lng = deg2rad(to.lng - from.lng)
+        from_lat = deg2rad(from.lat)
+        to_lat = deg2rad(to.lat)
+        y = Math.sin(d_lng) * Math.cos(to_lat)
+        x = Math.cos(from_lat) * Math.sin(to_lat) - Math.sin(from_lat) * Math.cos(to_lat) * Math.cos(d_lng)
         to_heading(Math.atan2(y, x))
       end
 
@@ -107,11 +107,11 @@ module Geokit
       # Valid option:
       #   :units - valid values are :miles, :kms, or :nms (:miles is the default)
       def midpoint_between(from, to, options={})
-        from=Geokit::LatLng.normalize(from)
+        from = Geokit::LatLng.normalize(from)
 
-        heading=from.heading_to(to)
-        distance=from.distance_to(to, options)
-        from.endpoint(heading, distance/2, options)
+        heading = from.heading_to(to)
+        distance = from.distance_to(to, options)
+        from.endpoint(heading, distance / 2, options)
       end
 
       # Geocodes a location using the multi geocoder.
@@ -143,7 +143,7 @@ module Geokit
       end
 
       def to_heading(rad)
-        (rad2deg(rad)+360)%360
+        (rad2deg(rad) + 360) % 360
       end
 
       def self.register_unit(key, in_meters)

@@ -2,28 +2,28 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
-  IP_FAILURE=<<-EOF
+  IP_FAILURE = <<-EOF
     Country: SWITZERLAND (CH)
     City: (Unknown City)
     Latitude:
     Longitude:
     EOF
 
-  IP_SUCCESS=<<-EOF
+  IP_SUCCESS = <<-EOF
     Country: UNITED STATES (US)
     City: Sugar Grove, IL
     Latitude: 41.7696
     Longitude: -88.4588
     EOF
 
-  IP_LATIN=<<-EOF
+  IP_LATIN = <<-EOF
     Country: BRAZIL (BR)
     City: S\xE3o Jos\xE9 do Rio Pr\xEAto\n
     Latitude: -20.8
     Longitude: -49.3833
     EOF
 
-  IP_UNICODED=<<-EOF
+  IP_UNICODED = <<-EOF
     Country: SWEDEN (SE)
     City: Borås
     Latitude: 57.7167

@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'helper')
 Geokit::Geocoders::UsGeocoder.key = nil
 
 class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
-  GEOCODER_US_FULL='37.792528,-122.393981,100 Spear St,San Francisco,CA,94105'
+  GEOCODER_US_FULL = '37.792528,-122.393981,100 Spear St,San Francisco,CA,94105'
 
   def setup
     super
@@ -39,7 +39,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(GEOCODER_US_FULL)
     url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    res=Geokit::Geocoders::UsGeocoder.geocode(@address)
+    res = Geokit::Geocoders::UsGeocoder.geocode(@address)
     assert_equal 1, res.all.size
   end
 

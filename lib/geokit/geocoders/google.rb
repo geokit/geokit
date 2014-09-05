@@ -9,7 +9,7 @@ module Geokit
       # ==== OPTIONS
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
       def self.do_reverse_geocode(latlng, options = {})
-        latlng=LatLng.normalize(latlng)
+        latlng = LatLng.normalize(latlng)
         url = submit_url("latlng=#{Geokit::Inflector.url_escape(latlng.ll)}", options)
         process :json, url
       end
@@ -135,7 +135,7 @@ module Geokit
         set_address_components(loc, addr)
         set_precision(loc, addr)
         if loc.street_name
-          loc.street_address=[loc.street_number, loc.street_name].join(' ').strip
+          loc.street_address = [loc.street_number, loc.street_name].join(' ').strip
         end
 
         ll = addr['geometry']['location']
@@ -187,13 +187,13 @@ module Geokit
 
       def self.set_precision(loc, addr)
         loc.accuracy = ACCURACY[addr['geometry']['location_type']]
-        loc.precision=%w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
+        loc.precision = %w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
         # try a few overrides where we can
         if loc.sub_premise
           loc.accuracy = 9
           loc.precision = 'building'
         end
-        if loc.street_name && loc.precision=='city'
+        if loc.street_name && loc.precision == 'city'
           loc.precision = 'street'
           loc.accuracy = 7
         end

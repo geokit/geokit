@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
-  IP_SUCCESS=<<-EOF
+  IP_SUCCESS = <<-EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <geoPlugin>
     <geoplugin_city>Belo Horizonte</geoplugin_city>

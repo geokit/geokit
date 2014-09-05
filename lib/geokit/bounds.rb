@@ -7,7 +7,7 @@ module Geokit
     # provide sw and ne to instantiate a new Bounds instance
     def initialize(sw, ne)
       raise ArgumentError if !(sw.is_a?(Geokit::LatLng) && ne.is_a?(Geokit::LatLng))
-      @sw, @ne=sw, ne
+      @sw, @ne = sw, ne
     end
 
     #returns the a single point which is the center of the rectangular bounds
@@ -28,7 +28,7 @@ module Geokit
     # Returns true if the bounds contain the passed point.
     # allows for bounds which cross the meridian
     def contains?(point)
-      point=Geokit::LatLng.normalize(point)
+      point = Geokit::LatLng.normalize(point)
       res = point.lat > @sw.lat && point.lat < @ne.lat
       if crosses_meridian?
         res &= point.lng < @ne.lng || point.lng > @sw.lng
@@ -63,13 +63,13 @@ module Geokit
     class <<self
       # returns an instance of bounds which completely encompases the given circle
       def from_point_and_radius(point, radius, options={})
-        point=LatLng.normalize(point)
-        p0=point.endpoint(0, radius, options)
-        p90=point.endpoint(90, radius, options)
-        p180=point.endpoint(180, radius, options)
-        p270=point.endpoint(270, radius, options)
-        sw=Geokit::LatLng.new(p180.lat, p270.lng)
-        ne=Geokit::LatLng.new(p0.lat, p90.lng)
+        point = LatLng.normalize(point)
+        p0 = point.endpoint(0, radius, options)
+        p90 = point.endpoint(90, radius, options)
+        p180 = point.endpoint(180, radius, options)
+        p270 = point.endpoint(270, radius, options)
+        sw = Geokit::LatLng.new(p180.lat, p270.lng)
+        ne = Geokit::LatLng.new(p0.lat, p90.lng)
         Geokit::Bounds.new(sw, ne)
       end
 
@@ -84,7 +84,7 @@ module Geokit
         return thing if thing.is_a? Bounds
 
         # no? OK, if there's no "other," the thing better be a two-element array
-        thing, other=thing if !other && thing.is_a?(Array) && thing.size==2
+        thing, other = thing if !other && thing.is_a?(Array) && thing.size == 2
 
         # Now that we're set with a thing and another thing, let LatLng do the heavy lifting.
         # Exceptions may be thrown

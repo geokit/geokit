@@ -2,19 +2,19 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
-  OSM_FULL=<<-EOF.strip
+  OSM_FULL = <<-EOF.strip
       [{"place_id":"425554497","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","boundingbox":["37.792341","37.792441","-122.394074","-122.393974"],"lat":"37.792391","lon":"-122.394024","display_name":"100, Spear Street, Financial District, San Francisco, California, 94105, United States of America","class":"place","type":"house","address":{"house_number":"100","road":"Spear Street","place":"Financial District","city":"San Francisco","county":"San Francisco","state":"California","postcode":"94105","country":"United States of America","country_code":"us"}}]
   EOF
 
-  OSM_CITY=<<-EOF.strip
+  OSM_CITY = <<-EOF.strip
       [{"place_id":"1586484","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","osm_type":"node","osm_id":"316944780","boundingbox":["37.7240965271","37.744100341797","-122.40126586914","-122.38125823975"],"lat":"37.7340974","lon":"-122.3912596","display_name":"San Francisco, California, United States of America","class":"place","type":"county","icon":"http://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png","address":{"county":"San Francisco","state":"California","country":"United States of America","country_code":"us"}},{"place_id":"42109083","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","osm_type":"way","osm_id":"33090874","boundingbox":["37.6398277282715","37.8230590820312","-123.173828125","-122.935707092285"],"lat":"37.7333682068208","lon":"-123.051926367593","display_name":"San Francisco, Marin, California, United States of America","class":"place","type":"city","icon":"http://nominatim.openstreetmap.org/images/mapicons/poi_place_city.p.20.png","address":{"city":"San Francisco","county":"Marin","state":"California","country":"United States of America","country_code":"us"}},{"place_id":"145970","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","osm_type":"node","osm_id":"26819236","boundingbox":["37.768957366943","37.788961181641","-122.42920471191","-122.40919708252"],"lat":"37.7789601","lon":"-122.419199","display_name":"San Francisco, San Francisco County, California, United States of America, North America","class":"place","type":"city","icon":"http://nominatim.openstreetmap.org/images/mapicons/poi_place_city.p.20.png","address":{"city":"San Francisco","county":"San Francisco County","state":"California","country":"United States of America","country_code":"us","place":"North America"}},{"place_id":"42108900","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","osm_type":"way","osm_id":"33090814","boundingbox":["37.7067184448242","37.9298248291016","-122.612289428711","-122.281776428223"],"lat":"37.7782304646168","lon":"-122.442503042395","display_name":"San Francisco, San Francisco County, California, United States of America","class":"place","type":"city","icon":"http://nominatim.openstreetmap.org/images/mapicons/poi_place_city.p.20.png","address":{"city":"San Francisco","county":"San Francisco County","state":"California","country":"United States of America","country_code":"us"}}]
   EOF
 
-  OSM_REVERSE_MADRID=<<-EOF.strip
+  OSM_REVERSE_MADRID = <<-EOF.strip
       {"place_id":"41067113","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","osm_type":"way","osm_id":"31822457","lat":"40.3787537310091","lon":"-3.70187699287946","display_name":"Línea 3, Calle del Doctor Tolosa Latour, Usera, Madrid, 28026, Spain","address":{"subway":"Línea 3","road":"Calle del Doctor Tolosa Latour","suburb":"Usera","city_district":"Usera","city":"Madrid","county":"Madrid","state":"Madrid","postcode":"28026","country":"Spain","country_code":"es"}}
   EOF
 
-  OSM_REVERSE_PRILEP=<<-EOF.strip
+  OSM_REVERSE_PRILEP = <<-EOF.strip
       {"place_id":"46960069","licence":"Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.","osm_type":"way","osm_id":"39757255","lat":"41.3508581896005","lon":"21.549896984439","display_name":"Gimnasium  Mirche Acev, Marksova, Prilep, Macedonia","address":{"school":"Gimnasium  Mirche Acev","road":"Marksova","city":"Prilep","country":"Macedonia","country_code":"mk"}}
   EOF
 
@@ -30,7 +30,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@full_address_short_zip))
   end
@@ -38,7 +38,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.geocode(@full_address_short_zip)
     assert_equal 'house', res.accuracy
@@ -47,7 +47,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@osm_full_loc))
   end
@@ -55,7 +55,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address))
   end
@@ -63,15 +63,15 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_with_accept_language
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address, {:'accept-language'=>'pt-br'}))
+    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address, {:'accept-language' => 'pt-br'}))
   end
 
   def test_osm_city_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.geocode(@address)
     assert_equal 'county', res.accuracy
@@ -80,7 +80,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@osm_city_loc))
   end
@@ -143,12 +143,12 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     location.lat, location.lng = '40.4167413', '-3.7032498'
     url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}&accept-language=pt-br"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll, {:'accept-language'=>'pt-br'})
+    Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll, {:'accept-language' => 'pt-br'})
   end
 
   def test_service_unavailable
     response = MockFailure.new
-    url = url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::OSMGeocoder.geocode(@osm_city_loc).success
   end

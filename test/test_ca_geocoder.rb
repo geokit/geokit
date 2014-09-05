@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'helper')
 Geokit::Geocoders::CaGeocoder.key = 'SOMEKEYVALUE'
 
 class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
-  CA_SUCCESS=<<-EOF
+  CA_SUCCESS = <<-EOF
   <?xml version="1.0" encoding="UTF-8" ?>
   <geodata><latt>49.243086</latt><longt>-123.153684</longt></geodata>
   EOF

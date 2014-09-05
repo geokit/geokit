@@ -135,49 +135,49 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_class_endpoint
-    endpoint=Geokit::LatLng.endpoint(@loc_a, 332, 3.97)
+    endpoint = Geokit::LatLng.endpoint(@loc_a, 332, 3.97)
     assert_in_delta @loc_e.lat, endpoint.lat, 0.0005
     assert_in_delta @loc_e.lng, endpoint.lng, 0.0005
   end
 
   def test_instance_endpoint
-    endpoint=@loc_a.endpoint(332, 3.97)
+    endpoint = @loc_a.endpoint(332, 3.97)
     assert_in_delta @loc_e.lat, endpoint.lat, 0.0005
     assert_in_delta @loc_e.lng, endpoint.lng, 0.0005
   end
 
   def test_midpoint
-    midpoint=@loc_a.midpoint_to(@loc_e)
+    midpoint = @loc_a.midpoint_to(@loc_e)
     assert_in_delta 32.944061, midpoint.lat, 0.0005
     assert_in_delta(-96.974296, midpoint.lng, 0.0005)
   end
 
   def test_normalize
-    lat=37.7690
-    lng=-122.443
-    res=Geokit::LatLng.normalize(lat, lng)
+    lat = 37.7690
+    lng = -122.443
+    res = Geokit::LatLng.normalize(lat, lng)
     assert_equal res, Geokit::LatLng.new(lat, lng)
-    res=Geokit::LatLng.normalize("#{lat}, #{lng}")
+    res = Geokit::LatLng.normalize("#{lat}, #{lng}")
     assert_equal res, Geokit::LatLng.new(lat, lng)
-    res=Geokit::LatLng.normalize("#{lat} #{lng}")
+    res = Geokit::LatLng.normalize("#{lat} #{lng}")
     assert_equal res, Geokit::LatLng.new(lat, lng)
-    res=Geokit::LatLng.normalize("#{lat.to_i} #{lng.to_i}")
+    res = Geokit::LatLng.normalize("#{lat.to_i} #{lng.to_i}")
     assert_equal res, Geokit::LatLng.new(lat.to_i, lng.to_i)
-    res=Geokit::LatLng.normalize([lat, lng])
+    res = Geokit::LatLng.normalize([lat, lng])
     assert_equal res, Geokit::LatLng.new(lat, lng)
   end
 
   def test_hash
-    lat=37.7690
-    lng=-122.443
+    lat = 37.7690
+    lng = -122.443
     first = Geokit::LatLng.new(lat, lng)
     second = Geokit::LatLng.new(lat, lng)
     assert_equal first.hash, second.hash
   end
 
   def test_eql?
-    lat=37.7690
-    lng=-122.443
+    lat = 37.7690
+    lng = -122.443
     first = Geokit::LatLng.new(lat, lng)
     second = Geokit::LatLng.new(lat, lng)
     assert first.eql?(second)

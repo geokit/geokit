@@ -33,7 +33,7 @@ module Geokit
 
     # Longitude attribute setter; stored as a float;
     def lng=(lng)
-      @lng=lng.to_f if lng
+      @lng = lng.to_f if lng
     end
 
     # Returns the lat and lng attributes as a comma-separated string.
@@ -111,7 +111,7 @@ module Geokit
 
     def self.from_string(thing)
       thing.strip!
-      if match=thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
+      if match = thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
         Geokit::LatLng.new(match[1], match[2])
       else
         res = Geokit::Geocoders::MultiGeocoder.geocode(thing)

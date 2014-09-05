@@ -39,20 +39,20 @@ module Geokit
     def initialize(h={})
       @all = [self]
 
-      @street_address=h[:street_address]
-      @sub_premise=nil
-      @street_number=nil
-      @street_name=nil
-      @city=h[:city]
-      @state=h[:state]
-      @state_code=h[:state_code]
-      @state_name=h[:state_name]
-      @zip=h[:zip]
-      @country_code=h[:country_code]
+      @street_address = h[:street_address]
+      @sub_premise = nil
+      @street_number = nil
+      @street_name = nil
+      @city = h[:city]
+      @state = h[:state]
+      @state_code = h[:state_code]
+      @state_name = h[:state_name]
+      @zip = h[:zip]
+      @country_code = h[:country_code]
       @province = h[:province]
-      @success=false
-      @precision='unknown'
-      @full_address=nil
+      @success = false
+      @precision = 'unknown'
+      @full_address = nil
       super(h[:lat], h[:lng])
     end
 
@@ -84,13 +84,13 @@ module Geokit
 
     # Returns the street name portion of the street address where possible
     def street_name
-      @street_name||=street_address[street_number.length, street_address.length].strip if street_address
+      @street_name ||= street_address[street_number.length, street_address.length].strip if street_address
       @street_name
     end
 
     # gives you all the important fields as key-value pairs
     def hash
-      res={}
+      res = {}
       [:success, :lat, :lng, :country_code, :city, :state, :zip, :street_address, :province,
        :district, :provider, :full_address, :is_us?, :ll, :precision, :district_fips, :state_fips,
        :block_fips, :sub_premise].each { |s| res[s] = self.send(s.to_s) }
@@ -115,7 +115,7 @@ module Geokit
     # Returns a comma-delimited string consisting of the street address, city, state,
     # zip, and country code.  Only includes those attributes that are non-blank.
     def to_geocodeable_s
-      a=[street_address, district, city, province, state, zip, country_code].compact
+      a = [street_address, district, city, province, state, zip, country_code].compact
       a.delete_if { |e| !e || e == '' }
       a.join(', ')
     end

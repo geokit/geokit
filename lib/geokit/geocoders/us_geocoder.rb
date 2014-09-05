@@ -22,13 +22,13 @@ module Geokit
       def self.parse_csv(array)
         loc = GeoLoc.new
         if array.length == 5
-          loc.lat, loc.lng, loc.city, loc.state, loc.zip=array
-          loc.country_code='US'
-          loc.success=true
+          loc.lat, loc.lng, loc.city, loc.state, loc.zip = array
+          loc.country_code = 'US'
+          loc.success = true
         elsif array.length == 6
-          loc.lat, loc.lng, loc.street_address, loc.city, loc.state, loc.zip=array
-          loc.country_code='US'
-          loc.success=true
+          loc.lat, loc.lng, loc.street_address, loc.city, loc.state, loc.zip = array
+          loc.country_code = 'US'
+          loc.success = true
         end
         loc
       end

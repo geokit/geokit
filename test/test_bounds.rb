@@ -5,16 +5,16 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
     # This is the area in Texas
     @sw = Geokit::LatLng.new(32.91663, -96.982841)
     @ne = Geokit::LatLng.new(32.96302, -96.919495)
-    @bounds=Geokit::Bounds.new(@sw, @ne)
-    @loc_a=Geokit::LatLng.new(32.918593, -96.958444) # inside bounds
-    @loc_b=Geokit::LatLng.new(32.914144, -96.958444) # outside bouds
+    @bounds = Geokit::Bounds.new(@sw, @ne)
+    @loc_a = Geokit::LatLng.new(32.918593, -96.958444) # inside bounds
+    @loc_b = Geokit::LatLng.new(32.914144, -96.958444) # outside bouds
 
     # this is a cross-meridan area
-    @cross_meridian=Geokit::Bounds.normalize([30, 170], [40, -170])
-    @inside_cm=Geokit::LatLng.new(35, 175)
-    @inside_cm_2=Geokit::LatLng.new(35, -175)
-    @east_of_cm=Geokit::LatLng.new(35, -165)
-    @west_of_cm=Geokit::LatLng.new(35, 165)
+    @cross_meridian = Geokit::Bounds.normalize([30, 170], [40, -170])
+    @inside_cm = Geokit::LatLng.new(35, 175)
+    @inside_cm_2 = Geokit::LatLng.new(35, -175)
+    @east_of_cm = Geokit::LatLng.new(35, -165)
+    @west_of_cm = Geokit::LatLng.new(35, 165)
   end
 
   def test_equality
@@ -22,13 +22,13 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_normalize
-    res=Geokit::Bounds.normalize(@sw, @ne)
+    res = Geokit::Bounds.normalize(@sw, @ne)
     assert_equal res, Geokit::Bounds.new(@sw, @ne)
-    res=Geokit::Bounds.normalize([@sw, @ne])
+    res = Geokit::Bounds.normalize([@sw, @ne])
     assert_equal res, Geokit::Bounds.new(@sw, @ne)
-    res=Geokit::Bounds.normalize([@sw.lat, @sw.lng], [@ne.lat, @ne.lng])
+    res = Geokit::Bounds.normalize([@sw.lat, @sw.lng], [@ne.lat, @ne.lng])
     assert_equal res, Geokit::Bounds.new(@sw, @ne)
-    res=Geokit::Bounds.normalize([[@sw.lat, @sw.lng], [@ne.lat, @ne.lng]])
+    res = Geokit::Bounds.normalize([[@sw.lat, @sw.lng], [@ne.lat, @ne.lng]])
     assert_equal res, Geokit::Bounds.new(@sw, @ne)
   end
 
@@ -61,9 +61,9 @@ class BoundsTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_creation_from_circle
-    bounds=Geokit::Bounds.from_point_and_radius([32.939829, -96.951176], 2.5)
-    inside=Geokit::LatLng.new 32.9695270000, -96.9901590000
-    outside=Geokit::LatLng.new 32.8951550000, -96.9584440000
+    bounds = Geokit::Bounds.from_point_and_radius([32.939829, -96.951176], 2.5)
+    inside = Geokit::LatLng.new 32.9695270000, -96.9901590000
+    outside = Geokit::LatLng.new 32.8951550000, -96.9584440000
     assert bounds.contains?(inside)
     assert !bounds.contains?(outside)
   end

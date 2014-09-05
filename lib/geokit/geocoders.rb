@@ -36,8 +36,8 @@ module Geokit
     @@request_timeout = nil
     @@provider_order = [:google, :us]
     @@ip_provider_order = [:geo_plugin, :ip]
-    @@logger=Logger.new(STDOUT)
-    @@logger.level=Logger::INFO
+    @@logger = Logger.new(STDOUT)
+    @@logger.level = Logger::INFO
     @@domain = nil
     @@net_adapter = Geokit::NetAdapter::NetHttp
     @@secure = true
