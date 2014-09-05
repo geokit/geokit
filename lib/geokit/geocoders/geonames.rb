@@ -16,7 +16,7 @@ module Geokit
         if key.nil? || key.empty?
           raise Geokit::Geocoders::GeocodeError.new('Geonames requires a key to use their service.')
         end
-        
+
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         # geonames need a space seperated search string
         address_str.gsub!(/,/, " ")

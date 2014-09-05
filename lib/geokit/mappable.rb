@@ -133,7 +133,7 @@ module Geokit
             (seconds % 60)          # seconds as positive float
         ]
       end
-      
+
       def deg2rad(degrees)
         degrees.to_f / 180.0 * Math::PI
       end
