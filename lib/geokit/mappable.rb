@@ -74,7 +74,7 @@ module Geokit
         to_lat=deg2rad(to.lat)
         y=Math.sin(d_lng) * Math.cos(to_lat)
         x=Math.cos(from_lat)*Math.sin(to_lat)-Math.sin(from_lat)*Math.cos(to_lat)*Math.cos(d_lng)
-        heading=to_heading(Math.atan2(y,x))
+        to_heading(Math.atan2(y,x))
       end
 
       # Given a start point, distance, and heading (in degrees), provides
