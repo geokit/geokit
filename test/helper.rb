@@ -78,7 +78,7 @@ Geokit::Geocoders::Geocoder.class_eval do
   end
 end
 
-def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message='')
+def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message = '')
   full_message = build_message(message, "<?> and\n<?> expected to be within\n<?> of each other.\n", expected_array, actual_array, delta)
   assert_block(full_message) do
     expected_array.zip(actual_array).all?{|expected_item, actual_item|

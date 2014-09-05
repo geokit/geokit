@@ -62,7 +62,7 @@ module Geokit
 
     class <<self
       # returns an instance of bounds which completely encompases the given circle
-      def from_point_and_radius(point, radius, options={})
+      def from_point_and_radius(point, radius, options = {})
         point = LatLng.normalize(point)
         p0 = point.endpoint(0, radius, options)
         p90 = point.endpoint(90, radius, options)
@@ -79,7 +79,7 @@ module Geokit
       # . . . where a point is anything LatLng#normalize can handle (which is quite a lot)
       #
       # NOTE: everything combination is assumed to pass points in the order sw, ne
-      def normalize (thing, other=nil)
+      def normalize (thing, other = nil)
         # maybe this will be simple -- an actual bounds object is passed, and we can all go home
         return thing if thing.is_a? Bounds
 

@@ -15,7 +15,7 @@ module Geokit
 
     # Accepts latitude and longitude or instantiates an empty instance
     # if lat and lng are not provided. Converted to floats if provided
-    def initialize(lat=nil, lng=nil)
+    def initialize(lat = nil, lng = nil)
       lat = lat.to_f if lat && !lat.is_a?(Numeric)
       lng = lng.to_f if lng && !lng.is_a?(Numeric)
       @lat = lat
@@ -89,7 +89,7 @@ module Geokit
     #  4) an array in the format [37.1234,-129.1234]
     #  5) a LatLng or GeoLoc (which is just passed through as-is)
     #  6) anything responding to to_lat_lng -- a LatLng will be extracted from it
-    def self.normalize(thing, other=nil)
+    def self.normalize(thing, other = nil)
       return Geokit::LatLng.new(thing, other) if other
 
       case thing

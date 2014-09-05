@@ -29,7 +29,7 @@ module Geokit
       # required to have lat and lng attributes.  Valid options are:
       # :units - valid values are :miles, :kms, :nms (Geokit::default_units is the default)
       # :formula - valid values are :flat or :sphere (Geokit::default_formula is the default)
-      def distance_between(from, to, options={})
+      def distance_between(from, to, options = {})
         from = Geokit::LatLng.normalize(from)
         to = Geokit::LatLng.normalize(to)
         return 0.0 if from == to # fixes a "zero-distance" bug
@@ -80,7 +80,7 @@ module Geokit
       # Given a start point, distance, and heading (in degrees), provides
       # an endpoint. Returns a LatLng instance. Typically, the instance method
       # will be used instead of this method.
-      def endpoint(start, heading, distance, options={})
+      def endpoint(start, heading, distance, options = {})
         units   = options[:units] || Geokit.default_units
         ratio   = distance.to_f / units_sphere_multiplier(units)
         start   = Geokit::LatLng.normalize(start)
@@ -106,7 +106,7 @@ module Geokit
       # Typically, the instance method will be used instead of this method.
       # Valid option:
       #   :units - valid values are :miles, :kms, or :nms (:miles is the default)
-      def midpoint_between(from, to, options={})
+      def midpoint_between(from, to, options = {})
         from = Geokit::LatLng.normalize(from)
 
         heading = from.heading_to(to)
@@ -187,7 +187,7 @@ module Geokit
     # required to have lat and lng attributes.  Valid options are:
     # :units - valid values are :miles, :kms, :or :nms (:miles is the default)
     # :formula - valid values are :flat or :sphere (:sphere is the default)
-    def distance_to(other, options={})
+    def distance_to(other, options = {})
       self.class.distance_between(self, other, options)
     end
     alias distance_from distance_to
@@ -207,14 +207,14 @@ module Geokit
     # Returns the endpoint, given a heading (in degrees) and distance.
     # Valid option:
     # :units - valid values are :miles, :kms, or :nms (:miles is the default)
-    def endpoint(heading, distance, options={})
+    def endpoint(heading, distance, options = {})
       self.class.endpoint(self, heading, distance, options)
     end
 
     # Returns the midpoint, given another point on the map.
     # Valid option:
     # :units - valid values are :miles, :kms, or :nms (:miles is the default)
-    def midpoint_to(other, options={})
+    def midpoint_to(other, options = {})
       self.class.midpoint_between(self, other, options)
     end
   end

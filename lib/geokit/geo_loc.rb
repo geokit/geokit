@@ -36,7 +36,7 @@ module Geokit
     attr_accessor :district_fips, :state_fips, :block_fips
 
     # Constructor expects a hash of symbols to correspond with attributes.
-    def initialize(h={})
+    def initialize(h = {})
       @all = [self]
 
       @street_address = h[:street_address]
