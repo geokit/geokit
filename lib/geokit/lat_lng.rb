@@ -51,12 +51,12 @@ module Geokit
       self.class.decimal_to_dms(lng)
     end
 
-    #returns a string with comma-separated lat,lng values
+    # returns a string with comma-separated lat,lng values
     def to_s
       ll
     end
 
-    #returns a two-element array
+    # returns a two-element array
     def to_a
       [lat, lng]
     end

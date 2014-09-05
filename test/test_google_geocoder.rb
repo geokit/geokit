@@ -56,7 +56,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7749295, -122.4194155], res.to_a # slightly dif from yahoo
     assert res.is_us?
-    assert_equal 'San Francisco, CA, USA', res.full_address #slightly different from yahoo
+    assert_equal 'San Francisco, CA, USA', res.full_address # slightly different from yahoo
     assert_equal 'google', res.provider
     end
   end
@@ -70,7 +70,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7921509, -122.394], res.to_a # slightly dif from yahoo
     assert res.is_us?
-    assert_equal '100 Spear Street #5, San Francisco, CA 94105, USA', res.full_address #slightly different from yahoo
+    assert_equal '100 Spear Street #5, San Francisco, CA 94105, USA', res.full_address # slightly different from yahoo
     assert_equal 'google', res.provider
     end
   end

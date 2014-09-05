@@ -96,7 +96,7 @@ module Geokit
 
       def self.set_precision(result_json, loc)
         # Todo accuracy does not work as Yahoo and Google maps on OSM
-        #loc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(loc.precision)
+        # loc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(loc.precision)
         loc.precision = result_json['class']
         loc.accuracy = result_json['type']
       end

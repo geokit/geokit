@@ -94,9 +94,9 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(prilep.ll)
 
-      #OSM does not return the exast lat lng in response
-      #assert_equal prilep.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
-      #assert_equal prilep.lng.to_s.slice(1..5), res.lng.to_s.slice(1..5)
+      # OSM does not return the exast lat lng in response
+      # assert_equal prilep.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
+      # assert_equal prilep.lng.to_s.slice(1..5), res.lng.to_s.slice(1..5)
       assert_equal 'MK', res.country_code
       assert_equal 'osm', res.provider
 

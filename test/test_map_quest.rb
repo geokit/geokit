@@ -22,7 +22,7 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7921509, -122.394], res.to_a # slightly dif from yahoo
     assert res.is_us?
-    assert_equal '100 Spear St, Apt 5, San Francisco, CA, 94105-1500, US', res.full_address #slightly different from yahoo
+    assert_equal '100 Spear St, Apt 5, San Francisco, CA, 94105-1500, US', res.full_address # slightly different from yahoo
     assert_equal 'map_quest', res.provider
     end
   end

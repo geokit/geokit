@@ -10,7 +10,7 @@ module Geokit
       @sw, @ne = sw, ne
     end
 
-    #returns the a single point which is the center of the rectangular bounds
+    # returns the a single point which is the center of the rectangular bounds
     def center
       @sw.midpoint_to(@ne)
     end

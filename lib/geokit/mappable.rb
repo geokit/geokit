@@ -1,4 +1,4 @@
-#require 'forwardable'
+# require 'forwardable'
 
 module Geokit
   # Contains class and instance methods providing distance calcuation services.  This
