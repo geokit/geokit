@@ -75,7 +75,6 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert res.success
   end
 
-
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
     # no_results_full_hash = {:street_address=>"ZZ", :city=>"ZZ", :state=>"ZZ"}

@@ -14,7 +14,6 @@ module Geokit
         options_str << generate_param_for_option(:'accept-language', options)
         options_str << generate_param_for_option(:email, options)
 
-
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
         url = "http://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector::url_escape(address_str)}"

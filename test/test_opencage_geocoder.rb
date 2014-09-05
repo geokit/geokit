@@ -17,9 +17,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   end
 
-
   def test_opencage_full_address
-
 
     VCR.use_cassette('opencage_full') do
       url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=100+Spear+St%2C+San+Francisco%2C+CA%2C+94105%2C+US&no_annotations=1"
@@ -34,7 +32,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal "opencage", res.provider
     end
   end
-
 
   def test_opencage_city
 
@@ -52,7 +49,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     end
   end
 
-
   def test_opencage_reverse
 
     VCR.use_cassette('opencage_reverse_madrid') do
@@ -63,7 +59,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=40.4167413%2C-3.7032498&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
       res = Geokit::Geocoders::OpencageGeocoder.geocode(location.ll)
-
 
       assert_equal "ES", res.country_code
       assert_equal "opencage", res.provider
@@ -79,8 +74,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal "Calle De Zurbano", res.street_address
     end
   end
-
-
 
   def test_opencage_reverse2
 
@@ -107,7 +100,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal "Прилепски Бранители", res.street_address
     end
   end
-
 
   # check if the results are in Spanish if &language=es
   def test_language_response

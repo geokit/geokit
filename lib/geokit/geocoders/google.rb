@@ -55,7 +55,6 @@ module Geokit
         Base64.encode64(rawSignature).tr('+/','-_').gsub(/\n/, '')
       end
 
-
       def self.submit_url(query_string, options = {})
         language_str = options[:language] ? "&language=#{options[:language]}" : ''
         query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{language_str}"
@@ -71,7 +70,6 @@ module Geokit
           "#{protocol}://maps.google.com" + query_string
         end
       end
-
 
       def self.construct_bias_string_from_options(bias)
         case bias
@@ -104,7 +102,6 @@ module Geokit
         encoded.all = all
         encoded
       end
-
 
       # location_type stores additional data about the specified location.
       # The following values are currently supported:

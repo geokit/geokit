@@ -14,7 +14,6 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
   end
 
-
   # Example from:
   # https://developers.google.com/maps/documentation/business/webservices#signature_examples
   def test_google_signature
@@ -23,7 +22,6 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     signature = Geokit::Geocoders::GoogleGeocoder.send(:sign_gmap_bus_api_url, query_string, cryptographic_key)
     assert_equal 'KrU1TzVQM7Ur0i8i7K3huiw3MsA=', signature
   end
-
 
   # Example from:
   # https://developers.google.com/maps/documentation/business/webservices#signature_examples

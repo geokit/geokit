@@ -8,14 +8,12 @@ module Geokit
 
       private
 
-
       # Template method which does the geocode lookup.
       def self.do_geocode(address, options = {})
 
         options_str = generate_param_for_option(:language, options)
         options_str << generate_param_for_option(:bounds, options)
         options_str << generate_param_for_option(:min_confidence, options)
-
 
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "#{protocol}://api.opencagedata.com/geocode/v1/json?"

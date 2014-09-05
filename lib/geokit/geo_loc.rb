@@ -36,7 +36,6 @@ module Geokit
     # FCC Attributes
     attr_accessor :district_fips, :state_fips, :block_fips
 
-
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h={})
       @all = [self]

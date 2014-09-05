@@ -12,7 +12,6 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
   end
 
-
   def test_map_quest_full_address_with_geo_loc
     VCR.use_cassette('map_quest_full') do
     key = 'Fmjtd%7Cluur2d0125%2C2s%3Do5-9a8lhz'
@@ -28,7 +27,6 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal "map_quest", res.provider
     end
   end
-
 
   def test_reverse_geocode
     VCR.use_cassette('map_quest_reverse_madrid') do
