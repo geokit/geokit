@@ -2,7 +2,7 @@
 # contain true or false based upon whether authentication is to occur.  Conforms to the
 # interface set by the Geocoder class.
 module Geokit
- module Geocoders
+  module Geocoders
     class UsGeocoder < Geocoder
       config :key
 
