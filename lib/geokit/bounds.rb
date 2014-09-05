@@ -17,7 +17,7 @@ module Geokit
 
     # a simple string representation:sw,ne
     def to_s
-      "#{@sw.to_s},#{@ne.to_s}"
+      "#{@sw},#{@ne}"
     end
 
     # a two-element array of two-element arrays: sw,ne

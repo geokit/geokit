@@ -80,7 +80,7 @@ module Geokit
           "&region=#{bias.to_s.downcase}"
         when Bounds
           # viewport biasing
-          url_escaped_string = Geokit::Inflector::url_escape("#{bias.sw.to_s}|#{bias.ne.to_s}")
+          url_escaped_string = Geokit::Inflector::url_escape("#{bias.sw}|#{bias.ne}")
           "&bounds=#{url_escaped_string}"
         end
       end
