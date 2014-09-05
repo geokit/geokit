@@ -96,7 +96,7 @@ module Geokit
       when String
         from_string(thing)
       when Array
-        thing.size == 2 or raise ArgumentError.new("Must initialize with an Array with both latitude and longitude")
+        thing.size == 2 or raise ArgumentError.new('Must initialize with an Array with both latitude and longitude')
         Geokit::LatLng.new(thing[0], thing[1])
       when LatLng # will also be true for GeoLocs
         thing

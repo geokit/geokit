@@ -31,7 +31,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_city
-    @loc.city = "san francisco"
+    @loc.city = 'san francisco'
     assert_equal 'San Francisco', @loc.city
   end
 
@@ -98,7 +98,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_neighborhood
-    @loc.neighborhood = "SoMa"
+    @loc.neighborhood = 'SoMa'
     assert_equal @loc.neighborhood, 'SoMa'
   end
 end

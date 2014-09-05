@@ -19,7 +19,7 @@ module Geokit
         url = "#{protocol}://api.opencagedata.com/geocode/v1/json?"
         url += "key=#{key}#{options_str}&"
         url += "query=#{Geokit::Inflector::url_escape(address_str)}&"
-        url += "no_annotations=1"
+        url += 'no_annotations=1'
         process :json, url
       end
             # Template method which does the reverse-geocode lookup.

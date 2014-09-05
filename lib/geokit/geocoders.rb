@@ -45,7 +45,7 @@ module Geokit
 
     def self.__define_accessors
       class_variables.each do |v|
-        sym = v.to_s.delete("@").to_sym
+        sym = v.to_s.delete('@').to_sym
         unless self.respond_to? sym
           module_eval <<-EOS, __FILE__, __LINE__
             def self.#{sym}
@@ -207,7 +207,7 @@ module Geokit
     # "Regular" Address geocoders
     # -------------------------------------------------------------------------------------------
     require File.join(File.dirname(__FILE__), 'geocoders/base_ip')
-    Dir[File.join(File.dirname(__FILE__), "/geocoders/*.rb")].each {|f| require f}
+    Dir[File.join(File.dirname(__FILE__), '/geocoders/*.rb')].each {|f| require f}
 
     require File.join(File.dirname(__FILE__), 'multi_geocoder')
   end

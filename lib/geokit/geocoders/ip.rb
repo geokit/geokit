@@ -51,10 +51,10 @@ module Geokit
         if (enc_string = extract_charset(res))
           if defined?(Encoding) && Encoding.aliases.values.include?(enc_string.upcase)
             res.body.force_encoding(enc_string.upcase) if res.body.respond_to?(:force_encoding)
-            res.body.encode("UTF-8")
+            res.body.encode('UTF-8')
           else
             require 'iconv'
-            res.body.replace Iconv.conv("UTF8", "iso88591", res.body)
+            res.body.replace Iconv.conv('UTF8', 'iso88591', res.body)
           end
         end
       end

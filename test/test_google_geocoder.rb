@@ -7,8 +7,8 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     super
     @full_address = '100 Spear St Apt. 5, San Francisco, CA, 94105-1522, US'
     @full_address_short_zip = '100 Spear St Apt. 5, San Francisco, CA, 94105, US'
-    @google_full_hash = {street_address: "100 Spear St Apt. 5", city: "San Francisco", state: "CA", zip: "94105", country_code: "US"}
-    @google_city_hash = {city: "San Francisco", state: "CA"}
+    @google_full_hash = {street_address: '100 Spear St Apt. 5', city: 'San Francisco', state: 'CA', zip: '94105', country_code: 'US'}
+    @google_city_hash = {city: 'San Francisco', state: 'CA'}
 
     @google_full_loc = Geokit::GeoLoc.new(@google_full_hash)
     @google_city_loc = Geokit::GeoLoc.new(@google_city_hash)
@@ -53,12 +53,12 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
     TestHelper.expects(:last_url).with(url)
     res=Geokit::Geocoders::GoogleGeocoder.geocode(@address)
-    assert_equal "CA", res.state
-    assert_equal "San Francisco", res.city
+    assert_equal 'CA', res.state
+    assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7749295, -122.4194155], res.to_a # slightly dif from yahoo
     assert res.is_us?
-    assert_equal "San Francisco, CA, USA", res.full_address #slightly different from yahoo
-    assert_equal "google", res.provider
+    assert_equal 'San Francisco, CA, USA', res.full_address #slightly different from yahoo
+    assert_equal 'google', res.provider
     end
   end
 
@@ -67,12 +67,12 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@full_address_short_zip)}"
     TestHelper.expects(:last_url).with(url)
     res=Geokit::Geocoders::GoogleGeocoder.geocode(@google_full_loc)
-    assert_equal "CA", res.state
-    assert_equal "San Francisco", res.city
+    assert_equal 'CA', res.state
+    assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7921509, -122.394], res.to_a # slightly dif from yahoo
     assert res.is_us?
-    assert_equal "100 Spear Street #5, San Francisco, CA 94105, USA", res.full_address #slightly different from yahoo
-    assert_equal "google", res.provider
+    assert_equal '100 Spear Street #5, San Francisco, CA 94105, USA', res.full_address #slightly different from yahoo
+    assert_equal 'google', res.provider
     end
   end
 
@@ -92,28 +92,28 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     TestHelper.expects(:last_url).with(url)
     res=Geokit::Geocoders::GoogleGeocoder.do_geocode(@address)
     assert_nil res.street_address
-    assert_equal "CA", res.state
-    assert_equal "San Francisco", res.city
-    assert_equal "37.7749295,-122.4194155", res.ll
+    assert_equal 'CA', res.state
+    assert_equal 'San Francisco', res.city
+    assert_equal '37.7749295,-122.4194155', res.ll
     assert res.is_us?
-    assert_equal "San Francisco, CA, USA", res.full_address
-    assert_equal "google", res.provider
+    assert_equal 'San Francisco, CA, USA', res.full_address
+    assert_equal 'google', res.provider
     end
   end
 
    def test_google_sublocality
-     @address = "682 prospect place Brooklyn ny 11216"
+     @address = '682 prospect place Brooklyn ny 11216'
      VCR.use_cassette('google_sublocality') do
      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
      TestHelper.expects(:last_url).with(url)
      res=Geokit::Geocoders::GoogleGeocoder.do_geocode(@address)
-     assert_equal "682 Prospect Place", res.street_address
-     assert_equal "NY", res.state
-     assert_equal "Brooklyn", res.city
-     assert_equal "40.6745812,-73.9541582", res.ll
+     assert_equal '682 Prospect Place', res.street_address
+     assert_equal 'NY', res.state
+     assert_equal 'Brooklyn', res.city
+     assert_equal '40.6745812,-73.9541582', res.ll
      assert res.is_us?
-     assert_equal "682 Prospect Place, Brooklyn, NY 11216, USA", res.full_address
-     assert_equal "google", res.provider
+     assert_equal '682 Prospect Place, Brooklyn, NY 11216, USA', res.full_address
+     assert_equal 'google', res.provider
      end
    end
 
@@ -131,13 +131,13 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
     TestHelper.expects(:last_url).with(url)
     res=Geokit::Geocoders::GoogleGeocoder.geocode(@google_city_loc)
-    assert_equal "CA", res.state
-    assert_equal "San Francisco", res.city
-    assert_equal "37.7749295,-122.4194155", res.ll
+    assert_equal 'CA', res.state
+    assert_equal 'San Francisco', res.city
+    assert_equal '37.7749295,-122.4194155', res.ll
     assert res.is_us?
-    assert_equal "San Francisco, CA, USA", res.full_address
+    assert_equal 'San Francisco, CA, USA', res.full_address
     assert_nil res.street_address
-    assert_equal "google", res.provider
+    assert_equal 'google', res.provider
     end
   end
 
@@ -157,7 +157,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
       Geokit::LatLng.new(33.7036917, -118.6681759),
       Geokit::LatLng.new(34.3373061, -118.1552891)
     )
-    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Winnetka&bounds=33.7036917%2C-118.6681759%7C34.3373061%2C-118.1552891"
+    url = 'https://maps.google.com/maps/api/geocode/json?sensor=false&address=Winnetka&bounds=33.7036917%2C-118.6681759%7C34.3373061%2C-118.1552891'
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url)
     Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', bias: bounds)
   end
@@ -176,50 +176,50 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     res=Geokit::Geocoders::GoogleGeocoder.geocode('via Sandro Pertini 8, Ossona, MI')
     assert_equal 5, res.all.size
     res = res.all[0]
-    assert_equal "Lombardy", res.state
-    assert_equal "Mesero", res.city
+    assert_equal 'Lombardy', res.state
+    assert_equal 'Mesero', res.city
     assert_array_in_delta [45.4966218, 8.852694], res.to_a
     assert !res.is_us?
-    assert_equal "Via Sandro Pertini, 8, 20010 Mesero Milan, Italy", res.full_address
-    assert_equal "8 Via Sandro Pertini", res.street_address
-    assert_equal "google", res.provider
+    assert_equal 'Via Sandro Pertini, 8, 20010 Mesero Milan, Italy', res.full_address
+    assert_equal '8 Via Sandro Pertini', res.street_address
+    assert_equal 'google', res.provider
 
     res = res.all[4]
-    assert_equal "Lombardy", res.state
-    assert_equal "Ossona", res.city
+    assert_equal 'Lombardy', res.state
+    assert_equal 'Ossona', res.city
     assert_array_in_delta [45.5074444, 8.90232], res.to_a
     assert !res.is_us?
-    assert_equal "Via S. Pertini, 20010 Ossona Milan, Italy", res.full_address
-    assert_equal "Via S. Pertini", res.street_address
-    assert_equal "google", res.provider
+    assert_equal 'Via S. Pertini, 20010 Ossona Milan, Italy', res.full_address
+    assert_equal 'Via S. Pertini', res.street_address
+    assert_equal 'google', res.provider
     end
   end
 
   def test_reverse_geocode
     VCR.use_cassette('google_reverse_madrid') do
     madrid = Geokit::GeoLoc.new
-    madrid.lat, madrid.lng = "40.4167413", "-3.7032498"
+    madrid.lat, madrid.lng = '40.4167413', '-3.7032498'
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&latlng=#{Geokit::Inflector::url_escape(madrid.ll)}"
     TestHelper.expects(:last_url).with(url)
     res=Geokit::Geocoders::GoogleGeocoder.do_reverse_geocode(madrid.ll)
 
     assert_equal madrid.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
     assert_equal madrid.lng.to_s.slice(1..5), res.lng.to_s.slice(1..5)
-    assert_equal "ES", res.country_code
-    assert_equal "google", res.provider
+    assert_equal 'ES', res.country_code
+    assert_equal 'google', res.provider
 
-    assert_equal "Madrid", res.city
-    assert_equal "Community of Madrid", res.state
+    assert_equal 'Madrid', res.city
+    assert_equal 'Community of Madrid', res.state
 
-    assert_equal "Spain", res.country
-    assert_equal "28013", res.zip
+    assert_equal 'Spain', res.country
+    assert_equal '28013', res.zip
     assert_equal true, res.success
     end
   end
 
   def test_reverse_geocode_language
     VCR.use_cassette('google_reverse_madrid_es') do
-    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&latlng=40.416%2C-3.703&language=es"
+    url = 'https://maps.google.com/maps/api/geocode/json?sensor=false&latlng=40.416%2C-3.703&language=es'
     TestHelper.expects(:last_url).with(url)
     language_result = Geokit::Geocoders::GoogleGeocoder.reverse_geocode('40.416,-3.703', language: 'es')
 
@@ -230,7 +230,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_country_code_biasing
     VCR.use_cassette('google_country_code_biased_result') do
-    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it"
+    url = 'https://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it'
     TestHelper.expects(:last_url).with(url)
     biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', bias: 'it')
 
@@ -241,7 +241,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_language_response
     VCR.use_cassette('google_language_response_fr') do
-    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Hanoi&language=FR"
+    url = 'https://maps.google.com/maps/api/geocode/json?sensor=false&address=Hanoi&language=FR'
     TestHelper.expects(:last_url).with(url)
     language_result = Geokit::Geocoders::GoogleGeocoder.geocode('Hanoi', language: 'FR')
 

@@ -38,7 +38,7 @@ module Geokit
         args << "prov=#{loc.state}" if loc.state
         args << "postal=#{loc.zip}" if loc.zip
         args << "auth=#{key}" if key
-        args << "geoit=xml"
+        args << 'geoit=xml'
         'http://geocoder.ca/?' + args.join('&')
       end
     end

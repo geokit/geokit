@@ -8,7 +8,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @us_full_hash = {city: "San Francisco", state: "CA"}
+    @us_full_hash = {city: 'San Francisco', state: 'CA'}
     @us_full_loc = Geokit::GeoLoc.new(@us_full_hash)
   end
 
@@ -47,10 +47,10 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   private
 
   def verify(location)
-    assert_equal "CA", location.state
-    assert_equal "San Francisco", location.city
-    assert_equal "37.792528,-122.393981", location.ll
+    assert_equal 'CA', location.state
+    assert_equal 'San Francisco', location.city
+    assert_equal '37.792528,-122.393981', location.ll
     assert location.is_us?
-    assert_equal "100 Spear St, San Francisco, CA, 94105, US", location.full_address  #slightly different from yahoo
+    assert_equal '100 Spear St, San Francisco, CA, 94105, US', location.full_address  #slightly different from yahoo
   end
 end

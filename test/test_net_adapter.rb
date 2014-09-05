@@ -23,7 +23,7 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
   end
 
   RESULT = '{"name":"json"}'
-  RESULT_HASH = {"name" => "json"}
+  RESULT_HASH = {'name' => 'json'}
 
   # Defines common test fixtures.
   def setup

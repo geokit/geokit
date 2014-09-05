@@ -29,7 +29,7 @@ if ENV['COVERAGE']
     SimpleCov.result.format!
     percent = SimpleCov.result.covered_percent
     unless percent >= COVERAGE_THRESHOLD
-      puts "Coverage must be above #{COVERAGE_THRESHOLD}%. It is #{"%.2f" % percent}%"
+      puts "Coverage must be above #{COVERAGE_THRESHOLD}%. It is #{'%.2f' % percent}%"
       Kernel.exit(1)
     end
   end
@@ -39,7 +39,7 @@ require 'test/unit'
 require 'mocha/setup'
 require 'net/http'
 
-require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
+require File.join(File.dirname(__FILE__), '../lib/geokit.rb')
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
@@ -119,19 +119,19 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     @full_address_short_zip = '100 Spear St, San Francisco, CA, 94105, US'
 
     @latlng = Geokit::LatLng.new(37.7742, -122.417068)
-    @success = Geokit::GeoLoc.new({city: "SAN FRANCISCO", state: "CA", country_code: "US", lat: @latlng.lat, lng: @latlng.lng})
+    @success = Geokit::GeoLoc.new({city: 'SAN FRANCISCO', state: 'CA', country_code: 'US', lat: @latlng.lat, lng: @latlng.lng})
     @success.success = true
   end
 
   def test_timeout_call_web_service
-    url = "http://www.anything.com"
+    url = 'http://www.anything.com'
     Geokit::Geocoders::request_timeout = 1
     assert_nil Geokit::Geocoders::TestGeocoder.call_geocoder_service(url)
   end
 
   def test_successful_call_web_service
-    url = "http://www.anything.com"
-    Geokit::Geocoders::Geocoder.expects(:do_get).with(url).returns("SUCCESS")
-    assert_equal "SUCCESS", Geokit::Geocoders::Geocoder.call_geocoder_service(url)
+    url = 'http://www.anything.com'
+    Geokit::Geocoders::Geocoder.expects(:do_get).with(url).returns('SUCCESS')
+    assert_equal 'SUCCESS', Geokit::Geocoders::Geocoder.call_geocoder_service(url)
   end
 end

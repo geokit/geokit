@@ -25,7 +25,7 @@ module Geokit
       # "status"=>"OK"}
 
       def self.parse_json(results)
-        if results.has_key?('Err') && results['Err']["msg"] == 'There are no results for this location'
+        if results.has_key?('Err') && results['Err']['msg'] == 'There are no results for this location'
           return GeoLoc.new
         end
         # this should probably be smarter.

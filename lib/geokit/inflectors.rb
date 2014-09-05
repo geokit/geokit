@@ -12,12 +12,12 @@ module Geokit
       camel_cased_word.to_s.gsub(/::/, '/').
         gsub(/([A-Z]+)([A-Z][a-z])/u,'\1_\2').
         gsub(/([a-z\d])([A-Z])/u,'\1_\2').
-        tr("-", "_").
+        tr('-', '_').
         downcase
     end
 
     def humanize(lower_case_and_underscored_word)
-      lower_case_and_underscored_word.to_s.gsub(/_id$/, "").gsub(/_/, " ").capitalize
+      lower_case_and_underscored_word.to_s.gsub(/_id$/, '').gsub(/_/, ' ').capitalize
     end
 
     def url_escape(s)

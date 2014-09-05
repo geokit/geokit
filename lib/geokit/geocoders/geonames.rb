@@ -19,7 +19,7 @@ module Geokit
 
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         # geonames need a space seperated search string
-        address_str.gsub!(/,/, " ")
+        address_str.gsub!(/,/, ' ')
         params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
 
         if premium

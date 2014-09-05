@@ -120,10 +120,10 @@ module Geokit
       # these do not map well. Perhaps we should guess better based on size
       # of bounding box where it exists? Does it really matter?
       ACCURACY = {
-        "ROOFTOP" => 9,
-        "RANGE_INTERPOLATED" => 8,
-        "GEOMETRIC_CENTER" => 5,
-        "APPROXIMATE" => 4
+        'ROOFTOP' => 9,
+        'RANGE_INTERPOLATED' => 8,
+        'GEOMETRIC_CENTER' => 5,
+        'APPROXIMATE' => 4
       }
 
       def self.single_json_to_geoloc(addr)
@@ -157,28 +157,28 @@ module Geokit
         addr['address_components'].each do |comp|
           types = comp['types']
           case
-          when types.include?("subpremise")
+          when types.include?('subpremise')
             loc.sub_premise = comp['short_name']
-          when types.include?("street_number")
+          when types.include?('street_number')
             loc.street_number = comp['short_name']
-          when types.include?("route")
+          when types.include?('route')
             loc.street_name = comp['long_name']
-          when types.include?("locality")
+          when types.include?('locality')
             loc.city = comp['long_name']
-          when types.include?("administrative_area_level_1")
+          when types.include?('administrative_area_level_1')
             loc.state_code = comp['short_name']
             loc.state_name = comp['long_name']
             loc.province = comp['short_name']
-          when types.include?("postal_code")
+          when types.include?('postal_code')
             loc.zip = comp['long_name']
-          when types.include?("country")
+          when types.include?('country')
             loc.country_code = comp['short_name']
             loc.country = comp['long_name']
-          when types.include?("administrative_area_level_2")
+          when types.include?('administrative_area_level_2')
             loc.district = comp['long_name']
           when types.include?('neighborhood')
             loc.neighborhood = comp['short_name']
-          when types.include?("sublocality")
+          when types.include?('sublocality')
             loc.city = comp['long_name'] if loc.city.nil?
           end
         end
