@@ -4,6 +4,7 @@ module Geokit
       self.secure = true
 
       private
+
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng=LatLng.normalize(latlng)

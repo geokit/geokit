@@ -7,6 +7,7 @@ module Geokit
       config :key
 
       private
+
       def self.do_geocode(address)
         process :csv, submit_url(address)
       end

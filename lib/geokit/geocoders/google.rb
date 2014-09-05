@@ -5,6 +5,7 @@ module Geokit
       self.secure = true
 
       private
+
       # ==== OPTIONS
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
       def self.do_reverse_geocode(latlng, options = {})

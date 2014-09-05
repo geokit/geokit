@@ -7,6 +7,7 @@ module Geokit
       self.secure = true
 
       private
+
       def self.submit_url(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         query_string = "?q=#{Geokit::Inflector.url_escape(address_str)}&flags=J"
