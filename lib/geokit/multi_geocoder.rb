@@ -72,4 +72,3 @@ module Geokit
     end
   end
 end
-
