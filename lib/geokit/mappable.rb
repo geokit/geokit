@@ -109,8 +109,6 @@ module Geokit
       def midpoint_between(from,to,options={})
         from=Geokit::LatLng.normalize(from)
 
-        units = options[:units] || Geokit::default_units
-
         heading=from.heading_to(to)
         distance=from.distance_to(to,options)
         midpoint=from.endpoint(heading,distance/2,options)
