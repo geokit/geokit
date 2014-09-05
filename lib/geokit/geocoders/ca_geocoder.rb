@@ -20,9 +20,9 @@ module Geokit
      def self.do_geocode(loc)
        raise ArgumentError('Geocoder.ca requires a GeoLoc argument') unless loc.is_a?(GeoLoc)
        process :xml, submit_url(loc), loc
-    end
+     end
 
-    def self.parse_xml(xml, loc)
+     def self.parse_xml(xml, loc)
        loc.lat = xml.elements['//latt'].text
        loc.lng = xml.elements['//longt'].text
        loc.success = true

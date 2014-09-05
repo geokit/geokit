@@ -74,7 +74,7 @@ module Geokit
         to_lat=deg2rad(to.lat)
         y=Math.sin(d_lng) * Math.cos(to_lat)
         x=Math.cos(from_lat)*Math.sin(to_lat)-Math.sin(from_lat)*Math.cos(to_lat)*Math.cos(d_lng)
-        heading=to_heading(Math.atan2(y,x))
+        to_heading(Math.atan2(y,x))
       end
 
       # Given a start point, distance, and heading (in degrees), provides
@@ -109,11 +109,9 @@ module Geokit
       def midpoint_between(from,to,options={})
         from=Geokit::LatLng.normalize(from)
 
-        units = options[:units] || Geokit::default_units
-
         heading=from.heading_to(to)
         distance=from.distance_to(to,options)
-        midpoint=from.endpoint(heading,distance/2,options)
+        from.endpoint(heading,distance/2,options)
       end
 
       # Geocodes a location using the multi geocoder.
@@ -182,8 +180,7 @@ module Geokit
     # Extracts a LatLng instance. Use with models that are acts_as_mappable
     def to_lat_lng
       return self if instance_of?(Geokit::LatLng) || instance_of?(Geokit::GeoLoc)
-      return LatLng.new(send(self.class.lat_column_name), send(self.class.lng_column_name))
-      nil
+      LatLng.new(send(self.class.lat_column_name), send(self.class.lng_column_name))
     end
 
     # Returns the distance from another point.  The other point parameter is
