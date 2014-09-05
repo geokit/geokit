@@ -34,8 +34,8 @@ module Geokit
   module Geocoders
     @@proxy = nil
     @@request_timeout = nil
-    @@provider_order = [:google,:us]
-    @@ip_provider_order = [:geo_plugin,:ip]
+    @@provider_order = [:google, :us]
+    @@ip_provider_order = [:geo_plugin, :ip]
     @@logger=Logger.new(STDOUT)
     @@logger.level=Logger::INFO
     @@domain = nil

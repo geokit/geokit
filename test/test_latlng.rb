@@ -2,8 +2,8 @@ require File.join(File.dirname(__FILE__), 'helper')
 
 class LatLngTest < Test::Unit::TestCase #:nodoc: all
   def setup
-    @loc_a = Geokit::LatLng.new(32.918593,-96.958444)
-    @loc_e = Geokit::LatLng.new(32.969527,-96.990159)
+    @loc_a = Geokit::LatLng.new(32.918593, -96.958444)
+    @loc_e = Geokit::LatLng.new(32.969527, -96.990159)
     @point = Geokit::LatLng.new(@loc_a.lat, @loc_a.lng)
   end
 
@@ -127,7 +127,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_heading_between
-    assert_in_delta 332, Geokit::LatLng.heading_between(@loc_a,@loc_e), 0.5
+    assert_in_delta 332, Geokit::LatLng.heading_between(@loc_a, @loc_e), 0.5
   end
 
   def test_heading_to
@@ -155,45 +155,45 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   def test_normalize
     lat=37.7690
     lng=-122.443
-    res=Geokit::LatLng.normalize(lat,lng)
-    assert_equal res,Geokit::LatLng.new(lat,lng)
+    res=Geokit::LatLng.normalize(lat, lng)
+    assert_equal res, Geokit::LatLng.new(lat, lng)
     res=Geokit::LatLng.normalize("#{lat}, #{lng}")
-    assert_equal res,Geokit::LatLng.new(lat,lng)
+    assert_equal res, Geokit::LatLng.new(lat, lng)
     res=Geokit::LatLng.normalize("#{lat} #{lng}")
-    assert_equal res,Geokit::LatLng.new(lat,lng)
+    assert_equal res, Geokit::LatLng.new(lat, lng)
     res=Geokit::LatLng.normalize("#{lat.to_i} #{lng.to_i}")
-    assert_equal res,Geokit::LatLng.new(lat.to_i,lng.to_i)
-    res=Geokit::LatLng.normalize([lat,lng])
-    assert_equal res,Geokit::LatLng.new(lat,lng)
+    assert_equal res, Geokit::LatLng.new(lat.to_i, lng.to_i)
+    res=Geokit::LatLng.normalize([lat, lng])
+    assert_equal res, Geokit::LatLng.new(lat, lng)
   end
 
   def test_hash
     lat=37.7690
     lng=-122.443
-    first = Geokit::LatLng.new(lat,lng)
-    second = Geokit::LatLng.new(lat,lng)
+    first = Geokit::LatLng.new(lat, lng)
+    second = Geokit::LatLng.new(lat, lng)
     assert_equal first.hash, second.hash
   end
 
   def test_eql?
     lat=37.7690
     lng=-122.443
-    first = Geokit::LatLng.new(lat,lng)
-    second = Geokit::LatLng.new(lat,lng)
+    first = Geokit::LatLng.new(lat, lng)
+    second = Geokit::LatLng.new(lat, lng)
     assert first.eql?(second)
     assert second.eql?(first)
   end
 
   def test_valid_when_lat_and_lng_defined
-    assert Geokit::LatLng.new(37.7690,-122.443).valid?
+    assert Geokit::LatLng.new(37.7690, -122.443).valid?
   end
 
   def test_not_valid_when_lat_is_nil
-    assert ! Geokit::LatLng.new(nil,-122.443).valid?
+    assert ! Geokit::LatLng.new(nil, -122.443).valid?
   end
 
   def test_not_valid_when_lng_is_nil
-    assert ! Geokit::LatLng.new(37.7690,nil).valid?
+    assert ! Geokit::LatLng.new(37.7690, nil).valid?
   end
 
   def test_reverse_geocode

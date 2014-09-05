@@ -58,7 +58,7 @@ module Geokit
 
     #returns a two-element array
     def to_a
-      [lat,lng]
+      [lat, lng]
     end
     # Returns true if the candidate object is logically equal.  Logical equivalence
     # is true if the lat and lng attributes are the same for both objects.

@@ -60,15 +60,15 @@ module Geokit
 
       def self.set_precision(result_json, loc)
         loc.precision = case result_json['quality'].to_i
-                        when 9,10         then 'country'
+                        when 9, 10         then 'country'
                         when 19..30       then 'state'
-                        when 39,40        then 'city'
-                        when 49,50        then 'neighborhood'
-                        when 59,60,64     then 'zip'
-                        when 74,75        then 'zip+4'
+                        when 39, 40        then 'city'
+                        when 49, 50        then 'neighborhood'
+                        when 59, 60, 64     then 'zip'
+                        when 74, 75        then 'zip+4'
                         when 70..72       then 'street'
                         when 80..87       then 'address'
-                        when 62,63,90,99  then 'building'
+                        when 62, 63, 90, 99  then 'building'
                         else 'unknown'
                         end
 
@@ -156,7 +156,7 @@ class OauthUtil
 
     # if url has query, merge key/values into params obj overwriting defaults
     if parsed_url.query
-      CGI.parse( parsed_url.query ).each do |k,v|
+      CGI.parse( parsed_url.query ).each do |k, v|
         if v.is_a?(Array) && v.count == 1
           @params[k] = v.first
         else

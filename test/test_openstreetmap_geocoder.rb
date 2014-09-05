@@ -65,7 +65,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_CITY)
     url="http://nominatim.openstreetmap.org/search?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address,{:'accept-language'=>'pt-br'}))
+    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address, {:'accept-language'=>'pt-br'}))
   end
 
   def test_osm_city_accuracy

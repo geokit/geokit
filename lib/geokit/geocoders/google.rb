@@ -49,11 +49,11 @@ module Geokit
         require 'base64'
         require 'openssl'
         # Decode the private key
-        rawKey = Base64.decode64(google_cryptographic_key.tr('-_','+/'))
+        rawKey = Base64.decode64(google_cryptographic_key.tr('-_', '+/'))
         # create a signature using the private key and the URL
         rawSignature = OpenSSL::HMAC.digest('sha1', rawKey, urlToSign)
         # encode the signature into base64 for url use form.
-        Base64.encode64(rawSignature).tr('+/','-_').gsub(/\n/, '')
+        Base64.encode64(rawSignature).tr('+/', '-_').gsub(/\n/, '')
       end
 
       def self.submit_url(query_string, options = {})

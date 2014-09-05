@@ -65,7 +65,7 @@ module Geokit
       # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc)
       # from the first point to the second point. Typicaly, the instance methods will be used
       # instead of this method.
-      def heading_between(from,to)
+      def heading_between(from, to)
         from=Geokit::LatLng.normalize(from)
         to=Geokit::LatLng.normalize(to)
 
@@ -74,13 +74,13 @@ module Geokit
         to_lat=deg2rad(to.lat)
         y=Math.sin(d_lng) * Math.cos(to_lat)
         x=Math.cos(from_lat)*Math.sin(to_lat)-Math.sin(from_lat)*Math.cos(to_lat)*Math.cos(d_lng)
-        to_heading(Math.atan2(y,x))
+        to_heading(Math.atan2(y, x))
       end
 
       # Given a start point, distance, and heading (in degrees), provides
       # an endpoint. Returns a LatLng instance. Typically, the instance method
       # will be used instead of this method.
-      def endpoint(start,heading, distance, options={})
+      def endpoint(start, heading, distance, options={})
         units   = options[:units] || Geokit.default_units
         ratio   = distance.to_f / units_sphere_multiplier(units)
         start   = Geokit::LatLng.normalize(start)
@@ -99,19 +99,19 @@ module Geokit
         end_lng = lng + Math.atan2(Math.sin(heading) * sin_ratio * cos_lat,
                                    cos_ratio - sin_lat * Math.sin(end_lat))
 
-        LatLng.new(rad2deg(end_lat),rad2deg(end_lng))
+        LatLng.new(rad2deg(end_lat), rad2deg(end_lng))
       end
 
       # Returns the midpoint, given two points. Returns a LatLng.
       # Typically, the instance method will be used instead of this method.
       # Valid option:
       #   :units - valid values are :miles, :kms, or :nms (:miles is the default)
-      def midpoint_between(from,to,options={})
+      def midpoint_between(from, to, options={})
         from=Geokit::LatLng.normalize(from)
 
         heading=from.heading_to(to)
-        distance=from.distance_to(to,options)
-        from.endpoint(heading,distance/2,options)
+        distance=from.distance_to(to, options)
+        from.endpoint(heading, distance/2, options)
       end
 
       # Geocodes a location using the multi geocoder.
@@ -195,27 +195,27 @@ module Geokit
     # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc)
     # to the given point. The given point can be a LatLng or a string to be Geocoded
     def heading_to(other)
-      self.class.heading_between(self,other)
+      self.class.heading_between(self, other)
     end
 
     # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc)
     # FROM the given point. The given point can be a LatLng or a string to be Geocoded
     def heading_from(other)
-      self.class.heading_between(other,self)
+      self.class.heading_between(other, self)
     end
 
     # Returns the endpoint, given a heading (in degrees) and distance.
     # Valid option:
     # :units - valid values are :miles, :kms, or :nms (:miles is the default)
-    def endpoint(heading,distance,options={})
-      self.class.endpoint(self,heading,distance,options)
+    def endpoint(heading, distance, options={})
+      self.class.endpoint(self, heading, distance, options)
     end
 
     # Returns the midpoint, given another point on the map.
     # Valid option:
     # :units - valid values are :miles, :kms, or :nms (:miles is the default)
     def midpoint_to(other, options={})
-      self.class.midpoint_between(self,other,options)
+      self.class.midpoint_between(self, other, options)
     end
   end
 end

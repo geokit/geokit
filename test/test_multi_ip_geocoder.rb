@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders.ip_provider_order=[:geo_plugin,:ip]
+Geokit::Geocoders.ip_provider_order=[:geo_plugin, :ip]
 
 class MultiIpGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
