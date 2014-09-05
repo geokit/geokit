@@ -55,7 +55,7 @@ module Geokit
           else
             loc.all.push(extracted_geoloc)
           end
-        end          
+        end
         loc
       end
 
