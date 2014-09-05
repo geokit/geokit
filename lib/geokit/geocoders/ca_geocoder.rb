@@ -22,7 +22,7 @@ module Geokit
        process :xml, submit_url(loc), loc
      end
 
-    def self.parse_xml(xml, loc)
+     def self.parse_xml(xml, loc)
        loc.lat = xml.elements['//latt'].text
        loc.lng = xml.elements['//longt'].text
        loc.success = true
