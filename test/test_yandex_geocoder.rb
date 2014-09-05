@@ -2,21 +2,21 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
-    YANDEX_FULL = <<-EOF.strip
-      {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Москва, улица Новый Арбат, дом 24","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Москва, улица Новый Арбат, 24","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Москва, улица Новый Арбат, 24","CountryNameCode":"RU","CountryName":"Россия","Locality":{"LocalityName":"Москва","Thoroughfare":{"ThoroughfareName":"улица Новый Арбат","Premise":{"PremiseNumber":"24"}}}}}}},"description":"Москва, Россия","name":"улица Новый Арбат, 24","boundedBy":{"Envelope":{"lowerCorner":"37.585565 55.751928","upperCorner":"37.589662 55.754238"}},"Point":{"pos":"37.587614 55.753083"}}}]}}}
-    EOF
+  YANDEX_FULL = <<-EOF.strip
+    {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Москва, улица Новый Арбат, дом 24","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Москва, улица Новый Арбат, 24","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Москва, улица Новый Арбат, 24","CountryNameCode":"RU","CountryName":"Россия","Locality":{"LocalityName":"Москва","Thoroughfare":{"ThoroughfareName":"улица Новый Арбат","Premise":{"PremiseNumber":"24"}}}}}}},"description":"Москва, Россия","name":"улица Новый Арбат, 24","boundedBy":{"Envelope":{"lowerCorner":"37.585565 55.751928","upperCorner":"37.589662 55.754238"}},"Point":{"pos":"37.587614 55.753083"}}}]}}}
+  EOF
 
-    YANDEX_REGION = <<-EOF.strip
-      {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Ростов-на-Дону, ул. Станиславского, д.21","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Ростовская область, город Ростов-на-Дону, улица Станиславского, 21","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Ростовская область, город Ростов-на-Дону, улица Станиславского, 21","CountryNameCode":"RU","CountryName":"Россия","AdministrativeArea":{"AdministrativeAreaName":"Ростовская область","Locality":{"LocalityName":"город Ростов-на-Дону","Thoroughfare":{"ThoroughfareName":"улица Станиславского","Premise":{"PremiseNumber":"21"}}}}}}}},"description":"город Ростов-на-Дону, Ростовская область, Россия","name":"улица Станиславского, 21","boundedBy":{"Envelope":{"lowerCorner":"39.701349 47.214507","upperCorner":"39.705446 47.217298"}},"Point":{"pos":"39.703398 47.215903"}}}]}}}
-    EOF
+  YANDEX_REGION = <<-EOF.strip
+    {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Ростов-на-Дону, ул. Станиславского, д.21","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Ростовская область, город Ростов-на-Дону, улица Станиславского, 21","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Ростовская область, город Ростов-на-Дону, улица Станиславского, 21","CountryNameCode":"RU","CountryName":"Россия","AdministrativeArea":{"AdministrativeAreaName":"Ростовская область","Locality":{"LocalityName":"город Ростов-на-Дону","Thoroughfare":{"ThoroughfareName":"улица Станиславского","Premise":{"PremiseNumber":"21"}}}}}}}},"description":"город Ростов-на-Дону, Ростовская область, Россия","name":"улица Станиславского, 21","boundedBy":{"Envelope":{"lowerCorner":"39.701349 47.214507","upperCorner":"39.705446 47.217298"}},"Point":{"pos":"39.703398 47.215903"}}}]}}}
+  EOF
 
-    YANDEX_CITY = <<-EOF.strip
-      {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"город Москва","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"locality","text":"Россия, Москва","precision":"other","AddressDetails":{"Country":{"AddressLine":"Москва","CountryNameCode":"RU","CountryName":"Россия","Locality":{"LocalityName":"Москва"}}}}},"description":"Россия","name":"Москва","boundedBy":{"Envelope":{"lowerCorner":"37.182743 55.490667","upperCorner":"37.964969 56.01074"}},"Point":{"pos":"37.617761 55.755773"}}}]}}}
-    EOF
+  YANDEX_CITY = <<-EOF.strip
+    {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"город Москва","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"locality","text":"Россия, Москва","precision":"other","AddressDetails":{"Country":{"AddressLine":"Москва","CountryNameCode":"RU","CountryName":"Россия","Locality":{"LocalityName":"Москва"}}}}},"description":"Россия","name":"Москва","boundedBy":{"Envelope":{"lowerCorner":"37.182743 55.490667","upperCorner":"37.964969 56.01074"}},"Point":{"pos":"37.617761 55.755773"}}}]}}}
+  EOF
 
-    YANDEX_NO_RESULTS = <<-EOF.strip
-      {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"ZZ, ZZ, ZZ","found":"0","results":"10"}},"featureMember":[]}}}
-    EOF
+  YANDEX_NO_RESULTS = <<-EOF.strip
+    {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"ZZ, ZZ, ZZ","found":"0","results":"10"}},"featureMember":[]}}}
+  EOF
 
   def setup
     super
