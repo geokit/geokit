@@ -136,8 +136,8 @@ module Geokit
 
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
-        Timeout.timeout(Geokit::Geocoders.request_timeout) { return self.do_get(url) } if Geokit::Geocoders.request_timeout
-        self.do_get(url)
+        Timeout.timeout(Geokit::Geocoders.request_timeout) { return do_get(url) } if Geokit::Geocoders.request_timeout
+        do_get(url)
       rescue TimeoutError
         nil
       end
@@ -150,7 +150,7 @@ module Geokit
       end
 
       def self.use_https?
-        self.secure && Geokit::Geocoders.secure
+        secure && Geokit::Geocoders.secure
       end
 
       def self.protocol

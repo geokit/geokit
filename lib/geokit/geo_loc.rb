@@ -93,7 +93,7 @@ module Geokit
       res = {}
       [:success, :lat, :lng, :country_code, :city, :state, :zip, :street_address, :province,
        :district, :provider, :full_address, :is_us?, :ll, :precision, :district_fips, :state_fips,
-       :block_fips, :sub_premise].each { |s| res[s] = self.send(s.to_s) }
+       :block_fips, :sub_premise].each { |s| res[s] = send(s.to_s) }
       res
     end
     alias to_hash hash
