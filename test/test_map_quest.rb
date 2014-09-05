@@ -13,7 +13,7 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_map_quest_full_address_with_geo_loc
     VCR.use_cassette('map_quest_full') do
-    key = 'Fmjtd%7Cluur2d0125%2C2s%3Do5-9a8lhz'
+      key = 'Fmjtd%7Cluur2d0125%2C2s%3Do5-9a8lhz'
     Geokit::Geocoders::MapQuestGeocoder.key = key
     url = "https://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=100+Spear+St+Apt.+5%2C+San+Francisco%2C+CA%2C+94105%2C+US"
     TestHelper.expects(:last_url).with(url)
@@ -29,7 +29,7 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_reverse_geocode
     VCR.use_cassette('map_quest_reverse_madrid') do
-    madrid = Geokit::GeoLoc.new
+      madrid = Geokit::GeoLoc.new
     madrid.lat, madrid.lng = '40.4167413', '-3.7032498'
     key = 'Fmjtd%7Cluur2d0125%2C2s%3Do5-9a8lhz'
     Geokit::Geocoders::MapQuestGeocoder.key = key

@@ -8,7 +8,10 @@ module Geokit
         net_http_args = [uri.host, uri.port]
         if (proxy_uri_string = Geokit::Geocoders.proxy)
           proxy_uri = URI.parse(proxy_uri_string)
-          net_http_args += [proxy_uri.host, proxy_uri.port, proxy_uri.user, proxy_uri.password]
+          net_http_args += [proxy_uri.host,
+                            proxy_uri.port,
+                            proxy_uri.user,
+                            proxy_uri.password]
         end
         http = Net::HTTP.new(*net_http_args)
         if uri.scheme == 'https'

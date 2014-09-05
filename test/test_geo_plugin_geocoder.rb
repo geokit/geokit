@@ -31,7 +31,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_geo_plugin_geocode
     VCR.use_cassette('geo_plugin_geocode') do
-    url = "http://www.geoplugin.net/xml.gp?ip=#{@ip}"
+      url = "http://www.geoplugin.net/xml.gp?ip=#{@ip}"
     res = Geokit::Geocoders::GeoPluginGeocoder.geocode(@ip)
     assert_url url
     assert_equal res.city, 'Mountain View'

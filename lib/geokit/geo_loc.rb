@@ -5,8 +5,8 @@ module Geokit
   # the "full address" method for geocoders that do not provide a
   # full address in their results (for example, Yahoo), and the "is_us" method.
   #
-  # Some geocoders can return multple results. Geoloc can capture multiple results through
-  # its "all" method.
+  # Some geocoders can return multple results. Geoloc can capture multiple
+  # results through its "all" method.
   #
   # For the geocoder setting the results, it would look something like this:
   #     geo=GeoLoc.new(first_result)
@@ -20,17 +20,23 @@ module Geokit
   #     puts geo.all.first        # all is just an array or additional geolocs,
   #                                 so do what you want with it
   class GeoLoc < LatLng
-    # Location attributes.  Full address is a concatenation of all values.  For example:
+    # Location attributes. Full address is a concatenation of all values.
+    # For example:
     # 100 Spear St, San Francisco, CA, 94101, US
-    # Street number and street name are extracted from the street address attribute if they don't exist
-    attr_accessor :street_number, :street_name, :street_address, :city, :state, :state_name, :state_code, :zip, :country_code, :country
-    attr_accessor :full_address, :all, :district, :province, :sub_premise, :neighborhood
-    # Attributes set upon return from geocoding.  Success will be true for successful
-    # geocode lookups.  The provider will be set to the name of the providing geocoder.
-    # Finally, precision is an indicator of the accuracy of the geocoding.
+    # Street number and street name are extracted from the street address
+    # attribute if they don't exist
+    attr_accessor :street_number, :street_name, :street_address, :city, :state,
+                  :state_name, :state_code, :zip, :country_code, :country
+    attr_accessor :full_address, :all, :district, :province, :sub_premise,
+                  :neighborhood
+    # Attributes set upon return from geocoding. Success will be true for
+    # successful geocode lookups. The provider will be set to the name of the
+    # providing geocoder. Finally, precision is an indicator of the accuracy of
+    # the geocoding.
     attr_accessor :success, :provider, :precision, :suggested_bounds
-    # accuracy is set for Yahoo and Google geocoders, it is a numeric value of the
-    # precision. see http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
+    # accuracy is set for Yahoo and Google geocoders, it is a numeric value of
+    # the precision. see
+    # http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
     attr_accessor :accuracy
     # FCC Attributes
     attr_accessor :district_fips, :state_fips, :block_fips
@@ -69,9 +75,9 @@ module Geokit
       success == true
     end
 
-    # full_address is provided by google but not by yahoo. It is intended that the google
-    # geocoding method will provide the full address, whereas for yahoo it will be derived
-    # from the parts of the address we do have.
+    # full_address is provided by google but not by yahoo. It is intended that
+    # the google geocoding method will provide the full address, whereas for
+    # yahoo it will be derived from the parts of the address we do have.
     def full_address
       @full_address ? @full_address : to_geocodeable_s
     end
@@ -91,9 +97,10 @@ module Geokit
     # gives you all the important fields as key-value pairs
     def hash
       res = {}
-      [:success, :lat, :lng, :country_code, :city, :state, :zip, :street_address, :province,
-       :district, :provider, :full_address, :is_us?, :ll, :precision, :district_fips, :state_fips,
-       :block_fips, :sub_premise].each { |s| res[s] = send(s.to_s) }
+      fields = [:success, :lat, :lng, :country_code, :city, :state, :zip,
+       :street_address, :province, :district, :provider, :full_address, :is_us?,
+       :ll, :precision, :district_fips, :state_fips, :block_fips, :sub_premise]
+      fields.each { |s| res[s] = send(s.to_s) }
       res
     end
     alias to_hash hash
@@ -103,7 +110,8 @@ module Geokit
       @city = Geokit::Inflector.titleize(city) if city
     end
 
-    # Sets the street address after capitalizing each word within the street address.
+    # Sets the street address after capitalizing each word within the street
+    # address.
     def street_address=(address)
       @street_address = if address && provider != 'google'
         Geokit::Inflector.titleize(address)
@@ -112,8 +120,9 @@ module Geokit
       end
     end
 
-    # Returns a comma-delimited string consisting of the street address, city, state,
-    # zip, and country code.  Only includes those attributes that are non-blank.
+    # Returns a comma-delimited string consisting of the street address, city,
+    # state, zip, and country code.  Only includes those attributes that are
+    # non-blank.
     def to_geocodeable_s
       a = [street_address, district, city, province, state, zip, country_code].compact
       a.delete_if { |e| !e || e == '' }
@@ -132,7 +141,16 @@ module Geokit
 
     # Returns a string representation of the instance.
     def to_s
-      "Provider: #{provider}\nStreet: #{street_address}\nCity: #{city}\nState: #{state}\nZip: #{zip}\nLatitude: #{lat}\nLongitude: #{lng}\nCountry: #{country_code}\nSuccess: #{success}"
+      ["Provider: #{provider}",
+       "Street: #{street_address}",
+       "City: #{city}",
+       "State: #{state}",
+       "Zip: #{zip}",
+       "Latitude: #{lat}",
+       "Longitude: #{lng}",
+       "Country: #{country_code}",
+       "Success: #{success}"
+      ].join("\n")
     end
   end
 end
