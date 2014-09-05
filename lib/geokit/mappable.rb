@@ -111,7 +111,7 @@ module Geokit
 
         heading=from.heading_to(to)
         distance=from.distance_to(to,options)
-        midpoint=from.endpoint(heading,distance/2,options)
+        from.endpoint(heading,distance/2,options)
       end
 
       # Geocodes a location using the multi geocoder.
