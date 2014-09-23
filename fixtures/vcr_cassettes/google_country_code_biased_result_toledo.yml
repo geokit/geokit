@@ -1,0 +1,111 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=toledo&region=es&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 23 Sep 2014 13:48:29 GMT
+      Expires:
+      - Wed, 24 Sep 2014 13:48:29 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic,p=0.002
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "administrative_area_level_4", "political" ]
+                    },
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "TO",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Castile-La Mancha",
+                       "short_name" : "CM",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Spain",
+                       "short_name" : "ES",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, Toledo, Spain",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 39.88605099999999,
+                          "lng" : -3.9192423
+                       },
+                       "southwest" : {
+                          "lat" : 39.8383676,
+                          "lng" : -4.0629256
+                       }
+                    },
+                    "location" : {
+                       "lat" : 39.8628316,
+                       "lng" : -4.027323099999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 39.88605099999999,
+                          "lng" : -3.9192423
+                       },
+                       "southwest" : {
+                          "lat" : 39.8383676,
+                          "lng" : -4.0629256
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 23 Sep 2014 13:48:29 GMT
+recorded_with: VCR 2.9.3

@@ -1,0 +1,275 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=toledo&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 23 Sep 2014 13:48:30 GMT
+      Expires:
+      - Wed, 24 Sep 2014 13:48:30 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic,p=0.002
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, OH, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.732844,
+                          "lng" : -83.4547053
+                       },
+                       "southwest" : {
+                          "lat" : 41.580266,
+                          "lng" : -83.69423700000002
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.6639383,
+                       "lng" : -83.55521200000001
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.732844,
+                          "lng" : -83.4547053
+                       },
+                       "southwest" : {
+                          "lat" : 41.580266,
+                          "lng" : -83.69423700000002
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lincoln County",
+                       "short_name" : "Lincoln County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Oregon",
+                       "short_name" : "OR",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, OR, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 44.6383219,
+                          "lng" : -123.9129439
+                       },
+                       "southwest" : {
+                          "lat" : 44.598776,
+                          "lng" : -123.954585
+                       }
+                    },
+                    "location" : {
+                       "lat" : 44.621507,
+                       "lng" : -123.9384478
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 44.6383219,
+                          "lng" : -123.9129439
+                       },
+                       "southwest" : {
+                          "lat" : 44.598776,
+                          "lng" : -123.954585
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Tama County",
+                       "short_name" : "Tama County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Iowa",
+                       "short_name" : "IA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, IA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 42.00388600000001,
+                          "lng" : -92.56695289999999
+                       },
+                       "southwest" : {
+                          "lat" : 41.9784431,
+                          "lng" : -92.60007299999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.9972134,
+                       "lng" : -92.5835266
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 42.00388600000001,
+                          "lng" : -92.56695289999999
+                       },
+                       "southwest" : {
+                          "lat" : 41.9784431,
+                          "lng" : -92.60007299999999
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lewis County",
+                       "short_name" : "Lewis County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Washington",
+                       "short_name" : "WA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "98591",
+                       "short_name" : "98591",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, WA 98591, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 46.44799889999999,
+                          "lng" : -122.8419249
+                       },
+                       "southwest" : {
+                          "lat" : 46.43233009999999,
+                          "lng" : -122.85575
+                       }
+                    },
+                    "location" : {
+                       "lat" : 46.4398305,
+                       "lng" : -122.846783
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 46.44799889999999,
+                          "lng" : -122.8419249
+                       },
+                       "southwest" : {
+                          "lat" : 46.43233009999999,
+                          "lng" : -122.85575
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 23 Sep 2014 13:48:30 GMT
+recorded_with: VCR 2.9.3

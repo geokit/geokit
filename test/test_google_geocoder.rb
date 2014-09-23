@@ -230,17 +230,6 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      end
    end
 
-   def test_country_code_biasing
-     VCR.use_cassette('google_country_code_biased_result') do
-     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Syracuse&region=it"
-     TestHelper.expects(:last_url).with(url)
-     biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
-
-     assert_equal 'IT', biased_result.country_code
-     assert_equal 'Sicilia', biased_result.state
-     end
-   end
-
    def test_language_response
      VCR.use_cassette('google_language_response_fr') do
      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Hanoi&language=FR"
@@ -271,4 +260,36 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
        Geokit::Geocoders::GoogleGeocoder.geocode("3961 V\u00EDa Marisol")
      end
    end
+
+  def test_country_code_biasing_toledo
+    VCR.use_cassette('google_country_code_biased_result_toledo') do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=toledo&region=es"
+      TestHelper.expects(:last_url).with(url)
+      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('toledo', :bias => 'es')
+
+      assert_equal 'ES', biased_result.country_code
+      assert_equal 'CM', biased_result.state
+    end
+
+    VCR.use_cassette('google_result_toledo_default_bias') do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=toledo"
+      TestHelper.expects(:last_url).with(url)
+      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('toledo')
+
+      assert_equal 'US', biased_result.country_code
+      assert_equal 'OH', biased_result.state
+    end
+  end
+
+  def test_country_code_biasing_orly
+    VCR.use_cassette('google_country_code_biased_result_orly') do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=orly&region=fr"
+      TestHelper.expects(:last_url).with(url)
+      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode('orly', :bias => 'fr')
+
+      assert_equal 'FR', biased_result.country_code
+      assert_equal 'Orly, France', biased_result.full_address
+    end
+  end
+
 end

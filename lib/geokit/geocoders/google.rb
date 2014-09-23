@@ -25,10 +25,10 @@ module Geokit
       #           you can pass a Geokit::Bounds object as the :bias value.
       #
       # ==== EXAMPLES
-      # # By default, the geocoder will return Syracuse, NY
-      # Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse').country_code # => 'US'
-      # # With country code biasing, it returns Syracuse in Sicily, Italy
-      # Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => :it).country_code # => 'IT'
+      # # By default, the geocoder will return Toledo, OH
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Toledo').country_code # => 'US'
+      # # With country code biasing, it returns Toledo (spannish city), Spain
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Toledo', :bias => :es).country_code # => 'Es'
       #
       # # By default, the geocoder will return Winnetka, IL
       # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka').state # => 'IL'
@@ -99,7 +99,7 @@ module Geokit
           single_json_to_geoloc(addr)
         end
 
-        all = unsorted.sort_by(&:accuracy).reverse
+        all = unsorted.sort {|a, b| b.accuracy <=> a.accuracy }
         encoded = all.first
         encoded.all = all
         encoded
