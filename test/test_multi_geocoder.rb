@@ -98,4 +98,9 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::UsGeocoder.expects(:geocode).never
     assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:yahoo, :google, :us])
   end
+
+  def test_mapbox
+    Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:mapbox])
+    Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng, provider_order: [:mapbox])
+  end
 end
