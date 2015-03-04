@@ -257,12 +257,21 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
 
   def test_invalid_or_unsupported_units
     exception = assert_raise(ArgumentError) do
-      @loc_a.distance_to(@loc_e, :units => :invalid_units)
+      @loc_a.distance_to(@loc_e, units: :invalid_units)
     end
-    assert_equal "invalid_units is an invalid or unsupported unit of length.", exception.message
+
+    assert_equal(
+      "invalid_units is an invalid or unsupported unit of length.",
+      exception.message
+    )
 
     exception = assert_raise(ArgumentError) do
-      @loc_a.endpoint(332, 3.97, :units => :feet)
+      @loc_a.endpoint(332, 3.97, units: :feet)
     end
+
+    assert_equal(
+      "feet is an invalid or unsupported unit of length.",
+      exception.message
+    )
   end
 end

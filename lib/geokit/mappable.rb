@@ -35,8 +35,9 @@ module Geokit
       def distance_between(from, to, options = {})
         units = options[:units]
         units = Geokit::default_units if units.nil?
-        [:miles, :kms, :meters, :nms].include?(units) or raise ArgumentError.new(
-          "#{units} is an invalid or unsupported unit of length.")
+        [:miles, :kms, :meters, :nms].include?(units) or
+          raise ArgumentError.new(
+            "#{units} is an invalid or unsupported unit of length.")
 
         from = Geokit::LatLng.normalize(from)
         to = Geokit::LatLng.normalize(to)
@@ -93,8 +94,9 @@ module Geokit
       def endpoint(start, heading, distance, options = {})
         units = options[:units]
         units = Geokit::default_units if units.nil?
-        [:miles, :kms, :meters, :nms].include?(units) or raise ArgumentError.new(
-          "#{units} is an invalid or unsupported unit of length.")
+        [:miles, :kms, :meters, :nms].include?(units) or
+          raise ArgumentError.new(
+            "#{units} is an invalid or unsupported unit of length.")
 
         ratio   = distance.to_f / units_sphere_multiplier(units)
         start   = Geokit::LatLng.normalize(start)
