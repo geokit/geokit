@@ -55,4 +55,17 @@ class MappableTest < Test::Unit::TestCase #:nodoc: all
     assert_in_delta 42.573784, TestMappable.units_per_longitude_degree( 45, :nms), delta
     assert_in_delta  0.000000, TestMappable.units_per_longitude_degree( 90, :nms), delta
   end
+
+  def test_get_units
+    units = TestMappable::get_units!
+    assert_equal Geokit::default_units, units
+
+    units = TestMappable::get_units!(units: :miles)
+    assert_equal :miles, units
+
+    exception = assert_raise(ArgumentError) do
+      TestMappable::get_units!(units: :feet)
+    end
+    assert_equal 'feet is an unsupported unit of length.', exception.message
+  end
 end
