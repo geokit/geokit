@@ -33,10 +33,11 @@ module Geokit
       # :formula - valid values are :flat or :sphere
       # (Geokit::default_formula is the default)
       def distance_between(from, to, options = {})
-        from = Geokit::LatLng.normalize(from)
-        to = Geokit::LatLng.normalize(to)
+        units = get_units!(options)
+        from  = Geokit::LatLng.normalize(from)
+        to    = Geokit::LatLng.normalize(to)
         return 0.0 if from == to # fixes a "zero-distance" bug
-        units = options[:units] || Geokit.default_units
+
         formula = options[:formula] || Geokit.default_formula
         case formula
         when :sphere then distance_between_sphere(from, to, units)
@@ -86,7 +87,7 @@ module Geokit
       # an endpoint. Returns a LatLng instance. Typically, the instance method
       # will be used instead of this method.
       def endpoint(start, heading, distance, options = {})
-        units   = options[:units] || Geokit.default_units
+        units   = get_units!(options)
         ratio   = distance.to_f / units_sphere_multiplier(units)
         start   = Geokit::LatLng.normalize(start)
         lat     = deg2rad(start.lat)
@@ -177,6 +178,16 @@ module Geokit
       # Returns the number units per longitude degree.
       def units_per_longitude_degree(lat, units)
         units_sphere_multiplier(units) * Math.cos(lat * PI_DIV_RAD) * PI_DIV_RAD
+      end
+
+      # Extracts units from options. Returns Geokit::default_units when not present.
+      # Raise an exception when given unsupported unit of length
+      def get_units!(options = {})
+        units = options[:units]
+        units = Geokit::default_units if units.nil?
+        [:miles, :kms, :meters, :nms].include?(units) or
+          raise ArgumentError, "#{units} is an unsupported unit of length."
+        units
       end
     end
 
