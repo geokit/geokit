@@ -1,4 +1,5 @@
 require 'net/http'
+require 'openssl'
 require 'geokit/net_adapter/net_http'
 require 'geokit/net_adapter/typhoeus'
 require 'ipaddr'
