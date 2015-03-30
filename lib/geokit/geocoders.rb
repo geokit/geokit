@@ -1,4 +1,5 @@
 require 'net/http'
+require 'openssl'
 require 'geokit/net_adapter/net_http'
 require 'geokit/net_adapter/typhoeus'
 require 'ipaddr'
@@ -34,10 +35,10 @@ module Geokit
   module Geocoders
     @@proxy = nil
     @@request_timeout = nil
-    @@provider_order = [:google,:us]
-    @@ip_provider_order = [:geo_plugin,:ip]
-    @@logger=Logger.new(STDOUT)
-    @@logger.level=Logger::INFO
+    @@provider_order = [:google, :us]
+    @@ip_provider_order = [:geo_plugin, :ip]
+    @@logger = Logger.new(STDOUT)
+    @@logger.level = Logger::INFO
     @@domain = nil
     @@net_adapter = Geokit::NetAdapter::NetHttp
     @@secure = true
@@ -45,7 +46,7 @@ module Geokit
 
     def self.__define_accessors
       class_variables.each do |v|
-        sym = v.to_s.delete("@").to_sym
+        sym = v.to_s.delete('@').to_sym
         unless self.respond_to? sym
           module_eval <<-EOS, __FILE__, __LINE__
             def self.#{sym}
@@ -105,7 +106,7 @@ module Geokit
       protected
 
       def self.logger
-        Geokit::Geocoders::logger
+        Geokit::Geocoders.logger
       end
 
       private
@@ -136,8 +137,8 @@ module Geokit
 
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service(url)
-        Timeout::timeout(Geokit::Geocoders::request_timeout) { return self.do_get(url) } if Geokit::Geocoders::request_timeout
-        self.do_get(url)
+        Timeout.timeout(Geokit::Geocoders.request_timeout) { return do_get(url) } if Geokit::Geocoders.request_timeout
+        do_get(url)
       rescue TimeoutError
         nil
       end
@@ -150,7 +151,7 @@ module Geokit
       end
 
       def self.use_https?
-        self.secure && Geokit::Geocoders.secure
+        secure && Geokit::Geocoders.secure
       end
 
       def self.protocol
@@ -163,7 +164,7 @@ module Geokit
       end
 
       def self.net_adapter
-        Geokit::Geocoders::net_adapter
+        Geokit::Geocoders.net_adapter
       end
 
       def self.provider_name
@@ -175,7 +176,7 @@ module Geokit
         case format
         when :json then parse_json(MultiJson.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
-        when :yaml then parse_yaml(YAML::load(body), *args)
+        when :yaml then parse_yaml(YAML.load(body), *args)
         when :csv  then parse_csv(body.chomp.split(','), *args)
         end
       end
@@ -195,7 +196,7 @@ module Geokit
       def self.transcode_to_utf8(body)
         require 'iconv' unless String.method_defined?(:encode)
         if String.method_defined?(:encode)
-          body.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+          body.encode!('UTF-8', 'UTF-8', invalid: :replace)
         else
           ic = Iconv.new('UTF-8', 'UTF-8//IGNORE')
           body = ic.iconv(body)
@@ -207,7 +208,7 @@ module Geokit
     # "Regular" Address geocoders
     # -------------------------------------------------------------------------------------------
     require File.join(File.dirname(__FILE__), 'geocoders/base_ip')
-    Dir[File.join(File.dirname(__FILE__), "/geocoders/*.rb")].each {|f| require f}
+    Dir[File.join(File.dirname(__FILE__), '/geocoders/*.rb')].each {|f| require f}
 
     require File.join(File.dirname(__FILE__), 'multi_geocoder')
   end

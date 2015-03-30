@@ -23,7 +23,7 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
   end
 
   RESULT = '{"name":"json"}'
-  RESULT_HASH = {"name" => "json"}
+  RESULT_HASH = {'name' => 'json'}
 
   # Defines common test fixtures.
   def setup
@@ -32,8 +32,8 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_cache
-    old_adapter = Geokit::Geocoders::net_adapter
-    Geokit::Geocoders::net_adapter = Geokit::NetAdapter::Typhoeus
+    old_adapter = Geokit::Geocoders.net_adapter
+    Geokit::Geocoders.net_adapter = Geokit::NetAdapter::Typhoeus
     Typhoeus::Config.cache = SuperSimpleCache
     success = MockSuccess.new
     success.expects(:body).returns(RESULT)
@@ -41,6 +41,6 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
     Geokit::NetAdapter::Typhoeus.expects(:do_get).with(@url).returns(success)
     assert_equal RESULT_HASH, Geokit::Geocoders::CachedGeocoder.process(:json, @url)
     Typhoeus::Config.cache = nil
-    Geokit::Geocoders::net_adapter = old_adapter
+    Geokit::Geocoders.net_adapter = old_adapter
   end
 end

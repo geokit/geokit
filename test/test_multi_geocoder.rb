@@ -1,9 +1,8 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::provider_order=[:google, :bing, :us]
+Geokit::Geocoders.provider_order = [:google, :bing, :us]
 
 class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     super
     @failure = Geokit::GeoLoc.new
@@ -35,7 +34,7 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_invalid_provider
-    temp = Geokit::Geocoders::provider_order
+    temp = Geokit::Geocoders.provider_order
     Geokit::Geocoders.provider_order = [:bogus]
     assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode(@address)
     Geokit::Geocoders.provider_order = temp
@@ -45,9 +44,9 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     t1, t2 = Geokit::Geocoders.provider_order, Geokit::Geocoders.ip_provider_order # will need to reset after
     Geokit::Geocoders.provider_order = [:google]
     Geokit::Geocoders.ip_provider_order = [:geo_plugin]
-    Geokit::Geocoders::GoogleGeocoder.expects(:geocode).with("").returns(@failure)
+    Geokit::Geocoders::GoogleGeocoder.expects(:geocode).with('').returns(@failure)
     Geokit::Geocoders::GeoPluginGeocoder.expects(:geocode).never
-    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode("")
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode('')
     Geokit::Geocoders.provider_order, Geokit::Geocoders.ip_provider_order = t1, t2 # reset to orig values
   end
 
@@ -77,7 +76,7 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_reverse_geocode_with_invalid_provider
-    temp = Geokit::Geocoders::provider_order
+    temp = Geokit::Geocoders.provider_order
     Geokit::Geocoders.provider_order = [:bogus]
     assert_raise NameError do
       Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)
@@ -88,8 +87,8 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_reverse_geocode_with_blank_latlng
     t1 = Geokit::Geocoders.provider_order # will need to reset after
     Geokit::Geocoders.provider_order = [:google]
-    Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with("").returns(@failure)
-    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode("")
+    Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with('').returns(@failure)
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode('')
     Geokit::Geocoders.provider_order = t1 # reset to orig values
   end
 
@@ -97,6 +96,11 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::YahooGeocoder.expects(:geocode).with(@address, {}).returns(@success)
     Geokit::Geocoders::GoogleGeocoder.expects(:geocode).never
     Geokit::Geocoders::UsGeocoder.expects(:geocode).never
-    assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address, :provider_order => [:yahoo, :google, :us])
+    assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:yahoo, :google, :us])
+  end
+
+  def test_mapbox
+    Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:mapbox])
+    Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng, provider_order: [:mapbox])
   end
 end

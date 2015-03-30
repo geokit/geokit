@@ -45,11 +45,15 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Yandex
 * MapQuest
 * Geocod.io
+* Mapbox - requires an access token
+* [OpenCage](http://geocoder.opencagedata.com) - requires an API key
 
 ### address geocoders that also provide reverse geocoding
 * Google - Supports multiple results and bounding box/country code biasing.  Also supports Maps API for Business keys; see the configuration section below.
 * FCC
-* Open Street Map
+* OpenStreetMap
+* Mapbox
+* OpenCage
 
 ### IP address geocoders
 * IP - geocodes an IP address using hostip.info's web service.
@@ -64,6 +68,8 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Bing
 * FCC
 * MapQuest
+* Mapbox
+* OpenCage
 
 Options to control the use of HTTPS are described below in the Configuration section.
 
@@ -161,6 +167,8 @@ If you're using this gem by itself, here are the configuration options:
     Geokit::Geocoders::BingGeocoder.key = ''
     Geokit::Geocoders::MapQuestGeocoder.key = ''
     Geokit::Geocoders::YandexGeocoder.key = ''
+    Geokit::Geocoders::MapboxGeocoder.key = 'ACCESS_TOKEN'
+    Geokit::Geocoders::OpencageGeocoder.key = 'some_api_key'
 
     # Geonames has a free service and a premium service, each using a different URL
     # GeonamesGeocoder.premium = true will use http://ws.geonames.net (premium)
@@ -185,11 +193,11 @@ If you're using this gem by itself, here are the configuration options:
 
 	# Disable HTTPS globally.  This option can also be set on individual
 	# geocoder classes.
-    Geokit::Geocoders::secure = false 
-    
+    Geokit::Geocoders::secure = false
+
     # Control verification of the server certificate for geocoders using HTTPS
-    Geokit::Geocoders::ssl_verify_mode = OpenSSL::SSL::VERIFY_(PEER/NONE) 
-    # Setting this to VERIFY_NONE may be needed on systems that don't have 
+    Geokit::Geocoders::ssl_verify_mode = OpenSSL::SSL::VERIFY_(PEER/NONE)
+    # Setting this to VERIFY_NONE may be needed on systems that don't have
     # a complete or up to date root certificate store. Only applies to
     # the Net::HTTP adapter.
 ```
@@ -205,19 +213,19 @@ The Google Geocoder sports a number of useful tricks that elevate it a little bi
      @ne=#<Geokit::LatLng:0x53b204 @lat=37.7968528, @lng=-122.3926933>,
      @sw=#<Geokit::LatLng:0x53b2b8 @lat=37.7905576, @lng=-122.3989885>>
 
-In addition, you can use viewport or country code biasing to make sure the geocoders prefers results within a specific area. Say we wanted to geocode the city of Syracuse in Italy. A normal geocoding query would look like this:
+In addition, you can use viewport or country code biasing to make sure the geocoders prefers results within a specific area. Say we wanted to geocode the city of Toledo in Spain. A normal geocoding query would look like this:
 
-    irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse')
+    irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Toledo')
     irb> res.full_address
-    => "Syracuse, NY, USA"
+    => "Toledo, OH, USA"
 ```
 
-Not exactly what we were looking for. We know that Syracuse is in Italy, so we can tell the Google Geocoder to prefer results from Italy first, and then wander the Syracuses of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
+Not exactly what we were looking for. We know that Toledo is in Spain, so we can tell the Google Geocoder to prefer results from Spain first, and then wander the Toledos of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
 
 ```ruby
-    irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => 'it')
+    irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Toledo', :bias => 'es')
     irb> res.full_address
-    => "Syracuse, Italy"
+    => "Toledo, Toledo, Spain"
 ```
 
 Alternatively, we can specify the geocoding bias as a bounding box object. Say we wanted to geocode the Winnetka district in Los Angeles.

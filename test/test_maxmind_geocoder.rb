@@ -1,7 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     super
     @ip = '118.210.47.142'
@@ -44,5 +43,4 @@ class MaxmindGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal true, res.success
     assert res.city
   end
-
 end

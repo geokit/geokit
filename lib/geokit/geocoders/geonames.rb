@@ -16,11 +16,11 @@ module Geokit
         if key.nil? || key.empty?
           raise Geokit::Geocoders::GeocodeError.new('Geonames requires a key to use their service.')
         end
-        
+
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         # geonames need a space seperated search string
-        address_str.gsub!(/,/, " ")
-        params = "/postalCodeSearch?placename=#{Geokit::Inflector::url_escape(address_str)}&maxRows=10"
+        address_str.gsub!(/,/, ' ')
+        params = "/postalCodeSearch?placename=#{Geokit::Inflector.url_escape(address_str)}&maxRows=10"
 
         if premium
           "http://ws.geonames.net#{params}&username=#{key}"
@@ -30,13 +30,13 @@ module Geokit
       end
 
       XML_MAPPINGS = {
-        :city         => 'name',
-        :state_name   => 'adminName1',
-        :state_code   => 'adminCode1',
-        :zip          => 'postalcode',
-        :country_code => 'countryCode',
-        :lat          => 'lat',
-        :lng          => 'lng'
+        city:         'name',
+        state_name:   'adminName1',
+        state_code:   'adminCode1',
+        zip:          'postalcode',
+        country_code: 'countryCode',
+        lat:          'lat',
+        lng:          'lng'
       }
 
       def self.parse_xml(xml)

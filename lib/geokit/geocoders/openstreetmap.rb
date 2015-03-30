@@ -2,7 +2,6 @@ module Geokit
   module Geocoders
     # Open Street Map geocoder implementation.
     class OSMGeocoder < Geocoder
-
       private
 
       # Template method which does the geocode lookup.
@@ -14,10 +13,9 @@ module Geokit
         options_str << generate_param_for_option(:'accept-language', options)
         options_str << generate_param_for_option(:email, options)
 
-
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
 
-        url = "http://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector::url_escape(address_str)}"
+        url = "http://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector.url_escape(address_str)}"
         process :json, url
       end
 
@@ -36,11 +34,11 @@ module Geokit
       end
 
       def self.generate_param_for(param, value)
-        "&#{param}=#{Geokit::Inflector::url_escape(value.to_s)}"
+        "&#{param}=#{Geokit::Inflector.url_escape(value.to_s)}"
       end
 
       def self.generate_param_for_option(param, options)
-        options[param] ? "&#{param}=#{Geokit::Inflector::url_escape(options[param])}" : ''
+        options[param] ? "&#{param}=#{Geokit::Inflector.url_escape(options[param])}" : ''
       end
 
       def self.generate_bool_param_for_option(param, options)
@@ -98,7 +96,7 @@ module Geokit
 
       def self.set_precision(result_json, loc)
         # Todo accuracy does not work as Yahoo and Google maps on OSM
-        #loc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(loc.precision)
+        # loc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(loc.precision)
         loc.precision = result_json['class']
         loc.accuracy = result_json['type']
       end

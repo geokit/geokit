@@ -1,0 +1,63 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/-77.032458,38.913175.json?access_token=
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/vnd.geo+json; charset=utf-8
+      Content-Length:
+      - '1902'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=3600
+      Date:
+      - Thu, 21 Aug 2014 05:46:02 GMT
+      Etag:
+      - '"90af4b2c9697b67786ad9039a4174ff1"'
+      Last-Modified:
+      - Thu, 21 Aug 2014 05:46:02 GMT
+      Server:
+      - nginx
+      X-Powered-By:
+      - Express
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 565d425ab1cf4d8d6fb4c465f8b73889.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 8KyW9WZU-vDaHl2_CwBdm0F-eiOtOKIUOnRSgiE3MBU4vnHikk_rUA==
+    body:
+      encoding: UTF-8
+      string: '{"type":"FeatureCollection","query":[-77.032458,38.913175],"features":[{"id":"city.20001","type":"Feature","text":"Washington","place_name":"Washington,
+        20009, District of Columbia, United States","relevance":1,"center":[-76.992695,38.899393],"geometry":{"type":"Point","coordinates":[-76.992695,38.899393]},"bbox":[-77.11976790632382,38.80310600134152,-76.90938401684849,38.99555498159024],"properties":{"title":"Washington"},"context":[{"id":"postcode-us.1308149819","text":"20009"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"postcode-us.1308149819","type":"Feature","text":"20009","place_name":"20009,
+        District of Columbia, United States","relevance":1,"center":[-77.038291,38.920148],"geometry":{"type":"Point","coordinates":[-77.038291,38.920148]},"bbox":[-77.050216,38.911122999999996,-77.02703300000002,38.92974399999999],"properties":{"title":"20009"},"context":[{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"province.1190806886","type":"Feature","text":"District
+        of Columbia","place_name":"District of Columbia, United States","relevance":1,"center":[-76.987826,38.893698],"geometry":{"type":"Point","coordinates":[-76.987826,38.893698]},"bbox":[-77.119759,38.791644999999995,-76.90939299999998,38.99554799999999],"properties":{"title":"District
+        of Columbia"},"context":[{"id":"country.4150104525","text":"United States"}]},{"id":"country.4150104525","type":"Feature","text":"United
+        States","place_name":"United States","relevance":1,"center":[-99.041476,37.940855],"geometry":{"type":"Point","coordinates":[-99.041476,37.940855]},"bbox":[-179.23108600000003,18.865459999999985,179.85968099999997,71.441059],"properties":{"title":"United
+        States"}}],"attribution":"<a href=''https://www.mapbox.com/about/maps/'' target=''_blank''>&copy;
+        Mapbox</a>"}'
+    http_version: 
+  recorded_at: Thu, 21 Aug 2014 05:46:00 GMT
+recorded_with: VCR 2.9.2

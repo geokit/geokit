@@ -2,29 +2,28 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
-
-  IP_FAILURE=<<-EOF
+  IP_FAILURE = <<-EOF
     Country: SWITZERLAND (CH)
     City: (Unknown City)
     Latitude:
     Longitude:
     EOF
 
-  IP_SUCCESS=<<-EOF
+  IP_SUCCESS = <<-EOF
     Country: UNITED STATES (US)
     City: Sugar Grove, IL
     Latitude: 41.7696
     Longitude: -88.4588
     EOF
 
-  IP_LATIN=<<-EOF
+  IP_LATIN = <<-EOF
     Country: BRAZIL (BR)
     City: S\xE3o Jos\xE9 do Rio Pr\xEAto\n
     Latitude: -20.8
     Longitude: -49.3833
     EOF
 
-  IP_UNICODED=<<-EOF
+  IP_UNICODED = <<-EOF
     Country: SWEDEN (SE)
     City: Borås
     Latitude: 57.7167
@@ -45,7 +44,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @success.provider = "ip"
+    @success.provider = 'ip'
   end
 
   def test_successful_lookup
@@ -57,10 +56,10 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_not_nil location
     assert_equal 41.7696, location.lat
     assert_equal(-88.4588, location.lng)
-    assert_equal "Sugar Grove", location.city
-    assert_equal "IL", location.state
-    assert_equal "US", location.country_code
-    assert_equal "ip", location.provider
+    assert_equal 'Sugar Grove', location.city
+    assert_equal 'IL', location.state
+    assert_equal 'US', location.country_code
+    assert_equal 'ip', location.provider
     assert location.success?
   end
 
@@ -75,8 +74,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 12.9167, location.lng
     assert_equal "Bor\303\245s", location.city
     assert_nil location.state
-    assert_equal "SE", location.country_code
-    assert_equal "ip", location.provider
+    assert_equal 'SE', location.country_code
+    assert_equal 'ip', location.provider
     assert location.success?
   end
 
@@ -90,10 +89,10 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_not_nil location
     assert_equal -20.8, location.lat
     assert_equal -49.3833, location.lng
-    assert_equal "São José Do Rio Prêto", location.city
+    assert_equal 'São José Do Rio Prêto', location.city
     assert_nil location.state
-    assert_equal "BR", location.country_code
-    assert_equal "ip", location.provider
+    assert_equal 'BR', location.country_code
+    assert_equal 'ip', location.provider
     assert location.success?
   end
 
@@ -102,7 +101,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     failure.expects(:body).returns(IP_FAILURE)
     url = 'http://api.hostip.info/get_html.php?ip=128.178.0.0&position=true'
     Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
-    location = Geokit::Geocoders::IpGeocoder.geocode("128.178.0.0")
+    location = Geokit::Geocoders::IpGeocoder.geocode('128.178.0.0')
     assert_not_nil location
     assert !location.success?
   end
@@ -118,7 +117,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_invalid_ip
     Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).never
-    location = Geokit::Geocoders::IpGeocoder.geocode("blah")
+    location = Geokit::Geocoders::IpGeocoder.geocode('blah')
     assert_not_nil location
     assert !location.success?
   end
@@ -127,7 +126,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     failure = MockFailure.new
     url = 'http://api.hostip.info/get_html.php?ip=12.215.42.19&position=true'
     Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
-    location = Geokit::Geocoders::IpGeocoder.geocode("12.215.42.19")
+    location = Geokit::Geocoders::IpGeocoder.geocode('12.215.42.19')
     assert_not_nil location
     assert !location.success?
   end

@@ -1,5 +1,5 @@
 unless nil.respond_to?(:try)
-  class Object 
+  class Object
     def try(*a, &b)
       if a.empty? && block_given?
         yield self

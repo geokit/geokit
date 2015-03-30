@@ -11,7 +11,7 @@ module Geokit
 
       def self.submit_url(address)
         params = [
-          "q=#{Geokit::Inflector::url_escape(address)}",
+          "q=#{Geokit::Inflector.url_escape(address)}",
           "api_key=#{key}"
         ].join('&')
 
@@ -28,7 +28,7 @@ module Geokit
             loc.all.push(create_new_loc(address))
           end
         end
-
+        loc.success = true
         loc
       end
 

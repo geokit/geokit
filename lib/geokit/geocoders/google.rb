@@ -5,11 +5,12 @@ module Geokit
       self.secure = true
 
       private
+
       # ==== OPTIONS
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
       def self.do_reverse_geocode(latlng, options = {})
-        latlng=LatLng.normalize(latlng)
-        url = submit_url("latlng=#{Geokit::Inflector::url_escape(latlng.ll)}", options)
+        latlng = LatLng.normalize(latlng)
+        url = submit_url("latlng=#{Geokit::Inflector.url_escape(latlng.ll)}", options)
         process :json, url
       end
 
@@ -25,10 +26,10 @@ module Geokit
       #           you can pass a Geokit::Bounds object as the :bias value.
       #
       # ==== EXAMPLES
-      # # By default, the geocoder will return Syracuse, NY
-      # Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse').country_code # => 'US'
-      # # With country code biasing, it returns Syracuse in Sicily, Italy
-      # Geokit::Geocoders::GoogleGeocoder.geocode('Syracuse', :bias => :it).country_code # => 'IT'
+      # # By default, the geocoder will return Toledo, OH
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Toledo').country_code # => 'US'
+      # # With country code biasing, it returns Toledo (spannish city), Spain
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Toledo', :bias => :es).country_code # => 'Es'
       #
       # # By default, the geocoder will return Winnetka, IL
       # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka').state # => 'IL'
@@ -38,7 +39,7 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url("address=#{Geokit::Inflector::url_escape(address_str)}#{bias_str}", options)
+        url = submit_url("address=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}", options)
         process :json, url
       end
 
@@ -48,13 +49,12 @@ module Geokit
         require 'base64'
         require 'openssl'
         # Decode the private key
-        rawKey = Base64.decode64(google_cryptographic_key.tr('-_','+/'))
+        rawKey = Base64.decode64(google_cryptographic_key.tr('-_', '+/'))
         # create a signature using the private key and the URL
         rawSignature = OpenSSL::HMAC.digest('sha1', rawKey, urlToSign)
         # encode the signature into base64 for url use form.
-        Base64.encode64(rawSignature).tr('+/','-_').gsub(/\n/, '')
+        Base64.encode64(rawSignature).tr('+/', '-_').gsub(/\n/, '')
       end
-
 
       def self.submit_url(query_string, options = {})
         language_str = options[:language] ? "&language=#{options[:language]}" : ''
@@ -72,7 +72,6 @@ module Geokit
         end
       end
 
-
       def self.construct_bias_string_from_options(bias)
         case bias
         when String, Symbol
@@ -80,7 +79,7 @@ module Geokit
           "&region=#{bias.to_s.downcase}"
         when Bounds
           # viewport biasing
-          url_escaped_string = Geokit::Inflector::url_escape("#{bias.sw.to_s}|#{bias.ne.to_s}")
+          url_escaped_string = Geokit::Inflector.url_escape("#{bias.sw}|#{bias.ne}")
           "&bounds=#{url_escaped_string}"
         end
       end
@@ -99,12 +98,11 @@ module Geokit
           single_json_to_geoloc(addr)
         end
 
-        all = unsorted.sort_by(&:accuracy).reverse
+        all = unsorted.sort {|a, b| b.accuracy <=> a.accuracy }
         encoded = all.first
         encoded.all = all
         encoded
       end
-
 
       # location_type stores additional data about the specified location.
       # The following values are currently supported:
@@ -123,10 +121,10 @@ module Geokit
       # these do not map well. Perhaps we should guess better based on size
       # of bounding box where it exists? Does it really matter?
       ACCURACY = {
-        "ROOFTOP" => 9,
-        "RANGE_INTERPOLATED" => 8,
-        "GEOMETRIC_CENTER" => 5,
-        "APPROXIMATE" => 4
+        'ROOFTOP' => 9,
+        'RANGE_INTERPOLATED' => 8,
+        'GEOMETRIC_CENTER' => 5,
+        'APPROXIMATE' => 4
       }
 
       def self.single_json_to_geoloc(addr)
@@ -137,7 +135,7 @@ module Geokit
         set_address_components(loc, addr)
         set_precision(loc, addr)
         if loc.street_name
-          loc.street_address=[loc.street_number, loc.street_name].join(' ').strip
+          loc.street_address = [loc.street_number, loc.street_name].join(' ').strip
         end
 
         ll = addr['geometry']['location']
@@ -160,30 +158,29 @@ module Geokit
         addr['address_components'].each do |comp|
           types = comp['types']
           case
-          when types.include?("subpremise")
+          when types.include?('subpremise')
             loc.sub_premise = comp['short_name']
-          when types.include?("street_number")
+          when types.include?('street_number')
             loc.street_number = comp['short_name']
-          when types.include?("route")
+          when types.include?('route')
             loc.street_name = comp['long_name']
-          when types.include?("locality")
+          when types.include?('locality')
             loc.city = comp['long_name']
-          when types.include?("administrative_area_level_1")
+          when types.include?('administrative_area_level_1')
             loc.state_code = comp['short_name']
             loc.state_name = comp['long_name']
             loc.province = comp['short_name']
-          when types.include?("postal_code")
+          when types.include?('postal_code')
             loc.zip = comp['long_name']
-          when types.include?("country")
+          when types.include?('country')
             loc.country_code = comp['short_name']
             loc.country = comp['long_name']
-          when types.include?("administrative_area_level_2")
+          when types.include?('administrative_area_level_2')
             loc.district = comp['long_name']
           when types.include?('neighborhood')
             loc.neighborhood = comp['short_name']
-
           # Use either sublocality or admin area level 3 if google does not return a city
-          when types.include?("sublocality")
+          when types.include?('sublocality')
             loc.city = comp['long_name'] if loc.city.nil?
           when types.include?("administrative_area_level_3")
             loc.city = comp['long_name'] if loc.city.nil?
@@ -193,13 +190,13 @@ module Geokit
 
       def self.set_precision(loc, addr)
         loc.accuracy = ACCURACY[addr['geometry']['location_type']]
-        loc.precision=%w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
+        loc.precision = %w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
         # try a few overrides where we can
         if loc.sub_premise
           loc.accuracy = 9
           loc.precision = 'building'
         end
-        if loc.street_name && loc.precision=='city'
+        if loc.street_name && loc.precision == 'city'
           loc.precision = 'street'
           loc.accuracy = 7
         end

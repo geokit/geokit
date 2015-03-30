@@ -1,12 +1,11 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders::ip_provider_order=[:geo_plugin,:ip]
+Geokit::Geocoders.ip_provider_order = [:geo_plugin, :ip]
 
 class MultiIpGeocoderTest < BaseGeocoderTest #:nodoc: all
-
   def setup
     @ip_address = '10.10.10.10'
-    @success = Geokit::GeoLoc.new({:city=>"SAN FRANCISCO", :state=>"CA", :country_code=>"US", :lat=>37.7742, :lng=>-122.417068})
+    @success = Geokit::GeoLoc.new({city: 'SAN FRANCISCO', state: 'CA', country_code: 'US', lat: 37.7742, lng: -122.417068})
     @success.success = true
     @failure = Geokit::GeoLoc.new
   end
@@ -29,10 +28,9 @@ class MultiIpGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_invalid_provider
-    temp = Geokit::Geocoders::ip_provider_order
+    temp = Geokit::Geocoders.ip_provider_order
     Geokit::Geocoders.ip_provider_order = [:bogus]
     assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode(@ip_address)
     Geokit::Geocoders.ip_provider_order = temp
   end
-
 end

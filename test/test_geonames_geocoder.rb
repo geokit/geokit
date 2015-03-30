@@ -33,7 +33,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_geonames_geocode_premium
-    # note this test will not actually return results because a valid premium 
+    # note this test will not actually return results because a valid premium
     # username is required so we are just testing if the url is correct
     Geokit::Geocoders::GeonamesGeocoder.premium = true
     VCR.use_cassette('geonames_geocode_premium') do
@@ -42,5 +42,4 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_url url
     end
   end
-
 end

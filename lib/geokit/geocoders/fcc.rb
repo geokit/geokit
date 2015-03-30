@@ -4,10 +4,11 @@ module Geokit
       self.secure = true
 
       private
+
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
-        latlng=LatLng.normalize(latlng)
-        url = "#{protocol}://data.fcc.gov/api/block/find?format=json&latitude=#{Geokit::Inflector::url_escape(latlng.lat.to_s)}&longitude=#{Geokit::Inflector::url_escape(latlng.lng.to_s)}"
+        latlng = LatLng.normalize(latlng)
+        url = "#{protocol}://data.fcc.gov/api/block/find?format=json&latitude=#{Geokit::Inflector.url_escape(latlng.lat.to_s)}&longitude=#{Geokit::Inflector.url_escape(latlng.lng.to_s)}"
         process :json, url
       end
 
@@ -25,7 +26,7 @@ module Geokit
       # "status"=>"OK"}
 
       def self.parse_json(results)
-        if results.has_key?('Err') && results['Err']["msg"] == 'There are no results for this location'
+        if results.has_key?('Err') && results['Err']['msg'] == 'There are no results for this location'
           return GeoLoc.new
         end
         # this should probably be smarter.
@@ -45,6 +46,5 @@ module Geokit
         loc
       end
     end
-
   end
 end

@@ -1,7 +1,7 @@
 module Geokit
   module Geocoders
-    # MapQuest geocoder implementation.  Requires the Geokit::Geocoders::mapquest variable to
-    # contain a MapQuest API key.  Conforms to the interface set by the Geocoder class.
+    # MapQuest geocoder implementation.  Requires the Geokit::Geocoders::MapQuestGeocoder:key
+    # variable to contain a MapQuest API key.  Conforms to the interface set by the Geocoder class.
     class MapQuestGeocoder < Geocoder
       config :key
       self.secure = true
@@ -10,7 +10,7 @@ module Geokit
 
       # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
-        latlng=LatLng.normalize(latlng)
+        latlng = LatLng.normalize(latlng)
         url = "#{protocol}://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{latlng.lat},#{latlng.lng}"
         process :json, url
       end
@@ -18,7 +18,7 @@ module Geokit
       # Template method which does the geocode lookup.
       def self.do_geocode(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = "#{protocol}://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=#{Geokit::Inflector::url_escape(address_str)}"
+        url = "#{protocol}://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=#{Geokit::Inflector.url_escape(address_str)}"
         process :json, url
       end
 
@@ -34,7 +34,7 @@ module Geokit
               loc.all.push(extracted_geoloc)
             end
           end
-        end          
+        end
         loc
       end
 

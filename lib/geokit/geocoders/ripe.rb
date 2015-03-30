@@ -3,6 +3,7 @@ module Geokit
     # Provides geocoding based upon an IP address.  The underlying web service is geoplugin.net
     class RipeGeocoder < BaseIpGeocoder
       self.secure = false # supports HTTPS, but Net::HTTPS doesn't like the server
+
       private
 
       def self.do_geocode(ip)
@@ -27,7 +28,7 @@ module Geokit
       end
 
       def self.set_address_components(data, loc)
-        match = data['country'].match /([A-Z]+)(\(([A-Z]+)\))?/
+        match = data['country'].match(/([A-Z]+)(\(([A-Z]+)\))?/)
         if match[3]
           loc.state_code = match[1]
           loc.country_code = match[3]
@@ -38,6 +39,5 @@ module Geokit
         loc.city = data['city']
       end
     end
-
   end
 end

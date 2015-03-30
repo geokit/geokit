@@ -2,10 +2,8 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class PolygonTest < Test::Unit::TestCase #:nodoc: all
-
   def setup
-
-    #Create a simple square-ish polygon for easy testing
+    # Create a simple square-ish polygon for easy testing
     @p1 = Geokit::LatLng.new(45.3142533036254, -93.47527313511819)
     @p2 = Geokit::LatLng.new(45.31232182518015, -93.34893036168069)
     @p3 = Geokit::LatLng.new(45.23694281999268, -93.35167694371194)
@@ -18,7 +16,7 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @point_inside = Geokit::LatLng.new(45.27428243796789, -93.41648483416066)
     @point_outside = Geokit::LatLng.new(45.45411010558687, -93.78151703160256)
 
-    #Create a more complex polygon with overlapping lines.  Looks like a star of david
+    # Create a more complex polygon with overlapping lines.  Looks like a star of david
     @c1 = Geokit::LatLng.new(45.48661334374487, -93.74665833078325)
     @c2 = Geokit::LatLng.new(45.53521281284293, -93.32611083984375)
     @c3 = Geokit::LatLng.new(45.28648197278281, -93.3673095703125)
@@ -34,12 +32,12 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @complex_points = [@c1, @c2, @c3, @c4, @c5, @c6, @c7, @c8, @c9, @c10, @c11]
     @complex_polygon = Geokit::Polygon.new(@complex_points)
 
-    #Test three points that should be "inside" this complex shape
+    # Test three points that should be "inside" this complex shape
     @complex_inside_one = Geokit::LatLng.new(45.52438983143154, -93.59818268101662)
     @complex_inside_two = Geokit::LatLng.new(45.50321887154943, -93.37845611851662)
     @complex_inside_three = Geokit::LatLng.new(45.28334174918666, -93.59543609898537)
 
-    #Test three points that should be "outside" this complex shape
+    # Test three points that should be "outside" this complex shape
     @complex_outside_one = Geokit::LatLng.new(45.45314676076135, -93.563850405626)
     @complex_outside_two = Geokit::LatLng.new(45.30435378077673, -93.6859130859375)
     @complex_outside_three = Geokit::LatLng.new(45.538820010517036, -93.486946108751)
@@ -55,30 +53,30 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_point_inside_poly
-    #puts "\n\nTesting point inside poly... {@polygon.contains?(@point_inside)}\n\n"
+    # puts "\n\nTesting point inside poly... {@polygon.contains?(@point_inside)}\n\n"
     assert @polygon.contains?(@point_inside)
   end
 
   def test_point_outside_poly
-    #puts "\n\nTesting point outside poly... {@polygon.contains?(@point_outside)}\n\n"
+    # puts "\n\nTesting point outside poly... {@polygon.contains?(@point_outside)}\n\n"
     assert !@polygon.contains?(@point_outside)
   end
 
   def test_points_inside_complex_poly
-    #puts "\n\nTesting points INSIDE complex poly..."
-    #puts "\tone: {@complex_polygon.contains?(@complex_inside_one)}"
-    #puts "\ttwo: {@complex_polygon.contains?(@complex_inside_two)}"
-    #puts "\tthree: {@complex_polygon.contains?(@complex_inside_three)}\n\n"
+    # puts "\n\nTesting points INSIDE complex poly..."
+    # puts "\tone: {@complex_polygon.contains?(@complex_inside_one)}"
+    # puts "\ttwo: {@complex_polygon.contains?(@complex_inside_two)}"
+    # puts "\tthree: {@complex_polygon.contains?(@complex_inside_three)}\n\n"
     assert @complex_polygon.contains?(@complex_inside_one)
     assert @complex_polygon.contains?(@complex_inside_two)
     assert @complex_polygon.contains?(@complex_inside_three)
   end
 
   def test_points_outside_complex_poly
-    #puts "\n\nTesting points OUTSIDE complex poly..."
-    #puts "\tone: {@complex_polygon.contains?(@complex_outside_one)}"
-    #puts "\ttwo: {@complex_polygon.contains?(@complex_outside_two)}"
-    #puts "\tthree: {@complex_polygon.contains?(@complex_outside_three)}\n\n"
+    # puts "\n\nTesting points OUTSIDE complex poly..."
+    # puts "\tone: {@complex_polygon.contains?(@complex_outside_one)}"
+    # puts "\ttwo: {@complex_polygon.contains?(@complex_outside_two)}"
+    # puts "\tthree: {@complex_polygon.contains?(@complex_outside_three)}\n\n"
     assert !@complex_polygon.contains?(@complex_outside_one)
     assert !@complex_polygon.contains?(@complex_outside_two)
     assert !@complex_polygon.contains?(@complex_outside_three)
@@ -88,9 +86,9 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     # A polygon can only exist of the last point is equal to the first
     # Otherwise, it would just be a line of points.
 
-    #puts "\n\nTesting intialize function to close an open polygon..."
-    #puts "\t Does poly_x[0] (#{@open_polygon.poly_x[0]}) == poly_x[-1] (#{@open_polygon.poly_x[-1]}) ?"
-    #puts "\t Does poly_y[0] (#{@open_polygon.poly_y[0]}) == poly_y[-1] (#{@open_polygon.poly_y[-1]}) ?"
+    # puts "\n\nTesting intialize function to close an open polygon..."
+    # puts "\t Does poly_x[0] (#{@open_polygon.poly_x[0]}) == poly_x[-1] (#{@open_polygon.poly_x[-1]}) ?"
+    # puts "\t Does poly_y[0] (#{@open_polygon.poly_y[0]}) == poly_y[-1] (#{@open_polygon.poly_y[-1]}) ?"
 
     assert @open_polygon.points[0].lng == @open_polygon.points[-1].lng
     assert @open_polygon.points[0].lat == @open_polygon.points[-1].lat
@@ -110,5 +108,4 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
     @open_polygon_centroid = Geokit::LatLng.new(44.95912726688109, -92.7068888186181)
     assert_equal(@open_polygon.centroid, @open_polygon_centroid)
   end
-
 end
