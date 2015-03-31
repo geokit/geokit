@@ -116,6 +116,23 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      end
    end
 
+   def test_google_administrative_area_level_3
+     @address = "8 Barkwood Lane, Clifton Park, NY 12065"
+     VCR.use_cassette('google_administrative_area_level_3') do
+     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
+     TestHelper.expects(:last_url).with(url)
+     res=Geokit::Geocoders::GoogleGeocoder.do_geocode(@address)
+     assert_equal "8 Barkwood Lane", res.street_address
+     assert_equal "NY", res.state
+     assert_equal "Clifton Park", res.city
+     assert_equal "42.829583,-73.788174", res.ll
+     assert res.is_us?
+     assert_equal "8 Barkwood Lane, Clifton Park, NY 12065, USA", res.full_address
+     assert_equal "google", res.provider
+     end
+   end
+
+
   def test_google_city_accuracy
     VCR.use_cassette('google_city') do
       url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
