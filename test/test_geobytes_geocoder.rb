@@ -19,5 +19,4 @@ class GeobytesGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal res.country_code, 'US'
     end
   end
-  
 end
