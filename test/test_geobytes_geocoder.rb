@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__), 'helper')
-
 class GeobytesGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
@@ -13,13 +12,12 @@ class GeobytesGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geobytes_geocoder
     VCR.use_cassette('geobytes_geocode') do
       url = "http://getcitydetails.geobytes.com/GetCityDetails?fqcn=#{@ip}"
-      url = "http://freegeoip.net/xml/#{@ip}"
-    res = Geokit::Geocoders::FreeGeoIpGeocoder.geocode(@ip)
-    assert_url url
-    assert_equal res.city, 'New York'
-    assert_equal res.geobytescode, 'NY'
-    assert_equal res.geobytesinternet, 'US'
-  end
+      res = Geokit::Geocoders::GeobytesGeocoder.geocode(@ip)
+      assert_url url
+      assert_equal res.city, 'New York'
+      assert_equal res.state, 'NY'
+      assert_equal res.country_code, 'US'
+    end
   end
   
 end

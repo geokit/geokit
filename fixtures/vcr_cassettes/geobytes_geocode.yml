@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://freegeoip.net/xml/12.12.12.12
+    uri: http://getcitydetails.geobytes.com/GetCityDetails?fqcn=12.12.12.12
     body:
       encoding: US-ASCII
       string: ''
@@ -14,32 +14,28 @@ http_interactions:
       User-Agent:
       - Ruby
       Host:
-      - freegeoip.net
+      - getcitydetails.geobytes.com
   response:
     status:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 11 Apr 2015 19:16:10 GMT
+      - Sun, 11 Apr 2015 19:52:36 GMT
       Content-Type:
-      - application/xml
+      - application/json
+      Expires:
+      - '0'
       Content-Length:
-      - '399'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Method:
-      - GET, HEAD, OPTIONS
-      Access-Control-Allow-Origin:
-      - '*'
-      X-Database-Date:
-      - Wed, 08 Apr 2015 16:56:28 GMT
+      - '676'
     body:
       encoding: UTF-8
-      string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>\n\t<IP>12.12.12.12</IP>\n\t<CountryCode>US</CountryCode>\n\t<CountryName>United
-        States</CountryName>\n\t<RegionCode>AK</RegionCode>\n\t<RegionName>Alaska</RegionName>\n\t<City>Anchorage</City>\n\t<ZipCode>99501</ZipCode>\n\t<TimeZone>America/Anchorage</TimeZone>\n\t<Latitude>61.223</Latitude>\n\t<Longitude>-149.853</Longitude>\n\t<MetroCode>743</MetroCode>\n</Response>\n"
+      string: '{"geobytescertainty":"66","geobytesinternet":"US","geobytescountry":"United
+        States","geobytesregionlocationcode":"USNY","geobytesregion":"New York","geobytescode":"NY","geobyteslocationcode":"USNYNYOR","geobytescity":"New
+        York","geobytescityid":"10182","geobytesfqcn":"New York, NY, United States","geobyteslatitude":"40.748798","geobyteslongitude":"-73.984596","geobytescapital":"Washington,
+        DC ","geobytestimezone":"-05:00","geobytesnationalitysingular":"American","geobytespopulation":"278058881","geobytesnationalityplural":"Americans","geobytesmapreference":"North
+        America ","geobytescurrency":"US Dollar","geobytescurrencycode":"USD","geobytestitle":"The
+        United States"}'
     http_version: 
-  recorded_at: Sat, 11 Apr 2015 19:16:11 GMT
+  recorded_at: Sat, 11 Apr 2015 19:52:37 GMT
 recorded_with: VCR 2.9.3
