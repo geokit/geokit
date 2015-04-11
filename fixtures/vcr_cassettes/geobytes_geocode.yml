@@ -1,0 +1,45 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://freegeoip.net/xml/12.12.12.12
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+      Host:
+      - freegeoip.net
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Sat, 11 Apr 2015 19:16:10 GMT
+      Content-Type:
+      - application/xml
+      Content-Length:
+      - '399'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Method:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      X-Database-Date:
+      - Wed, 08 Apr 2015 16:56:28 GMT
+    body:
+      encoding: UTF-8
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>\n\t<IP>12.12.12.12</IP>\n\t<CountryCode>US</CountryCode>\n\t<CountryName>United
+        States</CountryName>\n\t<RegionCode>AK</RegionCode>\n\t<RegionName>Alaska</RegionName>\n\t<City>Anchorage</City>\n\t<ZipCode>99501</ZipCode>\n\t<TimeZone>America/Anchorage</TimeZone>\n\t<Latitude>61.223</Latitude>\n\t<Longitude>-149.853</Longitude>\n\t<MetroCode>743</MetroCode>\n</Response>\n"
+    http_version: 
+  recorded_at: Sat, 11 Apr 2015 19:16:11 GMT
+recorded_with: VCR 2.9.3
