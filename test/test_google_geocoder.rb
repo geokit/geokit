@@ -132,6 +132,13 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      end
    end
 
+  def test_google_city_improved_ordering
+    VCR.use_cassette('google_city_ordering') do
+      res = Geokit::Geocoders::GoogleGeocoder.geocode("62510, fr", bias: "fr")
+
+      assert_equal "62510 Arques, France", res.full_address
+    end
+  end
 
   def test_google_city_accuracy
     VCR.use_cassette('google_city') do
