@@ -200,6 +200,10 @@ module Geokit
           loc.precision = 'street'
           loc.accuracy = 7
         end
+        if addr['types'].include?('postal_code')
+          loc.precision = 'postal_code'
+          loc.accuracy = 6
+        end
       end
     end
   end

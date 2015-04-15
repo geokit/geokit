@@ -1,0 +1,168 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=62510,%20fr&region=fr&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 14 Apr 2015 10:02:19 GMT
+      Expires:
+      - Wed, 15 Apr 2015 10:02:19 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic,p=0.5
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Language,Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Liévin",
+                       "short_name" : "Liévin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Pas-de-Calais",
+                       "short_name" : "62",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Nord-Pas-de-Calais",
+                       "short_name" : "Nord-Pas-de-Calais",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "France",
+                       "short_name" : "FR",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Liévin, France",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 50.4418239,
+                          "lng" : 2.805152000000001
+                       },
+                       "southwest" : {
+                          "lat" : 50.4042681,
+                          "lng" : 2.735231
+                       }
+                    },
+                    "location" : {
+                       "lat" : 50.417921,
+                       "lng" : 2.775222
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 50.4418239,
+                          "lng" : 2.805152000000001
+                       },
+                       "southwest" : {
+                          "lat" : 50.4042681,
+                          "lng" : 2.735231
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJPa6A1BM63UcRxL7j0Oqjd00",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "62510",
+                       "short_name" : "62510",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Arques",
+                       "short_name" : "Arques",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Pas-de-Calais",
+                       "short_name" : "62",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Nord-Pas-de-Calais",
+                       "short_name" : "Nord-Pas-de-Calais",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "France",
+                       "short_name" : "FR",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "62510 Arques, France",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 50.7718453,
+                          "lng" : 2.3640944
+                       },
+                       "southwest" : {
+                          "lat" : 50.7062008,
+                          "lng" : 2.271485
+                       }
+                    },
+                    "location" : {
+                       "lat" : 50.73423589999999,
+                       "lng" : 2.3198738
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 50.7718453,
+                          "lng" : 2.3640944
+                       },
+                       "southwest" : {
+                          "lat" : 50.7062008,
+                          "lng" : 2.271485
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ_7Ma0bT-3EcR4Col8UHxChw",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 14 Apr 2015 10:02:19 GMT
+recorded_with: VCR 2.9.3
