@@ -58,6 +58,7 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 ### IP address geocoders
 * IP - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
+* Geobytes
 * RIPE
 * MaxMind
 * freegeoip.net

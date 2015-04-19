@@ -1,0 +1,41 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://getcitydetails.geobytes.com/GetCityDetails?fqcn=12.12.12.12
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+      Host:
+      - getcitydetails.geobytes.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 11 Apr 2015 19:52:36 GMT
+      Content-Type:
+      - application/json
+      Expires:
+      - '0'
+      Content-Length:
+      - '676'
+    body:
+      encoding: UTF-8
+      string: '{"geobytescertainty":"66","geobytesinternet":"US","geobytescountry":"United
+        States","geobytesregionlocationcode":"USNY","geobytesregion":"New York","geobytescode":"NY","geobyteslocationcode":"USNYNYOR","geobytescity":"New
+        York","geobytescityid":"10182","geobytesfqcn":"New York, NY, United States","geobyteslatitude":"40.748798","geobyteslongitude":"-73.984596","geobytescapital":"Washington,
+        DC ","geobytestimezone":"-05:00","geobytesnationalitysingular":"American","geobytespopulation":"278058881","geobytesnationalityplural":"Americans","geobytesmapreference":"North
+        America ","geobytescurrency":"US Dollar","geobytescurrencycode":"USD","geobytestitle":"The
+        United States"}'
+    http_version: 
+  recorded_at: Sat, 11 Apr 2015 19:52:37 GMT
+recorded_with: VCR 2.9.3
