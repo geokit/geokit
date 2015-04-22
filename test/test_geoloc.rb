@@ -75,7 +75,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
       tag = yaml.root.tag
       children = yaml.root.children.map(&:value)
     end
-    assert_match /.*object:Geokit::GeoLoc$/, tag
+    assert_match(/.*object:Geokit::GeoLoc$/, tag)
     assert_equal [
       "city", "San Francisco",
       "country_code", "US",
