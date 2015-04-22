@@ -17,7 +17,7 @@ module Geokit
         loc.zip          = res.postal_code
         loc.country_code = res.country_code2
 
-        loc.success = (res.longitude.kind_of?(Numeric) && res.latitude.kind_of?(Numeric))
+        loc.success = (res.longitude.is_a?(Numeric) && res.latitude.is_a?(Numeric))
         loc
       end
     end
