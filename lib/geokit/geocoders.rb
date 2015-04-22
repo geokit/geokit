@@ -46,25 +46,24 @@ module Geokit
     def self.__define_accessors
       class_variables.each do |v|
         sym = v.to_s.delete("@").to_sym
-        unless self.respond_to? sym
-          module_eval <<-EOS, __FILE__, __LINE__
-            def self.#{sym}
-              value = if defined?(#{sym.to_s.upcase})
-                #{sym.to_s.upcase}
-              else
-                @@#{sym}
-              end
-              if value.is_a?(Hash)
-                value = (self.domain.nil? ? nil : value[self.domain]) || value.values.first
-              end
-              value
+        next if self.respond_to? sym
+        module_eval <<-EOS, __FILE__, __LINE__
+          def self.#{sym}
+            value = if defined?(#{sym.to_s.upcase})
+              #{sym.to_s.upcase}
+            else
+              @@#{sym}
             end
+            if value.is_a?(Hash)
+              value = (self.domain.nil? ? nil : value[self.domain]) || value.values.first
+            end
+            value
+          end
 
-            def self.#{sym}=(obj)
-              @@#{sym} = obj
-            end
-          EOS
-        end
+          def self.#{sym}=(obj)
+            @@#{sym} = obj
+          end
+        EOS
       end
     end
 
