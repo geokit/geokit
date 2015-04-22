@@ -1,14 +1,13 @@
-require 'net/http'
-require 'openssl'
 require 'geokit/net_adapter/net_http'
 require 'geokit/net_adapter/typhoeus'
 require 'ipaddr'
-require 'rexml/document'
-require 'yaml'
-require 'timeout'
 require 'logger'
-
 require 'multi_json'
+require 'net/http'
+require 'openssl'
+require 'rexml/document'
+require 'timeout'
+require 'yaml'
 
 module Geokit
   require File.join(File.dirname(__FILE__), 'inflectors')
