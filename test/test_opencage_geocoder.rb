@@ -47,7 +47,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_opencage_reverse
     VCR.use_cassette("opencage_reverse_madrid") do
-
       location = Geokit::GeoLoc.new
       location.lat, location.lng = "40.4167413", "-3.7032498"     # Madrid
 
@@ -72,7 +71,6 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_opencage_reverse2
     VCR.use_cassette("opencage_reverse_prilep") do
-
       location = Geokit::GeoLoc.new
       location.lat, location.lng = "41.3527177", "21.5497808"
 
