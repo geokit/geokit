@@ -72,7 +72,7 @@ module Geokit
                         else "unknown"
                         end
 
-        loc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(loc.precision)
+        loc.accuracy = %w(unknown country state state city zip zip+4 street address building).index(loc.precision)
       end
     end
   end

@@ -188,7 +188,7 @@ module Geokit
 
       def self.set_precision(loc, addr)
         loc.accuracy = ACCURACY[addr["geometry"]["location_type"]]
-        loc.precision = %w{unknown country state state city zip zip+4 street address building}[loc.accuracy]
+        loc.precision = %w(unknown country state state city zip zip+4 street address building)[loc.accuracy]
         # try a few overrides where we can
         if loc.sub_premise
           loc.accuracy = 9

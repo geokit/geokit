@@ -58,7 +58,7 @@ module Geokit
 
       def self.set_precision(result_json, loc)
         loc.precision = result_json["geocodeQuality"]
-        loc.accuracy = %w{unknown country state state city zip zip+4 street address building}.index(loc.precision)
+        loc.accuracy = %w(unknown country state state city zip zip+4 street address building).index(loc.precision)
       end
     end
   end
