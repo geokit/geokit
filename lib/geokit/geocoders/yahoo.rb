@@ -108,24 +108,24 @@ class OauthUtil
   # openssl::random_bytes returns non-word chars, which need to be removed. using alt method to get length
   # ref http://snippets.dzone.com/posts/show/491
   def nonce
-    Array.new( 5 ) { rand(256) }.pack("C*").unpack("H*").first
+    Array.new(5) { rand(256) }.pack("C*").unpack("H*").first
   end
 
-  def percent_encode( string )
+  def percent_encode(string)
     # ref http://snippets.dzone.com/posts/show/1260
-    URI.escape( string, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]") ).gsub("*", "%2A")
+    URI.escape(string, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")).gsub("*", "%2A")
   end
 
   # @ref http://oauth.net/core/1.0/#rfc.section.9.2
   def signature
-    key = percent_encode( @consumer_secret ) + "&" + percent_encode( @token_secret )
+    key = percent_encode(@consumer_secret) + "&" + percent_encode(@token_secret)
 
     # ref: http://blog.nathanielbibler.com/post/63031273/openssl-hmac-vs-ruby-hmac-benchmarks
-    digest = OpenSSL::Digest.new( "sha1" )
-    hmac = OpenSSL::HMAC.digest( digest, key, @base_str )
+    digest = OpenSSL::Digest.new("sha1")
+    hmac = OpenSSL::HMAC.digest(digest, key, @base_str)
 
     # ref http://groups.google.com/group/oauth-ruby/browse_thread/thread/9110ed8c8f3cae81
-    Base64.encode64( hmac ).chomp.gsub( /\n/, "" )
+    Base64.encode64(hmac).chomp.gsub(/\n/, "")
   end
 
   # sort (very important as it affects the signature), concat, and percent encode
@@ -135,7 +135,7 @@ class OauthUtil
   def query_string
     pairs = []
     @params.sort.each { | key, val |
-      pairs.push( "#{ percent_encode( key ) }=#{ percent_encode( val.to_s ) }" )
+      pairs.push("#{ percent_encode(key) }=#{ percent_encode(val.to_s) }")
     }
     pairs.join "&"
   end
@@ -145,7 +145,7 @@ class OauthUtil
   end
 
   # organize params & create signature
-  def sign( parsed_url )
+  def sign(parsed_url)
     @params = {
       "oauth_consumer_key" => @consumer_key,
       "oauth_nonce" => nonce,
@@ -156,7 +156,7 @@ class OauthUtil
 
     # if url has query, merge key/values into params obj overwriting defaults
     if parsed_url.query
-      CGI.parse( parsed_url.query ).each do |k, v|
+      CGI.parse(parsed_url.query).each do |k, v|
         if v.is_a?(Array) && v.count == 1
           @params[k] = v.first
         else
@@ -172,12 +172,12 @@ class OauthUtil
     # ref http://oauth.net/core/1.0/#anchor14
     @base_str = [
       @req_method,
-      percent_encode( req_url ),
+      percent_encode(req_url),
 
       # normalization is just x-www-form-urlencoded
-      percent_encode( query_string )
+      percent_encode(query_string)
 
-    ].join( "&" )
+    ].join("&")
 
     # add signature
     @params[ "oauth_signature" ] = signature
