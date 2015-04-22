@@ -197,7 +197,7 @@ module Geokit
           body.encode!("UTF-8", "UTF-8", invalid: :replace)
         else
           ic = Iconv.new("UTF-8", "UTF-8//IGNORE")
-          body = ic.iconv(body)
+          ic.iconv(body)
         end
       end
     end

@@ -37,7 +37,6 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
     Typhoeus::Config.cache = SuperSimpleCache
     success = MockSuccess.new
     success.expects(:body).returns(RESULT)
-    url = "http://www.cacheme.com"
     Geokit::NetAdapter::Typhoeus.expects(:do_get).with(@url).returns(success)
     assert_equal RESULT_HASH, Geokit::Geocoders::CachedGeocoder.process(:json, @url)
     Typhoeus::Config.cache = nil

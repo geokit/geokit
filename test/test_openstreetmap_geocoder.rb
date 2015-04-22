@@ -148,7 +148,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_service_unavailable
     response = MockFailure.new
-    url = url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::OSMGeocoder.geocode(@osm_city_loc).success
   end

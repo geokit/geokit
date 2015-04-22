@@ -69,9 +69,6 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
-    no_results_full_hash = {street_address: "ZZ", city: "ZZ", state: "ZZ"}
-    no_results_full_loc = Geokit::GeoLoc.new(no_results_full_hash)
-
     VCR.use_cassette("yahoo_no_results") do
       url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(no_results_address)}"
     result = Geokit::Geocoders::YahooGeocoder.geocode(no_results_address)

@@ -268,7 +268,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert_raise Geokit::Geocoders::TooManyQueriesError do
-      res = Geokit::Geocoders::GoogleGeocoder.geocode(@address)
+      Geokit::Geocoders::GoogleGeocoder.geocode(@address)
     end
   end
 

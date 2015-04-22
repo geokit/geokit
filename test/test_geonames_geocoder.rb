@@ -38,7 +38,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::GeonamesGeocoder.premium = true
     VCR.use_cassette("geonames_geocode_premium") do
       url = "http://ws.geonames.net/postalCodeSearch?placename=#{@city}&maxRows=10&username=demo"
-      res = Geokit::Geocoders::GeonamesGeocoder.geocode(@city)
+      Geokit::Geocoders::GeonamesGeocoder.geocode(@city)
       assert_url url
     end
   end
