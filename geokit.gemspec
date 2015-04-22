@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'simplecov-rcov'
+  spec.add_development_dependency 'test-unit'
   spec.add_development_dependency 'typhoeus' # used in net_adapter
   spec.add_development_dependency 'vcr'
   spec.add_development_dependency 'webmock' # used in vcr
