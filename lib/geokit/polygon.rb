@@ -23,9 +23,9 @@ module Geokit
         xi = p.lng
         yj = last_point.lat
         xj = last_point.lng
-        if (yi < y && yj >= y ||
-            yj < y && yi >= y)
-          if (xi + (y - yi) / (yj - yi) * (xj - xi) < x)
+        if yi < y && yj >= y ||
+            yj < y && yi >= y
+          if xi + (y - yi) / (yj - yi) * (xj - xi) < x
             oddNodes = !oddNodes
           end
         end
