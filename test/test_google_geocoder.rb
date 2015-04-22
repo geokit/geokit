@@ -121,7 +121,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      VCR.use_cassette("google_administrative_area_level_3") do
      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector::url_escape(@address)}"
      TestHelper.expects(:last_url).with(url)
-     res=Geokit::Geocoders::GoogleGeocoder.do_geocode(@address)
+     res = Geokit::Geocoders::GoogleGeocoder.do_geocode(@address)
      assert_equal "8 Barkwood Lane", res.street_address
      assert_equal "NY", res.state
      assert_equal "Clifton Park", res.city
