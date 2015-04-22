@@ -6,7 +6,7 @@ module Geokit
 
     # provide sw and ne to instantiate a new Bounds instance
     def initialize(sw, ne)
-      if !(sw.is_a?(Geokit::LatLng) && ne.is_a?(Geokit::LatLng))
+      unless (sw.is_a?(Geokit::LatLng) && ne.is_a?(Geokit::LatLng))
         raise ArgumentError
       end
       @sw, @ne = sw, ne
