@@ -286,7 +286,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("google_country_code_biased_result_toledo") do
       url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=toledo&region=es"
       TestHelper.expects(:last_url).with(url)
-      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode("toledo", :bias => "es")
+      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode("toledo", bias: "es")
 
       assert_equal "ES", biased_result.country_code
       assert_equal "CM", biased_result.state
@@ -306,7 +306,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("google_country_code_biased_result_orly") do
       url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=orly&region=fr"
       TestHelper.expects(:last_url).with(url)
-      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode("orly", :bias => "fr")
+      biased_result = Geokit::Geocoders::GoogleGeocoder.geocode("orly", bias: "fr")
 
       assert_equal "FR", biased_result.country_code
       assert_equal "Orly, France", biased_result.full_address

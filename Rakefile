@@ -24,7 +24,7 @@ task :download_geolitecity do
   length_cb = lambda {|content_length| total_size = content_length }
   require "open-uri"
   File.open("/tmp/GeoLiteCity.dat.gz", "wb") do |f|
-    open(url, "rb", :progress_proc => progress_cb, :content_length_proc => length_cb) do |downloaded_file|
+    open(url, "rb", progress_proc: progress_cb, content_length_proc: length_cb) do |downloaded_file|
       f.write(downloaded_file.read)
     end
   end
