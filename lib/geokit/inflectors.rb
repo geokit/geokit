@@ -5,7 +5,7 @@ module Geokit
     extend self
 
     def titleize(word)
-      humanize(underscore(word)).gsub(/\b([a-z])/u) { $1.capitalize }
+      humanize(underscore(word)).gsub(/\b([a-z])/u) { Regexp.last_match(1).capitalize }
     end
 
     def underscore(camel_cased_word)
