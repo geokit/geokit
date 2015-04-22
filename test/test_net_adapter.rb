@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'helper')
+require File.join(File.dirname(__FILE__), "helper")
 
 # Base class for testing geocoders.
 class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
@@ -23,12 +23,12 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
   end
 
   RESULT = '{"name":"json"}'
-  RESULT_HASH = {'name' => 'json'}
+  RESULT_HASH = {"name" => "json"}
 
   # Defines common test fixtures.
   def setup
-    @url = 'http://www.cacheme.com'
-    @address = 'San Francisco, CA'
+    @url = "http://www.cacheme.com"
+    @address = "San Francisco, CA"
   end
 
   def test_cache
@@ -37,7 +37,6 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
     Typhoeus::Config.cache = SuperSimpleCache
     success = MockSuccess.new
     success.expects(:body).returns(RESULT)
-    url = 'http://www.cacheme.com'
     Geokit::NetAdapter::Typhoeus.expects(:do_get).with(@url).returns(success)
     assert_equal RESULT_HASH, Geokit::Geocoders::CachedGeocoder.process(:json, @url)
     Typhoeus::Config.cache = nil

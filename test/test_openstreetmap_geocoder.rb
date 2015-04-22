@@ -1,5 +1,5 @@
 # encoding: utf-8
-require File.join(File.dirname(__FILE__), 'helper')
+require File.join(File.dirname(__FILE__), "helper")
 
 class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   OSM_FULL = <<-EOF.strip
@@ -20,8 +20,8 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @osm_full_hash = {street_address: '100 Spear St', city: 'San Francisco', state: 'CA', zip: '94105', country_code: 'US'}
-    @osm_city_hash = {city: 'San Francisco', state: 'CA'}
+    @osm_full_hash = {street_address: "100 Spear St", city: "San Francisco", state: "CA", zip: "94105", country_code: "US"}
+    @osm_city_hash = {city: "San Francisco", state: "CA"}
     @osm_full_loc = Geokit::GeoLoc.new(@osm_full_hash)
     @osm_city_loc = Geokit::GeoLoc.new(@osm_city_hash)
   end
@@ -41,7 +41,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.geocode(@full_address_short_zip)
-    assert_equal 'house', res.accuracy
+    assert_equal "house", res.accuracy
   end
 
   def test_osm_full_address_with_geo_loc
@@ -65,7 +65,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_CITY)
     url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address, {:'accept-language' => 'pt-br'}))
+    do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address, {:'accept-language' => "pt-br"}))
   end
 
   def test_osm_city_accuracy
@@ -74,7 +74,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.geocode(@address)
-    assert_equal 'county', res.accuracy
+    assert_equal "county", res.accuracy
   end
 
   def test_osm_city_with_geo_loc
@@ -89,7 +89,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response = MockSuccess.new
     response.expects(:body).returns(OSM_REVERSE_PRILEP)
     prilep = Geokit::GeoLoc.new
-    prilep.lat, prilep.lng = '41.3527177', '21.5497808'
+    prilep.lat, prilep.lng = "41.3527177", "21.5497808"
     url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{prilep.lat}&lon=#{prilep.lng}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(prilep.ll)
@@ -97,18 +97,18 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
       # OSM does not return the exast lat lng in response
       # assert_equal prilep.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
       # assert_equal prilep.lng.to_s.slice(1..5), res.lng.to_s.slice(1..5)
-      assert_equal 'MK', res.country_code
-      assert_equal 'osm', res.provider
+      assert_equal "MK", res.country_code
+      assert_equal "osm", res.provider
 
-      assert_equal 'Prilep', res.city
+      assert_equal "Prilep", res.city
       assert_nil res.state
 
-      assert_equal 'Macedonia', res.country
+      assert_equal "Macedonia", res.country
       assert_nil res.precision
       assert_equal true, res.success
 
-      assert_equal 'Marksova, Prilep, MK', res.full_address
-      assert_equal 'Marksova', res.street_address
+      assert_equal "Marksova, Prilep, MK", res.full_address
+      assert_equal "Marksova", res.street_address
   end
 
   def test_reverse_geo_code
@@ -116,23 +116,23 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_REVERSE_MADRID)
     location = Geokit::GeoLoc.new
     # Madrid
-    location.lat, location.lng = '40.4167413', '-3.7032498'
+    location.lat, location.lng = "40.4167413", "-3.7032498"
     url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll)
 
-    assert_equal 'ES', res.country_code
-    assert_equal 'osm', res.provider
+    assert_equal "ES", res.country_code
+    assert_equal "osm", res.provider
 
-    assert_equal 'Madrid', res.city
-    assert_equal 'Madrid', res.state
+    assert_equal "Madrid", res.city
+    assert_equal "Madrid", res.state
 
-    assert_equal 'Spain', res.country
+    assert_equal "Spain", res.country
     assert_equal true, res.success
 
-    assert_equal 'Calle Del Doctor Tolosa Latour, Usera, Madrid, Madrid, 28026, ES', res.full_address
-    assert_equal '28026', res.zip
-    assert_equal 'Calle Del Doctor Tolosa Latour', res.street_address
+    assert_equal "Calle Del Doctor Tolosa Latour, Usera, Madrid, Madrid, 28026, ES", res.full_address
+    assert_equal "28026", res.zip
+    assert_equal "Calle Del Doctor Tolosa Latour", res.street_address
   end
 
   def test_reverse_geo_code_with_accept_language
@@ -140,15 +140,15 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_REVERSE_MADRID)
     location = Geokit::GeoLoc.new
     # Madrid
-    location.lat, location.lng = '40.4167413', '-3.7032498'
+    location.lat, location.lng = "40.4167413", "-3.7032498"
     url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}&accept-language=pt-br"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll, {:'accept-language' => 'pt-br'})
+    Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll, {:'accept-language' => "pt-br"})
   end
 
   def test_service_unavailable
     response = MockFailure.new
-    url = url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::OSMGeocoder.geocode(@osm_city_loc).success
   end
@@ -157,21 +157,21 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   # next two methods do the assertions for both address-level and city-level lookups
   def do_full_address_assertions(res)
-    assert_equal 'California', res.state
-    assert_equal 'San Francisco', res.city
-    assert_equal '37.792391,-122.394024', res.ll
+    assert_equal "California", res.state
+    assert_equal "San Francisco", res.city
+    assert_equal "37.792391,-122.394024", res.ll
     assert res.is_us?
-    assert_equal 'Spear Street 100, San Francisco, California, 94105, US', res.full_address
-    assert_equal 'osm', res.provider
+    assert_equal "Spear Street 100, San Francisco, California, 94105, US", res.full_address
+    assert_equal "osm", res.provider
   end
 
   def do_city_assertions(res)
-    assert_equal 'California', res.state
-    assert_equal 'San Francisco', res.city
-    assert_equal '37.7340974,-122.3912596', res.ll
+    assert_equal "California", res.state
+    assert_equal "San Francisco", res.city
+    assert_equal "37.7340974,-122.3912596", res.ll
     assert res.is_us?
-    assert_equal 'San Francisco, California, US', res.full_address
+    assert_equal "San Francisco, California, US", res.full_address
     assert_nil res.street_address
-    assert_equal 'osm', res.provider
+    assert_equal "osm", res.provider
   end
 end

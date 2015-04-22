@@ -6,7 +6,7 @@ module Geokit
 
     # provide sw and ne to instantiate a new Bounds instance
     def initialize(sw, ne)
-      if !(sw.is_a?(Geokit::LatLng) && ne.is_a?(Geokit::LatLng))
+      unless sw.is_a?(Geokit::LatLng) && ne.is_a?(Geokit::LatLng)
         raise ArgumentError
       end
       @sw, @ne = sw, ne
@@ -85,7 +85,7 @@ module Geokit
       #
       # NOTE: everything combination is assumed to pass points in the order
       # sw, ne
-      def normalize (thing, other = nil)
+      def normalize(thing, other = nil)
         # maybe this will be simple -- an actual bounds object is passed, and
         # we can all go home
         return thing if thing.is_a? Bounds

@@ -18,16 +18,14 @@ module Geokit
       x = point.lng
       y = point.lat
 
-      for p in @points
+      @points.each do |p|
         yi = p.lat
         xi = p.lng
         yj = last_point.lat
         xj = last_point.lng
-        if (yi < y && yj >= y ||
-            yj < y && yi >= y)
-          if (xi + (y - yi) / (yj - yi) * (xj - xi) < x)
-            oddNodes = !oddNodes
-          end
+        if yi < y && yj >= y ||
+            yj < y && yi >= y
+          oddNodes = !oddNodes if xi + (y - yi) / (yj - yi) * (xj - xi) < x
         end
 
         last_point = p

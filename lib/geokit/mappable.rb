@@ -20,8 +20,8 @@ module Geokit
 
     module ClassMethods #:nodoc:
       PI_DIV_RAD = Math::PI / 180
-      EARTH_RADIUS_IN_METERS = 6376772.71
-      METERS_PER_LATITUDE_DEGREE = 111181.9
+      EARTH_RADIUS_IN_METERS = 6_376_772.71
+      METERS_PER_LATITUDE_DEGREE = 111_181.9
 
       EARTH_RADIUS = {}
       PER_LATITUDE_DEGREE = {}
@@ -135,9 +135,9 @@ module Geokit
         # seconds is 0...3599.999, representing the entire fractional part.
         seconds = (deg.abs % 1.0) * 3600.0
         [
-            deg.to_i,               # degrees as positive or negative integer
-            (seconds / 60).to_i,    # minutes as positive integer
-            (seconds % 60)          # seconds as positive float
+          deg.to_i,               # degrees as positive or negative integer
+          (seconds / 60).to_i,    # minutes as positive integer
+          (seconds % 60)          # seconds as positive float
         ]
       end
 
@@ -164,7 +164,7 @@ module Geokit
       register_unit :nms,   0.0005400722448725917
 
       # Returns the multiplier used to obtain the correct distance units.
-      # TODO make more accurate by coping
+      # TODO: make more accurate by coping
       # http://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
       def units_sphere_multiplier(units)
         EARTH_RADIUS[units]
@@ -184,7 +184,7 @@ module Geokit
       # Raise an exception when given unsupported unit of length
       def get_units!(options = {})
         units = options[:units]
-        units = Geokit::default_units if units.nil?
+        units = Geokit.default_units if units.nil?
         [:miles, :kms, :meters, :nms].include?(units) or
           raise ArgumentError, "#{units} is an unsupported unit of length."
         units
@@ -212,7 +212,7 @@ module Geokit
     def distance_to(other, options = {})
       self.class.distance_between(self, other, options)
     end
-    alias distance_from distance_to
+    alias_method :distance_from, :distance_to
 
     # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc) to
     # the given point. The given point can be a LatLng or a string to be

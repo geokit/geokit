@@ -23,7 +23,7 @@ module Geokit
     end
 
     def self.from_json(json)
-      new(json['lat'], json['lng'])
+      new(json["lat"], json["lng"])
     end
 
     # Latitude attribute setter; stored as a float.
@@ -100,8 +100,9 @@ module Geokit
       when String
         from_string(thing)
       when Array
-        thing.size == 2 or raise ArgumentError.new(
-          'Must initialize with an Array with both latitude and longitude')
+        thing.size == 2 or
+          raise(ArgumentError,
+            "Must initialize with an Array with both latitude and longitude")
         Geokit::LatLng.new(thing[0], thing[1])
       when LatLng # will also be true for GeoLocs
         thing
@@ -109,8 +110,8 @@ module Geokit
         if thing.respond_to? :to_lat_lng
           thing.to_lat_lng
         else
-          raise ArgumentError.new(
-            "#{thing} (#{thing.class}) cannot be normalized to a LatLng. " +
+          raise(ArgumentError,
+            "#{thing} (#{thing.class}) cannot be normalized to a LatLng. " \
             "We tried interpreting it as an array, string, etc., but no dice.")
         end
       end
@@ -146,7 +147,7 @@ module Geokit
     # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using =>
     #   Geokit::Geocoders::GoogleGeocoder)
     # => #<Geokit::GeoLoc:0x12dac20 @state...>
-    def reverse_geocode(options = { using: Geokit::Geocoders::MultiGeocoder })
+    def reverse_geocode(options = {using: Geokit::Geocoders::MultiGeocoder})
       if options[:using].is_a?(String) || options[:using].is_a?(Symbol)
         class_name =
           "#{Geokit::Inflector.camelize(options[:using].to_s)}Geocoder"

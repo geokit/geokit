@@ -18,13 +18,13 @@ module Geokit
 
       # Template method which does the geocode lookup.
       def self.do_geocode(loc)
-        raise ArgumentError('Geocoder.ca requires a GeoLoc argument') unless loc.is_a?(GeoLoc)
+        raise ArgumentError("Geocoder.ca requires a GeoLoc argument") unless loc.is_a?(GeoLoc)
         process :xml, submit_url(loc), loc
       end
 
       def self.parse_xml(xml, loc)
-        loc.lat = xml.elements['//latt'].text
-        loc.lng = xml.elements['//longt'].text
+        loc.lat = xml.elements["//latt"].text
+        loc.lng = xml.elements["//longt"].text
         loc.success = true
         loc
       end
@@ -38,8 +38,8 @@ module Geokit
         args << "prov=#{loc.state}" if loc.state
         args << "postal=#{loc.zip}" if loc.zip
         args << "auth=#{key}" if key
-        args << 'geoit=xml'
-        'http://geocoder.ca/?' + args.join('&')
+        args << "geoit=xml"
+        "http://geocoder.ca/?" + args.join("&")
       end
     end
   end
