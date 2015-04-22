@@ -14,7 +14,7 @@ module Geokit
 
       def self.submit_url(address)
         if key.nil? || key.empty?
-          raise Geokit::Geocoders::GeocodeError.new("Geonames requires a key to use their service.")
+          raise(Geokit::Geocoders::GeocodeError, "Geonames requires a key to use their service.")
         end
 
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
