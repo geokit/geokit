@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Geokit::VERSION
   spec.authors       = ["Michael Noack", "James Cox", "Andre Lewis", "Bill Eisenhauer"]
   spec.email         = ["michael+geokit@noack.com.au"]
-  spec.description   = %q{Geokit provides geocoding and distance calculation in an easy-to-use API}
-  spec.summary       = %q{Geokit: encoding and distance calculation gem}
+  spec.description   = 'Geokit provides geocoding and distance calculation in an easy-to-use API'
+  spec.summary       = 'Geokit: encoding and distance calculation gem'
   spec.homepage      = "http://github.com/geokit/geokit"
   spec.license       = "MIT"
 

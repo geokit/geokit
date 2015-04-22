@@ -264,7 +264,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_too_many_queries
     response = MockSuccess.new
-    response.expects(:body).returns %q/{"status": "OVER_QUERY_LIMIT"}/
+    response.expects(:body).returns '{"status": "OVER_QUERY_LIMIT"}'
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert_raise Geokit::Geocoders::TooManyQueriesError do
@@ -274,7 +274,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_invalid_request
     response = MockSuccess.new
-    response.expects(:body).returns %q/{"results" : [], "status" : "INVALID_REQUEST"}/
+    response.expects(:body).returns '{"results" : [], "status" : "INVALID_REQUEST"}'
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape("3961 V\u00EDa Marisol")}"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert_raise Geokit::Geocoders::GeocodeError do
