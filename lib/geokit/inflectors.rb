@@ -1,8 +1,8 @@
+require "cgi"
+
 module Geokit
   module Inflector
-    require "cgi"
-
-    extend self
+    module_function
 
     def titleize(word)
       humanize(underscore(word)).gsub(/\b([a-z])/u) { Regexp.last_match(1).capitalize }
