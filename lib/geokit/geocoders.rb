@@ -1,8 +1,8 @@
 require 'geokit/net_adapter/net_http'
 require 'geokit/net_adapter/typhoeus'
 require 'ipaddr'
+require 'json'
 require 'logger'
-require 'multi_json'
 require 'net/http'
 require 'openssl'
 require 'rexml/document'
@@ -173,7 +173,7 @@ module Geokit
       def self.parse(format, body, *args)
         logger.debug "#{provider_name} geocoding. Result: #{CGI.escape(body)}"
         case format
-        when :json then parse_json(MultiJson.load(body), *args)
+        when :json then parse_json(JSON.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
         when :yaml then parse_yaml(YAML.load(body), *args)
         when :csv  then parse_csv(body.chomp.split(','), *args)
