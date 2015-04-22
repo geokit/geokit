@@ -104,8 +104,9 @@ module Geokit
       def self.set_bounds(result_json, loc)
         return unless result_json
         loc.suggested_bounds = Bounds.normalize(
-            [result_json[0], result_json[1]],
-            [result_json[2], result_json[3]])
+          [result_json[0], result_json[1]],
+          [result_json[2], result_json[3]],
+        )
       end
     end
   end
