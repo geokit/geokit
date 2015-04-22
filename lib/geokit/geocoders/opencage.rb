@@ -21,7 +21,7 @@ module Geokit
         url += "no_annotations=1"
         process :json, url
       end
-            # Template method which does the reverse-geocode lookup.
+      # Template method which does the reverse-geocode lookup.
       def self.do_reverse_geocode(latlng)
         latlng = LatLng.normalize(latlng)
         url = "#{protocol}://api.opencagedata.com/geocode/v1/json?"
