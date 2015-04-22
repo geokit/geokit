@@ -146,7 +146,7 @@ module Geokit
     # LatLng.new(51.4578329, 7.0166848).reverse_geocode(:using =>
     #   Geokit::Geocoders::GoogleGeocoder)
     # => #<Geokit::GeoLoc:0x12dac20 @state...>
-    def reverse_geocode(options = { using: Geokit::Geocoders::MultiGeocoder })
+    def reverse_geocode(options = {using: Geokit::Geocoders::MultiGeocoder})
       if options[:using].is_a?(String) || options[:using].is_a?(Symbol)
         class_name =
           "#{Geokit::Inflector.camelize(options[:using].to_s)}Geocoder"

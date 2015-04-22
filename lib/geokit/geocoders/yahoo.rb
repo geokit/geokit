@@ -134,7 +134,7 @@ class OauthUtil
   # @ref http://oauth.net/core/1.0/#rfc.section.A.5.1
   def query_string
     pairs = []
-    @params.sort.each do | key, val |
+    @params.sort.each do |key, val|
       pairs.push("#{ percent_encode(key) }=#{ percent_encode(val.to_s) }")
     end
     pairs.join "&"
