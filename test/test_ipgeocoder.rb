@@ -87,8 +87,8 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
     location = Geokit::Geocoders::IpGeocoder.geocode("201.23.177.144")
     assert_not_nil location
-    assert_equal -20.8, location.lat
-    assert_equal -49.3833, location.lng
+    assert_equal(-20.8, location.lat)
+    assert_equal(-49.3833, location.lng)
     assert_equal "São José Do Rio Prêto", location.city
     assert_nil location.state
     assert_equal "BR", location.country_code
