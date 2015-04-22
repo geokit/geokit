@@ -57,7 +57,7 @@ module Geokit
       @country_code = h[:country_code]
       @province = h[:province]
       @success = false
-      @precision = 'unknown'
+      @precision = "unknown"
       @full_address = nil
       super(h[:lat], h[:lng])
     end
@@ -68,7 +68,7 @@ module Geokit
 
     # Returns true if geocoded to the United States.
     def is_us?
-      country_code == 'US'
+      country_code == "US"
     end
 
     def success?
@@ -113,7 +113,7 @@ module Geokit
     # Sets the street address after capitalizing each word within the street
     # address.
     def street_address=(address)
-      @street_address = if address && provider != 'google'
+      @street_address = if address && provider != "google"
         Geokit::Inflector.titleize(address)
       else
         address
@@ -125,12 +125,12 @@ module Geokit
     # non-blank.
     def to_geocodeable_s
       a = [street_address, district, city, province, state, zip, country_code].compact
-      a.delete_if { |e| !e || e == '' }
-      a.join(', ')
+      a.delete_if { |e| !e || e == "" }
+      a.join(", ")
     end
 
     def to_yaml_properties
-      (instance_variables - ['@all', :@all]).sort
+      (instance_variables - ["@all", :@all]).sort
     end
 
     def encode_with(coder)

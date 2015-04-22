@@ -13,15 +13,15 @@ module Geokit
         params = [
           "q=#{Geokit::Inflector.url_escape(address)}",
           "api_key=#{key}"
-        ].join('&')
+        ].join("&")
 
-        ['http://api.geocod.io/v1/geocode', params].join('?')
+        ["http://api.geocod.io/v1/geocode", params].join("?")
       end
 
       def self.parse_json(json)
         loc = nil
 
-        json['results'].each do |address|
+        json["results"].each do |address|
           if loc.nil?
             loc = create_new_loc(address)
           else
@@ -40,19 +40,19 @@ module Geokit
       end
 
       def self.set_address_components(json, loc)
-        loc.street_address  = json['address_components']['street']
-        loc.street_number   = json['address_components']['number']
-        loc.sub_premise     = json['address_components']['suffix']
-        loc.street_name     = json['address_components']['street']
-        loc.city            = json['address_components']['city']
-        loc.state           = json['address_components']['state']
-        loc.zip             = json['address_components']['zip']
-        loc.full_address    = json['formatted_address']
+        loc.street_address  = json["address_components"]["street"]
+        loc.street_number   = json["address_components"]["number"]
+        loc.sub_premise     = json["address_components"]["suffix"]
+        loc.street_name     = json["address_components"]["street"]
+        loc.city            = json["address_components"]["city"]
+        loc.state           = json["address_components"]["state"]
+        loc.zip             = json["address_components"]["zip"]
+        loc.full_address    = json["formatted_address"]
       end
 
       def self.set_coordinates(json, loc)
-        loc.lat = json['location']['lat']
-        loc.lng = json['location']['lng']
+        loc.lat = json["location"]["lat"]
+        loc.lng = json["location"]["lng"]
       end
     end
   end

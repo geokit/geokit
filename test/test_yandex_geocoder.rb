@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require File.join(File.dirname(__FILE__), 'helper')
+require File.join(File.dirname(__FILE__), "helper")
 
 class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
   YANDEX_FULL = <<-EOF.strip
@@ -20,8 +20,8 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @full_address = 'Москва, улица Новый Арбат, дом 24'
-    @address = 'город Москва'
+    @full_address = "Москва, улица Новый Арбат, дом 24"
+    @address = "город Москва"
   end
 
   # the testing methods themselves
@@ -32,30 +32,30 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::YandexGeocoder.geocode(@full_address)
 
-    assert_equal 'yandex', res.provider
-    assert_equal 'улица Новый Арбат, 24', res.street_address
-    assert_equal 'Москва', res.city
+    assert_equal "yandex", res.provider
+    assert_equal "улица Новый Арбат, 24", res.street_address
+    assert_equal "Москва", res.city
     assert_equal 55.753083, res.lat
     assert_equal 37.587614, res.lng
-    assert_equal 'RU', res.country_code
+    assert_equal "RU", res.country_code
     assert res.success
   end
 
   def test_yandex_full_address_with_region
-    region_address = 'Ростов-на-Дону, ул. Станиславского, д.21'
+    region_address = "Ростов-на-Дону, ул. Станиславского, д.21"
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_REGION)
     url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(region_address)}&format=json"
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::YandexGeocoder.geocode(region_address)
 
-    assert_equal 'yandex', res.provider
-    assert_equal 'улица Станиславского, 21', res.street_address
-    assert_equal 'город Ростов на Дону', res.city
-    assert_equal 'Ростовская область', res.state
+    assert_equal "yandex", res.provider
+    assert_equal "улица Станиславского, 21", res.street_address
+    assert_equal "город Ростов на Дону", res.city
+    assert_equal "Ростовская область", res.state
     assert_equal 47.215903, res.lat
     assert_equal 39.703398, res.lng
-    assert_equal 'RU', res.country_code
+    assert_equal "RU", res.country_code
     assert res.success
   end
 
@@ -66,17 +66,17 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::YandexGeocoder.geocode(@address)
 
-    assert_equal 'yandex', res.provider
-    assert_equal 'city', res.precision
-    assert_equal 'Москва', res.city
+    assert_equal "yandex", res.provider
+    assert_equal "city", res.precision
+    assert_equal "Москва", res.city
     assert_equal 55.755773, res.lat
     assert_equal 37.617761, res.lng
-    assert_equal 'RU', res.country_code
+    assert_equal "RU", res.country_code
     assert res.success
   end
 
   def test_no_results
-    no_results_address = 'ZZ, ZZ, ZZ'
+    no_results_address = "ZZ, ZZ, ZZ"
     # no_results_full_hash = {:street_address=>"ZZ", :city=>"ZZ", :state=>"ZZ"}
     # no_results_full_loc = Geokit::GeoLoc.new(no_results_full_hash)
 
@@ -85,6 +85,6 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     url = "http://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(no_results_address)}&format=json"
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     result = Geokit::Geocoders::YandexGeocoder.geocode(no_results_address)
-    assert_equal ',', result.ll
+    assert_equal ",", result.ll
   end
 end

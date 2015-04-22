@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'helper')
+require File.join(File.dirname(__FILE__), "helper")
 
 class LatLngTest < Test::Unit::TestCase #:nodoc: all
   def setup
@@ -9,19 +9,19 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
 
   def valid_reverse_geocoding_result
     location = Geokit::GeoLoc.new({
-      city: 'Essen',
-      country_code: 'DE',
+      city: "Essen",
+      country_code: "DE",
       lat: 51.4578329,
       lng: 7.0166848,
-      provider: 'google',
-      state: 'Nordrhein-Westfalen',
-      street_address: 'Porscheplatz 1',
-      zip: '45127'
+      provider: "google",
+      state: "Nordrhein-Westfalen",
+      street_address: "Porscheplatz 1",
+      zip: "45127"
     })
 
-    location.full_address = 'Porscheplatz 1, 45127 Essen, Deutschland'
-    location.precision = 'address'
-    location.provider = 'google'
+    location.full_address = "Porscheplatz 1, 45127 Essen, Deutschland"
+    location.precision = "address"
+    location.provider = "google"
     location.success = true
     location
   end
@@ -201,12 +201,12 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     Geokit::Geocoders::MultiGeocoder.expects(:reverse_geocode).with(point).returns(valid_reverse_geocoding_result)
     res = point.reverse_geocode
 
-    assert_equal 'Nordrhein-Westfalen', res.state
-    assert_equal 'Essen', res.city
-    assert_equal '45127', res.zip
-    assert_equal '51.4578329,7.0166848', res.ll # slightly dif from yahoo
+    assert_equal "Nordrhein-Westfalen", res.state
+    assert_equal "Essen", res.city
+    assert_equal "45127", res.zip
+    assert_equal "51.4578329,7.0166848", res.ll # slightly dif from yahoo
     assert res.is_us? == false
-    assert_equal 'Porscheplatz 1, 45127 Essen, Deutschland', res.full_address # slightly different from yahoo
+    assert_equal "Porscheplatz 1, 45127 Essen, Deutschland", res.full_address # slightly different from yahoo
   end
 
   def test_reverse_geocoding_using_specific_geocoder
@@ -214,13 +214,13 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with(point).returns(valid_reverse_geocoding_result)
     res = point.reverse_geocode(using: Geokit::Geocoders::GoogleGeocoder)
 
-    assert_equal 'Nordrhein-Westfalen', res.state
-    assert_equal 'Essen', res.city
-    assert_equal '45127', res.zip
-    assert_equal '51.4578329,7.0166848', res.ll # slightly dif from yahoo
+    assert_equal "Nordrhein-Westfalen", res.state
+    assert_equal "Essen", res.city
+    assert_equal "45127", res.zip
+    assert_equal "51.4578329,7.0166848", res.ll # slightly dif from yahoo
     assert res.is_us? == false
-    assert_equal 'Porscheplatz 1, 45127 Essen, Deutschland', res.full_address # slightly different from yahoo
-    assert_equal 'google', res.provider
+    assert_equal "Porscheplatz 1, 45127 Essen, Deutschland", res.full_address # slightly different from yahoo
+    assert_equal "google", res.provider
   end
 
   def test_reverse_geocoding_using_specific_geocoder_short_syntax
@@ -228,13 +228,13 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with(point).returns(valid_reverse_geocoding_result)
     res = point.reverse_geocode(using: :google)
 
-    assert_equal 'Nordrhein-Westfalen', res.state
-    assert_equal 'Essen', res.city
-    assert_equal '45127', res.zip
-    assert_equal '51.4578329,7.0166848', res.ll # slightly dif from yahoo
+    assert_equal "Nordrhein-Westfalen", res.state
+    assert_equal "Essen", res.city
+    assert_equal "45127", res.zip
+    assert_equal "51.4578329,7.0166848", res.ll # slightly dif from yahoo
     assert res.is_us? == false
-    assert_equal 'Porscheplatz 1, 45127 Essen, Deutschland', res.full_address # slightly different from yahoo
-    assert_equal 'google', res.provider
+    assert_equal "Porscheplatz 1, 45127 Essen, Deutschland", res.full_address # slightly different from yahoo
+    assert_equal "google", res.provider
   end
 
   def test_to_dms
@@ -256,7 +256,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_invalid_units
-    expected_exception_message = 'feet is an unsupported unit of length.'
+    expected_exception_message = "feet is an unsupported unit of length."
 
     exception = assert_raise(ArgumentError) do
       @loc_a.distance_to(@loc_e, units: :feet)

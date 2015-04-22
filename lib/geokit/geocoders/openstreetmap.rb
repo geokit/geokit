@@ -38,7 +38,7 @@ module Geokit
       end
 
       def self.generate_param_for_option(param, options)
-        options[param] ? "&#{param}=#{Geokit::Inflector.url_escape(options[param])}" : ''
+        options[param] ? "&#{param}=#{Geokit::Inflector.url_escape(options[param])}" : ""
       end
 
       def self.generate_bool_param_for_option(param, options)
@@ -47,7 +47,7 @@ module Geokit
 
       def self.parse_json(results)
         if results.is_a?(Hash)
-          return GeoLoc.new if results['error']
+          return GeoLoc.new if results["error"]
           results = [results]
         end
         return GeoLoc.new if results.empty?
@@ -68,12 +68,12 @@ module Geokit
         loc = new_loc
 
         # basic
-        loc.lat = result_json['lat']
-        loc.lng = result_json['lon']
+        loc.lat = result_json["lat"]
+        loc.lng = result_json["lon"]
 
-        set_address_components(result_json['address'], loc)
+        set_address_components(result_json["address"], loc)
         set_precision(result_json, loc)
-        set_bounds(result_json['boundingbox'], loc)
+        set_bounds(result_json["boundingbox"], loc)
         loc.success = true
 
         loc
@@ -81,24 +81,24 @@ module Geokit
 
       def self.set_address_components(address_data, loc)
         return unless address_data
-        loc.country = address_data['country']
-        loc.country_code = address_data['country_code'].upcase if address_data['country_code']
-        loc.state_name = address_data['state']
-        loc.city = address_data['city']
-        loc.city = address_data['county'] if loc.city.nil? && address_data['county']
-        loc.zip = address_data['postcode']
-        loc.district = address_data['city_district']
-        loc.district = address_data['state_district'] if loc.district.nil? && address_data['state_district']
-        loc.street_address = "#{address_data['road']} #{address_data['house_number']}".strip if address_data['road']
-        loc.street_name = address_data['road']
-        loc.street_number = address_data['house_number']
+        loc.country = address_data["country"]
+        loc.country_code = address_data["country_code"].upcase if address_data["country_code"]
+        loc.state_name = address_data["state"]
+        loc.city = address_data["city"]
+        loc.city = address_data["county"] if loc.city.nil? && address_data["county"]
+        loc.zip = address_data["postcode"]
+        loc.district = address_data["city_district"]
+        loc.district = address_data["state_district"] if loc.district.nil? && address_data["state_district"]
+        loc.street_address = "#{address_data['road']} #{address_data['house_number']}".strip if address_data["road"]
+        loc.street_name = address_data["road"]
+        loc.street_number = address_data["house_number"]
       end
 
       def self.set_precision(result_json, loc)
         # Todo accuracy does not work as Yahoo and Google maps on OSM
         # loc.accuracy = %w{unknown amenity building highway historic landuse leisure natural place railway shop tourism waterway man_made}.index(loc.precision)
-        loc.precision = result_json['class']
-        loc.accuracy = result_json['type']
+        loc.precision = result_json["class"]
+        loc.accuracy = result_json["type"]
       end
 
       def self.set_bounds(result_json, loc)

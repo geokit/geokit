@@ -14,7 +14,7 @@ module Geokit
                             proxy_uri.password]
         end
         http = Net::HTTP.new(*net_http_args)
-        if uri.scheme == 'https'
+        if uri.scheme == "https"
           http.use_ssl = true
           http.verify_mode = Geokit::Geocoders.ssl_verify_mode
         end

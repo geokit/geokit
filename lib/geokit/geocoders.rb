@@ -1,16 +1,16 @@
-require 'geokit/net_adapter/net_http'
-require 'geokit/net_adapter/typhoeus'
-require 'ipaddr'
-require 'json'
-require 'logger'
-require 'net/http'
-require 'openssl'
-require 'rexml/document'
-require 'timeout'
-require 'yaml'
+require "geokit/net_adapter/net_http"
+require "geokit/net_adapter/typhoeus"
+require "ipaddr"
+require "json"
+require "logger"
+require "net/http"
+require "openssl"
+require "rexml/document"
+require "timeout"
+require "yaml"
 
 module Geokit
-  require File.join(File.dirname(__FILE__), 'inflectors')
+  require File.join(File.dirname(__FILE__), "inflectors")
 
   # Contains a range of geocoders:
   #
@@ -45,7 +45,7 @@ module Geokit
 
     def self.__define_accessors
       class_variables.each do |v|
-        sym = v.to_s.delete('@').to_sym
+        sym = v.to_s.delete("@").to_sym
         unless self.respond_to? sym
           module_eval <<-EOS, __FILE__, __LINE__
             def self.#{sym}
@@ -154,7 +154,7 @@ module Geokit
       end
 
       def self.protocol
-        use_https? ? 'https' : 'http'
+        use_https? ? "https" : "http"
       end
 
       # Wraps the geocoder call around a proxy if necessary.
@@ -167,7 +167,7 @@ module Geokit
       end
 
       def self.provider_name
-        name.split('::').last.gsub(/Geocoder$/, '')
+        name.split("::").last.gsub(/Geocoder$/, "")
       end
 
       def self.parse(format, body, *args)
@@ -176,7 +176,7 @@ module Geokit
         when :json then parse_json(JSON.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
         when :yaml then parse_yaml(YAML.load(body), *args)
-        when :csv  then parse_csv(body.chomp.split(','), *args)
+        when :csv  then parse_csv(body.chomp.split(","), *args)
         end
       end
 
@@ -193,11 +193,11 @@ module Geokit
       end
 
       def self.transcode_to_utf8(body)
-        require 'iconv' unless String.method_defined?(:encode)
+        require "iconv" unless String.method_defined?(:encode)
         if String.method_defined?(:encode)
-          body.encode!('UTF-8', 'UTF-8', invalid: :replace)
+          body.encode!("UTF-8", "UTF-8", invalid: :replace)
         else
-          ic = Iconv.new('UTF-8', 'UTF-8//IGNORE')
+          ic = Iconv.new("UTF-8", "UTF-8//IGNORE")
           body = ic.iconv(body)
         end
       end
@@ -206,9 +206,9 @@ module Geokit
     # -------------------------------------------------------------------------------------------
     # "Regular" Address geocoders
     # -------------------------------------------------------------------------------------------
-    require File.join(File.dirname(__FILE__), 'geocoders/base_ip')
-    Dir[File.join(File.dirname(__FILE__), '/geocoders/*.rb')].each {|f| require f}
+    require File.join(File.dirname(__FILE__), "geocoders/base_ip")
+    Dir[File.join(File.dirname(__FILE__), "/geocoders/*.rb")].each {|f| require f}
 
-    require File.join(File.dirname(__FILE__), 'multi_geocoder')
+    require File.join(File.dirname(__FILE__), "multi_geocoder")
   end
 end

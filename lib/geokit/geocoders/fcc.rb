@@ -26,23 +26,23 @@ module Geokit
       # "status"=>"OK"}
 
       def self.parse_json(results)
-        if results.has_key?('Err') && results['Err']['msg'] == 'There are no results for this location'
+        if results.has_key?("Err") && results["Err"]["msg"] == "There are no results for this location"
           return GeoLoc.new
         end
         # this should probably be smarter.
-        if !results['status'] == 'OK'
+        if !results["status"] == "OK"
           raise Geokit::Geocoders::GeocodeError
         end
 
         loc = new_loc
         loc.success       = true
-        loc.precision     = 'block'
-        loc.country_code  = 'US'
-        loc.district      = results['County']['name']
-        loc.district_fips = results['County']['FIPS']
-        loc.state         = results['State']['code']
-        loc.state_fips    = results['State']['FIPS']
-        loc.block_fips    = results['Block']['FIPS']
+        loc.precision     = "block"
+        loc.country_code  = "US"
+        loc.district      = results["County"]["name"]
+        loc.district_fips = results["County"]["FIPS"]
+        loc.state         = results["State"]["code"]
+        loc.state_fips    = results["State"]["FIPS"]
+        loc.block_fips    = results["Block"]["FIPS"]
         loc
       end
     end

@@ -16,19 +16,19 @@ module Geokit
 
       def self.parse_json(json)
         loc = new_loc
-        data = json['data']['locations'][0]
+        data = json["data"]["locations"][0]
 
         if data
-          loc.lat = data['latitude']
-          loc.lng = data['longitude']
+          loc.lat = data["latitude"]
+          loc.lng = data["longitude"]
           set_address_components(data, loc)
-          loc.success = data && (data['status_code'] == 200)
+          loc.success = data && (data["status_code"] == 200)
         end
         loc
       end
 
       def self.set_address_components(data, loc)
-        match = data['country'].match(/([A-Z]+)(\(([A-Z]+)\))?/)
+        match = data["country"].match(/([A-Z]+)(\(([A-Z]+)\))?/)
         if match[3]
           loc.state_code = match[1]
           loc.country_code = match[3]
@@ -36,7 +36,7 @@ module Geokit
           loc.country_code = match[1]
         end
 
-        loc.city = data['city']
+        loc.city = data["city"]
       end
     end
   end

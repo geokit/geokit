@@ -13,16 +13,16 @@ module Geokit
       end
 
       XML_MAPPINGS = {
-        city:         'geoplugin_city',
-        state:        'geoplugin_region',
-        country_code: 'geoplugin_countryCode',
-        lat:          'geoplugin_latitude',
-        lng:          'geoplugin_longitude'
+        city:         "geoplugin_city",
+        state:        "geoplugin_region",
+        country_code: "geoplugin_countryCode",
+        lat:          "geoplugin_latitude",
+        lng:          "geoplugin_longitude"
       }
 
       def self.parse_xml(xml)
         loc = new_loc
-        set_mappings(loc, xml.elements['geoPlugin'], XML_MAPPINGS)
+        set_mappings(loc, xml.elements["geoPlugin"], XML_MAPPINGS)
         loc.success = !!loc.city && !loc.city.empty?
         loc
       end
