@@ -57,14 +57,14 @@ class MappableTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_get_units
-    units = TestMappable::get_units!
-    assert_equal Geokit::default_units, units
+    units = TestMappable.get_units!
+    assert_equal Geokit.default_units, units
 
-    units = TestMappable::get_units!(units: :miles)
+    units = TestMappable.get_units!(units: :miles)
     assert_equal :miles, units
 
     exception = assert_raise(ArgumentError) do
-      TestMappable::get_units!(units: :feet)
+      TestMappable.get_units!(units: :feet)
     end
     assert_equal "feet is an unsupported unit of length.", exception.message
   end

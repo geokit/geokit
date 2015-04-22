@@ -8,7 +8,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def valid_reverse_geocoding_result
-    location = Geokit::GeoLoc.new({
+    location = Geokit::GeoLoc.new(
       city: "Essen",
       country_code: "DE",
       lat: 51.4578329,
@@ -17,7 +17,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
       state: "Nordrhein-Westfalen",
       street_address: "Porscheplatz 1",
       zip: "45127",
-    })
+    )
 
     location.full_address = "Porscheplatz 1, 45127 Essen, Deutschland"
     location.precision = "address"

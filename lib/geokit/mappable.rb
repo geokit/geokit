@@ -184,7 +184,7 @@ module Geokit
       # Raise an exception when given unsupported unit of length
       def get_units!(options = {})
         units = options[:units]
-        units = Geokit::default_units if units.nil?
+        units = Geokit.default_units if units.nil?
         [:miles, :kms, :meters, :nms].include?(units) or
           raise ArgumentError, "#{units} is an unsupported unit of length."
         units
