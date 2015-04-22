@@ -101,7 +101,7 @@ VCR.configure do |c|
       VCR.request_matchers.uri_without_params(
         :oauth_nonce, :oauth_timestamp, :oauth_signature
       ),
-    ],
+                       ],
   }
 end
 

@@ -135,9 +135,9 @@ module Geokit
         # seconds is 0...3599.999, representing the entire fractional part.
         seconds = (deg.abs % 1.0) * 3600.0
         [
-            deg.to_i,               # degrees as positive or negative integer
-            (seconds / 60).to_i,    # minutes as positive integer
-            (seconds % 60)          # seconds as positive float
+          deg.to_i,               # degrees as positive or negative integer
+          (seconds / 60).to_i,    # minutes as positive integer
+          (seconds % 60)          # seconds as positive float
         ]
       end
 
