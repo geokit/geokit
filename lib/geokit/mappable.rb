@@ -20,8 +20,8 @@ module Geokit
 
     module ClassMethods #:nodoc:
       PI_DIV_RAD = Math::PI / 180
-      EARTH_RADIUS_IN_METERS = 6376772.71
-      METERS_PER_LATITUDE_DEGREE = 111181.9
+      EARTH_RADIUS_IN_METERS = 6_376_772.71
+      METERS_PER_LATITUDE_DEGREE = 111_181.9
 
       EARTH_RADIUS = {}
       PER_LATITUDE_DEGREE = {}

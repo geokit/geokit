@@ -64,7 +64,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal true, res.success
 
       assert_equal "Calle De Zurbano, Chamberí, Madrid, Community of Madrid, 28036, ES", res.full_address
-      assert_equal 28036, res.zip
+      assert_equal 28_036, res.zip
       assert_equal "Calle De Zurbano", res.street_address
     end
   end
