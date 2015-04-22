@@ -36,7 +36,7 @@ module Geokit
         zip:          "postalcode",
         country_code: "countryCode",
         lat:          "lat",
-        lng:          "lng"
+        lng:          "lng",
       }
 
       def self.parse_xml(xml)

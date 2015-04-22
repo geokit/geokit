@@ -17,7 +17,7 @@ module Geokit
         state:        "geoplugin_region",
         country_code: "geoplugin_countryCode",
         lat:          "geoplugin_latitude",
-        lng:          "geoplugin_longitude"
+        lng:          "geoplugin_longitude",
       }
 
       def self.parse_xml(xml)

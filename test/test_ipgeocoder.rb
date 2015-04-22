@@ -39,7 +39,7 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     "0.0.0.0",
     "127.0.0.1",
     "240.3.4.5",
-    "225.1.6.55"
+    "225.1.6.55",
   ].freeze
 
   def setup

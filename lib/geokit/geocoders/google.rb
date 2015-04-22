@@ -124,7 +124,7 @@ module Geokit
         "ROOFTOP" => 9,
         "RANGE_INTERPOLATED" => 8,
         "GEOMETRIC_CENTER" => 5,
-        "APPROXIMATE" => 4
+        "APPROXIMATE" => 4,
       }
 
       def self.single_json_to_geoloc(addr)

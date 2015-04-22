@@ -149,7 +149,7 @@ module Geokit
        "Latitude: #{lat}",
        "Longitude: #{lng}",
        "Country: #{country_code}",
-       "Success: #{success}"
+       "Success: #{success}",
       ].join("\n")
     end
   end

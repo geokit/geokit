@@ -16,7 +16,7 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
       provider: "google",
       state: "Nordrhein-Westfalen",
       street_address: "Porscheplatz 1",
-      zip: "45127"
+      zip: "45127",
     })
 
     location.full_address = "Porscheplatz 1, 45127 Essen, Deutschland"

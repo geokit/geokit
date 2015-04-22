@@ -12,7 +12,7 @@ module Geokit
       def self.submit_url(address)
         params = [
           "q=#{Geokit::Inflector.url_escape(address)}",
-          "api_key=#{key}"
+          "api_key=#{key}",
         ].join("&")
 
         ["http://api.geocod.io/v1/geocode", params].join("?")

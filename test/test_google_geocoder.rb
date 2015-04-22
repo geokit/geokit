@@ -178,7 +178,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_google_suggested_bounds_url
     bounds = Geokit::Bounds.new(
       Geokit::LatLng.new(33.7036917, -118.6681759),
-      Geokit::LatLng.new(34.3373061, -118.1552891)
+      Geokit::LatLng.new(34.3373061, -118.1552891),
     )
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=Winnetka&bounds=33.7036917%2C-118.6681759%7C34.3373061%2C-118.1552891"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url)

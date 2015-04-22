@@ -55,7 +55,7 @@ module Geokit
         zip:            'Address/PostalCode',
         country:        'Address/CountryRegion',
         lat:            'Point/Latitude',
-        lng:            'Point/Longitude'
+        lng:            'Point/Longitude',
       }
 
       def self.set_address_components(loc, xml)
@@ -65,7 +65,7 @@ module Geokit
       ACCURACY_MAP = {
         'High'   => 8,
         'Medium' => 5,
-        'Low'    => 2
+        'Low'    => 2,
       }
 
       PRECISION_MAP = {
@@ -77,7 +77,7 @@ module Geokit
         'Postcode1'      => 'zip',
         'Postcode2'      => 'zip',
         'RoadBlock'      => 'street',
-        'Address'        => 'address'
+        'Address'        => 'address',
       }
 
       def self.set_precision(loc, xml)

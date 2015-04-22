@@ -151,7 +151,7 @@ class OauthUtil
       "oauth_nonce" => nonce,
       "oauth_signature_method" => @sig_method,
       "oauth_timestamp" => timestamp,
-      "oauth_version" => @oauth_version
+      "oauth_version" => @oauth_version,
     }
 
     # if url has query, merge key/values into params obj overwriting defaults
@@ -175,7 +175,7 @@ class OauthUtil
       percent_encode(req_url),
 
       # normalization is just x-www-form-urlencoded
-      percent_encode(query_string)
+      percent_encode(query_string),
 
     ].join("&")
 
