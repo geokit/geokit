@@ -164,7 +164,7 @@ module Geokit
       register_unit :nms,   0.0005400722448725917
 
       # Returns the multiplier used to obtain the correct distance units.
-      # TODO make more accurate by coping
+      # TODO: make more accurate by coping
       # http://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
       def units_sphere_multiplier(units)
         EARTH_RADIUS[units]
