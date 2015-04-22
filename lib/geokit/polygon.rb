@@ -18,7 +18,7 @@ module Geokit
       x = point.lng
       y = point.lat
 
-      for p in @points
+      @points.each do |p|
         yi = p.lat
         xi = p.lng
         yj = last_point.lat

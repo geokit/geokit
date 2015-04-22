@@ -75,7 +75,7 @@ module Geokit
       PRECISION_VALUES = %w{unknown country state city zip full_address}
 
       def self.set_precision(loc)
-        for i in 1...PRECISION_VALUES.length - 1
+        (1...PRECISION_VALUES.length - 1).each do |i|
           if loc.send(PRECISION_VALUES[i]) && loc.send(PRECISION_VALUES[i]).length
             loc.precision = PRECISION_VALUES[i]
           else
