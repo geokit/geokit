@@ -312,5 +312,4 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal "Orly, France", biased_result.full_address
     end
   end
-
 end
