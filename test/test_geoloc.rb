@@ -67,7 +67,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     case yaml.class.to_s
     when "YAML::Syck::Map", "Syck::Map"
       tag = yaml.type_id
-      children = yaml.value.sort_by { |k, v| k.value }.flatten.map(&:value)
+      children = yaml.value.sort_by { |k, _| k.value }.flatten.map(&:value)
     when "Psych::Nodes::Mapping"
       tag = yaml.tag
       children = yaml.children.map(&:value)
