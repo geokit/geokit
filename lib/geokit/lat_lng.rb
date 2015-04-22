@@ -110,7 +110,7 @@ module Geokit
           thing.to_lat_lng
         else
           raise ArgumentError.new(
-            "#{thing} (#{thing.class}) cannot be normalized to a LatLng. " +
+            "#{thing} (#{thing.class}) cannot be normalized to a LatLng. " \
             "We tried interpreting it as an array, string, etc., but no dice.")
         end
       end
