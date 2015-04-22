@@ -180,7 +180,7 @@ class OauthUtil
     ].join("&")
 
     # add signature
-    @params[ "oauth_signature" ] = signature
+    @params["oauth_signature"] = signature
 
     self
   end
