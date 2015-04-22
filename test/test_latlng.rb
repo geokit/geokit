@@ -189,11 +189,11 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_not_valid_when_lat_is_nil
-    assert ! Geokit::LatLng.new(nil, -122.443).valid?
+    assert !Geokit::LatLng.new(nil, -122.443).valid?
   end
 
   def test_not_valid_when_lng_is_nil
-    assert ! Geokit::LatLng.new(37.7690, nil).valid?
+    assert !Geokit::LatLng.new(37.7690, nil).valid?
   end
 
   def test_reverse_geocode
