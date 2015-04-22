@@ -103,7 +103,7 @@ module Geokit
       fields.each { |s| res[s] = send(s.to_s) }
       res
     end
-    alias to_hash hash
+    alias_method :to_hash, :hash
 
     # Sets the city after capitalizing each word within the city name.
     def city=(city)

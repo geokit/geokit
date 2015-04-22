@@ -73,8 +73,8 @@ Geokit::Geocoders::Geocoder.class_eval do
       call_geocoder_service_old(url)
     end
 
-    alias call_geocoder_service_old call_geocoder_service
-    alias call_geocoder_service call_geocoder_service_for_test
+    alias_method :call_geocoder_service_old, :call_geocoder_service
+    alias_method :call_geocoder_service, :call_geocoder_service_for_test
   end
 end
 

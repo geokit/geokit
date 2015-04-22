@@ -212,7 +212,7 @@ module Geokit
     def distance_to(other, options = {})
       self.class.distance_between(self, other, options)
     end
-    alias distance_from distance_to
+    alias_method :distance_from, :distance_to
 
     # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc) to
     # the given point. The given point can be a LatLng or a string to be
