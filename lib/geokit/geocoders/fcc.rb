@@ -30,9 +30,7 @@ module Geokit
           return GeoLoc.new
         end
         # this should probably be smarter.
-        if !results["status"] == "OK"
-          raise Geokit::Geocoders::GeocodeError
-        end
+        raise Geokit::Geocoders::GeocodeError if !results["status"] == "OK"
 
         loc = new_loc
         loc.success       = true

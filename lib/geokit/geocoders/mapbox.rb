@@ -63,9 +63,7 @@ module Geokit
               loc.country_code = context["id"].split(".")[0].gsub(/^postcode-/, "").upcase
             end
           end
-          if loc.country_code && !loc.country
-            loc.country = loc.country_code
-          end
+          loc.country = loc.country_code if loc.country_code && !loc.country
         end
         if result_json["place_name"]
           loc.full_address = result_json["place_name"]

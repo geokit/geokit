@@ -90,9 +90,7 @@ module Geokit
         when "ZERO_RESULTS" then return GeoLoc.new
         end
         # this should probably be smarter.
-        if results["status"] != "OK"
-          raise Geokit::Geocoders::GeocodeError
-        end
+        raise Geokit::Geocoders::GeocodeError if results["status"] != "OK"
 
         unsorted = results["results"].map do |addr|
           single_json_to_geoloc(addr)
