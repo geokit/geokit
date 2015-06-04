@@ -125,6 +125,8 @@ module Geokit
         "APPROXIMATE" => 4,
       }
 
+      PRECISIONS = %w(unknown country state state city zip zip+4 street address building)
+
       def self.single_json_to_geoloc(addr)
         loc = new_loc
         loc.success = true
@@ -188,19 +190,19 @@ module Geokit
 
       def self.set_precision(loc, addr)
         loc.accuracy = ACCURACY[addr["geometry"]["location_type"]]
-        loc.precision = %w(unknown country state state city zip zip+4 street address building)[loc.accuracy]
+        loc.precision = PRECISIONS[loc.accuracy]
         # try a few overrides where we can
         if loc.sub_premise
-          loc.accuracy = 9
-          loc.precision = "building"
+          loc.precision = PRECISIONS[9]
+          loc.accuracy  = 9
         end
         if loc.street_name && loc.precision == "city"
-          loc.precision = "street"
-          loc.accuracy = 7
+          loc.precision = PRECISIONS[7]
+          loc.accuracy  = 7
         end
         if addr["types"].include?("postal_code")
-          loc.precision = "postal_code"
-          loc.accuracy = 6
+          loc.precision = PRECISIONS[6]
+          loc.accuracy  = 6
         end
       end
     end
