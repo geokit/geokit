@@ -86,11 +86,17 @@ module Geokit
 
       def self.parse_json(results)
         case results["status"]
-        when "OVER_QUERY_LIMIT" then raise Geokit::Geocoders::TooManyQueriesError
-        when "ZERO_RESULTS" then return GeoLoc.new
+        when "OVER_QUERY_LIMIT"
+          raise Geokit::Geocoders::TooManyQueriesError, results["error_message"]
+        when "REQUEST_DENIED"
+          raise Geokit::Geocoders::AccessDeniedError, results["error_message"]
+        when "ZERO_RESULTS"
+          return GeoLoc.new
+        when "OK"
+          # all good
+        else
+          raise Geokit::Geocoders::GeocodeError, results["error_message"]
         end
-        # this should probably be smarter.
-        raise Geokit::Geocoders::GeocodeError if results["status"] != "OK"
 
         unsorted = results["results"].map do |addr|
           single_json_to_geoloc(addr)

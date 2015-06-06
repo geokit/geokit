@@ -269,22 +269,35 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_too_many_queries
     response = MockSuccess.new
-    response.expects(:body).returns '{"status": "OVER_QUERY_LIMIT"}'
+    response.expects(:body).returns '{"status": "OVER_QUERY_LIMIT", "error_message": "quota exceeded!"}'
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    assert_raise Geokit::Geocoders::TooManyQueriesError do
+    err = assert_raise Geokit::Geocoders::TooManyQueriesError do
       Geokit::Geocoders::GoogleGeocoder.geocode(@address)
     end
+    assert_equal "quota exceeded!", err.message
+  end
+
+  def test_access_denied
+    response = MockSuccess.new
+    response.expects(:body).returns '{"status": "REQUEST_DENIED", "error_message": "access denied!"}'
+    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+    Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
+    err = assert_raise Geokit::Geocoders::AccessDeniedError do
+      Geokit::Geocoders::GoogleGeocoder.geocode(@address)
+    end
+    assert_equal "access denied!", err.message
   end
 
   def test_invalid_request
     response = MockSuccess.new
-    response.expects(:body).returns '{"results" : [], "status" : "INVALID_REQUEST"}'
+    response.expects(:body).returns '{"results" : [], "status" : "INVALID_REQUEST", "error_message": "error!" }'
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape("3961 V\u00EDa Marisol")}"
     Geokit::Geocoders::GoogleGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    assert_raise Geokit::Geocoders::GeocodeError do
+    err = assert_raise Geokit::Geocoders::GeocodeError do
       Geokit::Geocoders::GoogleGeocoder.geocode("3961 V\u00EDa Marisol")
     end
+    assert_equal "error!", err.message
   end
 
   def test_country_code_biasing_toledo
