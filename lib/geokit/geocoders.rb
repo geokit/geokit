@@ -102,9 +102,9 @@ module Geokit
         do_reverse_geocode(latlng, *args) || GeoLoc.new
       end
 
-      protected
-
       def self.logger
+        Geokit::Geocoders.logger ||= Logger.new(STDOUT)
+        Geokit::Geocoders.logger.level = Logger::INFO
         Geokit::Geocoders.logger
       end
 
