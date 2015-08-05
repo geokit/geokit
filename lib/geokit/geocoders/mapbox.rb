@@ -58,15 +58,17 @@ module Geokit
               loc.state = context["text"]
             elsif context["id"] =~ /^city\./
               loc.city = context["text"]
-            elsif context["id"] =~ /^postcode-/
+            elsif context["id"] =~ /^postcode/
               loc.zip = context["text"]
-              loc.country_code = context["id"].split(".")[0].gsub(/^postcode-/, "").upcase
             end
           end
           loc.country = loc.country_code if loc.country_code && !loc.country
         end
         if result_json["place_name"]
           loc.full_address = result_json["place_name"]
+        end
+        if !loc.city && result_json["id"] =~ /^city\./
+          loc.city = result_json["text"]
         end
       end
 
