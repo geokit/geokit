@@ -190,6 +190,24 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     Geokit::Geocoders::GoogleGeocoder.geocode("Winnetka", bias: bounds)
   end
 
+  def test_google_place_id
+    VCR.use_cassette("google_full_v3_20") do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      TestHelper.expects(:last_url).with(url)
+      res = Geokit::Geocoders::GoogleGeocoder.geocode(@full_address_short_zip)
+      assert_equal 'EjExMDAgU3BlYXIgU3RyZWV0ICM1LCBTYW4gRnJhbmNpc2NvLCBDQSA5NDEwNSwgVVNB', res.place_id
+    end
+  end
+
+  def test_google_formatted_address
+    VCR.use_cassette("google_full_v3_20") do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      TestHelper.expects(:last_url).with(url)
+      res = Geokit::Geocoders::GoogleGeocoder.geocode(@full_address_short_zip)
+      assert_equal '100 Spear Street #5, San Francisco, CA 94105, USA', res.formatted_address
+    end
+  end
+
   def test_service_unavailable
     response = MockFailure.new
     url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"

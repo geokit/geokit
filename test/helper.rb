@@ -39,6 +39,8 @@ require "test/unit"
 require "mocha/setup"
 require "net/http"
 
+require 'openssl'
+
 require File.join(File.dirname(__FILE__), "../lib/geokit.rb")
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all

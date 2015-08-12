@@ -44,6 +44,15 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     assert_equal "Irving, TX, 75063, US", @loc.full_address
   end
 
+  def test_formatted_address
+    @loc.formatted_address = nil
+    @loc.full_address = "Irving, TX, 75063, US"
+    assert_equal "Irving, TX, 75063, US", @loc.formatted_address
+    @loc.formatted_address = "San Francisco, CA, 94105, US"
+    @loc.full_address = "Irving, TX, 75063, US"
+    assert_equal "San Francisco, CA, 94105, US", @loc.formatted_address
+  end
+
   def test_hash
     @loc.city = "San Francisco"
     @loc.state = "CA"

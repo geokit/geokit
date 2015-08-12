@@ -33,7 +33,8 @@ module Geokit
     # successful geocode lookups. The provider will be set to the name of the
     # providing geocoder. Finally, precision is an indicator of the accuracy of
     # the geocoding.
-    attr_accessor :success, :provider, :precision, :suggested_bounds
+    attr_accessor :success, :provider, :precision, :suggested_bounds, :place_id,
+                  :formatted_address
     # accuracy is set for Yahoo and Google geocoders, it is a numeric value of
     # the precision. see
     # http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy
@@ -92,6 +93,11 @@ module Geokit
     def street_name
       @street_name ||= street_address[street_number.length, street_address.length].strip if street_address
       @street_name
+    end
+
+    # Returns Google-supplied normalized address string or concatenation of address parts
+    def formatted_address
+      @formatted_address ||= full_address
     end
 
     # gives you all the important fields as key-value pairs
