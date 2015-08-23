@@ -1,3 +1,22 @@
+## 1.10.0
+
+**Existing Geocoder Changes**
+* Google: place_id/formatted_address support
+* Google: Improve error handling
+* Google: Consistent precision names
+* Google: Improve ordering
+* Mapbox: city-only support
+* Mapbox: Make MultiGeocoder compatible
+* CaGeocoder: Fix url and xml
+* Yandex: Use https
+
+**Other Changes**
+* Added Geobytes geocoder
+* Replace MultiJSON with JSON
+* Fix Get with URI (not URL)
+* Fix missing openssl requirement
+* Error when units invalid/unsupported
+
 ## 1.9.0
 
 * Drop Ruby 1.8 support
