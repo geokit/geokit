@@ -150,6 +150,9 @@ module Geokit
 
         set_bounds(loc, addr)
 
+        loc.place_id = addr['place_id']
+        loc.formatted_address = addr['formatted_address']
+
         loc
       end
 
