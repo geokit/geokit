@@ -10,7 +10,7 @@ http_interactions:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
-      - '*/*'
+      - "*/*"
       User-Agent:
       - Ruby
   response:
@@ -21,39 +21,58 @@ http_interactions:
       Content-Type:
       - application/vnd.geo+json; charset=utf-8
       Content-Length:
-      - '1243'
+      - '3143'
       Connection:
       - keep-alive
-      Access-Control-Allow-Methods:
-      - GET
       Access-Control-Allow-Origin:
-      - '*'
+      - "*"
+      Access-Control-Expose-Headers:
+      - x-rate-limit-interval,x-rate-limit-limit,x-rate-limit-remaining,x-rate-limit-reset
       Cache-Control:
       - max-age=3600
       Date:
-      - Thu, 21 Aug 2014 05:42:19 GMT
+      - Wed, 05 Aug 2015 17:05:43 GMT
       Etag:
-      - '"9363c6116c867d7a272693e81eb6c456"'
+      - '"990fe72d1269b3087771d373ba1b92ad"'
       Last-Modified:
-      - Thu, 21 Aug 2014 05:42:19 GMT
-      Server:
-      - nginx
+      - Wed, 05 Aug 2015 17:05:43 GMT
       X-Powered-By:
       - Express
+      X-Rate-Limit-Interval:
+      - '60'
+      X-Rate-Limit-Limit:
+      - '600'
+      X-Rate-Limit-Remaining:
+      - '599'
+      X-Rate-Limit-Reset:
+      - '1438794402'
+      Age:
+      - '104'
       X-Cache:
-      - Miss from cloudfront
+      - Hit from cloudfront
       Via:
-      - 1.1 25e6ff20e328e7479b6db9fee82a8d60.cloudfront.net (CloudFront)
+      - 1.1 7e4ecdff0078259d2c1827ec3336b278.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - QRVX5xyBFaHKip4ALpz6ZPtpDGVGm9FDjn_DleC3PMmCUXyfABDeCw==
+      - LiKAQL5YclcLAX7ysTz4FpZqW2_Ns6PVc_cv6jvqO9XdrZODBmkyUQ==
     body:
       encoding: UTF-8
-      string: '{"type":"FeatureCollection","query":["1714","14th","street","nw","washington","dc"],"features":[{"id":"city.20001","type":"Feature","text":"Washington","place_name":"Washington,
-        20002, District of Columbia, United States","relevance":0.3233333333333333,"center":[-76.992695,38.899393],"geometry":{"type":"Point","coordinates":[-76.992695,38.899393]},"bbox":[-77.11976790632382,38.80310600134152,-76.90938401684849,38.99555498159024],"properties":{"title":"Washington"},"context":[{"id":"postcode-us.3962709191","text":"20002"},{"id":"province.1190806886","text":"District
-        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"city.21154","type":"Feature","text":"Street","place_name":"Street,
-        21154, Maryland, United States","relevance":0.16666666666666666,"center":[-76.344429,39.645749],"geometry":{"type":"Point","coordinates":[-76.344429,39.645749]},"bbox":[-76.49929286959762,39.59802207980489,-76.22835205150847,39.693469713854434],"properties":{"title":"Street"},"context":[{"id":"postcode-us.2234502147","text":"21154"},{"id":"province.928365533","text":"Maryland"},{"id":"country.4150104525","text":"United
-        States"}]}],"attribution":"<a href=''https://www.mapbox.com/about/maps/''
-        target=''_blank''>&copy; Mapbox</a>"}'
+      string: '{"type":"FeatureCollection","query":["1714","14th","street","nw","washington","dc"],"features":[{"id":"address.75018674165319","type":"Feature","text":"14th
+        St NW","place_name":"1714 14th St NW, Washington, 20009, District of Columbia,
+        United States","relevance":0.9989999999999999,"center":[-77.031952,38.913184],"geometry":{"type":"Point","coordinates":[-77.031952,38.913184],"interpolated":true},"bbox":[-77.03261199999999,38.91112899999999,-77.03183899999996,38.92880499999998],"address":"1714","properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.1308149819","text":"20009"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.9831827761295","type":"Feature","text":"14th
+        St NW","place_name":"14th St NW, Washington, 20005, District of Columbia,
+        United States","relevance":0.7323333333333333,"center":[-77.031949,38.904122],"geometry":{"type":"Point","coordinates":[-77.031949,38.904122]},"bbox":[-77.03196299999998,38.89734899999999,-77.03194899999997,38.91112899999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.4009156820","text":"20005"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.206317692383283","type":"Feature","text":"E
+        St NW","place_name":"E St NW, Washington, 20001, District of Columbia, United
+        States","relevance":0.7323333333333333,"center":[-77.017227,38.896133],"geometry":{"type":"Point","coordinates":[-77.017227,38.896133]},"bbox":[-77.03196199999996,38.896104999999984,-77.00905899999995,38.89613699999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.2700102601","text":"20001"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.12847447657866","type":"Feature","text":"14th
+        St NW","place_name":"14th St NW, Washington, 20004, District of Columbia,
+        United States","relevance":0.7323333333333333,"center":[-77.031942,38.893377],"geometry":{"type":"Point","coordinates":[-77.031942,38.893377]},"bbox":[-77.03196699999998,38.89041599999999,-77.03194199999999,38.89734899999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.858369517","text":"20004"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.68742434139344","type":"Feature","text":"S
+        St NW","place_name":"S St NW, Washington, 20001, District of Columbia, United
+        States","relevance":0.7323333333333333,"center":[-77.018178,38.914085],"geometry":{"type":"Point","coordinates":[-77.018178,38.914085]},"bbox":[-77.02703499999998,38.913971999999994,-77.00901299999997,38.91420799999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.2700102601","text":"20001"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]}],"attribution":"<a
+        href=''https://www.mapbox.com/about/maps/'' target=''_blank''>&copy; Mapbox</a>"}'
     http_version: 
-  recorded_at: Thu, 21 Aug 2014 05:42:19 GMT
-recorded_with: VCR 2.9.2
+  recorded_at: Wed, 05 Aug 2015 17:07:27 GMT
+recorded_with: VCR 2.9.3

@@ -1,0 +1,73 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/Washington,+DC.json?access_token=
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/vnd.geo+json; charset=utf-8
+      Content-Length:
+      - '2416'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - x-rate-limit-interval,x-rate-limit-limit,x-rate-limit-remaining,x-rate-limit-reset
+      Cache-Control:
+      - max-age=3600
+      Date:
+      - Wed, 05 Aug 2015 16:44:17 GMT
+      Etag:
+      - '"68acbd95bd4b36ee26faa707a34f1631"'
+      Last-Modified:
+      - Wed, 05 Aug 2015 16:44:17 GMT
+      X-Powered-By:
+      - Express
+      X-Rate-Limit-Interval:
+      - '60'
+      X-Rate-Limit-Limit:
+      - '600'
+      X-Rate-Limit-Remaining:
+      - '599'
+      X-Rate-Limit-Reset:
+      - '1438793117'
+      Age:
+      - '1390'
+      X-Cache:
+      - Hit from cloudfront
+      Via:
+      - 1.1 b7fb0f8de9924b1b44ffa1e559f19091.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - JE9owG-k8ZOi37ZOQbXs6jzdELdtEQikt6gtTdlW-iPnKHgaHzCH6Q==
+    body:
+      encoding: UTF-8
+      string: '{"type":"FeatureCollection","query":["washington","dc"],"features":[{"id":"city.20001","type":"Feature","text":"Washington","place_name":"Washington,
+        20004, District of Columbia, United States","relevance":0.999,"center":[-77.0364,38.8951],"geometry":{"type":"Point","coordinates":[-77.0364,38.8951]},"bbox":[-77.1197590084041,38.80311299006593,-76.90939299,38.99554800807594],"properties":{},"context":[{"id":"postcode.858369517","text":"20004"},{"id":"province.1190806886","text":"District
+        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"province.1190806886","type":"Feature","text":"District
+        of Columbia","place_name":"District of Columbia, United States","relevance":0.49,"center":[-77.009289,38.909152],"geometry":{"type":"Point","coordinates":[-77.009289,38.909152]},"bbox":[-77.11975899999999,38.79164499999999,-76.90939299999997,38.99554799999999],"properties":{},"context":[{"id":"country.4150104525","text":"United
+        States"}]},{"id":"city.39246","type":"Feature","text":"Washington","place_name":"Washington,
+        Sunderland, United Kingdom","relevance":0.49,"center":[-1.519344,54.904404],"geometry":{"type":"Point","coordinates":[-1.519344,54.904404]},"bbox":[-1.572074,54.873852,-1.471309,54.935104],"properties":{},"context":[{"id":"province.972624862","text":"Sunderland"},{"id":"country.2794958072","text":"United
+        Kingdom"}]},{"id":"city.39247","type":"Feature","text":"Washington","place_name":"Washington,
+        West Sussex, United Kingdom","relevance":0.49,"center":[-0.393505,50.888378],"geometry":{"type":"Point","coordinates":[-0.393505,50.888378]},"bbox":[-0.42587,50.86474599999999,-0.3537509999999999,50.916752],"properties":{},"context":[{"id":"province.2373165042","text":"West
+        Sussex"},{"id":"country.2794958072","text":"United Kingdom"}]},{"id":"address.56461051138823","type":"Feature","text":"Washington","place_name":"Washington,
+        Irvine, 92606, California, United States","relevance":0.39,"center":[-117.792586,33.71292],"geometry":{"type":"Point","coordinates":[-117.792586,33.71292]},"bbox":[-117.79281099999997,33.711665999999994,-117.791035,33.714770999999985],"properties":{},"context":[{"id":"city.92602","text":"Irvine"},{"id":"postcode.1397213125","text":"92606"},{"id":"province.1112151813","text":"California"},{"id":"country.4150104525","text":"United
+        States"}]}],"attribution":"<a href=''https://www.mapbox.com/about/maps/''
+        target=''_blank''>&copy; Mapbox</a>"}'
+    http_version: 
+  recorded_at: Wed, 05 Aug 2015 17:07:27 GMT
+recorded_with: VCR 2.9.3
