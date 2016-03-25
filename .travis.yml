@@ -6,8 +6,8 @@ rvm:
   - 2.2
   - 2.3.0
 script: "bundle exec rake test"
-before_install:
-  - gem install bundler
 notifications:
   email:
     - michael+geokit@noack.com.au
+sudo: false
+cache: bundler
