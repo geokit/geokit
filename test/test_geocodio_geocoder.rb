@@ -1,12 +1,12 @@
 require File.join(File.dirname(__FILE__), "helper")
 
-Geokit::Geocoders::GeocodioGeocoder.key = "723d41115152d224fd74727df34727c444537f7"
-
 class GeocodioGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
     @full_address = "1 Infinite Loop, Cupertino, CA 95014"
     @second_address = "300 Brannan St, San Francisco, CA 94107"
+
+    Geokit::Geocoders::GeocodioGeocoder.key = @keys['geocodio']['key']
   end
 
   def assert_url(expected_url)
