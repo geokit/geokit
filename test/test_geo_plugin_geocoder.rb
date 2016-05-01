@@ -23,6 +23,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
     super
     @ip = "74.125.237.209"
     @success.provider = "geo_plugin"
+    @base_url = 'http://www.geoplugin.net/xml.gp'
   end
 
   def assert_url(expected_url)
@@ -31,7 +32,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_geo_plugin_geocode
     VCR.use_cassette("geo_plugin_geocode") do
-      url = "http://www.geoplugin.net/xml.gp?ip=#{@ip}"
+      url = "#{@base_url}?ip=#{@ip}"
     res = Geokit::Geocoders::GeoPluginGeocoder.geocode(@ip)
     assert_url url
     assert_equal res.city, "Mountain View"
@@ -43,7 +44,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_successful_lookup
     success = MockSuccess.new
     success.expects(:body).returns(IP_SUCCESS)
-    url = "http://www.geoplugin.net/xml.gp?ip=200.150.38.66"
+    url = "#{@base_url}?ip=200.150.38.66"
     Geokit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(success)
     location = Geokit::Geocoders::GeoPluginGeocoder.geocode("200.150.38.66")
     assert_not_nil location
@@ -64,7 +65,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_service_unavailable
     failure = MockFailure.new
-    url = "http://www.geoplugin.net/xml.gp?ip=69.10.10.10"
+    url = "#{@base_url}?ip=69.10.10.10"
     Geokit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
     location = Geokit::Geocoders::GeoPluginGeocoder.geocode("69.10.10.10")
     assert_not_nil location
