@@ -1,8 +1,5 @@
 require File.join(File.dirname(__FILE__), "helper")
 
-Geokit::Geocoders::YahooGeocoder.key = "dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--"
-Geokit::Geocoders::YahooGeocoder.secret = "SECRET"
-
 class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
@@ -10,6 +7,10 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     @yahoo_city_hash = {city: "San Francisco", state: "CA"}
     @yahoo_full_loc = Geokit::GeoLoc.new(@yahoo_full_hash)
     @yahoo_city_loc = Geokit::GeoLoc.new(@yahoo_city_hash)
+
+    key = @keys['yahoo']
+    Geokit::Geocoders::YahooGeocoder.key = key['key']
+    Geokit::Geocoders::YahooGeocoder.secret = key['secret']
   end
 
   def assert_yahoo_url(expected_url)

@@ -8,7 +8,8 @@ class MapboxGeocoderTest < BaseGeocoderTest #:nodoc: all
     @address = "1714 14th Street NW, Washington, DC"
     @latlng = Geokit::LatLng.new(38.913175, -77.032458)
     @city = "Washington, DC"
-    Geokit::Geocoders::MapboxGeocoder.key = "pk.eyJ1IjoiZ2Vva2l0IiwiYSI6ImNpbm1md3dvdTB6anB0dG0zbW9zd3hlODQifQ.dyskNcYK8DvxyjCO3i7afA"
+
+    Geokit::Geocoders::MapboxGeocoder.key = @keys['mapbox']['key']
   end
 
   def test_forward_geocode

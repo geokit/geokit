@@ -17,6 +17,8 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     @latlng = Geokit::LatLng.new(37.7742, -122.417068)
     @success = Geokit::GeoLoc.new({city: "SAN FRANCISCO", state: "CA", country_code: "US", lat: @latlng.lat, lng: @latlng.lng})
     @success.success = true
+
+    @keys = YAML.load(File.read('fixtures/keys.yml'))
   end
 
   def test_timeout_call_web_service
