@@ -12,11 +12,12 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     @key = @keys['map_quest']['key']
     Geokit::Geocoders::MapQuestGeocoder.key = @key
+    @base_url = 'https://www.mapquestapi.com/geocoding/v1'
   end
 
   def test_map_quest_full_address_with_geo_loc
     VCR.use_cassette("map_quest_full") do
-    url = "https://www.mapquestapi.com/geocoding/v1/address?key=#{key}&location=100+Spear+St+Apt.+5%2C+San+Francisco%2C+CA%2C+94105%2C+US"
+    url = "#{@base_url}/address?key=#{@key}&location=100+Spear+St+Apt.+5%2C+San+Francisco%2C+CA%2C+94105%2C+US"
     TestHelper.expects(:last_url).with(url)
     res = Geokit::Geocoders::MapQuestGeocoder.geocode(@google_full_loc)
     assert_equal "CA", res.state
@@ -32,7 +33,7 @@ class MapQuestGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("map_quest_reverse_madrid") do
       madrid = Geokit::GeoLoc.new
     madrid.lat, madrid.lng = "40.4167413", "-3.7032498"
-    url = "https://www.mapquestapi.com/geocoding/v1/reverse?key=#{key}&location=#{madrid.lat},#{madrid.lng}"
+    url = "#{@base_url}/reverse?key=#{@key}&location=#{madrid.lat},#{madrid.lng}"
     TestHelper.expects(:last_url).with(url)
     res = Geokit::Geocoders::MapQuestGeocoder.do_reverse_geocode(madrid.ll)
 
