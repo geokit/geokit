@@ -70,6 +70,9 @@ module Geokit
         if !loc.city && result_json["id"] =~ /^city\./
           loc.city = result_json["text"]
         end
+        if !loc.state && result_json["id"] =~ /^province\./
+          loc.state = result_json["text"]
+        end
       end
 
       PRECISION_VALUES = %w(unknown country state city zip full_address)
