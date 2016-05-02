@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/1714+14th+Street+NW,+Washington,+DC.json?access_token=
+    uri: https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/1714+14th+Street+NW,+Washington,+DC.json?access_token=pk.eyJ1IjoiZ2Vva2l0IiwiYSI6ImNpbm1md3dvdTB6anB0dG0zbW9zd3hlODQifQ.dyskNcYK8DvxyjCO3i7afA
     body:
       encoding: US-ASCII
       string: ''
@@ -20,8 +20,8 @@ http_interactions:
     headers:
       Content-Type:
       - application/vnd.geo+json; charset=utf-8
-      Content-Length:
-      - '3143'
+      Transfer-Encoding:
+      - chunked
       Connection:
       - keep-alive
       Access-Control-Allow-Origin:
@@ -29,50 +29,50 @@ http_interactions:
       Access-Control-Expose-Headers:
       - x-rate-limit-interval,x-rate-limit-limit,x-rate-limit-remaining,x-rate-limit-reset
       Cache-Control:
-      - max-age=3600
+      - max-age=604800
       Date:
-      - Wed, 05 Aug 2015 17:05:43 GMT
+      - Sat, 30 Apr 2016 01:04:44 GMT
       Etag:
-      - '"990fe72d1269b3087771d373ba1b92ad"'
+      - '"5f74c0aa7657d0f9681e0179ab3ebb53"'
       Last-Modified:
-      - Wed, 05 Aug 2015 17:05:43 GMT
+      - Fri, 29 Apr 2016 17:17:06 GMT
       X-Powered-By:
       - Express
       X-Rate-Limit-Interval:
       - '60'
       X-Rate-Limit-Limit:
       - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
       X-Rate-Limit-Reset:
-      - '1438794402'
+      - '1461978343'
       Age:
-      - '104'
+      - '2543'
+      Vary:
+      - Accept-Encoding
       X-Cache:
       - Hit from cloudfront
       Via:
-      - 1.1 7e4ecdff0078259d2c1827ec3336b278.cloudfront.net (CloudFront)
+      - 1.1 3a0c9fc3d9b0e35bff1924a1b54094ee.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - LiKAQL5YclcLAX7ysTz4FpZqW2_Ns6PVc_cv6jvqO9XdrZODBmkyUQ==
+      - qXR-rfh90jddSr7tjjTtcFR875vkZLtg6r8bv3W9sJjJZmWFZhNnTA==
     body:
       encoding: UTF-8
       string: '{"type":"FeatureCollection","query":["1714","14th","street","nw","washington","dc"],"features":[{"id":"address.75018674165319","type":"Feature","text":"14th
-        St NW","place_name":"1714 14th St NW, Washington, 20009, District of Columbia,
-        United States","relevance":0.9989999999999999,"center":[-77.031952,38.913184],"geometry":{"type":"Point","coordinates":[-77.031952,38.913184],"interpolated":true},"bbox":[-77.03261199999999,38.91112899999999,-77.03183899999996,38.92880499999998],"address":"1714","properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.1308149819","text":"20009"},{"id":"province.1190806886","text":"District
-        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.9831827761295","type":"Feature","text":"14th
-        St NW","place_name":"14th St NW, Washington, 20005, District of Columbia,
-        United States","relevance":0.7323333333333333,"center":[-77.031949,38.904122],"geometry":{"type":"Point","coordinates":[-77.031949,38.904122]},"bbox":[-77.03196299999998,38.89734899999999,-77.03194899999997,38.91112899999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.4009156820","text":"20005"},{"id":"province.1190806886","text":"District
-        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.206317692383283","type":"Feature","text":"E
-        St NW","place_name":"E St NW, Washington, 20001, District of Columbia, United
-        States","relevance":0.7323333333333333,"center":[-77.017227,38.896133],"geometry":{"type":"Point","coordinates":[-77.017227,38.896133]},"bbox":[-77.03196199999996,38.896104999999984,-77.00905899999995,38.89613699999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.2700102601","text":"20001"},{"id":"province.1190806886","text":"District
-        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.12847447657866","type":"Feature","text":"14th
-        St NW","place_name":"14th St NW, Washington, 20004, District of Columbia,
-        United States","relevance":0.7323333333333333,"center":[-77.031942,38.893377],"geometry":{"type":"Point","coordinates":[-77.031942,38.893377]},"bbox":[-77.03196699999998,38.89041599999999,-77.03194199999999,38.89734899999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.858369517","text":"20004"},{"id":"province.1190806886","text":"District
-        of Columbia"},{"id":"country.4150104525","text":"United States"}]},{"id":"address.68742434139344","type":"Feature","text":"S
-        St NW","place_name":"S St NW, Washington, 20001, District of Columbia, United
-        States","relevance":0.7323333333333333,"center":[-77.018178,38.914085],"geometry":{"type":"Point","coordinates":[-77.018178,38.914085]},"bbox":[-77.02703499999998,38.913971999999994,-77.00901299999997,38.91420799999999],"properties":{},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.2700102601","text":"20001"},{"id":"province.1190806886","text":"District
-        of Columbia"},{"id":"country.4150104525","text":"United States"}]}],"attribution":"<a
+        St NW","place_name":"1714 14th St NW, Washington, District of Columbia 20009,
+        United States","relevance":0.999,"properties":{},"center":[-77.031952,38.913184],"geometry":{"type":"Point","coordinates":[-77.031952,38.913184],"interpolated":true},"address":"1714","context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.7725140869021840","text":"20009"},{"id":"province.6884744206035790","text":"District
+        of Columbia"},{"id":"country.12862386938302570","text":"United States","short_code":"us"}]},{"id":"address.9831827761295","type":"Feature","text":"14th
+        St NW","place_name":"14th St NW, Washington, District of Columbia 20005, United
+        States","relevance":0.699,"properties":{},"center":[-77.031949,38.904122],"geometry":{"type":"Point","coordinates":[-77.031949,38.904122]},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.6357608463978320","text":"20005"},{"id":"province.6884744206035790","text":"District
+        of Columbia"},{"id":"country.12862386938302570","text":"United States","short_code":"us"}]},{"id":"address.12847447657866","type":"Feature","text":"14th
+        St NW","place_name":"14th St NW, Washington, District of Columbia 20004, United
+        States","relevance":0.699,"properties":{},"center":[-77.031942,38.893377],"geometry":{"type":"Point","coordinates":[-77.031942,38.893377]},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.5938390858952870","text":"20004"},{"id":"province.6884744206035790","text":"District
+        of Columbia"},{"id":"country.12862386938302570","text":"United States","short_code":"us"}]},{"id":"address.46125876154105","type":"Feature","text":"14th
+        St NW","place_name":"14th St NW, Washington, District of Columbia 20011, United
+        States","relevance":0.699,"properties":{},"center":[-77.033424,38.952315],"geometry":{"type":"Point","coordinates":[-77.033424,38.952315]},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.14002903001913600","text":"20011"},{"id":"province.6884744206035790","text":"District
+        of Columbia"},{"id":"country.12862386938302570","text":"United States","short_code":"us"}]},{"id":"address.21060397140948","type":"Feature","text":"14th
+        St SE","place_name":"1714 14th St SE, Washington, District of Columbia 20020,
+        United States","relevance":0.699,"properties":{},"center":[-76.985123,38.868953],"geometry":{"type":"Point","coordinates":[-76.985123,38.868953],"interpolated":true},"address":"1714","context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.4598518735000000","text":"20020"},{"id":"province.6884744206035790","text":"District
+        of Columbia"},{"id":"country.12862386938302570","text":"United States","short_code":"us"}]}],"attribution":"<a
         href=''https://www.mapbox.com/about/maps/'' target=''_blank''>&copy; Mapbox</a>"}'
     http_version: 
-  recorded_at: Wed, 05 Aug 2015 17:07:27 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Sat, 30 Apr 2016 01:47:07 GMT
+recorded_with: VCR 3.0.1
