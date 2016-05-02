@@ -34,5 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "test-unit"
   spec.add_development_dependency "typhoeus" # used in net_adapter
   spec.add_development_dependency "vcr"
-  spec.add_development_dependency "webmock" # used in vcr
+  # webmock 2 not yet compatible out of the box with VCR
+  spec.add_development_dependency "webmock", '< 2' # used in vcr
 end
