@@ -11,6 +11,7 @@ end
 require "geoip"
 
 require 'coverage_loader'
+require 'vcr_loader'
 require "test/unit"
 require "mocha/setup"
 require "net/http"
@@ -61,24 +62,6 @@ def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message =
       (expected_item.to_f - actual_item.to_f).abs <= delta.to_f
     end
   end
-end
-
-require "vcr"
-
-VCR.configure do |c|
-  c.before_record do |i|
-    i.response.body.force_encoding("UTF-8")
-  end
-  c.cassette_library_dir = "fixtures/vcr_cassettes"
-  c.hook_into :webmock # or :fakeweb
-  # Yahoo BOSS Ignore changing params
-  c.default_cassette_options = {
-    match_requests_on: [:method,
-      VCR.request_matchers.uri_without_params(
-        :oauth_nonce, :oauth_timestamp, :oauth_signature
-      ),
-                       ],
-  }
 end
 
 # Base class for testing geocoders.
