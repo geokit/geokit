@@ -64,6 +64,7 @@ def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message =
 end
 
 require "vcr"
+require 'webmock/test_unit'
 
 VCR.configure do |c|
   c.before_record do |i|
