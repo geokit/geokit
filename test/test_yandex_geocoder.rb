@@ -7,7 +7,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
   EOF
 
   YANDEX_REGION = <<-EOF.strip
-    {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Ростов-на-Дону, ул. Станиславского, д.21","found":"2","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Ростов-на-Дону, улица Станиславского, 21","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Ростов-на-Дону, улица Станиславского, 21","CountryNameCode":"RU","CountryName":"Россия","AdministrativeArea":{"AdministrativeAreaName":"Ростовская область","SubAdministrativeArea":{"SubAdministrativeAreaName":"городской округ Ростов-на-Дону","Locality":{"LocalityName":"Ростов-на-Дону","Thoroughfare":{"ThoroughfareName":"улица Станиславского","Premise":{"PremiseNumber":"21"}}}}}}}}},"description":"Ростов-на-Дону, Россия","name":"улица Станиславского, 21","boundedBy":{"Envelope":{"lowerCorner":"39.695043 47.210284","upperCorner":"39.7115 47.221497"}},"Point":{"pos":"39.703272 47.21589"}}}]}}}
+    {"response":{"GeoObjectCollection":{"metaDataProperty":{"GeocoderResponseMetaData":{"request":"Ростов-на-Дону, ул. Станиславского, д.21","found":"1","results":"10"}},"featureMember":[{"GeoObject":{"metaDataProperty":{"GeocoderMetaData":{"kind":"house","text":"Россия, Ростовская область, город Ростов-на-Дону, улица Станиславского, 21","precision":"exact","AddressDetails":{"Country":{"AddressLine":"Ростовская область, город Ростов-на-Дону, улица Станиславского, 21","CountryNameCode":"RU","CountryName":"Россия","AdministrativeArea":{"AdministrativeAreaName":"Ростовская область","Locality":{"LocalityName":"город Ростов-на-Дону","Thoroughfare":{"ThoroughfareName":"улица Станиславского","Premise":{"PremiseNumber":"21"}}}}}}}},"description":"город Ростов-на-Дону, Ростовская область, Россия","name":"улица Станиславского, 21","boundedBy":{"Envelope":{"lowerCorner":"39.701349 47.214507","upperCorner":"39.705446 47.217298"}},"Point":{"pos":"39.703398 47.215903"}}}]}}}
   EOF
 
   YANDEX_CITY = <<-EOF.strip
@@ -22,14 +22,13 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     super
     @full_address = "Москва, улица Новый Арбат, дом 24"
     @address = "город Москва"
-    @base_url = 'https://geocode-maps.yandex.ru/1.x'
   end
 
   # the testing methods themselves
   def test_yandex_full_address
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_FULL)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(@full_address)}&format=json"
+    url = "https://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(@full_address)}&format=json"
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::YandexGeocoder.geocode(@full_address)
 
@@ -42,21 +41,20 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert res.success
   end
 
-  def test_yandex_full_address_with_region_and_district
+  def test_yandex_full_address_with_region
     region_address = "Ростов-на-Дону, ул. Станиславского, д.21"
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_REGION)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(region_address)}&format=json"
+    url = "https://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(region_address)}&format=json"
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::YandexGeocoder.geocode(region_address)
 
     assert_equal "yandex", res.provider
     assert_equal "улица Станиславского, 21", res.street_address
-    assert_equal "Ростов на Дону", res.city
+    assert_equal "город Ростов на Дону", res.city
     assert_equal "Ростовская область", res.state
-    assert_equal "городской округ Ростов-на-Дону", res.district
-    assert_equal 47.21589, res.lat
-    assert_equal 39.703272, res.lng
+    assert_equal 47.215903, res.lat
+    assert_equal 39.703398, res.lng
     assert_equal "RU", res.country_code
     assert res.success
   end
@@ -64,7 +62,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yandex_city
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_CITY)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(@address)}&format=json"
+    url = "https://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(@address)}&format=json"
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::YandexGeocoder.geocode(@address)
 
@@ -84,7 +82,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_NO_RESULTS)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(no_results_address)}&format=json"
+    url = "https://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(no_results_address)}&format=json"
     Geokit::Geocoders::YandexGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     result = Geokit::Geocoders::YandexGeocoder.geocode(no_results_address)
     assert_equal ",", result.ll

@@ -13,12 +13,11 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     # is not advised
     key = "someopencageapikey"
     Geokit::Geocoders::OpencageGeocoder.key = key
-    @base_url = 'https://api.opencagedata.com/geocode/v1/json'
   end
 
   def test_opencage_full_address
     VCR.use_cassette("opencage_full") do
-      url = "#{@base_url}?key=someopencageapikey&query=100+Spear+St%2C+San+Francisco%2C+CA%2C+94105%2C+US&no_annotations=1"
+      url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=100+Spear+St%2C+San+Francisco%2C+CA%2C+94105%2C+US&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
       res = Geokit::Geocoders::OpencageGeocoder.geocode(@opencage_full_loc)
 
@@ -33,7 +32,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_opencage_city
     VCR.use_cassette("opencage_city") do
-      url = "#{@base_url}?key=someopencageapikey&query=San+Francisco%2C+CA&no_annotations=1"
+      url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=San+Francisco%2C+CA&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
       res = Geokit::Geocoders::OpencageGeocoder.geocode(@opencage_city_loc)
 
@@ -51,7 +50,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       location = Geokit::GeoLoc.new
       location.lat, location.lng = "40.4167413", "-3.7032498"     # Madrid
 
-      url = "#{@base_url}?key=someopencageapikey&query=40.4167413%2C-3.7032498&no_annotations=1"
+      url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=40.4167413%2C-3.7032498&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
       res = Geokit::Geocoders::OpencageGeocoder.geocode(location.ll)
 
@@ -75,7 +74,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
       location = Geokit::GeoLoc.new
       location.lat, location.lng = "41.3527177", "21.5497808"
 
-      url = "#{@base_url}?key=someopencageapikey&query=41.3527177%2C21.5497808&no_annotations=1"
+      url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&query=41.3527177%2C21.5497808&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
       res = Geokit::Geocoders::OpencageGeocoder.geocode(location.ll)
 
@@ -97,7 +96,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
   # check if the results are in Spanish if &language=es
   def test_language_response
     VCR.use_cassette("opencage_language_response_es") do
-      url = "#{@base_url}?key=someopencageapikey&language=es&query=London&no_annotations=1"
+      url = "https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&language=es&query=London&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
       language_result = Geokit::Geocoders::OpencageGeocoder.geocode("London", language: "es")
 
