@@ -24,6 +24,9 @@ module Geokit
       #
       #           If you'd like the Google Geocoder to prefer results within a given viewport,
       #           you can pass a Geokit::Bounds object as the :bias value.
+      # * :components - This option allows restricting results by specific areas. See
+      #           https://developers.google.com/maps/documentation/geocoding/intro#ComponentFiltering
+      #           for details.
       #
       # ==== EXAMPLES
       # # By default, the geocoder will return Toledo, OH
@@ -36,10 +39,19 @@ module Geokit
       # # When biased to an bounding box around California, it will now return the Winnetka neighbourhood, CA
       # bounds = Geokit::Bounds.normalize([34.074081, -118.694401], [34.321129, -118.399487])
       # Geokit::Geocoders::GoogleGeocoder.geocode('Winnetka', :bias => bounds).state # => 'CA'
+      #
+      # # By default, the geocoder will return several matches for Austin with
+      # the first one being in Texas
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Austin').state # => 'TX'
+      # # Using Component Filtering the results can be restricted to a specific
+      # area, e.g. IL
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Austin',
+      #   :components => {administrative_area: 'IL', country: 'US'}).state # => 'IL'
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ""
+        components_str = options[:components] ? construct_components_string_from_options(options[:components]) : ""
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url("address=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}", options)
+        url = submit_url("address=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}#{components_str}", options)
         process :json, url
       end
 
@@ -81,6 +93,12 @@ module Geokit
           # viewport biasing
           url_escaped_string = Geokit::Inflector.url_escape("#{bias.sw}|#{bias.ne}")
           "&bounds=#{url_escaped_string}"
+        end
+      end
+
+      def self.construct_components_string_from_options(components={})
+        unless components.empty?
+          "&components=#{components.to_a.map { |pair| pair.join(':').downcase }.join(CGI.escape('|'))}"
         end
       end
 

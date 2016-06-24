@@ -246,6 +246,15 @@ Not it. What we can do is tell the geocoder to return results only from in and a
     => "Winnetka, California, USA"
 ```
 
+Another option is to use Component Filtering as described at https://developers.google.com/maps/documentation/geocoding/intro#ComponentFiltering. To do that supply the `:components` option to the `geocode` method. This option should be a hash with keys corresponding to desired component names.
+
+Suppose we'd like to geocode string 'Austin'. Regularly, Google would return 'Austin, TX, USA' for such a query. Not with component filtering:
+
+```ruby
+    irb>res = Geokit::Geocoders::GoogleGeocoder.geocode("austin", components: { administrative_area: 'IL', country: 'US' })
+    irb>res.full_address
+    => "Austin, Chicago, IL, USA"
+```
 
 ### The Multigeocoder
 Multi Geocoder - provides failover for the physical location geocoders, and also IP address geocoders. Its configured by setting Geokit::Geocoders::provider_order, and Geokit::Geocoders::ip_provider_order. You should call the Multi-Geocoder with its :geocode method, supplying one address parameter which is either a real street address, or an ip address. For example:

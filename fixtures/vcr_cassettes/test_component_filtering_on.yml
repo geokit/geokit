@@ -1,0 +1,164 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=austin&components=administrative_area:il%7Ccountry:us&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 22 Feb 2016 11:51:06 GMT
+      Expires:
+      - Tue, 23 Feb 2016 11:51:06 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Chicago",
+                       "short_name" : "Chicago",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Cook County",
+                       "short_name" : "Cook County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Illinois",
+                       "short_name" : "IL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, Chicago, IL, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.9167209,
+                          "lng" : -87.7393898
+                       },
+                       "southwest" : {
+                          "lat" : 41.8654591,
+                          "lng" : -87.7755992
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.8929529,
+                       "lng" : -87.7615618
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.9167209,
+                          "lng" : -87.7393898
+                       },
+                       "southwest" : {
+                          "lat" : 41.8654591,
+                          "lng" : -87.7755992
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJdwbE5kkzDogRoC0zoIn43-o",
+                 "types" : [ "neighborhood", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin Township",
+                       "short_name" : "Austin Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Macon County",
+                       "short_name" : "Macon County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Illinois",
+                       "short_name" : "IL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin Township, IL, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.0498649,
+                          "lng" : -89.02878699999999
+                       },
+                       "southwest" : {
+                          "lat" : 39.9613829,
+                          "lng" : -89.14476309999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 39.9980892,
+                       "lng" : -89.0752499
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.0498649,
+                          "lng" : -89.02878699999999
+                       },
+                       "southwest" : {
+                          "lat" : 39.9613829,
+                          "lng" : -89.14476309999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJxSLDVppKC4gRILBnWIjPZIc",
+                 "types" : [ "administrative_area_level_3", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Mon, 22 Feb 2016 11:51:09 GMT
+recorded_with: VCR 3.0.1

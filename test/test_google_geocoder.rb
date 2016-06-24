@@ -351,4 +351,35 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal "Orly, France", biased_result.full_address
     end
   end
+
+
+  def test_component_filtering
+    VCR.use_cassette("test_component_filtering_off") do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=austin"
+      TestHelper.expects(:last_url).with(url)
+      filtered_result = Geokit::Geocoders::GoogleGeocoder.geocode("austin")
+
+      assert_equal "TX", filtered_result.state
+      assert_equal "Austin, TX, USA", filtered_result.full_address
+    end
+
+    VCR.use_cassette("test_component_filtering_on") do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=austin&components=administrative_area:il%7Ccountry:us"
+      TestHelper.expects(:last_url).with(url)
+      filtered_result = Geokit::Geocoders::GoogleGeocoder.geocode("austin",
+        components: { administrative_area: 'IL', country: 'US' })
+
+      assert_equal "IL", filtered_result.state
+      assert_equal "Austin, Chicago, IL, USA", filtered_result.full_address
+    end
+
+    VCR.use_cassette("test_component_filtering_on_without_filter") do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=austin"
+      TestHelper.expects(:last_url).with(url)
+      filtered_result = Geokit::Geocoders::GoogleGeocoder.geocode("austin", components: nil)
+
+      assert_equal "TX", filtered_result.state
+      assert_equal "Austin, TX, USA", filtered_result.full_address
+    end
+  end
 end

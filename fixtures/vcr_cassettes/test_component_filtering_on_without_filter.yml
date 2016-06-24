@@ -1,0 +1,404 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=austin&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 24 Jun 2016 17:36:56 GMT
+      Expires:
+      - Sat, 25 Jun 2016 17:36:56 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '1170'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="34,33,32,31,30,29,28,27,26,25"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Travis County",
+                       "short_name" : "Travis County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Texas",
+                       "short_name" : "TX",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, TX, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 30.516863,
+                          "lng" : -97.56841989999999
+                       },
+                       "southwest" : {
+                          "lat" : 30.0986589,
+                          "lng" : -97.938383
+                       }
+                    },
+                    "location" : {
+                       "lat" : 30.267153,
+                       "lng" : -97.74306079999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 30.516863,
+                          "lng" : -97.56841989999999
+                       },
+                       "southwest" : {
+                          "lat" : 30.0986589,
+                          "lng" : -97.938383
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJLwPMoJm1RIYRetVp1EtGm10",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Jennings Township",
+                       "short_name" : "Jennings Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Scott County",
+                       "short_name" : "Scott County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Indiana",
+                       "short_name" : "IN",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "47102",
+                       "short_name" : "47102",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, IN 47102, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 38.761413,
+                          "lng" : -85.7941829
+                       },
+                       "southwest" : {
+                          "lat" : 38.725949,
+                          "lng" : -85.83327109999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 38.7415038,
+                       "lng" : -85.80595819999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 38.761413,
+                          "lng" : -85.7941829
+                       },
+                       "southwest" : {
+                          "lat" : 38.725949,
+                          "lng" : -85.83327109999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJEwoB_irba4gRCuPOsftKQUY",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mower County",
+                       "short_name" : "Mower County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Minnesota",
+                       "short_name" : "MN",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "55912",
+                       "short_name" : "55912",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, MN 55912, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 43.70683289999999,
+                          "lng" : -92.91887509999999
+                       },
+                       "southwest" : {
+                          "lat" : 43.64136,
+                          "lng" : -93.0286019
+                       }
+                    },
+                    "location" : {
+                       "lat" : 43.6666296,
+                       "lng" : -92.97463669999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 43.70683289999999,
+                          "lng" : -92.91887509999999
+                       },
+                       "southwest" : {
+                          "lat" : 43.64136,
+                          "lng" : -93.0286019
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJffSKNVXF8IcR7z58vRXIRcM",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lander County",
+                       "short_name" : "Lander County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Nevada",
+                       "short_name" : "NV",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "89310",
+                       "short_name" : "89310",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, NV 89310, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 39.49897989999999,
+                          "lng" : -117.0559103
+                       },
+                       "southwest" : {
+                          "lat" : 39.4850673,
+                          "lng" : -117.0767529
+                       }
+                    },
+                    "location" : {
+                       "lat" : 39.49257009999999,
+                       "lng" : -117.0672356
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 39.49897989999999,
+                          "lng" : -117.0559103
+                       },
+                       "southwest" : {
+                          "lat" : 39.4850673,
+                          "lng" : -117.0767529
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJeW9hoMJfo4AR9_CcY0s-kAQ",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Barren County",
+                       "short_name" : "Barren County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Kentucky",
+                       "short_name" : "KY",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "42123",
+                       "short_name" : "42123",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, KY 42123, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 36.8253279,
+                       "lng" : -86.0191478
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 36.8266768802915,
+                          "lng" : -86.01779881970849
+                       },
+                       "southwest" : {
+                          "lat" : 36.8239789197085,
+                          "lng" : -86.02049678029151
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ_T-ED3NsZogReEKcG6NfTYw",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Austin",
+                       "short_name" : "Austin",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Caroline Township",
+                       "short_name" : "Caroline Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Lonoke County",
+                       "short_name" : "Lonoke County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Arkansas",
+                       "short_name" : "AR",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "72007",
+                       "short_name" : "72007",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Austin, AR 72007, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 35.0254679,
+                          "lng" : -91.971936
+                       },
+                       "southwest" : {
+                          "lat" : 34.984479,
+                          "lng" : -92.017985
+                       }
+                    },
+                    "location" : {
+                       "lat" : 34.9984206,
+                       "lng" : -91.98375519999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 35.0254679,
+                          "lng" : -91.971936
+                       },
+                       "southwest" : {
+                          "lat" : 34.984479,
+                          "lng" : -92.017985
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJjVluHmfl0ocR3zDQAuf0010",
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Fri, 24 Jun 2016 17:37:37 GMT
+recorded_with: VCR 3.0.1
