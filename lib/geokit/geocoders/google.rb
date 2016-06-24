@@ -45,7 +45,7 @@ module Geokit
       # Geokit::Geocoders::GoogleGeocoder.geocode('Austin').state # => 'TX'
       # # Using Component Filtering the results can be restricted to a specific
       # area, e.g. IL
-      # Geokit::Geocoders::GoogleGeocoder.geocode('Austin', 
+      # Geokit::Geocoders::GoogleGeocoder.geocode('Austin',
       #   :components => {administrative_area: 'IL', country: 'US'}).state # => 'IL'
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ""
@@ -98,7 +98,7 @@ module Geokit
 
       def self.construct_components_string_from_options(components={})
         unless components.empty?
-          URI.escape("&components=#{components.to_a.map { |pair| pair.join(':') }.join('|')}".downcase)
+          "&components=#{components.to_a.map { |pair| pair.join(':').downcase }.join(CGI.escape('|'))}"
         end
       end
 
