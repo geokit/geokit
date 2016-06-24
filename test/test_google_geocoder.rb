@@ -369,5 +369,14 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal "IL", filtered_result.state
       assert_equal "Austin, Chicago, IL, USA", filtered_result.full_address
     end
+
+    VCR.use_cassette("test_component_filtering_on_without_filter") do
+      url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=austin"
+      TestHelper.expects(:last_url).with(url)
+      filtered_result = Geokit::Geocoders::GoogleGeocoder.geocode("austin", components: nil)
+
+      assert_equal "TX", filtered_result.state
+      assert_equal "Austin, TX, USA", filtered_result.full_address
+    end
   end
 end

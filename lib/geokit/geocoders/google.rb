@@ -97,9 +97,7 @@ module Geokit
       end
 
       def self.construct_components_string_from_options(components={})
-        if components.empty?
-          ""
-        else
+        unless components.empty?
           "&components=#{components.to_a.map { |pair| pair.join(':') }.join('|')}".downcase
         end
       end
