@@ -25,16 +25,16 @@ module Geokit
     # 100 Spear St, San Francisco, CA, 94101, US
     # Street number and street name are extracted from the street address
     # attribute if they don't exist
-    attr_accessor :street_number, :street_name, :street_address, :city, :state,
-                  :state_name, :state_code, :zip, :country_code, :country
-    attr_accessor :full_address, :all, :district, :province, :sub_premise,
+    attr_accessor :state_name, :state_code, :zip, :country_code, :country
+    attr_accessor :all, :district, :province, :sub_premise,
                   :neighborhood
+    attr_writer :state, :full_address, :street_number, :street_name, :formatted_address
+    attr_reader :city, :street_address
     # Attributes set upon return from geocoding. Success will be true for
     # successful geocode lookups. The provider will be set to the name of the
     # providing geocoder. Finally, precision is an indicator of the accuracy of
     # the geocoding.
-    attr_accessor :success, :provider, :precision, :suggested_bounds, :place_id,
-                  :formatted_address
+    attr_accessor :success, :provider, :precision, :suggested_bounds, :place_id
     # accuracy is set for Yahoo and Google geocoders, it is a numeric value of
     # the precision. see
     # http://code.google.com/apis/maps/documentation/geocoding/#GeocodingAccuracy

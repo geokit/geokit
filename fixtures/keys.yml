@@ -1,0 +1,9 @@
+geocodio:
+  key: '723d41115152d224fd74727df34727c444537f7'
+mapbox:
+  key: 'pk.eyJ1IjoiZ2Vva2l0IiwiYSI6ImNpbm1md3dvdTB6anB0dG0zbW9zd3hlODQifQ.dyskNcYK8DvxyjCO3i7afA'
+map_quest:
+  key: 'Fmjtd%7Cluur2d0125%2C2s%3Do5-9a8lhz'
+yahoo:
+  key: 'dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--'
+  secret: 'SECRET'

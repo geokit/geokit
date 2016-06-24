@@ -10,31 +10,8 @@ end
 
 require "geoip"
 
-if ENV["COVERAGE"]
-  COVERAGE_THRESHOLD = 95
-  require "simplecov"
-  require "simplecov-rcov"
-  require "coveralls"
-  Coveralls.wear!
-
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::RcovFormatter,
-    Coveralls::SimpleCov::Formatter
-  ]
-  SimpleCov.start do
-    add_filter "/test/"
-    add_group "lib", "lib"
-  end
-  SimpleCov.at_exit do
-    SimpleCov.result.format!
-    percent = SimpleCov.result.covered_percent
-    unless percent >= COVERAGE_THRESHOLD
-      puts "Coverage must be above #{COVERAGE_THRESHOLD}%. It is #{'%.2f' % percent}%"
-      Kernel.exit(1)
-    end
-  end
-end
-
+require 'coverage_loader'
+require 'vcr_loader'
 require "test/unit"
 require "mocha/setup"
 require "net/http"
@@ -84,56 +61,5 @@ def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message =
     expected_array.zip(actual_array).all? do |expected_item, actual_item|
       (expected_item.to_f - actual_item.to_f).abs <= delta.to_f
     end
-  end
-end
-
-require "vcr"
-
-VCR.configure do |c|
-  c.before_record do |i|
-    i.response.body.force_encoding("UTF-8")
-  end
-  c.cassette_library_dir = "fixtures/vcr_cassettes"
-  c.hook_into :webmock # or :fakeweb
-  # Yahoo BOSS Ignore changing params
-  c.default_cassette_options = {
-    match_requests_on: [:method,
-      VCR.request_matchers.uri_without_params(
-        :oauth_nonce, :oauth_timestamp, :oauth_signature
-      ),
-                       ],
-  }
-end
-
-# Base class for testing geocoders.
-class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
-  class Geokit::Geocoders::TestGeocoder < Geokit::Geocoders::Geocoder
-    def self.do_get(url)
-      sleep(2)
-    end
-  end
-
-  # Defines common test fixtures.
-  def setup
-    Geokit::Geocoders.request_timeout = 10
-    @address = "San Francisco, CA"
-    @full_address = "100 Spear St, San Francisco, CA, 94105-1522, US"
-    @full_address_short_zip = "100 Spear St, San Francisco, CA, 94105, US"
-
-    @latlng = Geokit::LatLng.new(37.7742, -122.417068)
-    @success = Geokit::GeoLoc.new({city: "SAN FRANCISCO", state: "CA", country_code: "US", lat: @latlng.lat, lng: @latlng.lng})
-    @success.success = true
-  end
-
-  def test_timeout_call_web_service
-    url = "http://www.anything.com"
-    Geokit::Geocoders.request_timeout = 1
-    assert_nil Geokit::Geocoders::TestGeocoder.call_geocoder_service(url)
-  end
-
-  def test_successful_call_web_service
-    url = "http://www.anything.com"
-    Geokit::Geocoders::Geocoder.expects(:do_get).with(url).returns("SUCCESS")
-    assert_equal "SUCCESS", Geokit::Geocoders::Geocoder.call_geocoder_service(url)
   end
 end

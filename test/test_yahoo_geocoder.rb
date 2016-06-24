@@ -1,8 +1,5 @@
 require File.join(File.dirname(__FILE__), "helper")
 
-Geokit::Geocoders::YahooGeocoder.key = "dj0yJmk9cXByQVN2WHZmTVhDJmQ9WVdrOVZscG1WVWhOTldrbWNHbzlNakF6TlRJME16UTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0zNg--"
-Geokit::Geocoders::YahooGeocoder.secret = "SECRET"
-
 class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
@@ -10,6 +7,11 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
     @yahoo_city_hash = {city: "San Francisco", state: "CA"}
     @yahoo_full_loc = Geokit::GeoLoc.new(@yahoo_full_hash)
     @yahoo_city_loc = Geokit::GeoLoc.new(@yahoo_city_hash)
+
+    key = @keys['yahoo']
+    Geokit::Geocoders::YahooGeocoder.key = key['key']
+    Geokit::Geocoders::YahooGeocoder.secret = key['secret']
+    @base_url = 'https://yboss.yahooapis.com/geo/placefinder'
   end
 
   def assert_yahoo_url(expected_url)
@@ -19,7 +21,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   # the testing methods themselves
   def test_yahoo_full_address
     VCR.use_cassette("yahoo_full") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
     do_full_address_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@full_address))
     assert_yahoo_url url
     end
@@ -27,7 +29,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_full_address_accuracy
     VCR.use_cassette("yahoo_full") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
     res = Geokit::Geocoders::YahooGeocoder.geocode(@full_address)
     assert_yahoo_url url
     assert_equal 8, res.accuracy
@@ -36,7 +38,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_full_address_with_geo_loc
     VCR.use_cassette("yahoo_full") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
     do_full_address_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_full_loc))
     assert_yahoo_url url
     end
@@ -44,7 +46,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_city
     VCR.use_cassette("yahoo_city") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@address))
     assert_yahoo_url url
     end
@@ -52,7 +54,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_city_accuracy
     VCR.use_cassette("yahoo_city") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
     res = Geokit::Geocoders::YahooGeocoder.geocode(@address)
     assert_yahoo_url url
     assert_equal 4, res.accuracy
@@ -61,7 +63,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_city_with_geo_loc
     VCR.use_cassette("yahoo_city") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
     do_city_assertions(Geokit::Geocoders::YahooGeocoder.geocode(@yahoo_city_loc))
     assert_yahoo_url url
     end
@@ -70,7 +72,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
     VCR.use_cassette("yahoo_no_results") do
-      url = "https://yboss.yahooapis.com/geo/placefinder?flags=J&q=#{Geokit::Inflector.url_escape(no_results_address)}"
+      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(no_results_address)}"
     result = Geokit::Geocoders::YahooGeocoder.geocode(no_results_address)
     assert_yahoo_url url
     assert_equal ",", result.ll
