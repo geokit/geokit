@@ -24,15 +24,13 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     @osm_city_hash = {city: "San Francisco", state: "CA"}
     @osm_full_loc = Geokit::GeoLoc.new(@osm_full_hash)
     @osm_city_loc = Geokit::GeoLoc.new(@osm_city_hash)
-    @base_url = 'http://nominatim.openstreetmap.org/search'
-    @reverse_url = 'http://nominatim.openstreetmap.org/reverse'
   end
 
   # the testing methods themselves
   def test_osm_full_address
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@full_address_short_zip))
   end
@@ -40,7 +38,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.geocode(@full_address_short_zip)
     assert_equal "house", res.accuracy
@@ -49,7 +47,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@osm_full_loc))
   end
@@ -57,7 +55,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address))
   end
@@ -65,7 +63,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_with_accept_language
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@address, {:'accept-language' => "pt-br"}))
   end
@@ -73,7 +71,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.geocode(@address)
     assert_equal "county", res.accuracy
@@ -82,7 +80,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(Geokit::Geocoders::OSMGeocoder.geocode(@osm_city_loc))
   end
@@ -92,7 +90,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_REVERSE_PRILEP)
     prilep = Geokit::GeoLoc.new
     prilep.lat, prilep.lng = "41.3527177", "21.5497808"
-    url = "#{@reverse_url}?format=json&addressdetails=1&lat=#{prilep.lat}&lon=#{prilep.lng}"
+    url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{prilep.lat}&lon=#{prilep.lng}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(prilep.ll)
 
@@ -119,7 +117,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     location = Geokit::GeoLoc.new
     # Madrid
     location.lat, location.lng = "40.4167413", "-3.7032498"
-    url = "#{@reverse_url}?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}"
+    url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll)
 
@@ -143,14 +141,14 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     location = Geokit::GeoLoc.new
     # Madrid
     location.lat, location.lng = "40.4167413", "-3.7032498"
-    url = "#{@reverse_url}?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}&accept-language=pt-br"
+    url = "http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}&accept-language=pt-br"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     Geokit::Geocoders::OSMGeocoder.do_reverse_geocode(location.ll, {:'accept-language' => "pt-br"})
   end
 
   def test_service_unavailable
     response = MockFailure.new
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://nominatim.openstreetmap.org/search?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::OSMGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::OSMGeocoder.geocode(@osm_city_loc).success
   end

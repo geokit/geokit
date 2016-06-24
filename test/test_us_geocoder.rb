@@ -9,13 +9,12 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
     super
     @us_full_hash = {city: "San Francisco", state: "CA"}
     @us_full_loc = Geokit::GeoLoc.new(@us_full_hash)
-    @base_url = 'http://geocoder.us/service/csv/geocode'
   end
 
   def test_geocoder_us
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     verify(Geokit::Geocoders::UsGeocoder.geocode(@address))
   end
@@ -23,14 +22,14 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geocoder_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     verify(Geokit::Geocoders::UsGeocoder.geocode(@us_full_loc))
   end
 
   def test_service_unavailable
     response = MockFailure.new
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     assert !Geokit::Geocoders::UsGeocoder.geocode(@us_full_loc).success
   end
@@ -38,7 +37,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_all_method
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "http://geocoder.us/service/csv/geocode?address=#{Geokit::Inflector.url_escape(@address)}"
     Geokit::Geocoders::UsGeocoder.expects(:call_geocoder_service).with(url).returns(response)
     res = Geokit::Geocoders::UsGeocoder.geocode(@address)
     assert_equal 1, res.all.size

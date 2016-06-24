@@ -10,6 +10,12 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+desc "Generate SimpleCov test coverage and open in your browser"
+task :coverage do
+  ENV["COVERAGE"] = "true"
+  Rake::Task["test"].invoke
+end
+
 desc "Downloads GeoLiteCity.dat from maxmind.com"
 task :download_geolitecity do
   total_size = nil
