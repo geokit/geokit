@@ -32,7 +32,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@full_address_short_zip)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(geocoder_class.geocode(@full_address_short_zip))
   end
@@ -40,7 +40,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@full_address_short_zip)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     res = geocoder_class.geocode(@full_address_short_zip)
     assert_equal "house", res.accuracy
@@ -49,7 +49,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_full_address_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(OSM_FULL)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@full_address_short_zip)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     do_full_address_assertions(geocoder_class.geocode(@osm_full_loc))
   end
@@ -57,7 +57,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(geocoder_class.geocode(@address))
   end
@@ -65,7 +65,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_with_accept_language
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(geocoder_class.geocode(@address, {:'accept-language' => "pt-br"}))
   end
@@ -73,7 +73,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_accuracy
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     res = geocoder_class.geocode(@address)
     assert_equal "county", res.accuracy
@@ -82,7 +82,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_osm_city_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(OSM_CITY)
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     do_city_assertions(geocoder_class.geocode(@osm_city_loc))
   end
@@ -150,7 +150,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_service_unavailable
     response = MockFailure.new
-    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     assert !geocoder_class.geocode(@osm_city_loc).success
   end

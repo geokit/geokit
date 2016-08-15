@@ -52,7 +52,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_full_address
     VCR.use_cassette("google_full_short") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode(@address)
     assert_equal "CA", res.state
@@ -66,7 +66,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_full_address_with_geo_loc
     VCR.use_cassette("google_full") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@full_address_short_zip)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode(@google_full_loc)
     assert_equal "CA", res.state
@@ -80,7 +80,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_full_address_accuracy
     VCR.use_cassette("google_full") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@full_address_short_zip)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode(@google_full_loc)
 
@@ -90,7 +90,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_city
     VCR.use_cassette("google_city") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.do_geocode(@address)
     assert_nil res.street_address
@@ -107,7 +107,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
    def test_google_sublocality
      @address = "682 prospect place Brooklyn ny 11216"
      VCR.use_cassette("google_sublocality") do
-       url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+       url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
      TestHelper.expects(:last_url).with(url)
      res = geocoder_class.do_geocode(@address)
      assert_equal "682 Prospect Place", res.street_address
@@ -124,7 +124,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
    def test_google_administrative_area_level_3
      @address = "8 Barkwood Lane, Clifton Park, NY 12065"
      VCR.use_cassette("google_administrative_area_level_3") do
-       url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+       url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
        TestHelper.expects(:last_url).with(url)
        res = geocoder_class.do_geocode(@address)
        assert_equal "8 Barkwood Lane", res.street_address
@@ -148,7 +148,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_city_accuracy
     VCR.use_cassette("google_city") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode(@address)
     assert_equal "city", res.precision
@@ -158,7 +158,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_city_with_geo_loc
     VCR.use_cassette("google_city") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode(@google_city_loc)
     assert_equal "CA", res.state
@@ -174,7 +174,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_suggested_bounds
     VCR.use_cassette("google_full") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@full_address_short_zip)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode(@google_full_loc)
     assert_instance_of Geokit::Bounds, res.suggested_bounds
@@ -195,7 +195,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_place_id
     VCR.use_cassette("google_full_v3_20") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@full_address_short_zip)}"
       TestHelper.expects(:last_url).with(url)
       res = geocoder_class.geocode(@full_address_short_zip)
       assert_equal 'EjExMDAgU3BlYXIgU3RyZWV0ICM1LCBTYW4gRnJhbmNpc2NvLCBDQSA5NDEwNSwgVVNB', res.place_id
@@ -204,7 +204,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_google_formatted_address
     VCR.use_cassette("google_full_v3_20") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@full_address_short_zip)}"
+      url = "#{@base_url}?sensor=false&address=#{escape(@full_address_short_zip)}"
       TestHelper.expects(:last_url).with(url)
       res = geocoder_class.geocode(@full_address_short_zip)
       assert_equal '100 Spear Street #5, San Francisco, CA 94105, USA', res.formatted_address
@@ -213,14 +213,14 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_service_unavailable
     response = MockFailure.new
-    url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     assert !geocoder_class.geocode(@google_city_loc).success
   end
 
   def test_multiple_results
     VCR.use_cassette("google_multi") do
-      url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape('via Sandro Pertini 8, Ossona, MI')}"
+      url = "#{@base_url}?sensor=false&address=#{escape('via Sandro Pertini 8, Ossona, MI')}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.geocode("via Sandro Pertini 8, Ossona, MI")
     assert_equal 5, res.all.size
@@ -248,7 +248,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("google_reverse_madrid") do
       madrid = Geokit::GeoLoc.new
     madrid.lat, madrid.lng = "40.4167413", "-3.7032498"
-    url = "#{@base_url}?sensor=false&latlng=#{Geokit::Inflector.url_escape(madrid.ll)}"
+    url = "#{@base_url}?sensor=false&latlng=#{escape(madrid.ll)}"
     TestHelper.expects(:last_url).with(url)
     res = geocoder_class.do_reverse_geocode(madrid.ll)
 
@@ -291,7 +291,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_too_many_queries
     response = MockSuccess.new
     response.expects(:body).returns '{"status": "OVER_QUERY_LIMIT", "error_message": "quota exceeded!"}'
-    url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     err = assert_raise Geokit::Geocoders::TooManyQueriesError do
       geocoder_class.geocode(@address)
@@ -302,7 +302,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_access_denied
     response = MockSuccess.new
     response.expects(:body).returns '{"status": "REQUEST_DENIED", "error_message": "access denied!"}'
-    url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     err = assert_raise Geokit::Geocoders::AccessDeniedError do
       geocoder_class.geocode(@address)
@@ -313,7 +313,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_invalid_request
     response = MockSuccess.new
     response.expects(:body).returns '{"results" : [], "status" : "INVALID_REQUEST", "error_message": "error!" }'
-    url = "#{@base_url}?sensor=false&address=#{Geokit::Inflector.url_escape("3961 V\u00EDa Marisol")}"
+    url = "#{@base_url}?sensor=false&address=#{escape("3961 V\u00EDa Marisol")}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     err = assert_raise Geokit::Geocoders::GeocodeError do
       geocoder_class.geocode("3961 V\u00EDa Marisol")

@@ -21,7 +21,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   # the testing methods themselves
   def test_yahoo_full_address
     VCR.use_cassette("yahoo_full") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
     do_full_address_assertions(geocoder_class.geocode(@full_address))
     assert_yahoo_url url
     end
@@ -29,7 +29,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_full_address_accuracy
     VCR.use_cassette("yahoo_full") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
     res = geocoder_class.geocode(@full_address)
     assert_yahoo_url url
     assert_equal 8, res.accuracy
@@ -38,7 +38,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_full_address_with_geo_loc
     VCR.use_cassette("yahoo_full") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@full_address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
     do_full_address_assertions(geocoder_class.geocode(@yahoo_full_loc))
     assert_yahoo_url url
     end
@@ -46,7 +46,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_city
     VCR.use_cassette("yahoo_city") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(@address)}"
     do_city_assertions(geocoder_class.geocode(@address))
     assert_yahoo_url url
     end
@@ -54,7 +54,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_city_accuracy
     VCR.use_cassette("yahoo_city") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(@address)}"
     res = geocoder_class.geocode(@address)
     assert_yahoo_url url
     assert_equal 4, res.accuracy
@@ -63,7 +63,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_yahoo_city_with_geo_loc
     VCR.use_cassette("yahoo_city") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(@address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(@address)}"
     do_city_assertions(geocoder_class.geocode(@yahoo_city_loc))
     assert_yahoo_url url
     end
@@ -72,7 +72,7 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
     VCR.use_cassette("yahoo_no_results") do
-      url = "#{@base_url}?flags=J&q=#{Geokit::Inflector.url_escape(no_results_address)}"
+      url = "#{@base_url}?flags=J&q=#{escape(no_results_address)}"
     result = geocoder_class.geocode(no_results_address)
     assert_yahoo_url url
     assert_equal ",", result.ll

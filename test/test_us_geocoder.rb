@@ -14,7 +14,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geocoder_us
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     verify(geocoder_class.geocode(@address))
   end
@@ -22,14 +22,14 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geocoder_with_geo_loc
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     verify(geocoder_class.geocode(@us_full_loc))
   end
 
   def test_service_unavailable
     response = MockFailure.new
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     assert !geocoder_class.geocode(@us_full_loc).success
   end
@@ -37,7 +37,7 @@ class UsGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_all_method
     response = MockSuccess.new
     response.expects(:body).returns(GEOCODER_US_FULL)
-    url = "#{@base_url}?address=#{Geokit::Inflector.url_escape(@address)}"
+    url = "#{@base_url}?address=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     res = geocoder_class.geocode(@address)
     assert_equal 1, res.all.size

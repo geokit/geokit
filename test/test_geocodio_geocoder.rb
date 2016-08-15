@@ -16,7 +16,7 @@ class GeocodioGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geocodio_geocode
     VCR.use_cassette("geocodio_geocode") do
       res = geocoder_class.geocode(@full_address)
-      url = "http://api.geocod.io/v1/geocode?q=#{Geokit::Inflector.url_escape(@full_address)}&api_key=723d41115152d224fd74727df34727c444537f7"
+      url = "http://api.geocod.io/v1/geocode?q=#{escape(@full_address)}&api_key=723d41115152d224fd74727df34727c444537f7"
 
       assert_url url
 

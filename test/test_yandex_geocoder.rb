@@ -29,7 +29,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yandex_full_address
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_FULL)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(@full_address)}&format=json"
+    url = "#{@base_url}/?geocode=#{escape(@full_address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     res = geocoder_class.geocode(@full_address)
 
@@ -46,7 +46,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     region_address = "Ростов-на-Дону, ул. Станиславского, д.21"
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_REGION)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(region_address)}&format=json"
+    url = "#{@base_url}/?geocode=#{escape(region_address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     res = geocoder_class.geocode(region_address)
 
@@ -64,7 +64,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_yandex_city
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_CITY)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(@address)}&format=json"
+    url = "#{@base_url}/?geocode=#{escape(@address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     res = geocoder_class.geocode(@address)
 
@@ -84,7 +84,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     response = MockSuccess.new
     response.expects(:body).returns(YANDEX_NO_RESULTS)
-    url = "#{@base_url}/?geocode=#{Geokit::Inflector.url_escape(no_results_address)}&format=json"
+    url = "#{@base_url}/?geocode=#{escape(no_results_address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
     result = geocoder_class.geocode(no_results_address)
     assert_equal ",", result.ll

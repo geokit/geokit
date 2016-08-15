@@ -38,4 +38,8 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
   def geocoder_class
     @geocoder_class ||= Geokit::Geocoders.const_get(self.class.name.gsub('Test', ''))
   end
+
+  def escape(string)
+    Geokit::Inflector.url_escape(string)
+  end
 end
