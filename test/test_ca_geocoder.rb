@@ -1,7 +1,5 @@
 require File.join(File.dirname(__FILE__), "helper")
 
-Geokit::Geocoders::CaGeocoder.key = "SOMEKEYVALUE"
-
 class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
   CA_SUCCESS = <<-EOF
   <?xml version="1.0" encoding="UTF-8" ?>
@@ -12,6 +10,7 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
   EOF
 
   def setup
+    geocoder_class.key = "SOMEKEYVALUE"
     @ca_full_hash = { street_address: "2105 West 32nd Avenue",
                       city: "Vancouver", province: "BC", state: "BC" }
     @ca_full_txt = "2105 West 32nd Avenue Vancouver BC"
@@ -21,15 +20,15 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
     response = MockSuccess.new
     response.expects(:body).returns(CA_SUCCESS)
     url = "http://geocoder.ca/?locate=2105+West+32nd+Avenue+Vancouver+BC&auth=SOMEKEYVALUE&geoit=xml"
-    Geokit::Geocoders::CaGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    verify(Geokit::Geocoders::CaGeocoder.geocode(@ca_full_txt))
+    geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
+    verify(geocoder_class.geocode(@ca_full_txt))
   end
 
   def test_service_unavailable
     response = MockFailure.new
     url = "http://geocoder.ca/?locate=2105+West+32nd+Avenue+Vancouver+BC&auth=SOMEKEYVALUE&geoit=xml"
-    Geokit::Geocoders::CaGeocoder.expects(:call_geocoder_service).with(url).returns(response)
-    assert !Geokit::Geocoders::CaGeocoder.geocode(@ca_full_txt).success
+    geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
+    assert !geocoder_class.geocode(@ca_full_txt).success
   end
 
   private

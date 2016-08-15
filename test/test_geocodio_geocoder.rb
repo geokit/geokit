@@ -6,7 +6,7 @@ class GeocodioGeocoderTest < BaseGeocoderTest #:nodoc: all
     @full_address = "1 Infinite Loop, Cupertino, CA 95014"
     @second_address = "300 Brannan St, San Francisco, CA 94107"
 
-    Geokit::Geocoders::GeocodioGeocoder.key = @keys['geocodio']['key']
+    geocoder_class.key = @keys['geocodio']['key']
   end
 
   def assert_url(expected_url)
@@ -15,7 +15,7 @@ class GeocodioGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_geocodio_geocode
     VCR.use_cassette("geocodio_geocode") do
-      res = Geokit::Geocoders::GeocodioGeocoder.geocode(@full_address)
+      res = geocoder_class.geocode(@full_address)
       url = "http://api.geocod.io/v1/geocode?q=#{Geokit::Inflector.url_escape(@full_address)}&api_key=723d41115152d224fd74727df34727c444537f7"
 
       assert_url url

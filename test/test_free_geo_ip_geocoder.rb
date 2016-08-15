@@ -13,7 +13,7 @@ class FreeGeoIpGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_free_geo_ip_geocode
     VCR.use_cassette("free_geo_ip_geocode") do
       url = "http://freegeoip.net/xml/#{@ip}"
-    res = Geokit::Geocoders::FreeGeoIpGeocoder.geocode(@ip)
+    res = geocoder_class.geocode(@ip)
     assert_url url
     assert_equal res.city, "Mountain View"
     assert_equal res.state, "CA"

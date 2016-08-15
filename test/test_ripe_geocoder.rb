@@ -14,7 +14,7 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def test_45
     VCR.use_cassette("ripe_geocode_45") do
-      res = Geokit::Geocoders::RipeGeocoder.geocode("45.45.45.45")
+      res = geocoder_class.geocode("45.45.45.45")
       assert !res.success
     end
   end
@@ -22,7 +22,7 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_ripe_geocode
     VCR.use_cassette("ripe_geocode") do
       url = "#{@base_url}?resource=#{@ip}"
-      res = Geokit::Geocoders::RipeGeocoder.geocode(@ip)
+      res = geocoder_class.geocode(@ip)
       assert_url url
       assert_equal res.city, "Mountain View"
       assert_equal res.state, "CA"
@@ -34,7 +34,7 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_ripe_geocode_au
     VCR.use_cassette("ripe_geocode_au") do
       url = "#{@base_url}?resource=#{@ip_au}"
-      res = Geokit::Geocoders::RipeGeocoder.geocode(@ip_au)
+      res = geocoder_class.geocode(@ip_au)
       assert_url url
       assert_equal res.city, "Adelaide"
       assert_equal res.state, nil

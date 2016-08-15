@@ -1,9 +1,8 @@
 require File.join(File.dirname(__FILE__), "helper")
 
-Geokit::Geocoders::BingGeocoder.key = "AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7"
-
 class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
+    geocoder_class.key = "AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7"
     super
     @base_url = 'https://dev.virtualearth.net/REST/v1/Locations'
   end
@@ -15,9 +14,9 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   # the testing methods themselves
   def test_bing_full_address
     VCR.use_cassette("bing_full") do
-      key = Geokit::Geocoders::BingGeocoder.key
+      key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(@full_address)}?key=#{key}&o=xml"
-    res = Geokit::Geocoders::BingGeocoder.geocode(@full_address)
+    res = geocoder_class.geocode(@full_address)
     assert_equal "CA", res.state
     assert_equal "San Francisco", res.city
     assert_array_in_delta [37.792332, -122.393791], res.to_a
@@ -31,9 +30,9 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_full_address_au
     address = "440 King William Street, Adelaide, Australia"
     VCR.use_cassette("bing_full_au") do
-      key = Geokit::Geocoders::BingGeocoder.key
+      key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
-    res = Geokit::Geocoders::BingGeocoder.geocode(address)
+    res = geocoder_class.geocode(address)
     assert_equal "SA", res.state
     assert_equal "Adelaide", res.city
     assert_array_in_delta [-34.934582, 138.600784], res.to_a
@@ -48,9 +47,9 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_full_address_de
     address = "Platz der Republik 1, 11011 Berlin, Germany"
     VCR.use_cassette("bing_full_de") do
-      key = Geokit::Geocoders::BingGeocoder.key
+      key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
-    res = Geokit::Geocoders::BingGeocoder.geocode(address)
+    res = geocoder_class.geocode(address)
     assert_equal "BE", res.state
     assert_equal "Berlin", res.city
     assert_array_in_delta [52.518596, 13.375502], res.to_a
@@ -66,9 +65,9 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_country
     address = "Australia"
     VCR.use_cassette("bing_au") do
-      key = Geokit::Geocoders::BingGeocoder.key
+      key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
-    res = Geokit::Geocoders::BingGeocoder.geocode(address)
+    res = geocoder_class.geocode(address)
     assert_equal nil, res.state
     assert_equal nil, res.city
     assert_array_in_delta [-25.585, 134.504], res.to_a

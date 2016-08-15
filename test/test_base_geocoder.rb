@@ -32,4 +32,10 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
     Geokit::Geocoders::Geocoder.expects(:do_get).with(url).returns("SUCCESS")
     assert_equal "SUCCESS", Geokit::Geocoders::Geocoder.call_geocoder_service(url)
   end
+
+  private
+
+  def geocoder_class
+    @geocoder_class ||= Geokit::Geocoders.const_get(self.class.name.gsub('Test', ''))
+  end
 end
