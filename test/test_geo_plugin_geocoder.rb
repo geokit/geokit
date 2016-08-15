@@ -33,7 +33,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geo_plugin_geocode
     VCR.use_cassette("geo_plugin_geocode") do
       url = "#{@base_url}?ip=#{@ip}"
-    res = geocoder_class.geocode(@ip)
+    res = geocode(@ip)
     assert_url url
     assert_equal res.city, "Mountain View"
     assert_equal res.state, "CA"
@@ -46,7 +46,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
     success.expects(:body).returns(IP_SUCCESS)
     url = "#{@base_url}?ip=200.150.38.66"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(success)
-    location = geocoder_class.geocode("200.150.38.66")
+    location = geocode("200.150.38.66")
     assert_not_nil location
     assert_equal(-19.916700, location.lat)
     assert_equal(-43.933300, location.lng)
@@ -58,7 +58,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_invalid_ip
-    location = geocoder_class.geocode("pixrum")
+    location = geocode("pixrum")
     assert_not_nil location
     assert !location.success?
   end
@@ -67,7 +67,7 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
     failure = MockFailure.new
     url = "#{@base_url}?ip=69.10.10.10"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(failure)
-    location = geocoder_class.geocode("69.10.10.10")
+    location = geocode("69.10.10.10")
     assert_not_nil location
     assert !location.success?
   end

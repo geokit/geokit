@@ -16,7 +16,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("bing_full") do
       key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(@full_address)}?key=#{key}&o=xml"
-    res = geocoder_class.geocode(@full_address)
+    res = geocode(@full_address)
     assert_equal "CA", res.state
     assert_equal "San Francisco", res.city
     assert_array_in_delta [37.792332, -122.393791], res.to_a
@@ -32,7 +32,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("bing_full_au") do
       key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
-    res = geocoder_class.geocode(address)
+    res = geocode(address)
     assert_equal "SA", res.state
     assert_equal "Adelaide", res.city
     assert_array_in_delta [-34.934582, 138.600784], res.to_a
@@ -49,7 +49,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("bing_full_de") do
       key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
-    res = geocoder_class.geocode(address)
+    res = geocode(address)
     assert_equal "BE", res.state
     assert_equal "Berlin", res.city
     assert_array_in_delta [52.518596, 13.375502], res.to_a
@@ -67,7 +67,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("bing_au") do
       key = geocoder_class.key
     url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
-    res = geocoder_class.geocode(address)
+    res = geocode(address)
     assert_equal nil, res.state
     assert_equal nil, res.city
     assert_array_in_delta [-25.585, 134.504], res.to_a

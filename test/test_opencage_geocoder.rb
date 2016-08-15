@@ -20,7 +20,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("opencage_full") do
       url = "#{@base_url}?key=someopencageapikey&query=100+Spear+St%2C+San+Francisco%2C+CA%2C+94105%2C+US&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
-      res = geocoder_class.geocode(@opencage_full_loc)
+      res = geocode(@opencage_full_loc)
 
       assert_equal "California", res.state
       assert_equal "San Francisco", res.city
@@ -35,7 +35,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("opencage_city") do
       url = "#{@base_url}?key=someopencageapikey&query=San+Francisco%2C+CA&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
-      res = geocoder_class.geocode(@opencage_city_loc)
+      res = geocode(@opencage_city_loc)
 
       assert_equal "California", res.state
       assert_equal "San Francisco", res.city
@@ -53,7 +53,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
       url = "#{@base_url}?key=someopencageapikey&query=40.4167413%2C-3.7032498&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
-      res = geocoder_class.geocode(location.ll)
+      res = geocode(location.ll)
 
       assert_equal "ES", res.country_code
       assert_equal "opencage", res.provider
@@ -77,7 +77,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
       url = "#{@base_url}?key=someopencageapikey&query=41.3527177%2C21.5497808&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
-      res = geocoder_class.geocode(location.ll)
+      res = geocode(location.ll)
 
       assert_equal "MK", res.country_code
       assert_equal "opencage", res.provider
@@ -99,7 +99,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     VCR.use_cassette("opencage_language_response_es") do
       url = "#{@base_url}?key=someopencageapikey&language=es&query=London&no_annotations=1"
       TestHelper.expects(:last_url).with(url)
-      language_result = geocoder_class.geocode("London", language: "es")
+      language_result = geocode("London", language: "es")
 
       assert_equal "Londres", language_result.city
     end

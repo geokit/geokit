@@ -14,7 +14,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geonames_missing_key
     geocoder_class.key = nil
     exception = assert_raise(Geokit::Geocoders::GeocodeError) do
-      geocoder_class.geocode(@city)
+      geocode(@city)
     end
     assert_equal("Geonames requires a key to use their service.", exception.message)
   end
@@ -22,7 +22,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_geonames_geocode
     VCR.use_cassette("geonames_geocode") do
       url = "http://api.geonames.org/postalCodeSearch?placename=#{@city}&maxRows=10&username=demo"
-      res = geocoder_class.geocode(@city)
+      res = geocode(@city)
       assert_url url
       assert_equal res.country_code, "AU"
       assert_equal res.state, "SA"
@@ -38,7 +38,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
     geocoder_class.premium = true
     VCR.use_cassette("geonames_geocode_premium") do
       url = "http://ws.geonames.net/postalCodeSearch?placename=#{@city}&maxRows=10&username=demo"
-      geocoder_class.geocode(@city)
+      geocode(@city)
       assert_url url
     end
   end

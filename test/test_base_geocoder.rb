@@ -35,6 +35,28 @@ class BaseGeocoderTest < Test::Unit::TestCase #:nodoc: all
 
   private
 
+  def geocode(address, *args)
+    options = args.pop if args.last.is_a?(Hash)
+    vcr_name = args.first
+    args = [address]
+    args << options if options && !options.empty?
+    return geocoder_class.geocode(*args) unless vcr_name
+    VCR.use_cassette(vcr_name) do
+      geocoder_class.geocode(*args)
+    end
+  end
+
+  def reverse_geocode(lat_lng, *args)
+    options = args.pop if args.last.is_a?(Hash)
+    vcr_name = args.first
+    args = [lat_lng]
+    args << options if options && !options.empty?
+    return geocoder_class.reverse_geocode(*args) unless vcr_name
+    VCR.use_cassette(vcr_name) do
+      geocoder_class.reverse_geocode(*args)
+    end
+  end
+
   def geocoder_class
     @geocoder_class ||= Geokit::Geocoders.const_get(self.class.name.gsub('Test', ''))
   end

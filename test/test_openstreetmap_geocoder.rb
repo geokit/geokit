@@ -34,7 +34,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_FULL)
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@full_address_short_zip)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    do_full_address_assertions(geocoder_class.geocode(@full_address_short_zip))
+    do_full_address_assertions(geocode(@full_address_short_zip))
   end
 
   def test_osm_full_address_accuracy
@@ -42,7 +42,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_FULL)
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@full_address_short_zip)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.geocode(@full_address_short_zip)
+    res = geocode(@full_address_short_zip)
     assert_equal "house", res.accuracy
   end
 
@@ -51,7 +51,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_FULL)
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@full_address_short_zip)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    do_full_address_assertions(geocoder_class.geocode(@osm_full_loc))
+    do_full_address_assertions(geocode(@osm_full_loc))
   end
 
   def test_osm_city
@@ -59,7 +59,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_CITY)
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    do_city_assertions(geocoder_class.geocode(@address))
+    do_city_assertions(geocode(@address))
   end
 
   def test_osm_city_with_accept_language
@@ -67,7 +67,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_CITY)
     url = "#{@base_url}?format=json&polygon=0&accept-language=pt-br&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    do_city_assertions(geocoder_class.geocode(@address, {:'accept-language' => "pt-br"}))
+    do_city_assertions(geocode(@address, {:'accept-language' => "pt-br"}))
   end
 
   def test_osm_city_accuracy
@@ -75,7 +75,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_CITY)
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.geocode(@address)
+    res = geocode(@address)
     assert_equal "county", res.accuracy
   end
 
@@ -84,7 +84,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(OSM_CITY)
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    do_city_assertions(geocoder_class.geocode(@osm_city_loc))
+    do_city_assertions(geocode(@osm_city_loc))
   end
 
   def test_reverse_geo_coding
@@ -94,7 +94,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     prilep.lat, prilep.lng = "41.3527177", "21.5497808"
     url = "#{@reverse_url}?format=json&addressdetails=1&lat=#{prilep.lat}&lon=#{prilep.lng}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.do_reverse_geocode(prilep.ll)
+    res = reverse_geocode(prilep.ll)
 
       # OSM does not return the exast lat lng in response
       # assert_equal prilep.lat.to_s.slice(1..5), res.lat.to_s.slice(1..5)
@@ -121,7 +121,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     location.lat, location.lng = "40.4167413", "-3.7032498"
     url = "#{@reverse_url}?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.do_reverse_geocode(location.ll)
+    res = reverse_geocode(location.ll)
 
     assert_equal "ES", res.country_code
     assert_equal "osm", res.provider
@@ -145,14 +145,14 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     location.lat, location.lng = "40.4167413", "-3.7032498"
     url = "#{@reverse_url}?format=json&addressdetails=1&lat=#{location.lat}&lon=#{location.lng}&accept-language=pt-br"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    geocoder_class.do_reverse_geocode(location.ll, {:'accept-language' => "pt-br"})
+    reverse_geocode(location.ll, {:'accept-language' => "pt-br"})
   end
 
   def test_service_unavailable
     response = MockFailure.new
     url = "#{@base_url}?format=json&polygon=0&addressdetails=1&q=#{escape(@address)}"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    assert !geocoder_class.geocode(@osm_city_loc).success
+    assert !geocode(@osm_city_loc).success
   end
 
   private

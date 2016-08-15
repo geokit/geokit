@@ -21,14 +21,14 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(CA_SUCCESS)
     url = "http://geocoder.ca/?locate=2105+West+32nd+Avenue+Vancouver+BC&auth=SOMEKEYVALUE&geoit=xml"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    verify(geocoder_class.geocode(@ca_full_txt))
+    verify(geocode(@ca_full_txt))
   end
 
   def test_service_unavailable
     response = MockFailure.new
     url = "http://geocoder.ca/?locate=2105+West+32nd+Avenue+Vancouver+BC&auth=SOMEKEYVALUE&geoit=xml"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    assert !geocoder_class.geocode(@ca_full_txt).success
+    assert !geocode(@ca_full_txt).success
   end
 
   private

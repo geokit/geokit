@@ -31,7 +31,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(YANDEX_FULL)
     url = "#{@base_url}/?geocode=#{escape(@full_address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.geocode(@full_address)
+    res = geocode(@full_address)
 
     assert_equal "yandex", res.provider
     assert_equal "улица Новый Арбат, 24", res.street_address
@@ -48,7 +48,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(YANDEX_REGION)
     url = "#{@base_url}/?geocode=#{escape(region_address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.geocode(region_address)
+    res = geocode(region_address)
 
     assert_equal "yandex", res.provider
     assert_equal "улица Станиславского, 21", res.street_address
@@ -66,7 +66,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(YANDEX_CITY)
     url = "#{@base_url}/?geocode=#{escape(@address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    res = geocoder_class.geocode(@address)
+    res = geocode(@address)
 
     assert_equal "yandex", res.provider
     assert_equal "city", res.precision
@@ -86,7 +86,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     response.expects(:body).returns(YANDEX_NO_RESULTS)
     url = "#{@base_url}/?geocode=#{escape(no_results_address)}&format=json"
     geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
-    result = geocoder_class.geocode(no_results_address)
+    result = geocode(no_results_address)
     assert_equal ",", result.ll
   end
 end
