@@ -19,6 +19,7 @@ class MapboxGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'United States', res.country
     assert_equal 'District of Columbia', res.state
     assert_equal '20009', res.zip
+    assert_equal 'zip', res.precision
   end
 
   def test_reverse_geocode
@@ -26,6 +27,7 @@ class MapboxGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'United States', res.country
     assert_equal 'District of Columbia', res.state
     assert_equal '20009', res.zip
+    assert_equal 'zip', res.precision
   end
 
   def test_city_only
@@ -36,6 +38,7 @@ class MapboxGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'District of Columbia', res.state
     assert_equal 'Washington', res.city
     assert_equal '20004', res.zip
+    assert_equal 'zip', res.precision
   end
 
   def test_state_only
@@ -46,5 +49,6 @@ class MapboxGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'District of Columbia', res.state
     assert_nil res.city
     assert_nil res.zip
+    assert_equal 'state', res.precision
   end
 end
