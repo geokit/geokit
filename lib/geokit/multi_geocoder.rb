@@ -45,7 +45,7 @@ module Geokit
       # This method will call one or more geocoders in the order specified in
       # the configuration until one of the geocoders work, only this time it's
       # going to try to reverse geocode a geographical point.
-      def self.do_reverse_geocode(latlng, *args)
+      def self.do_reverse_geocode(latlng, *_args)
         Geokit::Geocoders.provider_order.each do |provider|
           klass = geocoder(provider)
           begin

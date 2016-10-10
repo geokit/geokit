@@ -145,7 +145,7 @@ module Geokit
       # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
       # a call to reverse_geocode will return an empty GeoLoc. If you happen to be using MultiGeocoder,
       # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
-      def self.do_reverse_geocode(latlng)
+      def self.do_reverse_geocode(_latlng)
         GeoLoc.new
       end
 
