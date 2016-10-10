@@ -4,4 +4,4 @@ source "https://rubygems.org"
 gemspec
 
 gem "geoip" # for testing - only required for max_mind
-gem "pry", platforms: :ruby_19
+gem "pry", platforms: :ruby
