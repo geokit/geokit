@@ -35,11 +35,12 @@ class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
 end
 
 class TestHelper
-  def self.last_url(url)
-    @@url = url
-  end
-  def self.last_url
-    @@url
+  def self.last_url(url = nil)
+    if url
+      @@url = url
+    else
+      @@url
+    end
   end
 end
 

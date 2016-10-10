@@ -8,10 +8,11 @@ VCR.configure do |c|
   c.hook_into :webmock # or :fakeweb
   # Yahoo BOSS Ignore changing params
   c.default_cassette_options = {
-    match_requests_on: [:method,
+    match_requests_on: [
+      :method,
       VCR.request_matchers.uri_without_params(
         :oauth_nonce, :oauth_timestamp, :oauth_signature
-      ),
-                       ],
+      )
+    ]
   }
 end
