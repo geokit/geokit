@@ -25,9 +25,9 @@ module Geokit
       end
 
       def self.parse_json(results)
-        return GeoLoc.new unless results["features"].count > 0
+        return GeoLoc.new unless results['features'].count > 0
         loc = nil
-        results["features"].each do |feature|
+        results['features'].each do |feature|
           extracted_geoloc = extract_geoloc(feature)
           if loc.nil?
             loc = extracted_geoloc
@@ -40,38 +40,38 @@ module Geokit
 
       def self.extract_geoloc(result_json)
         loc = new_loc
-        loc.lng = result_json["center"][0]
-        loc.lat = result_json["center"][1]
+        loc.lng = result_json['center'][0]
+        loc.lat = result_json['center'][1]
         set_address_components(result_json, loc)
         set_precision(loc)
-        set_bounds(result_json["bbox"], loc)
+        set_bounds(result_json['bbox'], loc)
         loc.success = true
         loc
       end
 
       def self.set_address_components(result_json, loc)
-        if result_json["context"]
-          result_json["context"].each do |context|
-            if context["id"] =~ /^country\./
-              loc.country = context["text"]
-            elsif context["id"] =~ /^province\./
-              loc.state = context["text"]
-            elsif context["id"] =~ /^city\./
-              loc.city = context["text"]
-            elsif context["id"] =~ /^postcode/
-              loc.zip = context["text"]
+        if result_json['context']
+          result_json['context'].each do |context|
+            if context['id'] =~ /^country\./
+              loc.country = context['text']
+            elsif context['id'] =~ /^province\./
+              loc.state = context['text']
+            elsif context['id'] =~ /^city\./
+              loc.city = context['text']
+            elsif context['id'] =~ /^postcode/
+              loc.zip = context['text']
             end
           end
           loc.country = loc.country_code if loc.country_code && !loc.country
         end
-        if result_json["place_name"]
-          loc.full_address = result_json["place_name"]
+        if result_json['place_name']
+          loc.full_address = result_json['place_name']
         end
-        if !loc.city && result_json["id"] =~ /^city\./
-          loc.city = result_json["text"]
+        if !loc.city && result_json['id'] =~ /^city\./
+          loc.city = result_json['text']
         end
-        if !loc.state && result_json["id"] =~ /^province\./
-          loc.state = result_json["text"]
+        if !loc.state && result_json['id'] =~ /^province\./
+          loc.state = result_json['text']
         end
       end
 

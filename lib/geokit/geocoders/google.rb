@@ -48,8 +48,8 @@ module Geokit
       # Geokit::Geocoders::GoogleGeocoder.geocode('Austin',
       #   :components => {administrative_area: 'IL', country: 'US'}).state # => 'IL'
       def self.do_geocode(address, options = {})
-        bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ""
-        components_str = options[:components] ? construct_components_string_from_options(options[:components]) : ""
+        bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
+        components_str = options[:components] ? construct_components_string_from_options(options[:components]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = submit_url("address=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}#{components_str}", options)
         process :json, url
@@ -58,21 +58,21 @@ module Geokit
       # This code comes from Googles Examples
       # http://gmaps-samples.googlecode.com/svn/trunk/urlsigning/urlsigner.rb
       def self.sign_gmap_bus_api_url(urlToSign, google_cryptographic_key)
-        require "base64"
-        require "openssl"
+        require 'base64'
+        require 'openssl'
         # Decode the private key
-        rawKey = Base64.decode64(google_cryptographic_key.tr("-_", "+/"))
+        rawKey = Base64.decode64(google_cryptographic_key.tr('-_', '+/'))
         # create a signature using the private key and the URL
-        rawSignature = OpenSSL::HMAC.digest("sha1", rawKey, urlToSign)
+        rawSignature = OpenSSL::HMAC.digest('sha1', rawKey, urlToSign)
         # encode the signature into base64 for url use form.
-        Base64.encode64(rawSignature).tr("+/", "-_").gsub(/\n/, "")
+        Base64.encode64(rawSignature).tr('+/', '-_').gsub(/\n/, '')
       end
 
       def self.submit_url(query_string, options = {})
-        language_str = options[:language] ? "&language=#{options[:language]}" : ""
+        language_str = options[:language] ? "&language=#{options[:language]}" : ''
         query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{language_str}"
         if client_id && cryptographic_key
-          channel_string = channel ? "&channel=#{channel}" : ""
+          channel_string = channel ? "&channel=#{channel}" : ''
           urlToSign = query_string + "&client=#{client_id}" + channel_string
           signature = sign_gmap_bus_api_url(urlToSign, cryptographic_key)
           "#{protocol}://maps.googleapis.com" + urlToSign + "&signature=#{signature}"
@@ -103,20 +103,20 @@ module Geokit
       end
 
       def self.parse_json(results)
-        case results["status"]
-        when "OVER_QUERY_LIMIT"
-          raise Geokit::Geocoders::TooManyQueriesError, results["error_message"]
-        when "REQUEST_DENIED"
-          raise Geokit::Geocoders::AccessDeniedError, results["error_message"]
-        when "ZERO_RESULTS"
+        case results['status']
+        when 'OVER_QUERY_LIMIT'
+          raise Geokit::Geocoders::TooManyQueriesError, results['error_message']
+        when 'REQUEST_DENIED'
+          raise Geokit::Geocoders::AccessDeniedError, results['error_message']
+        when 'ZERO_RESULTS'
           return GeoLoc.new
-        when "OK"
+        when 'OK'
           # all good
         else
-          raise Geokit::Geocoders::GeocodeError, results["error_message"]
+          raise Geokit::Geocoders::GeocodeError, results['error_message']
         end
 
-        unsorted = results["results"].map do |addr|
+        unsorted = results['results'].map do |addr|
           single_json_to_geoloc(addr)
         end
 
@@ -143,10 +143,10 @@ module Geokit
       # these do not map well. Perhaps we should guess better based on size
       # of bounding box where it exists? Does it really matter?
       ACCURACY = {
-        "ROOFTOP" => 9,
-        "RANGE_INTERPOLATED" => 8,
-        "GEOMETRIC_CENTER" => 5,
-        "APPROXIMATE" => 4,
+        'ROOFTOP' => 9,
+        'RANGE_INTERPOLATED' => 8,
+        'GEOMETRIC_CENTER' => 5,
+        'APPROXIMATE' => 4,
       }
 
       PRECISIONS = %w(unknown country state state city zip zip+4 street address building)
@@ -154,17 +154,17 @@ module Geokit
       def self.single_json_to_geoloc(addr)
         loc = new_loc
         loc.success = true
-        loc.full_address = addr["formatted_address"]
+        loc.full_address = addr['formatted_address']
 
         set_address_components(loc, addr)
         set_precision(loc, addr)
         if loc.street_name
-          loc.street_address = [loc.street_number, loc.street_name].join(" ").strip
+          loc.street_address = [loc.street_number, loc.street_name].join(' ').strip
         end
 
-        ll = addr["geometry"]["location"]
-        loc.lat = ll["lat"].to_f
-        loc.lng = ll["lng"].to_f
+        ll = addr['geometry']['location']
+        loc.lat = ll['lat'].to_f
+        loc.lng = ll['lng'].to_f
 
         set_bounds(loc, addr)
 
@@ -175,59 +175,59 @@ module Geokit
       end
 
       def self.set_bounds(loc, addr)
-        viewport = addr["geometry"]["viewport"]
-        ne = Geokit::LatLng.from_json(viewport["northeast"])
-        sw = Geokit::LatLng.from_json(viewport["southwest"])
+        viewport = addr['geometry']['viewport']
+        ne = Geokit::LatLng.from_json(viewport['northeast'])
+        sw = Geokit::LatLng.from_json(viewport['southwest'])
         loc.suggested_bounds = Geokit::Bounds.new(sw, ne)
       end
 
       def self.set_address_components(loc, addr)
-        addr["address_components"].each do |comp|
-          types = comp["types"]
+        addr['address_components'].each do |comp|
+          types = comp['types']
           case
-          when types.include?("subpremise")
-            loc.sub_premise = comp["short_name"]
-          when types.include?("street_number")
-            loc.street_number = comp["short_name"]
-          when types.include?("route")
-            loc.street_name = comp["long_name"]
-          when types.include?("locality")
-            loc.city = comp["long_name"]
-          when types.include?("administrative_area_level_1")
-            loc.state_code = comp["short_name"]
-            loc.state_name = comp["long_name"]
-            loc.province = comp["short_name"]
-          when types.include?("postal_code")
-            loc.zip = comp["long_name"]
-          when types.include?("country")
-            loc.country_code = comp["short_name"]
-            loc.country = comp["long_name"]
-          when types.include?("administrative_area_level_2")
-            loc.district = comp["long_name"]
-          when types.include?("neighborhood")
-            loc.neighborhood = comp["short_name"]
+          when types.include?('subpremise')
+            loc.sub_premise = comp['short_name']
+          when types.include?('street_number')
+            loc.street_number = comp['short_name']
+          when types.include?('route')
+            loc.street_name = comp['long_name']
+          when types.include?('locality')
+            loc.city = comp['long_name']
+          when types.include?('administrative_area_level_1')
+            loc.state_code = comp['short_name']
+            loc.state_name = comp['long_name']
+            loc.province = comp['short_name']
+          when types.include?('postal_code')
+            loc.zip = comp['long_name']
+          when types.include?('country')
+            loc.country_code = comp['short_name']
+            loc.country = comp['long_name']
+          when types.include?('administrative_area_level_2')
+            loc.district = comp['long_name']
+          when types.include?('neighborhood')
+            loc.neighborhood = comp['short_name']
           # Use either sublocality or admin area level 3 if google does not return a city
-          when types.include?("sublocality")
-            loc.city = comp["long_name"] if loc.city.nil?
-          when types.include?("administrative_area_level_3")
-            loc.city = comp["long_name"] if loc.city.nil?
+          when types.include?('sublocality')
+            loc.city = comp['long_name'] if loc.city.nil?
+          when types.include?('administrative_area_level_3')
+            loc.city = comp['long_name'] if loc.city.nil?
           end
         end
       end
 
       def self.set_precision(loc, addr)
-        loc.accuracy = ACCURACY[addr["geometry"]["location_type"]]
+        loc.accuracy = ACCURACY[addr['geometry']['location_type']]
         loc.precision = PRECISIONS[loc.accuracy]
         # try a few overrides where we can
         if loc.sub_premise
           loc.precision = PRECISIONS[9]
           loc.accuracy  = 9
         end
-        if loc.street_name && loc.precision == "city"
+        if loc.street_name && loc.precision == 'city'
           loc.precision = PRECISIONS[7]
           loc.accuracy  = 7
         end
-        if addr["types"].include?("postal_code")
+        if addr['types'].include?('postal_code')
           loc.precision = PRECISIONS[6]
           loc.accuracy  = 6
         end

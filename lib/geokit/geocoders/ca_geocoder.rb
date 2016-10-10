@@ -22,14 +22,14 @@ module Geokit
       end
 
       def self.parse_xml(xml, loc)
-        loc.lat = xml.elements["//latt"].text
-        loc.lng = xml.elements["//longt"].text
-        loc.city = xml.elements["//city"].text
-        loc.street_number = xml.elements["//stnumber"].text
-        loc.street_address = xml.elements["//staddress"].text
-        loc.state = xml.elements["//prov"].text
-        loc.province = xml.elements["//prov"].text
-        loc.zip = xml.elements["//postal"].text
+        loc.lat = xml.elements['//latt'].text
+        loc.lng = xml.elements['//longt'].text
+        loc.city = xml.elements['//city'].text
+        loc.street_number = xml.elements['//stnumber'].text
+        loc.street_address = xml.elements['//staddress'].text
+        loc.state = xml.elements['//prov'].text
+        loc.province = xml.elements['//prov'].text
+        loc.zip = xml.elements['//postal'].text
         loc.success = true
         loc
       end
@@ -38,8 +38,8 @@ module Geokit
       def self.submit_url(loc)
         args = ["locate=#{Geokit::Inflector.url_escape(loc)}"]
         args << "auth=#{key}" if key
-        args << "geoit=xml"
-        "http://geocoder.ca/?" + args.join("&")
+        args << 'geoit=xml'
+        'http://geocoder.ca/?' + args.join('&')
       end
     end
   end

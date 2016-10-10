@@ -1,8 +1,8 @@
-unless ENV["COVERAGE"] == 'off'
+unless ENV['COVERAGE'] == 'off'
   COVERAGE_THRESHOLD = 95
-  require "simplecov"
-  require "simplecov-rcov"
-  require "coveralls"
+  require 'simplecov'
+  require 'simplecov-rcov'
+  require 'coveralls'
   Coveralls.wear!
 
   SimpleCov.formatters = [
@@ -10,8 +10,8 @@ unless ENV["COVERAGE"] == 'off'
     Coveralls::SimpleCov::Formatter
   ]
   SimpleCov.start do
-    add_filter "/test/"
-    add_group "lib", "lib"
+    add_filter '/test/'
+    add_group 'lib', 'lib'
   end
   SimpleCov.at_exit do
     SimpleCov.result.format!

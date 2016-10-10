@@ -23,7 +23,7 @@ module Geokit
     end
 
     def self.from_json(json)
-      new(json["lat"], json["lng"])
+      new(json['lat'], json['lng'])
     end
 
     # Latitude attribute setter; stored as a float.
@@ -102,7 +102,7 @@ module Geokit
       when Array
         thing.size == 2 or
           raise(ArgumentError,
-            "Must initialize with an Array with both latitude and longitude")
+            'Must initialize with an Array with both latitude and longitude')
         Geokit::LatLng.new(thing[0], thing[1])
       when LatLng # will also be true for GeoLocs
         thing
@@ -112,7 +112,7 @@ module Geokit
         else
           raise(ArgumentError,
             "#{thing} (#{thing.class}) cannot be normalized to a LatLng. " \
-            "We tried interpreting it as an array, string, etc., but no dice.")
+            'We tried interpreting it as an array, string, etc., but no dice.')
         end
       end
     end

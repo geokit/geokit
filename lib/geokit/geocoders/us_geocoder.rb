@@ -14,8 +14,8 @@ module Geokit
 
       def self.submit_url(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? "zip" : "address") + "=#{Geokit::Inflector.url_escape(address_str)}"
-        base = key ? "http://#{key}@geocoder.us/member" : "http://geocoder.us"
+        query = (address_str =~ /^\d{5}(?:-\d{4})?$/ ? 'zip' : 'address') + "=#{Geokit::Inflector.url_escape(address_str)}"
+        base = key ? "http://#{key}@geocoder.us/member" : 'http://geocoder.us'
         "#{base}/service/csv/geocode?#{query}"
       end
 
@@ -23,11 +23,11 @@ module Geokit
         loc = GeoLoc.new
         if array.length == 5
           loc.lat, loc.lng, loc.city, loc.state, loc.zip = array
-          loc.country_code = "US"
+          loc.country_code = 'US'
           loc.success = true
         elsif array.length == 6
           loc.lat, loc.lng, loc.street_address, loc.city, loc.state, loc.zip = array
-          loc.country_code = "US"
+          loc.country_code = 'US'
           loc.success = true
         end
         loc
