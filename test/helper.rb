@@ -38,7 +38,7 @@ class TestHelper
   def self.last_url(url)
     @@url = url
   end
-  def self.get_last_url
+  def self.last_url
     @@url
   end
 end

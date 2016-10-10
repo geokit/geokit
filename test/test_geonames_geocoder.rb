@@ -8,7 +8,7 @@ class GeonamesGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def assert_url(expected_url)
-    assert_equal expected_url, TestHelper.get_last_url.gsub(/&oauth_[a-z_]+=[a-zA-Z0-9\-. %]+/, '').gsub('%20', '+')
+    assert_equal expected_url, TestHelper.last_url.gsub(/&oauth_[a-z_]+=[a-zA-Z0-9\-. %]+/, '').gsub('%20', '+')
   end
 
   def test_geonames_missing_key
