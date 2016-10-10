@@ -119,7 +119,8 @@ module Geokit
 
     def self.from_string(thing)
       thing.strip!
-      if match = thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
+      match = thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
+      if match
         Geokit::LatLng.new(match[1], match[2])
       else
         res = Geokit::Geocoders::MultiGeocoder.geocode(thing)

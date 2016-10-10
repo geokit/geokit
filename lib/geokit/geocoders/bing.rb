@@ -91,7 +91,8 @@ module Geokit
       end
 
       def self.set_bounds(loc, xml)
-        if suggested_bounds = xml.elements['.//BoundingBox']
+        suggested_bounds = xml.elements['.//BoundingBox']
+        if suggested_bounds
           bounds = suggested_bounds.elements
           loc.suggested_bounds = Bounds.normalize(
             [bounds['.//SouthLatitude'].text, bounds['.//WestLongitude'].text],
