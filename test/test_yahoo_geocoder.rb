@@ -20,63 +20,49 @@ class YahooGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   # the testing methods themselves
   def test_yahoo_full_address
-    VCR.use_cassette("yahoo_full") do
-      url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
-    do_full_address_assertions(geocode(@full_address))
+    url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
+    do_full_address_assertions(geocode(@full_address, :yahoo_full))
     assert_yahoo_url url
-    end
   end
 
   def test_yahoo_full_address_accuracy
-    VCR.use_cassette("yahoo_full") do
-      url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
-    res = geocode(@full_address)
+    url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
+    res = geocode(@full_address, :yahoo_full)
     assert_yahoo_url url
     assert_equal 8, res.accuracy
-    end
   end
 
   def test_yahoo_full_address_with_geo_loc
-    VCR.use_cassette("yahoo_full") do
-      url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
-    do_full_address_assertions(geocode(@yahoo_full_loc))
+    url = "#{@base_url}?flags=J&q=#{escape(@full_address)}"
+    do_full_address_assertions(geocode(@yahoo_full_loc, :yahoo_full))
     assert_yahoo_url url
-    end
   end
 
   def test_yahoo_city
-    VCR.use_cassette("yahoo_city") do
-      url = "#{@base_url}?flags=J&q=#{escape(@address)}"
-    do_city_assertions(geocode(@address))
+    url = "#{@base_url}?flags=J&q=#{escape(@address)}"
+    do_city_assertions(geocode(@address, :yahoo_city))
     assert_yahoo_url url
-    end
   end
 
   def test_yahoo_city_accuracy
-    VCR.use_cassette("yahoo_city") do
-      url = "#{@base_url}?flags=J&q=#{escape(@address)}"
-    res = geocode(@address)
+    url = "#{@base_url}?flags=J&q=#{escape(@address)}"
+    res = geocode(@address, :yahoo_city)
     assert_yahoo_url url
     assert_equal 4, res.accuracy
-    end
   end
 
   def test_yahoo_city_with_geo_loc
-    VCR.use_cassette("yahoo_city") do
-      url = "#{@base_url}?flags=J&q=#{escape(@address)}"
-    do_city_assertions(geocode(@yahoo_city_loc))
+    url = "#{@base_url}?flags=J&q=#{escape(@address)}"
+    do_city_assertions(geocode(@yahoo_city_loc, :yahoo_city))
     assert_yahoo_url url
-    end
   end
 
   def test_no_results
     no_results_address = "ZZ, ZZ, ZZ"
-    VCR.use_cassette("yahoo_no_results") do
-      url = "#{@base_url}?flags=J&q=#{escape(no_results_address)}"
-    result = geocode(no_results_address)
+    url = "#{@base_url}?flags=J&q=#{escape(no_results_address)}"
+    result = geocode(no_results_address, :yahoo_no_results)
     assert_yahoo_url url
     assert_equal ",", result.ll
-    end
   end
 
   def test_service_unavailable

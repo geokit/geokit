@@ -13,33 +13,27 @@ class RipeGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_45
-    VCR.use_cassette("ripe_geocode_45") do
-      res = geocode("45.45.45.45")
-      assert !res.success
-    end
+    res = geocode("45.45.45.45", :ripe_geocode_45)
+    assert !res.success
   end
 
   def test_ripe_geocode
-    VCR.use_cassette("ripe_geocode") do
-      url = "#{@base_url}?resource=#{@ip}"
-      res = geocode(@ip)
-      assert_url url
-      assert_equal res.city, "Mountain View"
-      assert_equal res.state, "CA"
-      assert_equal res.state_code, "CA"
-      assert_equal res.country_code, "US"
-    end
+    url = "#{@base_url}?resource=#{@ip}"
+    res = geocode(@ip, :ripe_geocode)
+    assert_url url
+    assert_equal res.city, "Mountain View"
+    assert_equal res.state, "CA"
+    assert_equal res.state_code, "CA"
+    assert_equal res.country_code, "US"
   end
 
   def test_ripe_geocode_au
-    VCR.use_cassette("ripe_geocode_au") do
-      url = "#{@base_url}?resource=#{@ip_au}"
-      res = geocode(@ip_au)
-      assert_url url
-      assert_equal res.city, "Adelaide"
-      assert_equal res.state, nil
-      assert_equal res.state_code, nil
-      assert_equal res.country_code, "AU"
-    end
+    url = "#{@base_url}?resource=#{@ip_au}"
+    res = geocode(@ip_au, :ripe_geocode_au)
+    assert_url url
+    assert_equal res.city, "Adelaide"
+    assert_equal res.state, nil
+    assert_equal res.state_code, nil
+    assert_equal res.country_code, "AU"
   end
 end

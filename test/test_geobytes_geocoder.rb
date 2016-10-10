@@ -10,13 +10,11 @@ class GeobytesGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_geobytes_geocoder
-    VCR.use_cassette("geobytes_geocode") do
-      url = "http://getcitydetails.geobytes.com/GetCityDetails?fqcn=#{@ip}"
-      res = geocode(@ip)
-      assert_url url
-      assert_equal res.city, "New York"
-      assert_equal res.state, "NY"
-      assert_equal res.country_code, "US"
-    end
+    url = "http://getcitydetails.geobytes.com/GetCityDetails?fqcn=#{@ip}"
+    res = geocode(@ip, :geobytes_geocode)
+    assert_url url
+    assert_equal res.city, "New York"
+    assert_equal res.state, "NY"
+    assert_equal res.country_code, "US"
   end
 end

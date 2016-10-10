@@ -11,13 +11,11 @@ class FreeGeoIpGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_free_geo_ip_geocode
-    VCR.use_cassette("free_geo_ip_geocode") do
-      url = "http://freegeoip.net/xml/#{@ip}"
-    res = geocode(@ip)
+    url = "http://freegeoip.net/xml/#{@ip}"
+    res = geocode(@ip, :free_geo_ip_geocode)
     assert_url url
     assert_equal res.city, "Mountain View"
     assert_equal res.state, "CA"
     assert_equal res.country_code, "US"
-    end
   end
 end

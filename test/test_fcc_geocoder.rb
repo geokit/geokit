@@ -12,13 +12,11 @@ class FCCGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_fcc_reverse_geocode
-    VCR.use_cassette("fcc_reverse_geocode") do
-      url = "#{@base_url}?format=json&latitude=34.05&longitude=-118.25"
-    res = reverse_geocode(@la)
+    url = "#{@base_url}?format=json&latitude=34.05&longitude=-118.25"
+    res = reverse_geocode(@la, :fcc_reverse_geocode)
     assert_url url
     assert_equal res.country_code, "US"
     assert_equal res.state, "CA"
     assert_equal res.district, "Los Angeles"
-    end
   end
 end

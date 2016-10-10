@@ -31,14 +31,12 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_geo_plugin_geocode
-    VCR.use_cassette("geo_plugin_geocode") do
-      url = "#{@base_url}?ip=#{@ip}"
-    res = geocode(@ip)
+    url = "#{@base_url}?ip=#{@ip}"
+    res = geocode(@ip, :geo_plugin_geocode)
     assert_url url
     assert_equal res.city, "Mountain View"
     assert_equal res.state, "CA"
     assert_equal res.country_code, "US"
-    end
   end
 
   def test_successful_lookup

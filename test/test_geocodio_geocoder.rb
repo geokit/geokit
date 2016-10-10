@@ -14,14 +14,12 @@ class GeocodioGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_geocodio_geocode
-    VCR.use_cassette("geocodio_geocode") do
-      res = geocode(@full_address)
-      url = "http://api.geocod.io/v1/geocode?q=#{escape(@full_address)}&api_key=723d41115152d224fd74727df34727c444537f7"
+    res = geocode(@full_address, :geocodio_geocode)
+    url = "http://api.geocod.io/v1/geocode?q=#{escape(@full_address)}&api_key=723d41115152d224fd74727df34727c444537f7"
 
-      assert_url url
+    assert_url url
 
-      verify(res)
-    end
+    verify(res)
   end
 
   def verify(location)
