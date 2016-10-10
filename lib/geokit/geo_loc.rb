@@ -120,10 +120,10 @@ module Geokit
     # address.
     def street_address=(address)
       @street_address = if address && provider != 'google'
-        Geokit::Inflector.titleize(address)
-      else
-        address
-      end
+                          Geokit::Inflector.titleize(address)
+                        else
+                          address
+                        end
     end
 
     # Returns a comma-delimited string consisting of the street address, city,
