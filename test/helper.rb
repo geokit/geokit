@@ -63,3 +63,7 @@ def assert_array_in_delta(expected_array, actual_array, delta = 0.001, message =
     end
   end
 end
+
+def assert_ll(lat_lng, lat, lng)
+  assert_equal lat_lng, Geokit::LatLng.new(lat, lng)
+end

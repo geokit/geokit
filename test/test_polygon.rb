@@ -80,17 +80,14 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_centroid_for_simple_poly
-    @polygon_centroid = Geokit::LatLng.new(45.27463866133501, -93.41400121829719)
-    assert_equal(@polygon.centroid, @polygon_centroid)
+    assert_ll @polygon.centroid, 45.27463866133501, -93.41400121829719
   end
 
   def test_centroid_for_complex_poly
-    @complex_polygon_centroid = Geokit::LatLng.new(45.43622702936517, -93.5352210389731)
-    assert_equal(@complex_polygon.centroid, @complex_polygon_centroid)
+    assert_ll @complex_polygon.centroid, 45.43622702936517, -93.5352210389731
   end
 
   def test_centroid_for_open_poly
-    @open_polygon_centroid = Geokit::LatLng.new(44.95912726688109, -92.7068888186181)
-    assert_equal(@open_polygon.centroid, @open_polygon_centroid)
+    assert_ll @open_polygon.centroid, 44.95912726688109, -92.7068888186181
   end
 end
