@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "helper")
+require File.join(File.dirname(__FILE__), 'helper')
 
 class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
   IP_SUCCESS = <<-EOF
@@ -21,44 +21,42 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
 
   def setup
     super
-    @ip = "74.125.237.209"
-    @success.provider = "geo_plugin"
+    @ip = '74.125.237.209'
+    @success.provider = 'geo_plugin'
     @base_url = 'http://www.geoplugin.net/xml.gp'
   end
 
   def assert_url(expected_url)
-    assert_equal expected_url, TestHelper.get_last_url.gsub(/&oauth_[a-z_]+=[a-zA-Z0-9\-. %]+/, "").gsub("%20", "+")
+    assert_equal expected_url, TestHelper.last_url.gsub(/&oauth_[a-z_]+=[a-zA-Z0-9\-. %]+/, '').gsub('%20', '+')
   end
 
   def test_geo_plugin_geocode
-    VCR.use_cassette("geo_plugin_geocode") do
-      url = "#{@base_url}?ip=#{@ip}"
-    res = Geokit::Geocoders::GeoPluginGeocoder.geocode(@ip)
+    url = "#{@base_url}?ip=#{@ip}"
+    res = geocode(@ip, :geo_plugin_geocode)
     assert_url url
-    assert_equal res.city, "Mountain View"
-    assert_equal res.state, "CA"
-    assert_equal res.country_code, "US"
-    end
+    assert_equal res.city, 'Mountain View'
+    assert_equal res.state, 'CA'
+    assert_equal res.country_code, 'US'
   end
 
   def test_successful_lookup
     success = MockSuccess.new
     success.expects(:body).returns(IP_SUCCESS)
     url = "#{@base_url}?ip=200.150.38.66"
-    Geokit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(success)
-    location = Geokit::Geocoders::GeoPluginGeocoder.geocode("200.150.38.66")
+    geocoder_class.expects(:call_geocoder_service).with(url).returns(success)
+    location = geocode('200.150.38.66')
     assert_not_nil location
     assert_equal(-19.916700, location.lat)
     assert_equal(-43.933300, location.lng)
-    assert_equal "Belo Horizonte", location.city
-    assert_equal "Minas Gerais", location.state
-    assert_equal "BR", location.country_code
-    assert_equal "geo_plugin", location.provider
+    assert_equal 'Belo Horizonte', location.city
+    assert_equal 'Minas Gerais', location.state
+    assert_equal 'BR', location.country_code
+    assert_equal 'geo_plugin', location.provider
     assert location.success?
   end
 
   def test_invalid_ip
-    location = Geokit::Geocoders::GeoPluginGeocoder.geocode("pixrum")
+    location = geocode('pixrum')
     assert_not_nil location
     assert !location.success?
   end
@@ -66,8 +64,8 @@ class GeoPluginGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_service_unavailable
     failure = MockFailure.new
     url = "#{@base_url}?ip=69.10.10.10"
-    Geokit::Geocoders::GeoPluginGeocoder.expects(:call_geocoder_service).with(url).returns(failure)
-    location = Geokit::Geocoders::GeoPluginGeocoder.geocode("69.10.10.10")
+    geocoder_class.expects(:call_geocoder_service).with(url).returns(failure)
+    location = geocode('69.10.10.10')
     assert_not_nil location
     assert !location.success?
   end

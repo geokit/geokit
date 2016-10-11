@@ -10,7 +10,7 @@ unless nil.respond_to?(:try)
   end
 
   class NilClass
-    def try(*args)
+    def try(*_args)
       nil
     end
   end

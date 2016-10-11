@@ -1,5 +1,5 @@
 # encoding: utf-8
-require File.join(File.dirname(__FILE__), "helper")
+require File.join(File.dirname(__FILE__), 'helper')
 
 class PolygonTest < Test::Unit::TestCase #:nodoc: all
   def setup
@@ -53,30 +53,20 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_point_inside_poly
-    # puts "\n\nTesting point inside poly... {@polygon.contains?(@point_inside)}\n\n"
     assert @polygon.contains?(@point_inside)
   end
 
   def test_point_outside_poly
-    # puts "\n\nTesting point outside poly... {@polygon.contains?(@point_outside)}\n\n"
     assert !@polygon.contains?(@point_outside)
   end
 
   def test_points_inside_complex_poly
-    # puts "\n\nTesting points INSIDE complex poly..."
-    # puts "\tone: {@complex_polygon.contains?(@complex_inside_one)}"
-    # puts "\ttwo: {@complex_polygon.contains?(@complex_inside_two)}"
-    # puts "\tthree: {@complex_polygon.contains?(@complex_inside_three)}\n\n"
     assert @complex_polygon.contains?(@complex_inside_one)
     assert @complex_polygon.contains?(@complex_inside_two)
     assert @complex_polygon.contains?(@complex_inside_three)
   end
 
   def test_points_outside_complex_poly
-    # puts "\n\nTesting points OUTSIDE complex poly..."
-    # puts "\tone: {@complex_polygon.contains?(@complex_outside_one)}"
-    # puts "\ttwo: {@complex_polygon.contains?(@complex_outside_two)}"
-    # puts "\tthree: {@complex_polygon.contains?(@complex_outside_three)}\n\n"
     assert !@complex_polygon.contains?(@complex_outside_one)
     assert !@complex_polygon.contains?(@complex_outside_two)
     assert !@complex_polygon.contains?(@complex_outside_three)
@@ -85,27 +75,19 @@ class PolygonTest < Test::Unit::TestCase #:nodoc: all
   def test_open_polygon
     # A polygon can only exist of the last point is equal to the first
     # Otherwise, it would just be a line of points.
-
-    # puts "\n\nTesting intialize function to close an open polygon..."
-    # puts "\t Does poly_x[0] (#{@open_polygon.poly_x[0]}) == poly_x[-1] (#{@open_polygon.poly_x[-1]}) ?"
-    # puts "\t Does poly_y[0] (#{@open_polygon.poly_y[0]}) == poly_y[-1] (#{@open_polygon.poly_y[-1]}) ?"
-
     assert @open_polygon.points[0].lng == @open_polygon.points[-1].lng
     assert @open_polygon.points[0].lat == @open_polygon.points[-1].lat
   end
 
   def test_centroid_for_simple_poly
-    @polygon_centroid = Geokit::LatLng.new(45.27463866133501, -93.41400121829719)
-    assert_equal(@polygon.centroid, @polygon_centroid)
+    assert_ll @polygon.centroid, 45.27463866133501, -93.41400121829719
   end
 
   def test_centroid_for_complex_poly
-    @complex_polygon_centroid = Geokit::LatLng.new(45.43622702936517, -93.5352210389731)
-    assert_equal(@complex_polygon.centroid, @complex_polygon_centroid)
+    assert_ll @complex_polygon.centroid, 45.43622702936517, -93.5352210389731
   end
 
   def test_centroid_for_open_poly
-    @open_polygon_centroid = Geokit::LatLng.new(44.95912726688109, -92.7068888186181)
-    assert_equal(@open_polygon.centroid, @open_polygon_centroid)
+    assert_ll @open_polygon.centroid, 44.95912726688109, -92.7068888186181
   end
 end

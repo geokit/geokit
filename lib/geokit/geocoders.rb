@@ -1,16 +1,16 @@
-require "geokit/net_adapter/net_http"
-require "geokit/net_adapter/typhoeus"
-require "ipaddr"
-require "json"
-require "logger"
-require "net/http"
-require "openssl"
-require "rexml/document"
-require "timeout"
-require "yaml"
+require 'geokit/net_adapter/net_http'
+require 'geokit/net_adapter/typhoeus'
+require 'ipaddr'
+require 'json'
+require 'logger'
+require 'net/http'
+require 'openssl'
+require 'rexml/document'
+require 'timeout'
+require 'yaml'
 
 module Geokit
-  require File.join(File.dirname(__FILE__), "inflectors")
+  require File.join(File.dirname(__FILE__), 'inflectors')
 
   # Contains a range of geocoders:
   #
@@ -45,7 +45,7 @@ module Geokit
 
     def self.__define_accessors
       class_variables.each do |v|
-        sym = v.to_s.delete("@").to_sym
+        sym = v.to_s.delete('@').to_sym
         next if self.respond_to? sym
         module_eval <<-EOS, __FILE__, __LINE__
           def self.#{sym}
@@ -145,7 +145,7 @@ module Geokit
       # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
       # a call to reverse_geocode will return an empty GeoLoc. If you happen to be using MultiGeocoder,
       # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
-      def self.do_reverse_geocode(latlng)
+      def self.do_reverse_geocode(_latlng)
         GeoLoc.new
       end
 
@@ -154,7 +154,7 @@ module Geokit
       end
 
       def self.protocol
-        use_https? ? "https" : "http"
+        use_https? ? 'https' : 'http'
       end
 
       # Wraps the geocoder call around a proxy if necessary.
@@ -167,7 +167,7 @@ module Geokit
       end
 
       def self.provider_name
-        name.split("::").last.gsub(/Geocoder$/, "")
+        name.split('::').last.gsub(/Geocoder$/, '')
       end
 
       def self.parse(format, body, *args)
@@ -176,7 +176,7 @@ module Geokit
         when :json then parse_json(JSON.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)
         when :yaml then parse_yaml(YAML.load(body), *args)
-        when :csv  then parse_csv(body.chomp.split(","), *args)
+        when :csv  then parse_csv(body.chomp.split(','), *args)
         end
       end
 
@@ -191,24 +191,14 @@ module Geokit
         return GeoLoc.new unless net_adapter.success?(res)
         parse format, res.body, *args
       end
-
-      def self.transcode_to_utf8(body)
-        require "iconv" unless String.method_defined?(:encode)
-        if String.method_defined?(:encode)
-          body.encode!("UTF-8", "UTF-8", invalid: :replace)
-        else
-          ic = Iconv.new("UTF-8", "UTF-8//IGNORE")
-          ic.iconv(body)
-        end
-      end
     end
 
     # -------------------------------------------------------------------------------------------
     # "Regular" Address geocoders
     # -------------------------------------------------------------------------------------------
-    require File.join(File.dirname(__FILE__), "geocoders/base_ip")
-    Dir[File.join(File.dirname(__FILE__), "/geocoders/*.rb")].each { |f| require f }
+    require File.join(File.dirname(__FILE__), 'geocoders/base_ip')
+    Dir[File.join(File.dirname(__FILE__), '/geocoders/*.rb')].each { |f| require f }
 
-    require File.join(File.dirname(__FILE__), "multi_geocoder")
+    require File.join(File.dirname(__FILE__), 'multi_geocoder')
   end
 end

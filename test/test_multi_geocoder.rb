@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "helper")
+require File.join(File.dirname(__FILE__), 'helper')
 
 Geokit::Geocoders.provider_order = [:google, :bing, :us]
 
@@ -44,9 +44,9 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
     t1, t2 = Geokit::Geocoders.provider_order, Geokit::Geocoders.ip_provider_order # will need to reset after
     Geokit::Geocoders.provider_order = [:google]
     Geokit::Geocoders.ip_provider_order = [:geo_plugin]
-    Geokit::Geocoders::GoogleGeocoder.expects(:geocode).with("").returns(@failure)
+    Geokit::Geocoders::GoogleGeocoder.expects(:geocode).with('').returns(@failure)
     Geokit::Geocoders::GeoPluginGeocoder.expects(:geocode).never
-    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode("")
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode('')
     Geokit::Geocoders.provider_order, Geokit::Geocoders.ip_provider_order = t1, t2 # reset to orig values
   end
 
@@ -87,8 +87,8 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_reverse_geocode_with_blank_latlng
     t1 = Geokit::Geocoders.provider_order # will need to reset after
     Geokit::Geocoders.provider_order = [:google]
-    Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with("").returns(@failure)
-    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode("")
+    Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with('').returns(@failure)
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode('')
     Geokit::Geocoders.provider_order = t1 # reset to orig values
   end
 

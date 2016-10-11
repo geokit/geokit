@@ -23,10 +23,10 @@ module Geokit
       end
 
       def self.parse_json(results)
-        return GeoLoc.new unless results["info"]["statuscode"] == 0
+        return GeoLoc.new unless results['info']['statuscode'] == 0
         loc = nil
-        results["results"].each do |result|
-          result["locations"].each do |location|
+        results['results'].each do |result|
+          result['locations'].each do |location|
             extracted_geoloc = extract_geoloc(location)
             if loc.nil?
               loc = extracted_geoloc
@@ -40,8 +40,8 @@ module Geokit
 
       def self.extract_geoloc(result_json)
         loc = new_loc
-        loc.lat = result_json["latLng"]["lat"]
-        loc.lng = result_json["latLng"]["lng"]
+        loc.lat = result_json['latLng']['lat']
+        loc.lng = result_json['latLng']['lng']
         set_address_components(result_json, loc)
         set_precision(result_json, loc)
         loc.success = true
@@ -49,15 +49,15 @@ module Geokit
       end
 
       def self.set_address_components(result_json, loc)
-        loc.country_code   = result_json["adminArea1"]
-        loc.street_address = result_json["street"].to_s.empty? ? nil : result_json["street"]
-        loc.city           = result_json["adminArea5"]
-        loc.state          = result_json["adminArea3"]
-        loc.zip            = result_json["postalCode"]
+        loc.country_code   = result_json['adminArea1']
+        loc.street_address = result_json['street'].to_s.empty? ? nil : result_json['street']
+        loc.city           = result_json['adminArea5']
+        loc.state          = result_json['adminArea3']
+        loc.zip            = result_json['postalCode']
       end
 
       def self.set_precision(result_json, loc)
-        loc.precision = result_json["geocodeQuality"]
+        loc.precision = result_json['geocodeQuality']
         loc.accuracy = %w(unknown country state state city zip zip+4 street address building).index(loc.precision)
       end
     end

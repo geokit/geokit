@@ -16,7 +16,7 @@ module Geokit
         return GeoLoc.new unless net_adapter.success?(res)
         ensure_utf8_encoding(res)
         body = res.body
-        body = body.encode("UTF-8") if body.respond_to? :encode
+        body = body.encode('UTF-8') if body.respond_to? :encode
         parse :yaml, body
       end
 
@@ -34,10 +34,10 @@ module Geokit
       # then instantiates a GeoLoc instance to populate with location data.
       def self.parse_yaml(yaml) # :nodoc:
         loc = new_loc
-        loc.city, loc.state_code = yaml["City"].split(", ")
-        loc.country, loc.country_code = yaml["Country"].split(" (")
-        loc.lat = yaml["Latitude"]
-        loc.lng = yaml["Longitude"]
+        loc.city, loc.state_code = yaml['City'].split(', ')
+        loc.country, loc.country_code = yaml['Country'].split(' (')
+        loc.lat = yaml['Latitude']
+        loc.lng = yaml['Longitude']
         loc.country_code.chop!
         loc.success = !(loc.city =~ /\(.+\)/)
         loc
@@ -49,19 +49,14 @@ module Geokit
       # thus extract encoding from headers and tell Rails about it by forcing it
       def self.ensure_utf8_encoding(res)
         if (enc_string = extract_charset(res))
-          if defined?(Encoding) && Encoding.aliases.values.include?(enc_string.upcase)
-            res.body.force_encoding(enc_string.upcase) if res.body.respond_to?(:force_encoding)
-            res.body.encode("UTF-8")
-          else
-            require "iconv"
-            res.body.replace Iconv.conv("UTF8", "iso88591", res.body)
-          end
+          res.body.force_encoding(enc_string.upcase) if res.body.respond_to?(:force_encoding)
+          res.body.encode('UTF-8')
         end
       end
 
       # Extracts charset out of the response headers
       def self.extract_charset(res)
-        if (content_type = res["content-type"])
+        if (content_type = res['content-type'])
           capture = content_type.match(/charset=(.+)/)
           capture && capture[1]
         end

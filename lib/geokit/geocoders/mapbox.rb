@@ -9,7 +9,7 @@ module Geokit
       private
 
       # Template method which does the reverse-geocode lookup.
-      def self.do_reverse_geocode(latlng, options = {})
+      def self.do_reverse_geocode(latlng, _options = nil)
         latlng = LatLng.normalize(latlng)
         url =  "#{protocol}://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/"
         url += "#{latlng.lng},#{latlng.lat}.json?access_token=#{key}"
@@ -17,7 +17,7 @@ module Geokit
       end
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address, options = {})
+      def self.do_geocode(address, _options = nil)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url =  "#{protocol}://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/"
         url += "#{Geokit::Inflector.url_escape(address_str)}.json?access_token=#{key}"
@@ -25,9 +25,9 @@ module Geokit
       end
 
       def self.parse_json(results)
-        return GeoLoc.new unless results["features"].count > 0
+        return GeoLoc.new unless results['features'].count > 0
         loc = nil
-        results["features"].each do |feature|
+        results['features'].each do |feature|
           extracted_geoloc = extract_geoloc(feature)
           if loc.nil?
             loc = extracted_geoloc
@@ -40,55 +40,52 @@ module Geokit
 
       def self.extract_geoloc(result_json)
         loc = new_loc
-        loc.lng = result_json["center"][0]
-        loc.lat = result_json["center"][1]
+        loc.lng = result_json['center'][0]
+        loc.lat = result_json['center'][1]
         set_address_components(result_json, loc)
         set_precision(loc)
-        set_bounds(result_json["bbox"], loc)
+        set_bounds(result_json['bbox'], loc)
         loc.success = true
         loc
       end
 
       def self.set_address_components(result_json, loc)
-        if result_json["context"]
-          result_json["context"].each do |context|
-            if context["id"] =~ /^country\./
-              loc.country = context["text"]
-            elsif context["id"] =~ /^province\./
-              loc.state = context["text"]
-            elsif context["id"] =~ /^city\./
-              loc.city = context["text"]
-            elsif context["id"] =~ /^postcode/
-              loc.zip = context["text"]
+        if result_json['context']
+          result_json['context'].each do |context|
+            if context['id'] =~ /^country\./
+              loc.country = context['text']
+            elsif context['id'] =~ /^province\./
+              loc.state = context['text']
+            elsif context['id'] =~ /^city\./
+              loc.city = context['text']
+            elsif context['id'] =~ /^postcode/
+              loc.zip = context['text']
             end
           end
           loc.country = loc.country_code if loc.country_code && !loc.country
         end
-        if result_json["place_name"]
-          loc.full_address = result_json["place_name"]
+        if result_json['place_name']
+          loc.full_address = result_json['place_name']
         end
-        if !loc.city && result_json["id"] =~ /^city\./
-          loc.city = result_json["text"]
+        if !loc.city && result_json['id'] =~ /^city\./
+          loc.city = result_json['text']
         end
-        if !loc.state && result_json["id"] =~ /^province\./
-          loc.state = result_json["text"]
+        if !loc.state && result_json['id'] =~ /^province\./
+          loc.state = result_json['text']
         end
       end
 
-      PRECISION_VALUES = %w(unknown country state city zip full_address)
+      PRECISION_VALUES = %w(country state city zip)
 
       def self.set_precision(loc)
-        (1...PRECISION_VALUES.length - 1).each do |i|
-          if loc.send(PRECISION_VALUES[i]) && loc.send(PRECISION_VALUES[i]).length
-            loc.precision = PRECISION_VALUES[i]
-          else
-            break
-          end
+        PRECISION_VALUES.each do |precision|
+          break unless loc.send(precision) && loc.send(precision).length
+          loc.precision = precision
         end
       end
 
-      def self.set_bounds(result_json, loc)
-        if bounds = result_json
+      def self.set_bounds(bounds, loc)
+        if bounds
           loc.suggested_bounds = Bounds.normalize([bounds[1], bounds[0]], [bounds[3], bounds[2]])
         end
       end

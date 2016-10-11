@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "helper")
+require File.join(File.dirname(__FILE__), 'helper')
 
 # Test distances from http://www.csgnetwork.com/degreelenllavcalc.html
 class MappableTest < Test::Unit::TestCase #:nodoc: all
@@ -66,6 +66,6 @@ class MappableTest < Test::Unit::TestCase #:nodoc: all
     exception = assert_raise(ArgumentError) do
       TestMappable.get_units!(units: :feet)
     end
-    assert_equal "feet is an unsupported unit of length.", exception.message
+    assert_equal 'feet is an unsupported unit of length.', exception.message
   end
 end

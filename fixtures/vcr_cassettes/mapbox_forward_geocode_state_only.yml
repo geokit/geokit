@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/District+of+Columbia.json?access_token=pk.eyJ1IjoiZ2Vva2l0IiwiYSI6ImNpbm1md3dvdTB6anB0dG0zbW9zd3hlODQifQ.dyskNcYK8DvxyjCO3i7afA
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/vnd.geo+json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Date:
+      - Mon, 10 Oct 2016 09:43:54 GMT
+      X-Powered-By:
+      - Express
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - x-rate-limit-interval,x-rate-limit-limit,x-rate-limit-remaining,x-rate-limit-reset
+      Cache-Control:
+      - max-age=604800
+      X-Rate-Limit-Limit:
+      - '600'
+      X-Rate-Limit-Interval:
+      - '60'
+      X-Rate-Limit-Reset:
+      - '1476092693'
+      Last-Modified:
+      - Sat, 08 Oct 2016 20:41:24 GMT
+      Etag:
+      - '"5308502a7f73289748f66fa980fd2bab"'
+      Vary:
+      - Accept-Encoding
+      Age:
+      - '2918'
+      X-Cache:
+      - Hit from cloudfront
+      Via:
+      - 1.1 f27473d71ae79f24b43c80017fa9f378.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - JhVC6jy8VoZUf9gZTVHeEbxVY1uFnLPFgGuPspN9aMHr0T9Ln8t11Q==
+    body:
+      encoding: UTF-8
+      string: '{"type":"FeatureCollection","query":["district","of","columbia"],"features":[{"id":"province.6884744206035790","type":"Feature","text":"District
+        of Columbia","place_name":"District of Columbia, United States","relevance":0.99,"properties":{},"bbox":[-77.2081379659453,38.7177026348658,-76.909393,38.995548],"center":[-76.990661,38.89657],"geometry":{"type":"Point","coordinates":[-76.990661,38.89657]},"context":[{"id":"country.12862386938302570","text":"United
+        States","short_code":"us"}]},{"id":"country.8835466214338060","type":"Feature","text":"Colombia","place_name":"Colombia","relevance":0.3233333333333333,"properties":{"short_code":"co"},"bbox":[-81.837165383,-4.227109972,-66.851922971,14.571956242],"center":[-73.073215,3.900749],"geometry":{"type":"Point","coordinates":[-73.073215,3.900749]}},{"id":"city.2344293","type":"Feature","text":"Of","place_name":"Of,
+        Trabzon, Turkey","relevance":0.3233333333333333,"properties":{},"bbox":[40.262833,40.924538,40.275879,40.953457],"center":[40.273192,40.942694],"geometry":{"type":"Point","coordinates":[40.273192,40.942694]},"context":[{"id":"province.10752643295121960","text":"Trabzon"},{"id":"country.5756443905483080","text":"Turkey","short_code":"tr"}]},{"id":"city.3115255809","type":"Feature","text":"District","place_name":"District,
+        19512, Pennsylvania, United States","relevance":0.3233333333333333,"properties":{},"bbox":[-75.7464660091927,40.2594929937439,-75.6185319935606,40.4340610099705],"center":[-75.6586,40.3467],"geometry":{"type":"Point","coordinates":[-75.6586,40.3467]},"context":[{"id":"postcode.6499893554605550","text":"19512"},{"id":"province.7664490979218730","text":"Pennsylvania"},{"id":"country.12862386938302570","text":"United
+        States","short_code":"us"}]},{"id":"address.9369877000360","type":"Feature","text":"Columbia
+        Rd NW","place_name":"Columbia Rd NW, Washington, District of Columbia 20009,
+        United States","relevance":0.25666666666666665,"properties":{},"center":[-77.038825,38.925133],"geometry":{"type":"Point","coordinates":[-77.038825,38.925133]},"context":[{"id":"city.20001","text":"Washington"},{"id":"postcode.7725140869021840","text":"20009"},{"id":"province.6884744206035790","text":"District
+        of Columbia"},{"id":"country.12862386938302570","text":"United States","short_code":"us"}]}],"attribution":"<a
+        href=''https://www.mapbox.com/about/maps/'' target=''_blank''>&copy; Mapbox</a>"}'
+    http_version: 
+  recorded_at: Mon, 10 Oct 2016 10:32:32 GMT
+recorded_with: VCR 3.0.1

@@ -13,7 +13,7 @@ module Geokit
         url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new unless net_adapter.success?(res)
-        xml = transcode_to_utf8(res.body)
+        xml = res.body.encode!('UTF-8', 'UTF-8', invalid: :replace)
         parse :xml, xml
       end
 
@@ -91,7 +91,8 @@ module Geokit
       end
 
       def self.set_bounds(loc, xml)
-        if suggested_bounds = xml.elements['.//BoundingBox']
+        suggested_bounds = xml.elements['.//BoundingBox']
+        if suggested_bounds
           bounds = suggested_bounds.elements
           loc.suggested_bounds = Bounds.normalize(
             [bounds['.//SouthLatitude'].text, bounds['.//WestLongitude'].text],

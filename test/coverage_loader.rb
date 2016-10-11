@@ -1,8 +1,8 @@
-unless ENV["COVERAGE"] == 'off'
-  COVERAGE_THRESHOLD = 95
-  require "simplecov"
-  require "simplecov-rcov"
-  require "coveralls"
+unless ENV['COVERAGE'] == 'off'
+  COVERAGE_THRESHOLD = 96
+  require 'simplecov'
+  require 'simplecov-rcov'
+  require 'coveralls'
   Coveralls.wear!
 
   SimpleCov.formatters = [
@@ -10,14 +10,15 @@ unless ENV["COVERAGE"] == 'off'
     Coveralls::SimpleCov::Formatter
   ]
   SimpleCov.start do
-    add_filter "/test/"
-    add_group "lib", "lib"
+    add_filter '/test/'
+    add_group 'lib', 'lib'
   end
   SimpleCov.at_exit do
     SimpleCov.result.format!
     percent = SimpleCov.result.covered_percent
+    puts "Coverage is #{'%.2f' % percent}%"
     unless percent >= COVERAGE_THRESHOLD
-      puts "Coverage must be above #{COVERAGE_THRESHOLD}%. It is #{'%.2f' % percent}%"
+      puts "Coverage must be above #{COVERAGE_THRESHOLD}%"
       Kernel.exit(1)
     end
   end

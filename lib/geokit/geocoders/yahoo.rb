@@ -26,7 +26,7 @@ module Geokit
       end
 
       def self.parse_json(results)
-        boss_results = results && results["bossresponse"] && results["bossresponse"]["placefinder"] && results["bossresponse"]["placefinder"]["results"]
+        boss_results = results && results['bossresponse'] && results['bossresponse']['placefinder'] && results['bossresponse']['placefinder']['results']
         return GeoLoc.new unless boss_results && boss_results.first
         loc = nil
         boss_results.each do |result|
@@ -42,8 +42,8 @@ module Geokit
 
       def self.extract_geoloc(result_json)
         loc = new_loc
-        loc.lat      = result_json["latitude"]
-        loc.lng      = result_json["longitude"]
+        loc.lat      = result_json['latitude']
+        loc.lng      = result_json['longitude']
         set_address_components(result_json, loc)
         set_precision(result_json, loc)
         loc.success  = true
@@ -51,25 +51,25 @@ module Geokit
       end
 
       def self.set_address_components(result_json, loc)
-        loc.country_code   = result_json["countrycode"]
-        loc.street_address = result_json["line1"].to_s.empty? ? nil : result_json["line1"]
-        loc.city           = result_json["city"]
-        loc.state          = loc.is_us? ? result_json["statecode"] : result_json["state"]
-        loc.zip            = result_json["postal"]
+        loc.country_code   = result_json['countrycode']
+        loc.street_address = result_json['line1'].to_s.empty? ? nil : result_json['line1']
+        loc.city           = result_json['city']
+        loc.state          = loc.is_us? ? result_json['statecode'] : result_json['state']
+        loc.zip            = result_json['postal']
       end
 
       def self.set_precision(result_json, loc)
-        loc.precision = case result_json["quality"].to_i
-                        when 9, 10         then "country"
-                        when 19..30       then "state"
-                        when 39, 40        then "city"
-                        when 49, 50        then "neighborhood"
-                        when 59, 60, 64     then "zip"
-                        when 74, 75        then "zip+4"
-                        when 70..72       then "street"
-                        when 80..87       then "address"
-                        when 62, 63, 90, 99  then "building"
-                        else "unknown"
+        loc.precision = case result_json['quality'].to_i
+                        when 9, 10         then 'country'
+                        when 19..30       then 'state'
+                        when 39, 40        then 'city'
+                        when 49, 50        then 'neighborhood'
+                        when 59, 60, 64     then 'zip'
+                        when 74, 75        then 'zip+4'
+                        when 70..72       then 'street'
+                        when 80..87       then 'address'
+                        when 62, 63, 90, 99  then 'building'
+                        else 'unknown'
                         end
 
         loc.accuracy = %w(unknown country state state city zip zip+4 street address building).index(loc.precision)
@@ -85,47 +85,47 @@ end
 # License: http://gist.github.com/375593
 # Usage: see example.rb below
 
-require "uri"
-require "cgi"
-require "openssl"
-require "base64"
+require 'uri'
+require 'cgi'
+require 'openssl'
+require 'base64'
 
 class OauthUtil
   attr_accessor :consumer_key, :consumer_secret, :token, :token_secret, :req_method,
                 :sig_method, :oauth_version, :callback_url, :params, :req_url, :base_str
 
   def initialize
-    @consumer_key = ""
-    @consumer_secret = ""
-    @token = ""
-    @token_secret = ""
-    @req_method = "GET"
-    @sig_method = "HMAC-SHA1"
-    @oauth_version = "1.0"
-    @callback_url = ""
+    @consumer_key = ''
+    @consumer_secret = ''
+    @token = ''
+    @token_secret = ''
+    @req_method = 'GET'
+    @sig_method = 'HMAC-SHA1'
+    @oauth_version = '1.0'
+    @callback_url = ''
   end
 
   # openssl::random_bytes returns non-word chars, which need to be removed. using alt method to get length
   # ref http://snippets.dzone.com/posts/show/491
   def nonce
-    Array.new(5) { rand(256) }.pack("C*").unpack("H*").first
+    Array.new(5) { rand(256) }.pack('C*').unpack('H*').first
   end
 
   def percent_encode(string)
     # ref http://snippets.dzone.com/posts/show/1260
-    URI.escape(string, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")).gsub("*", "%2A")
+    URI.escape(string, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")).gsub('*', '%2A')
   end
 
   # @ref http://oauth.net/core/1.0/#rfc.section.9.2
   def signature
-    key = percent_encode(@consumer_secret) + "&" + percent_encode(@token_secret)
+    key = percent_encode(@consumer_secret) + '&' + percent_encode(@token_secret)
 
     # ref: http://blog.nathanielbibler.com/post/63031273/openssl-hmac-vs-ruby-hmac-benchmarks
-    digest = OpenSSL::Digest.new("sha1")
+    digest = OpenSSL::Digest.new('sha1')
     hmac = OpenSSL::HMAC.digest(digest, key, @base_str)
 
     # ref http://groups.google.com/group/oauth-ruby/browse_thread/thread/9110ed8c8f3cae81
-    Base64.encode64(hmac).chomp.gsub(/\n/, "")
+    Base64.encode64(hmac).chomp.gsub(/\n/, '')
   end
 
   # sort (very important as it affects the signature), concat, and percent encode
@@ -137,7 +137,7 @@ class OauthUtil
     @params.sort.each do |key, val|
       pairs.push("#{ percent_encode(key) }=#{ percent_encode(val.to_s) }")
     end
-    pairs.join "&"
+    pairs.join '&'
   end
 
   def timestamp
@@ -147,11 +147,11 @@ class OauthUtil
   # organize params & create signature
   def sign(parsed_url)
     @params = {
-      "oauth_consumer_key" => @consumer_key,
-      "oauth_nonce" => nonce,
-      "oauth_signature_method" => @sig_method,
-      "oauth_timestamp" => timestamp,
-      "oauth_version" => @oauth_version,
+      'oauth_consumer_key' => @consumer_key,
+      'oauth_nonce' => nonce,
+      'oauth_signature_method' => @sig_method,
+      'oauth_timestamp' => timestamp,
+      'oauth_version' => @oauth_version,
     }
 
     # if url has query, merge key/values into params obj overwriting defaults
@@ -166,7 +166,7 @@ class OauthUtil
     end
 
     # @ref http://oauth.net/core/1.0/#rfc.section.9.1.2
-    @req_url = parsed_url.scheme + "://" + parsed_url.host + parsed_url.path
+    @req_url = parsed_url.scheme + '://' + parsed_url.host + parsed_url.path
 
     # create base str. make it an object attr for ez debugging
     # ref http://oauth.net/core/1.0/#anchor14
@@ -177,10 +177,10 @@ class OauthUtil
       # normalization is just x-www-form-urlencoded
       percent_encode(query_string),
 
-    ].join("&")
+    ].join('&')
 
     # add signature
-    @params["oauth_signature"] = signature
+    @params['oauth_signature'] = signature
 
     self
   end
