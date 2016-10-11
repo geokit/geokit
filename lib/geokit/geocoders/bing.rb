@@ -13,7 +13,7 @@ module Geokit
         url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new unless net_adapter.success?(res)
-        xml = transcode_to_utf8(res.body)
+        xml = res.body.encode!('UTF-8', 'UTF-8', invalid: :replace)
         parse :xml, xml
       end
 

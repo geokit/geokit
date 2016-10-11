@@ -49,13 +49,8 @@ module Geokit
       # thus extract encoding from headers and tell Rails about it by forcing it
       def self.ensure_utf8_encoding(res)
         if (enc_string = extract_charset(res))
-          if defined?(Encoding) && Encoding.aliases.values.include?(enc_string.upcase)
-            res.body.force_encoding(enc_string.upcase) if res.body.respond_to?(:force_encoding)
-            res.body.encode('UTF-8')
-          else
-            require 'iconv'
-            res.body.replace Iconv.conv('UTF8', 'iso88591', res.body)
-          end
+          res.body.force_encoding(enc_string.upcase) if res.body.respond_to?(:force_encoding)
+          res.body.encode('UTF-8')
         end
       end
 

@@ -191,16 +191,6 @@ module Geokit
         return GeoLoc.new unless net_adapter.success?(res)
         parse format, res.body, *args
       end
-
-      def self.transcode_to_utf8(body)
-        require 'iconv' unless String.method_defined?(:encode)
-        if String.method_defined?(:encode)
-          body.encode!('UTF-8', 'UTF-8', invalid: :replace)
-        else
-          ic = Iconv.new('UTF-8', 'UTF-8//IGNORE')
-          ic.iconv(body)
-        end
-      end
     end
 
     # -------------------------------------------------------------------------------------------
