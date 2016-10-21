@@ -120,7 +120,7 @@ module Geokit
           single_json_to_geoloc(addr)
         end
 
-        all = unsorted.sort { |a, b| b.accuracy <=> a.accuracy }
+        all = unsorted
         encoded = all.first
         encoded.all = all
         encoded
