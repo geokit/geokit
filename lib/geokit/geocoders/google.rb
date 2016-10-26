@@ -69,8 +69,10 @@ module Geokit
       end
 
       def self.submit_url(query_string, options = {})
+        location_type_str = options[:location_type] ? "&location_type=#{options[:location_type]}" : ''
+        result_type_str = options[:result_type] ? "&result_type=#{options[:result_type]}" : ''
         language_str = options[:language] ? "&language=#{options[:language]}" : ''
-        query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{language_str}"
+        query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{location_type_str}#{result_type_str}#{language_str}"
         if client_id && cryptographic_key
           channel_string = channel ? "&channel=#{channel}" : ''
           urlToSign = query_string + "&client=#{client_id}" + channel_string
