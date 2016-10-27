@@ -110,4 +110,6 @@ module Geokit
       end
     end
   end
+
+  Geokit::Geocoders::OsmGeocoder = Geokit::Geocoders::OSMGeocoder
 end

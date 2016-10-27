@@ -45,13 +45,14 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Yandex
 * MapQuest
 * Geocod.io
+* OpenStreetMap (Nominatim)
 * Mapbox - requires an access token
 * [OpenCage](http://geocoder.opencagedata.com) - requires an API key
 
 ### address geocoders that also provide reverse geocoding
 * Google - Supports multiple results and bounding box/country code biasing.  Also supports Maps API for Business keys; see the configuration section below.
 * FCC
-* OpenStreetMap
+* OpenStreetMap (Nominatim)
 * Mapbox
 * OpenCage
 
@@ -120,6 +121,10 @@ If you're using this gem by itself, here are the configuration options:
     # filled in at a minimum.  If the proxy requires authentication, the username
     # and password can be provided as well.
     Geokit::Geocoders::proxy = 'https://user:password@host:port'
+
+    # This setting can be used if a web service blocks requests by certain user agents.
+    # If not set Geokit uses the default useragent header set by the different net adapter libs.
+    Geokit::Geocoders::useragent = 'my agent string'
 
     # This is your yahoo application key for the Yahoo Geocoder.
     # See http://developer.yahoo.com/faq/index.html#appid
@@ -263,12 +268,13 @@ Multi Geocoder - provides failover for the physical location geocoders, and also
     Geokit::Geocoders::MultiGeocoder.geocode("900 Sycamore Drive")
 
     Geokit::Geocoders::MultiGeocoder.geocode("12.12.12.12")
+
+    Geokit::Geocoders::MultiGeocoder.geocode("Hamburg, Germany", :provider_order => [:osm, :mapbox, :google])
 ```
 
 ## MULTIPLE RESULTS
 Some geocoding services will return multple results if the there isn't one clear result.
-Geoloc can capture multiple results through its "all" method. Currently only the Google geocoder
-supports multiple results:
+Geoloc can capture multiple results through its "all" method.
 
 ```ruby
     irb> geo=Geokit::Geocoders::GoogleGeocoder.geocode("900 Sycamore Drive")

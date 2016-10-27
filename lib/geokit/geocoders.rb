@@ -33,6 +33,7 @@ module Geokit
   # Some of these geocoders require configuration. You don't have to provide it here. See the README.
   module Geocoders
     @@proxy = nil
+    @@useragent = nil
     @@request_timeout = nil
     @@provider_order = [:google, :us]
     @@ip_provider_order = [:geo_plugin, :ip]
