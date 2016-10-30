@@ -10,7 +10,10 @@ module Geokit
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
       def self.do_reverse_geocode(latlng, options = {})
         latlng = LatLng.normalize(latlng)
-        url = submit_url("latlng=#{Geokit::Inflector.url_escape(latlng.ll)}", options)
+        latlng_str = "latlng=#{Geokit::Inflector.url_escape(latlng.ll)}"
+        result_type_str = options[:result_type] ? "&result_type=#{options[:result_type]}" : ''
+        location_type_str = options[:location_type] ? "&location_type=#{options[:location_type]}" : ''
+        url = submit_url("#{latlng_str}#{result_type_str}#{location_type_str}", options)
         process :json, url
       end
 
@@ -69,10 +72,8 @@ module Geokit
       end
 
       def self.submit_url(query_string, options = {})
-        location_type_str = options[:location_type] ? "&location_type=#{options[:location_type]}" : ''
-        result_type_str = options[:result_type] ? "&result_type=#{options[:result_type]}" : ''
         language_str = options[:language] ? "&language=#{options[:language]}" : ''
-        query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{location_type_str}#{result_type_str}#{language_str}"
+        query_string = "/maps/api/geocode/json?sensor=false&#{query_string}#{language_str}"
         if client_id && cryptographic_key
           channel_string = channel ? "&channel=#{channel}" : ''
           urlToSign = query_string + "&client=#{client_id}" + channel_string
