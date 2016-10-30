@@ -8,6 +8,12 @@ module Geokit
 
       # ==== OPTIONS
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
+      # * :result_type - This option allows restricting results by specific result types.
+      #                  See https://developers.google.com/maps/documentation/geocoding/intro#reverse-restricted
+      #                  Note: This parameter is available only for requests that include an API key or a client ID.
+      # * :location_type - This option allows restricting results by specific location type.
+      #                    See https://developers.google.com/maps/documentation/geocoding/intro#reverse-restricted
+      #                    Note: This parameter is available only for requests that include an API key or a client ID.
       def self.do_reverse_geocode(latlng, options = {})
         latlng = LatLng.normalize(latlng)
         latlng_str = "latlng=#{Geokit::Inflector.url_escape(latlng.ll)}"
