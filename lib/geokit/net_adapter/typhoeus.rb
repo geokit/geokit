@@ -2,7 +2,7 @@ module Geokit
   module NetAdapter
     class Typhoeus
       def self.do_get(url)
-        Geokit::Geocoders.useragent ? headers = {'User-Agent' => Geokit::Geocoders.useragent} : headers = {}
+        headers = Geokit::Geocoders.useragent ? {'User-Agent' => Geokit::Geocoders.useragent} : {}
         ::Typhoeus.get(url.to_s, :headers => headers)
       end
 
