@@ -82,6 +82,23 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 9, res.accuracy
   end
 
+  def test_google_postal_town
+    address = 'London SE3 0JB, UK'
+    url = "#{@base_url}?sensor=false&address=#{escape(address)}"
+    TestHelper.expects(:last_url).with(url)
+    res = geocode(address, :google_postal_town)
+    assert_equal 'Kidbrooke Way', res.street_address
+    assert_equal 'England', res.state
+    assert_equal 'London', res.city
+    assert_equal 'Greater London', res.district
+    assert_equal 'SE3 0JB', res.zip
+    assert_equal '51.465923,0.0290915', res.ll
+    assert !res.is_us?
+    assert_equal 'Kidbrooke Way, London SE3 0JB, UK', res.full_address
+    assert_equal 'zip+4', res.precision
+    assert_equal 'google', res.provider
+  end
+
   def test_google_city
     url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)

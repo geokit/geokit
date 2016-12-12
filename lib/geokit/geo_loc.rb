@@ -26,7 +26,7 @@ module Geokit
     # Street number and street name are extracted from the street address
     # attribute if they don't exist
     attr_accessor :state_name, :state_code, :zip, :country_code, :country
-    attr_accessor :all, :district, :province, :sub_premise,
+    attr_accessor :all, :district, :sub_premise,
                   :neighborhood
     attr_writer :state, :full_address, :street_number, :street_name, :formatted_address
     attr_reader :city, :street_address
@@ -42,6 +42,10 @@ module Geokit
     # FCC Attributes
     attr_accessor :district_fips, :state_fips, :block_fips
 
+    def province
+      state
+    end
+
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h = {})
       @all = [self]
@@ -56,7 +60,6 @@ module Geokit
       @state_name = h[:state_name]
       @zip = h[:zip]
       @country_code = h[:country_code]
-      @province = h[:province]
       @success = false
       @precision = 'unknown'
       @full_address = nil
@@ -104,7 +107,7 @@ module Geokit
     def hash
       res = {}
       fields = [:success, :lat, :lng, :country_code, :city, :state, :zip,
-       :street_address, :province, :district, :provider, :full_address, :is_us?,
+       :street_address, :district, :provider, :full_address, :is_us?,
        :ll, :precision, :district_fips, :state_fips, :block_fips, :sub_premise]
       fields.each { |s| res[s] = send(s.to_s) }
       res
@@ -130,7 +133,7 @@ module Geokit
     # state, zip, and country code.  Only includes those attributes that are
     # non-blank.
     def to_geocodeable_s
-      a = [street_address, district, city, province, state, zip, country_code].compact
+      a = [street_address, district, city, state, zip, country_code].compact
       a.delete_if { |e| !e || e == '' }
       a.join(', ')
     end
