@@ -12,7 +12,7 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     geocoder_class.key = 'SOMEKEYVALUE'
     @ca_full_hash = { street_address: '2105 West 32nd Avenue',
-                      city: 'Vancouver', province: 'BC', state: 'BC' }
+                      city: 'Vancouver', state: 'BC' }
     @ca_full_txt = '2105 West 32nd Avenue Vancouver BC'
   end
 
@@ -34,7 +34,8 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
   private
 
   def verify(location)
-    assert_equal 'BC', location.province
+    assert_equal 'BC', location.state
+    assert_equal 'BC', location.province # alias
     assert_equal 'Vancouver', location.city
     assert_equal '49.243086,-123.153684', location.ll
     assert !location.is_us?
