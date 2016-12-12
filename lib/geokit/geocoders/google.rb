@@ -196,6 +196,8 @@ module Geokit
           when types.include?('administrative_area_level_1') # state
             loc.state_code = comp['short_name']
             loc.state_name = comp['long_name']
+          when types.include?('postal_town')
+            loc.city = comp['long_name']
           when types.include?('postal_code')
             loc.zip = comp['long_name']
           when types.include?('country')
