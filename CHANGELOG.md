@@ -1,3 +1,16 @@
+## 1.11.0
+
+**Existing Geocoder Changes**
+* Google - Add components option
+* Google - Add zip code handling
+* Bing - Provice is actually district (county)
+* Mapbox - Handle state only values
+* Yandex - Fetch district
+
+**Other Changes**
+* Alias province to city
+* Use Timeout::Error instead of TimeoutError
+
 ## 1.10.0
 
 **Existing Geocoder Changes**
