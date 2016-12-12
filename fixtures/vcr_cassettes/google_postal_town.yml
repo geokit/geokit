@@ -1,0 +1,117 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=London%20SE3%200JB,%20UK&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 12 Dec 2016 12:13:46 GMT
+      Expires:
+      - Tue, 13 Dec 2016 12:13:46 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '527'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,34"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "SE3 0JB",
+                       "short_name" : "SE3 0JB",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Kidbrooke Way",
+                       "short_name" : "Kidbrooke Way",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "London",
+                       "short_name" : "London",
+                       "types" : [ "postal_town" ]
+                    },
+                    {
+                       "long_name" : "Greater London",
+                       "short_name" : "Greater London",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "England",
+                       "short_name" : "England",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United Kingdom",
+                       "short_name" : "GB",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Kidbrooke Way, London SE3 0JB, UK",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 51.46658900000001,
+                          "lng" : 0.03074499999999999
+                       },
+                       "southwest" : {
+                          "lat" : 51.4652051,
+                          "lng" : 0.0282072
+                       }
+                    },
+                    "location" : {
+                       "lat" : 51.465923,
+                       "lng" : 0.0290915
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 51.4672460302915,
+                          "lng" : 0.03082508029150203
+                       },
+                       "southwest" : {
+                          "lat" : 51.4645480697085,
+                          "lng" : 0.02812711970849796
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ8yUGzbap2EcRgQoytQpqCos",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Mon, 12 Dec 2016 12:13:46 GMT
+recorded_with: VCR 3.0.1
