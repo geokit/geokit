@@ -99,6 +99,23 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'google', res.provider
   end
 
+  def test_google_postal_town_welling
+    address = 'DA16 3RS, UK'
+    url = "#{@base_url}?sensor=false&address=#{escape(address)}"
+    TestHelper.expects(:last_url).with(url)
+    res = geocode(address, :google_postal_town_welling)
+    assert_equal 'Hill View Drive', res.street_address
+    assert_equal 'England', res.state
+    assert_equal 'Welling', res.city
+    assert_equal 'Greater London', res.district
+    assert_equal 'DA16 3RS', res.zip
+    assert_equal '51.4668468,0.08660849999999999', res.ll
+    assert !res.is_us?
+    assert_equal 'Hill View Dr, Welling DA16 3RS, UK', res.full_address
+    assert_equal 'zip+4', res.precision
+    assert_equal 'google', res.provider
+  end
+
   def test_google_city
     url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)

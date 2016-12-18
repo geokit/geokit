@@ -1,0 +1,117 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=DA16%203RS,%20UK&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 18 Dec 2016 14:59:32 GMT
+      Expires:
+      - Mon, 19 Dec 2016 14:59:32 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '522'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,34"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "DA16 3RS",
+                       "short_name" : "DA16 3RS",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Hill View Drive",
+                       "short_name" : "Hill View Dr",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Welling",
+                       "short_name" : "Welling",
+                       "types" : [ "postal_town" ]
+                    },
+                    {
+                       "long_name" : "Greater London",
+                       "short_name" : "Greater London",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "England",
+                       "short_name" : "England",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United Kingdom",
+                       "short_name" : "GB",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Hill View Dr, Welling DA16 3RS, UK",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 51.4691057,
+                          "lng" : 0.0878193
+                       },
+                       "southwest" : {
+                          "lat" : 51.4661165,
+                          "lng" : 0.0859688
+                       }
+                    },
+                    "location" : {
+                       "lat" : 51.4668468,
+                       "lng" : 0.08660849999999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 51.4691057,
+                          "lng" : 0.08824303029150203
+                       },
+                       "southwest" : {
+                          "lat" : 51.4661165,
+                          "lng" : 0.08554506970849796
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ8aofuS6p2EcRq91u5vTVNDk",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 18 Dec 2016 14:59:32 GMT
+recorded_with: VCR 3.0.1
