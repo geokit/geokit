@@ -6,7 +6,7 @@ module Geokit
 
       private
 
-      def self.do_geocode(ip)
+      def self.do_geocode(ip, _=nil)
         process :json, ip
       end
 

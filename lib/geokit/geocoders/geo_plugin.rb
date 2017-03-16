@@ -4,7 +4,7 @@ module Geokit
     class GeoPluginGeocoder < BaseIpGeocoder
       private
 
-      def self.do_geocode(ip)
+      def self.do_geocode(ip, _=nil)
         process :xml, ip
       end
 
