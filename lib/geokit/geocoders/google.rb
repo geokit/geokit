@@ -8,9 +8,18 @@ module Geokit
 
       # ==== OPTIONS
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
+      # * :result_type - This option allows restricting results by specific result types.
+      #                  See https://developers.google.com/maps/documentation/geocoding/intro#reverse-restricted
+      #                  Note: This parameter is available only for requests that include an API key or a client ID.
+      # * :location_type - This option allows restricting results by specific location type.
+      #                    See https://developers.google.com/maps/documentation/geocoding/intro#reverse-restricted
+      #                    Note: This parameter is available only for requests that include an API key or a client ID.
       def self.do_reverse_geocode(latlng, options = {})
         latlng = LatLng.normalize(latlng)
-        url = submit_url("latlng=#{Geokit::Inflector.url_escape(latlng.ll)}", options)
+        latlng_str = "latlng=#{Geokit::Inflector.url_escape(latlng.ll)}"
+        result_type_str = options[:result_type] ? "&result_type=#{options[:result_type]}" : ''
+        location_type_str = options[:location_type] ? "&location_type=#{options[:location_type]}" : ''
+        url = submit_url("#{latlng_str}#{result_type_str}#{location_type_str}", options)
         process :json, url
       end
 
