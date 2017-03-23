@@ -21,7 +21,7 @@ module Geokit
       end
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address)
+      def self.do_geocode(address, _=nil)
         process :json, submit_url(address)
       end
 

@@ -17,7 +17,7 @@ module Geokit
       private
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(loc)
+      def self.do_geocode(loc, _=nil)
         process :xml, submit_url(loc), GeoLoc.new
       end
 
