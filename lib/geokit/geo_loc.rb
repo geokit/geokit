@@ -49,7 +49,10 @@ module Geokit
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h = {})
       @all = [self]
-
+      
+      # sanatises the GeoLoc object so that it conforms to []
+      h = h.to_hash
+      
       @street_address = h[:street_address]
       @sub_premise = nil
       @street_number = nil
