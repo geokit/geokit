@@ -221,7 +221,7 @@ In addition, you can use viewport or country code biasing to make sure the geoco
     => "Toledo, OH, USA"
 ```
 
-Not exactly what we were looking for. We know that Toledo is in Spain, so we can tell the Google Geocoder to prefer results from Spain first, and then wander the Toledos of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
+Not exactly what we were looking for. We know that Toledo is in Spain, so we can tell the Google Geocoder to prefer results from Spain first, and then wander the Toledos of the world. To do that, we have to pass Spain's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
 
 ```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Toledo', :bias => 'es')
