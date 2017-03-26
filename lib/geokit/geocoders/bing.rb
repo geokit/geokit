@@ -51,7 +51,7 @@ module Geokit
         full_address:   'Address/FormattedAddress',
         city:           'Address/Locality',
         state:          'Address/AdminDistrict',
-        province:       'Address/AdminDistrict2',
+        district:       'Address/AdminDistrict2',
         zip:            'Address/PostalCode',
         country:        'Address/CountryRegion',
         lat:            'Point/Latitude',
