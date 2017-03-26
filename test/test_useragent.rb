@@ -8,7 +8,7 @@ class UserAgentTest < Test::Unit::TestCase
     NETHTTPDEFAULT          = 'Ruby'
     NETHTTPDEFAULTHEADERS   = {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3'}
     TYPHOEUSDEFAULT         = 'Typhoeus - https://github.com/typhoeus/typhoeus'
-    TYPHOEUSDEFAULTHEADERS  = {'Expect'=>''}
+    TYPHOEUSDEFAULTHEADERS  = {}
     TESTAGENT               = 'MyAgent'
     URL                     = 'http://www.example.com'
 
