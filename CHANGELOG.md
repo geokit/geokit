@@ -3,9 +3,12 @@
 **Existing Geocoder Changes**
 * Google - Add components option
 * Google - Add zip code handling
+* Google - optional reverse parameters
 * Bing - Provice is actually district (county)
 * Mapbox - Handle state only values
 * Yandex - Fetch district
+* Fix multi geocoder
+* Various province improvements
 
 **Other Changes**
 * Alias province to city
