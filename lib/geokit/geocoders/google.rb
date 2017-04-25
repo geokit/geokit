@@ -48,10 +48,11 @@ module Geokit
       # Geokit::Geocoders::GoogleGeocoder.geocode('Austin',
       #   :components => {administrative_area: 'IL', country: 'US'}).state # => 'IL'
       def self.do_geocode(address, options = {})
+        type = options[:type] || 'address'
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         components_str = options[:components] ? construct_components_string_from_options(options[:components]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        url = submit_url("address=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}#{components_str}", options)
+        url = submit_url("#{type}=#{Geokit::Inflector.url_escape(address_str)}#{bias_str}#{components_str}", options)
         process :json, url
       end
 
