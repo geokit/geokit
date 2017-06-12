@@ -6,6 +6,12 @@ Geokit
 [![Coverage Status](https://coveralls.io/repos/geokit/geokit/badge.png)](https://coveralls.io/r/geokit/geokit)
 [![Dependency Status](https://gemnasium.com/geokit/geokit.png)](https://gemnasium.com/geokit/geokit)
 [![Code Climate](https://codeclimate.com/github/geokit/geokit.png)](https://codeclimate.com/github/geokit/geokit)
+[![Bounty Source](https://api.bountysource.com/badge/tracker?tracker_id=287210)](https://www.bountysource.com/teams/geokit)
+
+## SUPPORT GEOKIT
+
+* STAR us on Github to show your support
+* Make a small contribution to help keep us going via [Gratipay](https://gratipay.com/Geokit/) or [Patreon](https://www.patreon.com/noack)
 
 ## DESCRIPTION
 
