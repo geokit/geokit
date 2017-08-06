@@ -1,7 +1,7 @@
 module Geokit
   module Geocoders
     class GoogleGeocoder < Geocoder
-      config :client_id, :cryptographic_key, :channel, :api_key
+      config :client_id, :cryptographic_key, :channel, :api_key, :host
       self.secure = true
 
       private
@@ -89,7 +89,8 @@ module Geokit
           url_with_key = query_string + "&key=#{api_key}"
           "#{protocol}://maps.googleapis.com" + url_with_key
         else
-          "#{protocol}://maps.google.com" + query_string
+          request_host = host || 'maps.google.com'
+          "#{protocol}://#{request_host}#{query_string}"
         end
       end
 

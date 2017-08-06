@@ -50,6 +50,19 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'http://maps.google.com/maps/api/geocode/json?sensor=false&address=New+York', url
   end
 
+  def test_google_cn
+    Geokit::Geocoders.host = 'maps.google.cn'
+    url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
+    TestHelper.expects(:last_url).with(url)
+    res = geocode(@address, :google_full_short)
+    assert_equal 'CA', res.state
+    assert_equal 'San Francisco', res.city
+    assert_array_in_delta [37.7749295, -122.4194155], res.to_a # slightly dif from yahoo
+    assert res.is_us?
+    assert_equal 'San Francisco, CA, USA', res.full_address # slightly different from yahoo
+    assert_equal 'google', res.provider
+  end
+
   def test_google_full_address
     url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)
