@@ -39,6 +39,7 @@ module Geokit
     @@ip_provider_order = [:geo_plugin, :ip]
     @@logger = Logger.new(STDOUT)
     @@logger.level = Logger::INFO
+    @@host = nil
     @@domain = nil
     @@net_adapter = Geokit::NetAdapter::NetHttp
     @@secure = true
