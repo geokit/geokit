@@ -108,17 +108,17 @@ module Geokit
         LatLng.new(rad2deg(end_lat), rad2deg(end_lng))
       end
 
-      # Returns the midpoint, given two points. Returns a LatLng.
+      # Returns the waypoint, given two points. Returns a LatLng.
       # Typically, the instance method will be used instead of this method.
       # Valid option:
       #   :units - valid values are :miles, :kms, or :nms
       #   (:miles is the default)
-      def midpoint_between(from, to, options = {})
+      def waypoint_between(from, to, distance_factor, options = {})
         from = Geokit::LatLng.normalize(from)
 
         heading = from.heading_to(to)
         distance = from.distance_to(to, options)
-        from.endpoint(heading, distance / 2, options)
+        from.endpoint(heading, distance * distance_factor, options)
       end
 
       # Geocodes a location using the multi geocoder.
@@ -235,11 +235,12 @@ module Geokit
       self.class.endpoint(self, heading, distance, options)
     end
 
-    # Returns the midpoint, given another point on the map.
+    # Returns the waypoint, given another point on the map.
     # Valid option:
     # :units - valid values are :miles, :kms, or :nms (:miles is the default)
-    def midpoint_to(other, options = {})
-      self.class.midpoint_between(self, other, options)
+    def waypoint_to(other, distance_factor = 0.5, options = {})
+      self.class.waypoint_between(self, other, distance_factor, options)
     end
+    alias_method :midpoint_to, :waypoint_to
   end
 end

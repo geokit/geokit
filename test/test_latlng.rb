@@ -152,6 +152,12 @@ class LatLngTest < Test::Unit::TestCase #:nodoc: all
     assert_in_delta(-96.974296, midpoint.lng, 0.0005)
   end
 
+  def test_waypoint
+    midpoint = @loc_a.waypoint_to(@loc_e, 0.5)
+    assert_in_delta 32.944061, midpoint.lat, 0.0005
+    assert_in_delta(-96.974296, midpoint.lng, 0.0005)
+  end
+
   def test_normalize
     lat = 37.7690
     lng = -122.443
