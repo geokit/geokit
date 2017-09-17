@@ -187,13 +187,19 @@ If you're using this gem by itself, here are the configuration options:
 
     # This is the order in which the geocoders are called in a failover scenario
     # If you only want to use a single geocoder, put a single symbol in the array.
-    # Valid symbols are :google, :yahoo, :us, and :ca.
+    #
+    # Valid symbols are: :bing, :ca, :fcc, :geocodio, :geonames, :google,
+    # :map_quest, :mapbox, :maxmind, :opencage, :osm, :us, :yahoo, and :yandex.
+    #
     # Be aware that there are Terms of Use restrictions on how you can use the
     # various geocoders.  Make sure you read up on relevant Terms of Use for each
     # geocoder you are going to use.
     Geokit::Geocoders::provider_order = [:google,:us]
 
-    # The IP provider order. Valid symbols are :ip,:geo_plugin.
+    # The IP provider order.
+    #
+    # Valid symbols are :free_geo_ip, :geo_plugin, :geobytes, :ip, and :ripe.
+    #
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 
