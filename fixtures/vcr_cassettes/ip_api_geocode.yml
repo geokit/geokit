@@ -1,0 +1,35 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://ip-api.com/json/74.125.237.209
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 23 Sep 2017 04:40:17 GMT
+      Content-Length:
+      - '287'
+    body:
+      encoding: UTF-8
+      string: '{"as":"AS15169 Google Inc.","city":"Mountain View","country":"United
+        States","countryCode":"US","isp":"Google","lat":37.4192,"lon":-122.0574,"org":"Google","query":"74.125.237.209","region":"CA","regionName":"California","status":"success","timezone":"America/Los_Angeles","zip":"94043"}'
+    http_version: 
+  recorded_at: Sat, 23 Sep 2017 04:34:33 GMT
+recorded_with: VCR 3.0.3
