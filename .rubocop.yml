@@ -214,7 +214,7 @@ Style/Lambda:
 
 # Offense count: 4
 # Cop supports --auto-correct.
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Exclude:
     - 'test/test_maxmind_geocoder.rb'
 
