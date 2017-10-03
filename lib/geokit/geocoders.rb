@@ -26,6 +26,7 @@ module Geokit
   # ### IP address geocoders
   # * IP Geocoder - geocodes an IP address using hostip.info's web service.
   # * Geoplugin.net -- another IP address geocoder
+  # * IP-API.com -- another IP address geocoder
   #
   # ### The Multigeocoder
   # * Multi Geocoder - provides failover for the physical location geocoders.
