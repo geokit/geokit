@@ -118,7 +118,7 @@ module Geokit
     end
 
     def self.from_string(thing)
-      thing.strip!
+      thing = thing.strip
       match = thing.match(/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/)
       if match
         Geokit::LatLng.new(match[1], match[2])
