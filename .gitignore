@@ -7,3 +7,5 @@ nbproject
 Gemfile.lock
 *.idea
 coverage
+.ruby-gemset
+.ruby-version

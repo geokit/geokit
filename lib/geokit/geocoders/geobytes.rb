@@ -2,7 +2,7 @@ module Geokit
   module Geocoders
     # Provides geocoding based upon an IP address.  The underlying web service is GeoSelect
     class GeobytesGeocoder < BaseIpGeocoder
-      def self.do_geocode(ip)
+      def self.do_geocode(ip, _=nil)
         process :json, ip
       end
 

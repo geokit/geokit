@@ -50,6 +50,19 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'http://maps.google.com/maps/api/geocode/json?sensor=false&address=New+York', url
   end
 
+  def test_google_cn
+    Geokit::Geocoders.host = 'maps.google.cn'
+    url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
+    TestHelper.expects(:last_url).with(url)
+    res = geocode(@address, :google_full_short)
+    assert_equal 'CA', res.state
+    assert_equal 'San Francisco', res.city
+    assert_array_in_delta [37.7749295, -122.4194155], res.to_a # slightly dif from yahoo
+    assert res.is_us?
+    assert_equal 'San Francisco, CA, USA', res.full_address # slightly different from yahoo
+    assert_equal 'google', res.provider
+  end
+
   def test_google_full_address
     url = "#{@base_url}?sensor=false&address=#{escape(@address)}"
     TestHelper.expects(:last_url).with(url)
@@ -80,6 +93,23 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = geocode(@google_full_loc, :google_full)
 
     assert_equal 9, res.accuracy
+  end
+
+  def test_google_postal_town
+    address = 'London SE3 0JB, UK'
+    url = "#{@base_url}?sensor=false&address=#{escape(address)}"
+    TestHelper.expects(:last_url).with(url)
+    res = geocode(address, :google_postal_town)
+    assert_equal 'Kidbrooke Way', res.street_address
+    assert_equal 'England', res.state
+    assert_equal 'London', res.city
+    assert_equal 'Greater London', res.district
+    assert_equal 'SE3 0JB', res.zip
+    assert_equal '51.465923,0.0290915', res.ll
+    assert !res.is_us?
+    assert_equal 'Kidbrooke Way, London SE3 0JB, UK', res.full_address
+    assert_equal 'zip+4', res.precision
+    assert_equal 'google', res.provider
   end
 
   def test_google_city

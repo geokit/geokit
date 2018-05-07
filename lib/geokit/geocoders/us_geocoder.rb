@@ -8,7 +8,7 @@ module Geokit
 
       private
 
-      def self.do_geocode(address)
+      def self.do_geocode(address, _=nil)
         process :csv, submit_url(address)
       end
 

@@ -9,7 +9,7 @@ module Geokit
       private
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(address)
+      def self.do_geocode(address, _=nil)
         url = submit_url(address)
         res = call_geocoder_service(url)
         return GeoLoc.new unless net_adapter.success?(res)
@@ -51,7 +51,7 @@ module Geokit
         full_address:   'Address/FormattedAddress',
         city:           'Address/Locality',
         state:          'Address/AdminDistrict',
-        province:       'Address/AdminDistrict2',
+        district:       'Address/AdminDistrict2',
         zip:            'Address/PostalCode',
         country:        'Address/CountryRegion',
         lat:            'Point/Latitude',

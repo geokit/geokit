@@ -26,6 +26,7 @@ module Geokit
   # ### IP address geocoders
   # * IP Geocoder - geocodes an IP address using hostip.info's web service.
   # * Geoplugin.net -- another IP address geocoder
+  # * IP-API.com -- another IP address geocoder
   #
   # ### The Multigeocoder
   # * Multi Geocoder - provides failover for the physical location geocoders.
@@ -33,11 +34,13 @@ module Geokit
   # Some of these geocoders require configuration. You don't have to provide it here. See the README.
   module Geocoders
     @@proxy = nil
+    @@useragent = nil
     @@request_timeout = nil
     @@provider_order = [:google, :us]
     @@ip_provider_order = [:geo_plugin, :ip]
     @@logger = Logger.new(STDOUT)
     @@logger.level = Logger::INFO
+    @@host = nil
     @@domain = nil
     @@net_adapter = Geokit::NetAdapter::NetHttp
     @@secure = true

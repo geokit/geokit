@@ -45,13 +45,14 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Yandex
 * MapQuest
 * Geocod.io
+* OpenStreetMap (Nominatim)
 * Mapbox - requires an access token
 * [OpenCage](http://geocoder.opencagedata.com) - requires an API key
 
 ### address geocoders that also provide reverse geocoding
 * Google - Supports multiple results and bounding box/country code biasing.  Also supports Maps API for Business keys; see the configuration section below.
 * FCC
-* OpenStreetMap
+* OpenStreetMap (Nominatim)
 * Mapbox
 * OpenCage
 
@@ -62,6 +63,7 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * RIPE
 * MaxMind
 * freegeoip.net
+* IP-API.com
 
 ### HTTPS-supporting geocoders
 * Google
@@ -120,6 +122,10 @@ If you're using this gem by itself, here are the configuration options:
     # filled in at a minimum.  If the proxy requires authentication, the username
     # and password can be provided as well.
     Geokit::Geocoders::proxy = 'https://user:password@host:port'
+
+    # This setting can be used if a web service blocks requests by certain user agents.
+    # If not set Geokit uses the default useragent header set by the different net adapter libs.
+    Geokit::Geocoders::useragent = 'my agent string'
 
     # This is your yahoo application key for the Yahoo Geocoder.
     # See http://developer.yahoo.com/faq/index.html#appid
@@ -182,13 +188,19 @@ If you're using this gem by itself, here are the configuration options:
 
     # This is the order in which the geocoders are called in a failover scenario
     # If you only want to use a single geocoder, put a single symbol in the array.
-    # Valid symbols are :google, :yahoo, :us, and :ca.
+    #
+    # Valid symbols are: :bing, :ca, :fcc, :geocodio, :geonames, :google,
+    # :map_quest, :mapbox, :maxmind, :opencage, :osm, :us, :yahoo, and :yandex.
+    #
     # Be aware that there are Terms of Use restrictions on how you can use the
     # various geocoders.  Make sure you read up on relevant Terms of Use for each
     # geocoder you are going to use.
     Geokit::Geocoders::provider_order = [:google,:us]
 
-    # The IP provider order. Valid symbols are :ip,:geo_plugin.
+    # The IP provider order.
+    #
+    # Valid symbols are :free_geo_ip, :geo_plugin, :geobytes, :ip, and :ripe.
+    #
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
 
@@ -221,7 +233,7 @@ In addition, you can use viewport or country code biasing to make sure the geoco
     => "Toledo, OH, USA"
 ```
 
-Not exactly what we were looking for. We know that Toledo is in Spain, so we can tell the Google Geocoder to prefer results from Spain first, and then wander the Toledos of the world. To do that, we have to pass Italy's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
+Not exactly what we were looking for. We know that Toledo is in Spain, so we can tell the Google Geocoder to prefer results from Spain first, and then wander the Toledos of the world. To do that, we have to pass Spain's ccTLD (country code top-level domain) to the `:bias` option of the `geocode` method. You can find a comprehensive list of all ccTLDs here: http://en.wikipedia.org/wiki/CcTLD.
 
 ```ruby
     irb> res = Geokit::Geocoders::GoogleGeocoder.geocode('Toledo', :bias => 'es')
@@ -263,12 +275,13 @@ Multi Geocoder - provides failover for the physical location geocoders, and also
     Geokit::Geocoders::MultiGeocoder.geocode("900 Sycamore Drive")
 
     Geokit::Geocoders::MultiGeocoder.geocode("12.12.12.12")
+
+    Geokit::Geocoders::MultiGeocoder.geocode("Hamburg, Germany", :provider_order => [:osm, :mapbox, :google])
 ```
 
 ## MULTIPLE RESULTS
 Some geocoding services will return multple results if the there isn't one clear result.
-Geoloc can capture multiple results through its "all" method. Currently only the Google geocoder
-supports multiple results:
+Geoloc can capture multiple results through its "all" method.
 
 ```ruby
     irb> geo=Geokit::Geocoders::GoogleGeocoder.geocode("900 Sycamore Drive")

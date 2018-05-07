@@ -6,7 +6,7 @@ module Geokit
 
       private
 
-      def self.do_geocode(ip)
+      def self.do_geocode(ip, _=nil)
         res = GeoIP.new(geoip_data_path).city(ip)
 
         loc = new_loc

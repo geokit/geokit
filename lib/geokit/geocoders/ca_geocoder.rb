@@ -17,7 +17,7 @@ module Geokit
       private
 
       # Template method which does the geocode lookup.
-      def self.do_geocode(loc)
+      def self.do_geocode(loc, _=nil)
         process :xml, submit_url(loc), GeoLoc.new
       end
 
@@ -28,7 +28,6 @@ module Geokit
         loc.street_number = xml.elements['//stnumber'].text
         loc.street_address = xml.elements['//staddress'].text
         loc.state = xml.elements['//prov'].text
-        loc.province = xml.elements['//prov'].text
         loc.zip = xml.elements['//postal'].text
         loc.success = true
         loc

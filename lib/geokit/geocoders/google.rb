@@ -1,16 +1,25 @@
 module Geokit
   module Geocoders
     class GoogleGeocoder < Geocoder
-      config :client_id, :cryptographic_key, :channel, :api_key
+      config :client_id, :cryptographic_key, :channel, :api_key, :host
       self.secure = true
 
       private
 
       # ==== OPTIONS
       # * :language - See: https://developers.google.com/maps/documentation/geocoding
+      # * :result_type - This option allows restricting results by specific result types.
+      #                  See https://developers.google.com/maps/documentation/geocoding/intro#reverse-restricted
+      #                  Note: This parameter is available only for requests that include an API key or a client ID.
+      # * :location_type - This option allows restricting results by specific location type.
+      #                    See https://developers.google.com/maps/documentation/geocoding/intro#reverse-restricted
+      #                    Note: This parameter is available only for requests that include an API key or a client ID.
       def self.do_reverse_geocode(latlng, options = {})
         latlng = LatLng.normalize(latlng)
-        url = submit_url("latlng=#{Geokit::Inflector.url_escape(latlng.ll)}", options)
+        latlng_str = "latlng=#{Geokit::Inflector.url_escape(latlng.ll)}"
+        result_type_str = options[:result_type] ? "&result_type=#{options[:result_type]}" : ''
+        location_type_str = options[:location_type] ? "&location_type=#{options[:location_type]}" : ''
+        url = submit_url("#{latlng_str}#{result_type_str}#{location_type_str}", options)
         process :json, url
       end
 
@@ -81,7 +90,8 @@ module Geokit
           url_with_key = query_string + "&key=#{api_key}"
           "#{protocol}://maps.googleapis.com" + url_with_key
         else
-          "#{protocol}://maps.google.com" + query_string
+          request_host = host || 'maps.google.com'
+          "#{protocol}://#{request_host}#{query_string}"
         end
       end
 
@@ -194,10 +204,11 @@ module Geokit
             loc.street_name = comp['long_name']
           when types.include?('locality')
             loc.city = comp['long_name']
-          when types.include?('administrative_area_level_1')
+          when types.include?('administrative_area_level_1') # state
             loc.state_code = comp['short_name']
             loc.state_name = comp['long_name']
-            loc.province = comp['short_name']
+          when types.include?('postal_town')
+            loc.city = comp['long_name']
           when types.include?('postal_code')
             loc.zip = comp['long_name']
           when types.include?('country')
