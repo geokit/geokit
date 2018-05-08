@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.ipstack.com/68.194.36.44?access_key=some_api_key
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 08 May 2018 13:21:13 GMT
+      Content-Type:
+      - application/json; Charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      X-Apilayer-Transaction-Id:
+      - 595071a3-1531-41eb-8697-1143f21a78cb
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Request-Time:
+      - '0.026'
+    body:
+      encoding: UTF-8
+      string: '{"ip":"68.194.36.44","type":"ipv4","continent_code":"NA","continent_name":"North
+        America","country_code":"US","country_name":"United States","region_code":"NY","region_name":"New
+        York","city":"The Bronx","zip":"10466","latitude":40.8913,"longitude":-73.8448,"location":{"geoname_id":5110266,"capital":"Washington
+        D.C.","languages":[{"code":"en","name":"English","native":"English"}],"country_flag":"http:\/\/assets.ipstack.com\/flags\/us.svg","country_flag_emoji":"\ud83c\uddfa\ud83c\uddf8","country_flag_emoji_unicode":"U+1F1FA
+        U+1F1F8","calling_code":"1","is_eu":false}}'
+    http_version: 
+  recorded_at: Tue, 08 May 2018 13:21:13 GMT
+recorded_with: VCR 4.0.0

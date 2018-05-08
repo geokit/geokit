@@ -5,6 +5,10 @@ module Geokit
       private
 
       def self.do_geocode(ip, _=nil)
+        warn '[DEPRECATION] `freegeoip` is deprecated. Please use `ipstack`'\
+             ' instead. You can find more at'\
+             ' https://github.com/apilayer/freegeoip#readme'
+
         process :xml, ip
       end
 
