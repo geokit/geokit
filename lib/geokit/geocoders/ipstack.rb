@@ -1,6 +1,7 @@
 module Geokit
   module Geocoders
-    # Provides geocoding based upon an IP address.  The underlying web service is freegeoip.net
+    # Provides geocoding based upon an IP address. The underlying web service is
+    # ipstack, old freegeoip.net
     class IpstackGeocoder < BaseIpGeocoder
       config :api_key
       self.secure = true
