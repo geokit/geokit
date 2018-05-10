@@ -4,7 +4,6 @@ module Geokit
     # ipstack, old freegeoip.net
     class IpstackGeocoder < BaseIpGeocoder
       config :api_key
-      self.secure = true
 
       private
 
@@ -13,7 +12,7 @@ module Geokit
       end
 
       def self.submit_url(ip)
-        "#{protocol}://api.ipstack.com/#{ip}?access_key=#{api_key}"
+        "http://api.ipstack.com/#{ip}?access_key=#{api_key}"
       end
 
       def self.parse_json(result)
