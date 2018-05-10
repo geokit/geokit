@@ -1,3 +1,11 @@
+## 1.12.0
+
+**Existing Geocoder Changes**
+* FreegeoIp: Deprecated
+
+**Other Changes**
+* Added Ipstack which replaces Freegeoip
+
 ## 1.11.0
 
 **Existing Geocoder Changes**
