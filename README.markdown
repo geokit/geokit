@@ -62,7 +62,8 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * Geobytes
 * RIPE
 * MaxMind
-* freegeoip.net
+* Ipstack
+* freegeoip.net (deprecated, now Ipstack)
 * IP-API.com
 
 ### HTTPS-supporting geocoders
@@ -170,6 +171,11 @@ If you're using this gem by itself, here are the configuration options:
     # See http://www.geonames.org
     Geokit::Geocoders::GeonamesGeocoder.key = 'KEY'
 
+    # This is your access key for ipstack.
+    # To use this service either free or premium, you must register a key.
+    # See https://ipstack.com
+    Geokit::Geocoders::IpstackGeocoder.api_key = 'API_KEY'
+
     # Most other geocoders need either no setup or a key
     Geokit::Geocoders::BingGeocoder.key = ''
     Geokit::Geocoders::MapQuestGeocoder.key = ''
@@ -199,7 +205,7 @@ If you're using this gem by itself, here are the configuration options:
 
     # The IP provider order.
     #
-    # Valid symbols are :free_geo_ip, :geo_plugin, :geobytes, :ip, and :ripe.
+    # Valid symbols are :ipstack, :geo_plugin, :geobytes, :ip, and :ripe.
     #
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
