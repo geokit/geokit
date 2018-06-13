@@ -27,7 +27,7 @@ module Geokit
         loc.lng = result['longitude']
         loc.country_code = result['country_code']
         loc.country = result['country_name']
-        loc.success = !loc.city.nil?
+        loc.success = !loc.country_code.nil?
 
         loc
       end
