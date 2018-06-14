@@ -4,7 +4,7 @@ class FCCGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
     super
     @la = Geokit::LatLng.new(34.05, -118.25)
-    @base_url = 'https://data.fcc.gov/api/block/find'
+    @base_url = 'https://geo.fcc.gov/api/census/block/find'
   end
 
   def assert_url(expected_url)
