@@ -1,3 +1,8 @@
+## 1.13.1
+
+**Existing Geocoder Changes**
+* OSM - Fix deprecation by using HTTPS
+
 ## 1.13.0
 
 **Existing Geocoder Changes**
