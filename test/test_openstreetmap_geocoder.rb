@@ -24,8 +24,8 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     @osm_city_hash = {city: 'San Francisco', state: 'CA'}
     @osm_full_loc = Geokit::GeoLoc.new(@osm_full_hash)
     @osm_city_loc = Geokit::GeoLoc.new(@osm_city_hash)
-    @base_url = 'http://nominatim.openstreetmap.org/search'
-    @reverse_url = 'http://nominatim.openstreetmap.org/reverse'
+    @base_url = 'https://nominatim.openstreetmap.org/search'
+    @reverse_url = 'https://nominatim.openstreetmap.org/reverse'
   end
 
   # the testing methods themselves
