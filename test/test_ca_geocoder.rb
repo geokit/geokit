@@ -31,6 +31,14 @@ class CaGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert !geocode(@ca_full_txt).success
   end
 
+  def test_geocoder_with_geo_loc_object
+    response = MockSuccess.new
+    response.expects(:body).returns(CA_SUCCESS)
+    url = 'http://geocoder.ca/?locate=2105+West+32nd+Avenue%2C+Vancouver%2C+BC&auth=SOMEKEYVALUE&geoit=xml'
+    geocoder_class.expects(:call_geocoder_service).with(url).returns(response)
+    verify(geocode(Geokit::GeoLoc.new(@ca_full_hash)))
+  end
+
   private
 
   def verify(location)
