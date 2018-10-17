@@ -13,7 +13,6 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'http://github.com/geokit/geokit'
   spec.license       = 'MIT'
 
-  spec.has_rdoc = true
   spec.rdoc_options = ['--main', 'README.markdown']
   spec.extra_rdoc_files = ['README.markdown']
 
