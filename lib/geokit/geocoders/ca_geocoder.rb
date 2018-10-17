@@ -35,7 +35,8 @@ module Geokit
 
       # Formats the request in the format acceptable by the CA geocoder.
       def self.submit_url(loc)
-        args = ["locate=#{Geokit::Inflector.url_escape(loc)}"]
+        loc_str = loc.is_a?(GeoLoc) ? loc.to_geocodeable_s : loc
+        args = ["locate=#{Geokit::Inflector.url_escape(loc_str)}"]
         args << "auth=#{key}" if key
         args << 'geoit=xml'
         'http://geocoder.ca/?' + args.join('&')
