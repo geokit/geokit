@@ -63,7 +63,7 @@ Performance/StringReplacement:
     - 'lib/geokit/inflectors.rb'
 
 # Offense count: 1
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Exclude:
     - 'lib/geokit/geocoders/mapbox.rb'
 
@@ -79,7 +79,7 @@ Style/Alias:
 
 # Offense count: 2
 # Cop supports --auto-correct.
-Style/AlignArray:
+Layout/AlignArray:
   Exclude:
     - 'lib/geokit/geo_loc.rb'
 
@@ -87,7 +87,7 @@ Style/AlignArray:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: with_first_parameter, with_fixed_indentation
-Style/AlignParameters:
+Layout/AlignParameters:
   Exclude:
     - 'lib/geokit/lat_lng.rb'
     - 'test/test_google_geocoder.rb'
@@ -151,7 +151,7 @@ Style/Documentation:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: leading, trailing
-Style/DotPosition:
+Layout/DotPosition:
   Enabled: false
 
 # Offense count: 2
@@ -163,21 +163,21 @@ Style/DoubleNegation:
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAdjacentOneLineDefs.
-Style/EmptyLineBetweenDefs:
+Layout/EmptyLineBetweenDefs:
   Exclude:
     - 'lib/geokit/geocoders.rb'
     - 'lib/geokit/geocoders/opencage.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/EmptyLines:
+Layout/EmptyLines:
   Exclude:
     - 'test/test_google_geocoder.rb'
 
 # Offense count: 15
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Style/ExtraSpacing:
+Layout/ExtraSpacing:
   Exclude:
     - 'lib/geokit/geocoders/bing.rb'
     - 'lib/geokit/geocoders/yahoo.rb'
@@ -201,7 +201,7 @@ Style/IfInsideElse:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: normal, rails
-Style/IndentationConsistency:
+Layout/IndentationConsistency:
   Exclude:
     - 'test/test_google_geocoder.rb'
     - 'test/test_openstreetmap_geocoder.rb'
@@ -222,7 +222,7 @@ Style/MethodCallWithoutArgsParentheses:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
 # SupportedStyles: aligned, indented
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   Enabled: false
 
 # Offense count: 21
@@ -259,7 +259,7 @@ Style/ParallelAssignment:
 # NamePrefix: is_, has_, have_
 # NamePrefixBlacklist: is_, has_, have_
 # NameWhitelist: is_a?
-Style/PredicateName:
+Naming/PredicateName:
   Exclude:
     - 'lib/geokit/geo_loc.rb'
 
@@ -285,13 +285,13 @@ Style/RescueModifier:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: space, no_space
-Style/SpaceAroundEqualsInParameterDefault:
+Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
 
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment.
-Style/SpaceAroundOperators:
+Layout/SpaceAroundOperators:
   Exclude:
     - 'lib/geokit/geocoders/bing.rb'
     - 'lib/geokit/geocoders/yahoo.rb'
@@ -299,7 +299,7 @@ Style/SpaceAroundOperators:
 # Offense count: 5
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment.
-Style/SpaceBeforeFirstArg:
+Layout/SpaceBeforeFirstArg:
   Exclude:
     - 'test/test_mappable.rb'
 
@@ -307,14 +307,14 @@ Style/SpaceBeforeFirstArg:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
 # SupportedStyles: space, no_space
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: space, no_space
-Style/SpaceInsideStringInterpolation:
+Layout/SpaceInsideStringInterpolation:
   Exclude:
     - 'lib/geokit/geocoders/yahoo.rb'
 
@@ -339,7 +339,19 @@ Style/TrailingCommaInArguments:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
 # SupportedStyles: comma, consistent_comma, no_comma
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  Exclude:
+    - 'lib/geokit/geo_loc.rb'
+    - 'lib/geokit/geocoders/bing.rb'
+    - 'lib/geokit/geocoders/free_geo_ip.rb'
+    - 'lib/geokit/geocoders/geo_plugin.rb'
+    - 'lib/geokit/geocoders/geocodio.rb'
+    - 'lib/geokit/geocoders/geonames.rb'
+    - 'lib/geokit/geocoders/google.rb'
+    - 'lib/geokit/geocoders/yahoo.rb'
+    - 'test/test_ipgeocoder.rb'
+
+Style/TrailingCommaInHashLiteral:
   Exclude:
     - 'lib/geokit/geo_loc.rb'
     - 'lib/geokit/geocoders/bing.rb'
@@ -354,5 +366,5 @@ Style/TrailingCommaInLiteral:
 # Offense count: 6
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase
-Style/VariableName:
+Naming/VariableName:
   Enabled: false
