@@ -64,7 +64,6 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 * RIPE
 * MaxMind
 * Ipstack
-* freegeoip.net (deprecated, now Ipstack)
 * IP-API.com
 
 ### HTTPS-supporting geocoders
