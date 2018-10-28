@@ -26,12 +26,19 @@ module Geokit
       EARTH_RADIUS = {}
       PER_LATITUDE_DEGREE = {}
 
-      # Returns the distance between two points.  The from and to parameters are
-      # required to have lat and lng attributes.  Valid options are:
-      # :units - valid values are :miles, :kms, :nms
-      # (Geokit::default_units is the default)
-      # :formula - valid values are :flat or :sphere
-      # (Geokit::default_formula is the default)
+      # Returns the distance between two points.
+      # @param from [String, Array, LatLng] +required+ -
+      #   +Geokit::LatLng+ compatible value
+      # @param to [String, Array, LatLng] +required+ -
+      #   +Geokit::LatLng+ compatible value
+      # @option options [String, Symbol] :units
+      #   valid values are :miles, :kms, :nms.
+      #   Default to Geokit::default_units
+      # @option options [String, Symbol] :formula
+      #   valid values are :flat or :sphere.
+      #   Default to Geokit::default_formula
+      # @example
+      #   Geokit::GeoLoc.distance_between("43.8374249,4.3600687", "44.1253665,4.0852818")
       def distance_between(from, to, options = {})
         units = get_units!(options)
         from  = Geokit::LatLng.normalize(from)
