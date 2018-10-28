@@ -10,7 +10,7 @@ class IpApiGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal expected_url, TestHelper.last_url
   end
 
-  def test_free_geo_ip_geocode
+  def test_ip_api_geocode
     url = "http://ip-api.com/json/#{@ip}"
     res = geocode(@ip, :ip_api_geocode)
     assert_url url

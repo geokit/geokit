@@ -157,7 +157,6 @@ Layout/DotPosition:
 # Offense count: 2
 Style/DoubleNegation:
   Exclude:
-    - 'lib/geokit/geocoders/free_geo_ip.rb'
     - 'lib/geokit/geocoders/geo_plugin.rb'
 
 # Offense count: 2
@@ -230,7 +229,6 @@ Layout/MultilineOperationIndentation:
 Style/MutableConstant:
   Exclude:
     - 'lib/geokit/geocoders/bing.rb'
-    - 'lib/geokit/geocoders/free_geo_ip.rb'
     - 'lib/geokit/geocoders/geo_plugin.rb'
     - 'lib/geokit/geocoders/geonames.rb'
     - 'lib/geokit/geocoders/google.rb'
@@ -343,7 +341,6 @@ Style/TrailingCommaInArrayLiteral:
   Exclude:
     - 'lib/geokit/geo_loc.rb'
     - 'lib/geokit/geocoders/bing.rb'
-    - 'lib/geokit/geocoders/free_geo_ip.rb'
     - 'lib/geokit/geocoders/geo_plugin.rb'
     - 'lib/geokit/geocoders/geocodio.rb'
     - 'lib/geokit/geocoders/geonames.rb'
@@ -355,7 +352,6 @@ Style/TrailingCommaInHashLiteral:
   Exclude:
     - 'lib/geokit/geo_loc.rb'
     - 'lib/geokit/geocoders/bing.rb'
-    - 'lib/geokit/geocoders/free_geo_ip.rb'
     - 'lib/geokit/geocoders/geo_plugin.rb'
     - 'lib/geokit/geocoders/geocodio.rb'
     - 'lib/geokit/geocoders/geonames.rb'

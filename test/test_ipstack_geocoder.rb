@@ -11,7 +11,7 @@ class IpstackGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal expected_url, TestHelper.last_url
   end
 
-  def test_free_geo_ip_geocode
+  def test_ipstack_geocode
     url = "http://api.ipstack.com/#{@ip}?access_key=some_api_key"
     res = geocode(@ip, :ipstack_geocode)
 
