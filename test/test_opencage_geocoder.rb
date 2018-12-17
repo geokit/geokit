@@ -22,6 +22,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = geocode(@opencage_full_loc, :opencage_full)
 
     assert_equal 'California', res.state
+    assert_equal 'San Francisco City and County', res.county
     assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7921509, -122.394], res.to_a
     assert res.is_us?
@@ -35,6 +36,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = geocode(@opencage_city_loc, :opencage_city)
 
     assert_equal 'California', res.state
+    assert_equal 'San Francisco City and County', res.county
     assert_equal 'San Francisco', res.city
     assert_array_in_delta [37.7792768, -122.4192704], res.to_a
     assert res.is_us?
@@ -55,12 +57,13 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     assert_equal 'Chamberí', res.neighborhood
     assert_equal 'Madrid', res.city
+    assert_equal 'Área metropolitana de Madrid y Corredor del Henares', res.county
     assert_equal 'Community of Madrid', res.state
 
     assert_equal 'Spain', res.country
     assert_equal true, res.success
 
-    assert_equal "Calle De Zurbano, Chamberí, Madrid, Community of Madrid, 28036, ES", res.full_address
+    assert_equal 'Calle De Zurbano, Chamberí, Madrid, Community of Madrid, 28036, ES', res.full_address
     assert_equal 28_036, res.zip
     assert_equal 'Calle De Zurbano', res.street_address
   end
@@ -79,13 +82,15 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'Жабино Маало', res.neighborhood
     assert_equal 'Prilep', res.city
     assert_equal 'Pelagonia Region', res.state
+    assert_equal 'Municipality of Prilep', res.county
+    assert_equal 'Prilep', res.city
 
     assert_equal 'Macedonia', res.country
     assert_equal 10, res.precision
     assert_equal true, res.success
 
-    assert_equal "Прилепски Бранители, Prilep, Pelagonia Region, MK", res.full_address
-    assert_equal "Прилепски Бранители", res.street_address
+    assert_equal 'Прилепски Бранители, Prilep, Pelagonia Region, MK', res.full_address
+    assert_equal 'Прилепски Бранители', res.street_address
   end
 
   # check if the results are in Spanish if &language=es
