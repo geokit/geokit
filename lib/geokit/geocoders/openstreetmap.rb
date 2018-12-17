@@ -84,6 +84,7 @@ module Geokit
         loc.country = address_data['country']
         loc.country_code = address_data['country_code'].upcase if address_data['country_code']
         loc.state_name = address_data['state']
+        loc.county = address_data['county']
         loc.city = address_data['city']
         loc.city = address_data['county'] if loc.city.nil? && address_data['county']
         loc.zip = address_data['postcode']
