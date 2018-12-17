@@ -88,6 +88,7 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     assert_equal [
       'city', 'San Francisco',
       'country_code', 'US',
+      'county', '',
       'full_address', '',
       'lat', '',
       'lng', '',
