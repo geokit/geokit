@@ -118,6 +118,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = geocode(@address, :google_city)
     assert_nil res.street_address
     assert_equal 'CA', res.state
+    assert_equal 'San Francisco County', res.county
     assert_equal 'San Francisco', res.city
     assert_equal '37.7749295,-122.4194155', res.ll
     assert res.is_us?
@@ -133,6 +134,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      res = geocode(@address, :google_sublocality)
      assert_equal '682 Prospect Place', res.street_address
      assert_equal 'NY', res.state
+     assert_equal 'Kings County', res.county
      assert_equal 'Brooklyn', res.city
      assert_equal '40.6745812,-73.9541582', res.ll
      assert res.is_us?
@@ -148,6 +150,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
      res = geocode(@address, :google_administrative_area_level_3)
      assert_equal '8 Barkwood Lane', res.street_address
      assert_equal 'NY', res.state
+     assert_equal 'Saratoga County', res.county
      assert_equal 'Clifton Park', res.city
      assert_equal '42.829583,-73.788174', res.ll
      assert res.is_us?
@@ -175,6 +178,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     TestHelper.expects(:last_url).with(url)
     res = geocode(@google_city_loc, :google_city)
     assert_equal 'CA', res.state
+    assert_equal 'San Francisco County', res.county
     assert_equal 'San Francisco', res.city
     assert_equal '37.7749295,-122.4194155', res.ll
     assert res.is_us?
@@ -261,6 +265,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'google', res.provider
 
     assert_equal 'Madrid', res.city
+    assert_equal 'Madrid', res.county
     assert_equal 'Community of Madrid', res.state
 
     assert_equal 'Spain', res.country
