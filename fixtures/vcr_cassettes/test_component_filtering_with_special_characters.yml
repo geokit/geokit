@@ -1,0 +1,126 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.google.com/maps/api/geocode/json?address=S%C3%A3o%20Paulo&components=administrative_area:s%C3%A3o%20paulo%7Ccountry:br&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 03 Apr 2019 22:15:01 GMT
+      Pragma:
+      - no-cache
+      Expires:
+      - Fri, 01 Jan 1990 00:00:00 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Server-Timing:
+      - gfet4t7; dur=1
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="46,44,43,39"
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "results": [
+            {
+              "address_components": [
+                {
+                  "long_name": "São Paulo",
+                  "short_name": "São Paulo",
+                  "types": [
+                    "locality",
+                    "political"
+                  ]
+                },
+                {
+                  "long_name": "São Paulo",
+                  "short_name": "São Paulo",
+                  "types": [
+                    "administrative_area_level_2",
+                    "political"
+                  ]
+                },
+                {
+                  "long_name": "State of São Paulo",
+                  "short_name": "SP",
+                  "types": [
+                    "administrative_area_level_1",
+                    "political"
+                  ]
+                },
+                {
+                  "long_name": "Brazil",
+                  "short_name": "BR",
+                  "types": [
+                    "country",
+                    "political"
+                  ]
+                }
+              ],
+              "formatted_address": "São Paulo, State of São Paulo, Brazil",
+              "geometry": {
+                "bounds": {
+                  "northeast": {
+                    "lat": -23.3566039,
+                    "lng": -46.3650844
+                  },
+                  "southwest": {
+                    "lat": -24.0082209,
+                    "lng": -46.825514
+                  }
+                },
+                "location": {
+                  "lat": -23.5505199,
+                  "lng": -46.63330939999999
+                },
+                "location_type": "APPROXIMATE",
+                "viewport": {
+                  "northeast": {
+                    "lat": -23.3566039,
+                    "lng": -46.3650844
+                  },
+                  "southwest": {
+                    "lat": -24.0082209,
+                    "lng": -46.825514
+                  }
+                }
+              },
+              "place_id": "ChIJ0WGkg4FEzpQRrlsz_whLqZs",
+              "types": [
+                "locality",
+                "political"
+              ]
+            }
+          ],
+          "status": "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 03 Apr 2019 22:15:01 GMT
+recorded_with: VCR 4.0.0
