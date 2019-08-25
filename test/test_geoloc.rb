@@ -66,6 +66,10 @@ class GeoLocTest < Test::Unit::TestCase #:nodoc: all
     assert_equal [@loc], @loc.all
   end
 
+  def test_first
+    assert_equal @loc.first, @loc.first
+  end
+
   def test_to_yaml
     @loc.city = 'San Francisco'
     @loc.state_code = 'CA'

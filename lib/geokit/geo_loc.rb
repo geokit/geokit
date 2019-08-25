@@ -27,7 +27,7 @@ module Geokit
     # attribute if they don't exist
     attr_accessor :state_name, :state_code, :zip, :country_code, :country
     attr_accessor :all, :district, :sub_premise,
-                  :neighborhood
+                  :neighborhood, :first
     attr_writer :state, :full_address, :street_number, :street_name, :formatted_address
     attr_reader :city, :street_address
     # Attributes set upon return from geocoding. Success will be true for
@@ -49,6 +49,7 @@ module Geokit
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h = {})
       @all = [self]
+      @first = self.first
       
       # sanatises the GeoLoc object so that it conforms to []
       h = h.to_hash
