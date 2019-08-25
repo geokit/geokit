@@ -49,7 +49,7 @@ module Geokit
     # Constructor expects a hash of symbols to correspond with attributes.
     def initialize(h = {})
       @all = [self]
-      @first = self.first
+      @first = first
       
       # sanatises the GeoLoc object so that it conforms to []
       h = h.to_hash
