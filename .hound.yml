@@ -1,2 +1,2 @@
-ruby:
+rubocop:
   config_file: .rubocop.yml
