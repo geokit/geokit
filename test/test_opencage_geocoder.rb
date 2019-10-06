@@ -82,8 +82,8 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 10, res.precision
     assert_equal true, res.success
 
-    assert_equal "Прилепски Бранители, Prilep, Pelagonia Region, MK", res.full_address
-    assert_equal "Прилепски Бранители", res.street_address
+    assert_equal "Прилепски бранители, Prilep, Pelagonia Region, MK", res.full_address
+    assert_equal "Прилепски бранители", res.street_address
   end
 
   # check if the results are in Spanish if &language=es
