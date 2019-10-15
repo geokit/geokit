@@ -353,7 +353,7 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'TX', filtered_result.state
     assert_equal 'Austin, TX, USA', filtered_result.full_address
 
-    url = 'https://maps.google.com/maps/api/geocode/json?sensor=false&address=austin&components=administrative_area:il%7Ccountry:us'
+    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=austin&components=administrative_area%3Ail%7Ccountry%3Aus"
     TestHelper.expects(:last_url).with(url)
     filtered_result = geocode('austin',
       :test_component_filtering_on,
@@ -368,5 +368,14 @@ class GoogleGeocoderTest < BaseGeocoderTest #:nodoc: all
 
     assert_equal 'TX', filtered_result.state
     assert_equal 'Austin, TX, USA', filtered_result.full_address
+
+    url = "https://maps.google.com/maps/api/geocode/json?sensor=false&address=S%C3%A3o+Paulo&components=administrative_area%3As%C3%A3o+paulo%7Ccountry%3Abr"
+    TestHelper.expects(:last_url).with(url)
+    filtered_result = geocode("São Paulo",
+      :test_component_filtering_with_special_characters,
+      components: { administrative_area: "São Paulo", country: "BR" })
+
+    assert_equal "SP", filtered_result.state
+    assert_equal "São Paulo, State of São Paulo, Brazil", filtered_result.full_address
   end
 end

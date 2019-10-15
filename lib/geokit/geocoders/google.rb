@@ -108,7 +108,8 @@ module Geokit
 
       def self.construct_components_string_from_options(components={})
         unless components.empty?
-          "&components=#{components.to_a.map { |pair| pair.join(':').downcase }.join(CGI.escape('|'))}"
+          escaped_components = Geokit::Inflector.url_escape(components.to_a.map { |pair| pair.join(":").downcase }.join("|"))
+          "&components=#{escaped_components}"
         end
       end
 
