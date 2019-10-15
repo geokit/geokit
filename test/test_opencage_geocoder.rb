@@ -53,6 +53,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'ES', res.country_code
     assert_equal 'opencage', res.provider
 
+    assert_equal 'Chamberí', res.neighborhood
     assert_equal 'Madrid', res.city
     assert_equal 'Community of Madrid', res.state
 
@@ -75,6 +76,7 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'MK', res.country_code
     assert_equal 'opencage', res.provider
 
+    assert_equal 'Жабино Маало', res.neighborhood
     assert_equal 'Prilep', res.city
     assert_equal 'Pelagonia Region', res.state
 

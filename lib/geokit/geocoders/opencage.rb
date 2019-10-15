@@ -79,6 +79,8 @@ module Geokit
         loc.zip            = address_data['postcode']
         loc.district       = address_data['city_district']
         loc.district       = address_data['state_district'] if loc.district.nil? && address_data['state_district']
+        loc.neighborhood   = address_data['neighbourhood']
+        loc.neighborhood   = address_data['suburb'] if loc.neighborhood.nil?
         loc.street_address = "#{address_data['road']} #{address_data['house_number']}".strip if address_data['road']
         loc.street_name    = address_data['road']
         loc.street_number  = address_data['house_number']
