@@ -182,6 +182,9 @@ If you're using this gem by itself, here are the configuration options:
     Geokit::Geocoders::YandexGeocoder.key = ''
     Geokit::Geocoders::MapboxGeocoder.key = 'ACCESS_TOKEN'
     Geokit::Geocoders::OpencageGeocoder.key = 'some_api_key'
+    
+    # OSMGeocoder can receive a custom API server host (if you have your own Nominatim instance running)
+    Geokit::Geocoders::OSMGeocoder.host = 'https://my-custom-nominatim-instance/'
 
     # Geonames has a free service and a premium service, each using a different URL
     # GeonamesGeocoder.premium = true will use http://ws.geonames.net (premium)
