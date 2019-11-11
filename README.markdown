@@ -1,12 +1,11 @@
 Geokit
 ======
 
-[![Gem Version](https://badge.fury.io/rb/geokit.png)](http://badge.fury.io/rb/geokit)
-[![Build Status](https://travis-ci.org/geokit/geokit.png?branch=master)](https://travis-ci.org/geokit/geokit)
-[![Coverage Status](https://coveralls.io/repos/geokit/geokit/badge.png)](https://coveralls.io/r/geokit/geokit)
+[![Gem Version](https://badge.fury.io/rb/geokit.svg)](http://badge.fury.io/rb/geokit)
+[![Build Status](https://travis-ci.org/geokit/geokit.svg?branch=master)](https://travis-ci.org/geokit/geokit)
+[![Coverage Status](https://coveralls.io/repos/geokit/geokit/badge.svg)](https://coveralls.io/r/geokit/geokit)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
-[![Dependency Status](https://gemnasium.com/geokit/geokit.png)](https://gemnasium.com/geokit/geokit)
-[![Code Climate](https://codeclimate.com/github/geokit/geokit.png)](https://codeclimate.com/github/geokit/geokit)
+[![Code Climate](https://codeclimate.com/github/geokit/geokit.svg)](https://codeclimate.com/github/geokit/geokit)
 
 ## DESCRIPTION
 
