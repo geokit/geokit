@@ -17,6 +17,7 @@ class FCCGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_url url
     assert_equal res.country_code, 'US'
     assert_equal res.state, 'CA'
+    assert_equal res.county, 'Los Angeles'
     assert_equal res.district, 'Los Angeles'
   end
 end

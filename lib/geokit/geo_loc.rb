@@ -25,7 +25,7 @@ module Geokit
     # 100 Spear St, San Francisco, CA, 94101, US
     # Street number and street name are extracted from the street address
     # attribute if they don't exist
-    attr_accessor :state_name, :state_code, :zip, :country_code, :country
+    attr_accessor :county, :state_name, :state_code, :zip, :country_code, :country
     attr_accessor :all, :district, :sub_premise,
                   :neighborhood
     attr_writer :state, :full_address, :street_number, :street_name, :formatted_address
@@ -58,6 +58,7 @@ module Geokit
       @street_number = nil
       @street_name = nil
       @city = h[:city]
+      @county = h[:county]
       @state = h[:state]
       @state_code = h[:state_code]
       @state_name = h[:state_name]
@@ -109,9 +110,9 @@ module Geokit
     # gives you all the important fields as key-value pairs
     def hash
       res = {}
-      fields = [:success, :lat, :lng, :country_code, :city, :state, :zip,
-       :street_address, :district, :provider, :full_address, :is_us?,
-       :ll, :precision, :district_fips, :state_fips, :block_fips, :sub_premise]
+      fields = %i[success lat lng country_code city county state zip
+       street_address district provider full_address is_us?
+       ll precision district_fips state_fips block_fips sub_premise]
       fields.each { |s| res[s] = send(s.to_s) }
       res
     end
@@ -133,8 +134,8 @@ module Geokit
     end
 
     # Returns a comma-delimited string consisting of the street address, city,
-    # state, zip, and country code.  Only includes those attributes that are
-    # non-blank.
+    # state, zip, and country code. Only includes those attributes
+    # that are non-blank.
     def to_geocodeable_s
       a = [street_address, district, city, state, zip, country_code].compact
       a.delete_if { |e| !e || e == '' }
@@ -156,6 +157,7 @@ module Geokit
       ["Provider: #{provider}",
        "Street: #{street_address}",
        "City: #{city}",
+       "County: #{county}",
        "State: #{state}",
        "Zip: #{zip}",
        "Latitude: #{lat}",

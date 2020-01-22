@@ -103,6 +103,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
       assert_equal 'osm', res.provider
 
       assert_equal 'Prilep', res.city
+      assert_equal nil, res.county
       assert_nil res.state
 
       assert_equal 'Macedonia', res.country
@@ -127,6 +128,7 @@ class OSMGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'osm', res.provider
 
     assert_equal 'Madrid', res.city
+    assert_equal 'Madrid', res.county
     assert_equal 'Madrid', res.state
 
     assert_equal 'Spain', res.country

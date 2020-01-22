@@ -38,6 +38,7 @@ module Geokit
         loc.country_code  = 'US'
         loc.district      = results['County']['name']
         loc.district_fips = results['County']['FIPS']
+        loc.county        = results['County']['name']
         loc.state         = results['State']['code']
         loc.state_fips    = results['State']['FIPS']
         loc.block_fips    = results['Block']['FIPS']
