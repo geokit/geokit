@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.opencagedata.com/geocode/v1/json?key=someopencageapikey&no_annotations=1&query=41.493588,2.141879
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 27 Jan 2020 16:52:19 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '597'
+      Content-Type:
+      - application/json; charset=utf-8
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"documentation":"https://opencagedata.com/api","licenses":[{"name":"see
+        attribution guide","url":"https://opencagedata.com/credits"}],"results":[{"bounds":{"northeast":{"lat":41.4950264,"lng":2.1415936},"southwest":{"lat":41.4925907,"lng":2.1411986}},"components":{"ISO_3166-1_alpha-2":"ES","ISO_3166-1_alpha-3":"ESP","_category":"road","_type":"road","continent":"Europe","country":"Spain","country_code":"es","county":"Vall\u00e8s
+        Occidental","neighbourhood":"Sant Mart\u00ed","political_union":"European
+        Union","postcode":"08290","road":"Passeig de la Riera","road_type":"residential","state":"Catalonia","suburb":"Can
+        Costa","town":"Cerdanyola del Vall\u00e8s"},"confidence":9,"formatted":"Passeig
+        de la Riera, 08290 Cerdanyola del Vall\u00e8s, Spain","geometry":{"lat":41.4936783,"lng":2.1413932}}],"status":{"code":200,"message":"OK"},"stay_informed":{"blog":"https://blog.opencagedata.com","twitter":"https://twitter.com/opencagedata"},"thanks":"For
+        using an OpenCage API","timestamp":{"created_http":"Mon, 27 Jan 2020 16:52:19
+        GMT","created_unix":1580143939},"total_results":1}'
+    http_version: 
+  recorded_at: Mon, 27 Jan 2020 16:52:19 GMT
+recorded_with: VCR 5.0.0
