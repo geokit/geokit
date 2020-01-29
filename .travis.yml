@@ -8,5 +8,4 @@ script: "bundle exec rake test"
 notifications:
   email:
     - michael+geokit@noack.com.au
-sudo: false
 cache: bundler
