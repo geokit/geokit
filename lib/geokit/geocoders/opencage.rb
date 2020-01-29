@@ -76,6 +76,7 @@ module Geokit
         loc.state_name     = address_data['state']
         loc.county         = address_data['county']
         loc.city           = address_data['city']
+        loc.city           = address_data['town'] if loc.city.nil? && address_data['town']
         loc.city           = address_data['county'] if loc.city.nil? && address_data['county']
         loc.zip            = address_data['postcode']
         loc.district       = address_data['city_district']

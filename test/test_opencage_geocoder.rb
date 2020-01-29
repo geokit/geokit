@@ -93,6 +93,30 @@ class OpencageGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal 'Прилепски Бранители', res.street_address
   end
 
+  def test_opencage_cerdanyola
+    location = Geokit::GeoLoc.new
+    location.lat, location.lng = '41.493588', '2.141879'
+
+    url = "#{@base_url}?key=someopencageapikey&query=41.493588%2C2.141879&no_annotations=1"
+    TestHelper.expects(:last_url).with(url)
+    res = geocode(location.ll, :opencage_reverse_cerdanyola)
+
+    assert_equal 'ES', res.country_code
+    assert_equal 'opencage', res.provider
+
+    assert_equal 'Sant Martí', res.neighborhood
+    assert_equal 'Catalonia', res.state
+    assert_equal 'Vallès Occidental', res.county
+    assert_equal 'Cerdanyola Del Vallès', res.city
+
+    assert_equal 'Spain', res.country
+    assert_equal 9, res.precision
+    assert_equal true, res.success
+
+    assert_equal 'Passeig De La Riera, Cerdanyola Del Vallès, Catalonia, 08290, ES', res.full_address
+    assert_equal 'Passeig De La Riera', res.street_address
+  end
+
   # check if the results are in Spanish if &language=es
   def test_language_response
     url = "#{@base_url}?key=someopencageapikey&language=es&query=London&no_annotations=1"
