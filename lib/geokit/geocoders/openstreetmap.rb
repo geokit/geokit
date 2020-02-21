@@ -2,6 +2,8 @@ module Geokit
   module Geocoders
     # Open Street Map geocoder implementation.
     class OSMGeocoder < Geocoder
+      config :host
+      
       private
 
       # Template method which does the geocode lookup.
@@ -14,8 +16,8 @@ module Geokit
         options_str << generate_param_for_option(:email, options)
 
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-
-        url = "https://nominatim.openstreetmap.org/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector.url_escape(address_str)}"
+        request_host = host || 'https://nominatim.openstreetmap.org'
+        url = "#{request_host}/search?format=json#{options_str}&addressdetails=1&q=#{Geokit::Inflector.url_escape(address_str)}"
         process :json, url
       end
 
@@ -29,7 +31,8 @@ module Geokit
         options_str << generate_param_for_option(:osm_type, options)
         options_str << generate_param_for_option(:osm_id, options)
         options_str << generate_param_for_option(:json_callback, options)
-        url = "https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1#{options_str}"
+        request_host = host || 'https://nominatim.openstreetmap.org'
+        url = "#{request_host}/reverse?format=json&addressdetails=1#{options_str}"
         process :json, url
       end
 
