@@ -36,5 +36,7 @@ Gem::Specification.new do |spec|
   # webmock 2 not yet compatible out of the box with VCR
   spec.add_development_dependency 'webmock', '< 2' # used in vcr
   # rexml is a bundled gem starting in Ruby 3.0
-  spec.add_dependency 'rexml' if RUBY_VERSION >= '3.0'
+  if RUBY_VERSION >= '3.0'
+    spec.add_dependency 'rexml'
+  end
 end
