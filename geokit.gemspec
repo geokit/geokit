@@ -21,7 +21,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 1.9.3'
+  spec.required_ruby_version = '>= 2.5.0'
+  spec.add_dependency, 'rexml'
   spec.add_development_dependency 'bundler', '>= 1.0'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'mocha'
@@ -35,9 +36,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'vcr'
   # webmock 2 not yet compatible out of the box with VCR
   spec.add_development_dependency 'webmock', '< 2' # used in vcr
-
-  spec.post_install_message = %q[
-Geokit requires rexml, which is a bundled gem starting in Ruby 3.0.
-Add `gem "rexml"` to your Gemfile if using Ruby 3.0+ to work around the issue.
-]
 end
