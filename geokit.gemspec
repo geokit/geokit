@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = '>= 2.5.0'
-  spec.add_dependency, 'rexml'
+  spec.add_dependency 'rexml'
   spec.add_development_dependency 'bundler', '>= 1.0'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'mocha'
