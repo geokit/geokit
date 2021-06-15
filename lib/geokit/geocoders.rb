@@ -5,7 +5,6 @@ require 'json'
 require 'logger'
 require 'net/http'
 require 'openssl'
-require 'rexml/document'
 require 'timeout'
 require 'yaml'
 
@@ -175,6 +174,16 @@ module Geokit
 
       def self.parse(format, body, *args)
         logger.debug "#{provider_name} geocoding. Result: #{CGI.escape(body)}"
+
+        if format == :xml
+          begin
+            require 'rexml/document'
+          rescue LoadError
+            logger.error "REXML load error, if using Ruby 3.0 add 'rexml' to your Gemfile"
+            raise
+          end
+        end
+
         case format
         when :json then parse_json(JSON.load(body), *args)
         when :xml  then parse_xml(REXML::Document.new(body), *args)

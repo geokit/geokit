@@ -34,7 +34,7 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = geocode(@full_address)
 
     assert_equal 'yandex', res.provider
-    assert_equal "Улица новый арбат, 24", res.street_address
+    assert_equal "улица Новый Арбат, 24", res.street_address
     assert_equal "Москва", res.city
     assert_equal 55.753083, res.lat
     assert_equal 37.587614, res.lng
@@ -51,8 +51,8 @@ class YandexGeocoderTest < BaseGeocoderTest #:nodoc: all
     res = geocode(region_address)
 
     assert_equal 'yandex', res.provider
-    assert_equal "Улица станиславского, 21", res.street_address
-    assert_equal "Ростов на дону", res.city
+    assert_equal "улица Станиславского, 21", res.street_address
+    assert_equal "Ростов на Дону", res.city
     assert_equal "Ростовская область", res.state
     assert_equal "городской округ Ростов-на-Дону", res.district
     assert_equal 47.21589, res.lat
