@@ -1,0 +1,22 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.1.9', '2.2.10', '2.3.7' ]
+    name: Test w/ Ruby ${{ matrix.ruby }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby ${{ matrix.ruby }}
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - name: Install dependencies
+      run: |
+        gem install bundler -v '~>1'
+        bundle install --jobs 4 --retry 3
+    - name: Test
+      run: bundle exec rake test
