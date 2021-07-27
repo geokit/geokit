@@ -27,7 +27,8 @@ module Geokit
       end
 
       def self.ip?(ip)
-        /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        address_net = IPAddr.new(ip)
+        address_net.ipv4? || address_net.ipv6?
       end
 
       def self.process(format, ip)
