@@ -71,7 +71,7 @@ module Geokit
         if args.last.is_a?(Hash) && args.last.key?(:provider_order)
           args.last.delete(:provider_order)
         else
-          if address.is_a?(String) && /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.match(address)
+          if IPAddress.valid?(address)
             Geokit::Geocoders.ip_provider_order
           else
             Geokit::Geocoders.provider_order
