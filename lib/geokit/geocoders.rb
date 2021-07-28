@@ -1,6 +1,7 @@
 require 'geokit/net_adapter/net_http'
 require 'geokit/net_adapter/typhoeus'
 require 'ipaddr'
+require 'ipaddress'
 require 'json'
 require 'logger'
 require 'net/http'
