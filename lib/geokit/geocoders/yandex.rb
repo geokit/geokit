@@ -15,7 +15,7 @@ module Geokit
       def self.submit_url(address)
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         url = "https://geocode-maps.yandex.ru/1.x/?geocode=#{Geokit::Inflector.url_escape(address_str)}&format=json"
-        url += "&key=#{key}" if key
+        url += "&apikey=#{key}" if key
         url
       end
 
