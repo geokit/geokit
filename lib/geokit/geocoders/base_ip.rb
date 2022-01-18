@@ -27,7 +27,7 @@ module Geokit
       end
 
       def self.ip?(ip)
-        IPAddress.valid?(ip)
+        Resolv::IPv4::Regex.match(ip) || Resolv::IPv6::Regex.match(ip)
       end
 
       def self.process(format, ip)
