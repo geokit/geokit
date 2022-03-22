@@ -175,6 +175,12 @@ If you're using this gem by itself, here are the configuration options:
     # See https://ipstack.com
     Geokit::Geocoders::IpstackGeocoder.api_key = 'API_KEY'
 
+    # This is your api key for ip-api.com.
+    # For the free version (with rate limits), leave api_key unset.
+    # For the pro version, api_key must be set
+    # See https://ip-api.com/
+    Geokit::Geocoders::IpApiGeocoder.api_key = 'API_KEY'
+
     # Most other geocoders need either no setup or a key
     Geokit::Geocoders::BingGeocoder.key = ''
     Geokit::Geocoders::MapQuestGeocoder.key = ''

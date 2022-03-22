@@ -2,6 +2,8 @@ module Geokit
   module Geocoders
     # Provides geocoding based upon an IP address.  The underlying web service is ip-api.com
     class IpApiGeocoder < BaseIpGeocoder
+      config :api_key
+
       private
 
       def self.do_geocode(ip, _=nil)
@@ -9,7 +11,11 @@ module Geokit
       end
 
       def self.submit_url(ip)
-        "http://ip-api.com/json/#{ip}"
+        if api_key.nil?
+          "http://ip-api.com/json/#{ip}"
+        else
+          "http://pro.ip-api.com/json/#{ip}?key=#{api_key}"
+        end
       end
 
       def self.parse_json(result)
