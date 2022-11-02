@@ -2,7 +2,7 @@ require 'bundler/gem_tasks'
 require 'rake/testtask'
 
 task :console do
-  sh "irb -rubygems -I lib -r geokit"
+  sh "irb -I lib -r geokit"
 end
 
 Rake::TestTask.new do |t|
