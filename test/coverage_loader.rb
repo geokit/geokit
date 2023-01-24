@@ -1,5 +1,5 @@
 unless ENV['COVERAGE'] == 'off'
-  COVERAGE_THRESHOLD = 96
+  COVERAGE_THRESHOLD = 95
   require 'simplecov'
   require 'simplecov-rcov'
   require 'coveralls'

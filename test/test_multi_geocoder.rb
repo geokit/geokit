@@ -36,7 +36,9 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_invalid_provider
     temp = Geokit::Geocoders.provider_order
     Geokit::Geocoders.provider_order = [:bogus]
-    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode(@address)
+    assert_raise Geokit::Geocoders::NoSuchGeocoderError do
+      Geokit::Geocoders::MultiGeocoder.geocode(@address)
+    end
     Geokit::Geocoders.provider_order = temp
   end
 
@@ -78,7 +80,7 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_reverse_geocode_with_invalid_provider
     temp = Geokit::Geocoders.provider_order
     Geokit::Geocoders.provider_order = [:bogus]
-    assert_raise NameError do
+    assert_raise Geokit::Geocoders::NoSuchGeocoderError do
       Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)
     end
     Geokit::Geocoders.provider_order = temp
@@ -100,7 +102,8 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_mapbox
-    Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:mapbox])
-    Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng, provider_order: [:mapbox])
+    # This has its own test file now, is this even necessary?
+    # Geokit::Geocoders::MultiGeocoder.geocode(@address, provider_order: [:mapbox])
+    # Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng, provider_order: [:mapbox])
   end
 end

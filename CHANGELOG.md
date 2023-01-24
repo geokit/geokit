@@ -1,3 +1,11 @@
+## 1.14.0
+
+* Introduced NoSuchGeocoderError. If you try call a geocoder like :bogus that doesn't exist, an error will be returned.
+* Upgraded to coveralls_reborn
+* Replaced deprecated URI.escape with CGI.escape
+* Fixed old mocha incompatability, now calls mocha/test_unit and not mocha/setup
+* Bumped minimum Ruby version
+
 ## 1.13.1
 
 **Existing Geocoder Changes**

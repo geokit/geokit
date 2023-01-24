@@ -64,6 +64,7 @@ module Geokit
 
       def self.geocoder(provider)
         class_name = "#{Geokit::Inflector.camelize(provider.to_s)}Geocoder"
+        raise Geokit::Geocoders::NoSuchGeocoderError unless Geokit::Geocoders.const_defined? class_name
         Geokit::Geocoders.const_get class_name
       end
 

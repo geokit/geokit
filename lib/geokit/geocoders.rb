@@ -75,6 +75,7 @@ module Geokit
     class GeocodeError < StandardError; end
     class TooManyQueriesError < StandardError; end
     class AccessDeniedError < StandardError; end
+    class NoSuchGeocoderError < StandardError; end
 
     # -------------------------------------------------------------------------------------------
     # Geocoder Base class -- every geocoder should inherit from this
@@ -89,7 +90,7 @@ module Geokit
       def self.geocode(address, *args)
         logger.debug "#{provider_name} geocoding. address: #{address}, args #{args}"
         do_geocode(address, *args) || GeoLoc.new
-      rescue TooManyQueriesError, GeocodeError, AccessDeniedError
+      rescue TooManyQueriesError, GeocodeError, AccessDeniedError, NoSuchGeocoderError
         raise
       rescue => e
         logger.error "Caught an error during #{provider_name} geocoding call: #{$!}"

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://dev.virtualearth.net/REST/v1/Locations/Platz%20der%20Republik%201,%2011011%20Berlin,%20Germany?key=AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7&o=xml
+    uri: https://dev.virtualearth.net/REST/v1/Locations/Platz+der+Republik+1,+11011+Berlin,+Germany?key=AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7&o=xml
     body:
       encoding: US-ASCII
       string: ''

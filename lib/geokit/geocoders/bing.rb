@@ -21,7 +21,7 @@ module Geokit
         culture = options && options[:culture]
         culture_string = culture ? "&c=#{culture}" : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        "#{protocol}://dev.virtualearth.net/REST/v1/Locations/#{URI.escape(address_str)}?key=#{key}#{culture_string}&o=xml"
+        "#{protocol}://dev.virtualearth.net/REST/v1/Locations/#{CGI.escape(address_str)}?key=#{key}#{culture_string}&o=xml"
       end
 
       def self.parse_xml(xml)

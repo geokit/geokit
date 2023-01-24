@@ -14,7 +14,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   # the testing methods themselves
   def test_bing_full_address
     key = geocoder_class.key
-    url = "#{@base_url}/#{URI.escape(@full_address)}?key=#{key}&o=xml"
+    url = "#{@base_url}/#{CGI.escape(@full_address)}?key=#{key}&o=xml"
     res = geocode(@full_address, :bing_full)
     assert_equal 'CA', res.state
     assert_equal 'San Francisco', res.city
@@ -28,7 +28,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_full_address_au
     address = '440 King William Street, Adelaide, Australia'
     key = geocoder_class.key
-    url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
+    url = "#{@base_url}/#{CGI.escape(address)}?key=#{key}&o=xml"
     res = geocode(address, :bing_full_au)
     assert_equal 'SA', res.state
     assert_equal 'Adelaide', res.city
@@ -43,7 +43,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_full_address_de
     address = 'Platz der Republik 1, 11011 Berlin, Germany'
     key = geocoder_class.key
-    url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
+    url = "#{@base_url}/#{CGI.escape(address)}?key=#{key}&o=xml"
     res = geocode(address, :bing_full_de)
     assert_equal 'BE', res.state
     assert_equal 'Berlin', res.city
@@ -59,7 +59,7 @@ class BingGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_bing_country
     address = 'Australia'
     key = geocoder_class.key
-    url = "#{@base_url}/#{URI.escape(address)}?key=#{key}&o=xml"
+    url = "#{@base_url}/#{CGI.escape(address)}?key=#{key}&o=xml"
     res = geocode(address, :bing_au)
     assert_equal nil, res.state
     assert_equal nil, res.city
