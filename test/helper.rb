@@ -13,10 +13,11 @@ require 'geoip'
 require 'coverage_loader'
 require 'vcr_loader'
 require 'test/unit'
-require 'mocha/setup'
+require 'mocha/test_unit'
 require 'net/http'
 
 require File.join(File.dirname(__FILE__), '../lib/geokit.rb')
+
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
