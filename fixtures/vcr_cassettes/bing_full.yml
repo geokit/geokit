@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://dev.virtualearth.net/REST/v1/Locations/100%20Spear%20St,%20San%20Francisco,%20CA,%2094105-1522,%20US?key=AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7&o=xml
+    uri: https://dev.virtualearth.net/REST/v1/Locations/100+Spear+St,+San+Francisco,+CA,+94105-1522,+US?key=AuWcmtBIoPeOubm9BtcN44hTmWw_wNoJ5NEO2L0RaKrGAUE_nlwciKAqwapdq7k7&o=xml
     body:
       encoding: US-ASCII
       string: ''

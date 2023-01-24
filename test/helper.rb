@@ -18,7 +18,6 @@ require 'net/http'
 
 require File.join(File.dirname(__FILE__), '../lib/geokit.rb')
 
-
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
   def initialize
     @header = {}
