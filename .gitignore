@@ -9,3 +9,4 @@ Gemfile.lock
 coverage
 .ruby-gemset
 .ruby-version
+.bundle

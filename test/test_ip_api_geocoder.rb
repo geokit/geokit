@@ -20,4 +20,16 @@ class IpApiGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert_equal res.zip, '94043'
     assert_equal res.country_code, 'US'
   end
+
+  def test_ip_api_pro_geocode
+    geocoder_class.api_key = 'some_api_key'
+    url = "http://pro.ip-api.com/json/#{@ip}?key=some_api_key"
+    res = geocode(@ip, :ip_api_pro_geocode)
+    assert_url url
+    assert_equal res.city, 'Mountain View'
+    assert_equal res.state, 'CA'
+    assert_equal res.state_name, 'California'
+    assert_equal res.zip, '94043'
+    assert_equal res.country_code, 'US'
+  end
 end
