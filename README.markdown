@@ -59,7 +59,6 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 ### IP address geocoders
 * IP - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
-* Geobytes
 * RIPE
 * MaxMind
 * Ipstack
@@ -150,13 +149,6 @@ If you're using this gem by itself, here are the configuration options:
     # You define these keys with a Hash as follows:
     #Geokit::Geocoders::google = { 'rubyonrails.org' => 'RUBY_ON_RAILS_API_KEY', 'ruby-docs.org' => 'RUBY_DOCS_API_KEY' }
 
-    # This is your username and password for geocoder.us.
-    # To use the free service, the value can be set to nil or false.  For
-    # usage tied to an account, the value should be set to username:password.
-    # See http://geocoder.us
-    # and http://geocoder.us/user/signup
-    Geokit::Geocoders::UsGeocoder.key = 'username:password'
-
     # This is your authorization key for geocoder.ca.
     # To use the free service, the value can be set to nil or false.  For
     # usage tied to an account, set the value to the key obtained from
@@ -177,9 +169,8 @@ If you're using this gem by itself, here are the configuration options:
 
     # This is your api key for ip-api.com.
     # For the free version (with rate limits), leave api_key unset.
-    # For the pro version, api_key must be set
     # See https://ip-api.com/
-    Geokit::Geocoders::IpApiGeocoder.api_key = 'API_KEY'
+    Geokit::Geocoders::IpApiGeocoder.key = ''
 
     # Most other geocoders need either no setup or a key
     Geokit::Geocoders::BingGeocoder.key = ''
@@ -210,7 +201,7 @@ If you're using this gem by itself, here are the configuration options:
 
     # The IP provider order.
     #
-    # Valid symbols are :ipstack, :geo_plugin, :geobytes, :ip, and :ripe.
+    # Valid symbols are :ipstack, :geo_plugin, :ip, and :ripe.
     #
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]

@@ -22,7 +22,7 @@ class IpApiGeocoderTest < BaseGeocoderTest #:nodoc: all
   end
 
   def test_ip_api_pro_geocode
-    geocoder_class.api_key = 'some_api_key'
+    geocoder_class.key = 'some_api_key'
     url = "http://pro.ip-api.com/json/#{@ip}?key=some_api_key"
     res = geocode(@ip, :ip_api_pro_geocode)
     assert_url url
