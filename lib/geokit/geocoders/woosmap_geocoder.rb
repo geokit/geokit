@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'pry'
 
 module Geokit
   module Geocoders
+    # Woosmap geocoder implementation.
     class WoosmapGeocoder < Geocoder
       # These do not map well. Perhaps we should guess better based on size
       # of bounding box where it exists? Does it really matter?
@@ -52,8 +52,9 @@ module Geokit
       #   components are specified.
       #
       def self.do_reverse_geocode(latlng, options = {})
-        latlng_str = "latlng=#{build_latlng_query_value(latlng)}"
-        url = build_url(latlng_str, options)
+        options ||= {}
+        options[:latlng] = build_latlng_query_value(latlng)
+        url = build_url(options)
         process(:json, url)
       end
 
@@ -91,44 +92,32 @@ module Geokit
       #   components are specified.
       #
       def self.do_geocode(address, options = {})
-        address_formatted = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        address_str = "address=#{Geokit::Inflector.url_escape(address_formatted)}"
-        url = build_url(address_str, options)
+        options[:address] = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
+        options[:address] = Geokit::Inflector.url_escape(options[:address])
+        url = build_url(options)
         process(:json, url)
       end
 
-      def self.build_url(query_string, options = {})
-        if options[:fields]
-          value = build_filter_query_value(options[:fields])
-          query_string = "#{query_string}&fields=#{value}"
-        end
-        if options.fetch(:language, api_language)
-          value = options.fetch(:language, api_language).downcase
-          query_string = "#{query_string}&language=#{value}"
-        end
-        if options[:components]
-          value = build_filter_query_value(options[:components])
-          query_string = "#{query_string}&components=#{value}"
-        end
-        if options[:data]
-          query_string = "#{query_string}&data=#{options[:data]}"
-        end
-        if options.fetch(:cc_format, api_cc_format)
-          query_string = "#{query_string}&cc_format=#{options.fetch(:cc_format, api_cc_format)}"
-        end
+      def self.build_url(options = {})
+        options[:fields] = options[:fields] && build_filter_query_value(options[:fields])
+        options[:language] = options.fetch(:language, api_language)&.downcase
+        options[:components] = options[:components] && build_filter_query_value(options[:components])
+        options[:cc_format] ||= api_cc_format
         if api_private_key
-          query_string = "#{query_string}&private_key=#{api_private_key}"
+          options[:private_key] = api_private_key
         elsif api_key
-          query_string = "#{query_string}&key=#{api_key}"
+          options[:key] = api_key
         end
-        "#{protocol}://api.woosmap.com/localities/geocode?#{query_string}"
+        options.compact!
+        options_params = options.map { |k, v| "#{k}=#{v}" }.sort.join('&')
+        "#{protocol}://api.woosmap.com/localities/geocode?#{options_params}"
       end
 
       def self.build_filter_query_value(components = {})
         return if components.empty?
         components_formatted = components.flat_map do |key, values|
           Array(values).map { |value| "#{key}:#{value.to_s.downcase}" }
-        end.join("|")
+        end.join('|')
         Geokit::Inflector.url_escape(components_formatted)
       end
 
@@ -138,25 +127,24 @@ module Geokit
       end
 
       def self.parse_json(response)
-        if response.key?("results")
-          unsorted = response.fetch("results").map do |addr|
-            single_json_to_geoloc(addr)
-          end
-          sorted = unsorted.sort { |a, b| b.accuracy <=> a.accuracy }
-          encoded = sorted.first
-          encoded.all = sorted
-          encoded
-        else
-          raise Geokit::Geocoders::GeocodeError, response
+        raise(Geokit::Geocoders::GeocodeError, response) unless response.key?('results')
+        unsorted = response.fetch('results').map do |addr|
+          single_json_to_geoloc(addr)
         end
+        sorted = unsorted.sort { |a, b| b.accuracy <=> a.accuracy }
+        encoded = sorted.first
+        encoded.all = sorted
+        encoded
       end
 
       def self.single_json_to_geoloc(addr)
         loc = new_loc
         loc.success = true
-        loc.full_address = addr.fetch("formatted_address")
-        loc.formatted_address = addr.fetch("formatted_address")
+        loc.full_address = addr.fetch('formatted_address')
+        loc.formatted_address = addr.fetch('formatted_address')
         set_address_components(loc, addr)
+        set_postal_code_and_city_if_missing(loc, addr)
+        build_and_set_street_address(loc)
         set_precision(loc, addr)
         set_coords(loc, addr)
         set_bounds(loc, addr)
@@ -164,62 +152,65 @@ module Geokit
       end
 
       def self.set_coords(loc, addr)
-        location = addr.fetch("geometry").fetch("location")
-        loc.lat = location.fetch("lat").to_f
-        loc.lng = location.fetch("lng").to_f
+        location = addr.fetch('geometry').fetch('location')
+        loc.lat = location.fetch('lat').to_f
+        loc.lng = location.fetch('lng').to_f
       end
 
       def self.set_bounds(loc, addr)
-        geometry = addr.fetch("geometry")
-        return unless geometry.key?("viewport")
-        viewport = geometry.fetch("viewport")
-        ne = Geokit::LatLng.from_json(viewport.fetch("northeast"))
-        sw = Geokit::LatLng.from_json(viewport.fetch("southwest"))
+        geometry = addr.fetch('geometry')
+        return unless geometry.key?('viewport')
+        viewport = geometry.fetch('viewport')
+        ne = Geokit::LatLng.from_json(viewport.fetch('northeast'))
+        sw = Geokit::LatLng.from_json(viewport.fetch('southwest'))
         loc.suggested_bounds = Geokit::Bounds.new(sw, ne)
       end
 
       def self.set_address_components(loc, addr)
-        addr.fetch("address_components").each do |comp|
-          types = comp.fetch("types")
-          if types.include?("country") || types.include?("administrative_area_level_0")
-            loc.country_code = comp.fetch("short_name")
-            loc.country = comp.fetch("long_name")
-          elsif types.include?("administrative_area_level_1")
-            loc.state = comp.fetch("long_name")
-          elsif types.include?("administrative_area_level_2")
-            loc.county = comp.fetch("long_name")
-          elsif types.include?("locality") || types.include?("postal_town")
-            loc.city = comp.fetch("long_name")
-          elsif types.include?("postal_codes")
-            postal_codes = comp.fetch("long_name")
+        addr.fetch('address_components').each do |comp|
+          types = comp.fetch('types')
+          if types.include?('country') || types.include?('administrative_area_level_0')
+            loc.country_code = comp.fetch('short_name')
+            loc.country = comp.fetch('long_name')
+          elsif types.include?('administrative_area_level_1')
+            loc.state = comp.fetch('long_name')
+          elsif types.include?('administrative_area_level_2')
+            loc.county = comp.fetch('long_name')
+          elsif types.include?('locality') || types.include?('postal_town')
+            loc.city = comp.fetch('long_name')
+          elsif types.include?('postal_codes')
+            postal_codes = comp.fetch('long_name')
             loc.zip = if postal_codes.is_a?(Array) && postal_codes.one?
                         postal_codes.first
                       else
                         postal_codes
                       end
-          elsif types.include?("route")
-            loc.street_name = comp.fetch("long_name")
-          elsif types.include?("street_number")
-            loc.street_number = comp.fetch("short_name")
+          elsif types.include?('route')
+            loc.street_name = comp.fetch('long_name')
+          elsif types.include?('street_number')
+            loc.street_number = comp.fetch('short_name')
           end
-        end
-
-        if addr.fetch("types").include?("postal_code")
-          loc.zip ||= addr.fetch("name")
-        elsif addr.fetch("types").include?("locality")
-          loc.city ||= addr.fetch("name")
-        end
-
-        if loc.street_name
-          loc.street_address = [loc.street_number, loc.street_name].join(' ').strip
         end
       end
 
+      def self.set_postal_code_and_city_if_missing(loc, addr)
+        if addr.fetch('types').include?('postal_code')
+          loc.zip ||= addr.fetch('name')
+        elsif addr.fetch('types').include?('locality')
+          loc.city ||= addr.fetch('name')
+        end
+      end
+
+      def self.build_and_set_street_address(loc)
+        return unless loc.street_name
+        loc.street_address = [loc.street_number, loc.street_name].join(' ').strip
+      end
+
       def self.set_precision(loc, addr)
-        loc.accuracy = ACCURACY[addr.dig("geometry", "location_type")]
-        address_components = addr.fetch("address_components")
+        loc.accuracy = ACCURACY[addr.dig('geometry', 'location_type')]
+        address_components = addr.fetch('address_components')
         loc.precision = if address_components.empty?
-                          "unknown"
+                          'unknown'
                         else
                           [address_components.size, 9].min
                         end
