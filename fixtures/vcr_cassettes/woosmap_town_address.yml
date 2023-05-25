@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.woosmap.com/localities/geocode?address=Lyon&components=country:fr
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 25 May 2023 11:27:40 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Origin
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 7ccd6e33bc9102ad-CDG
+    body:
+      encoding: UTF-8
+      string: '{"results": [{"public_id": "w2S8fY6fK4IOznXWLTqUlb21njw=", "types":
+        ["locality"], "formatted_address": "Lyon, Rh\u00f4ne", "geometry": {"location":
+        {"lat": 45.757813618627125, "lng": 4.832011318544403}, "viewport": {"northeast":
+        {"lat": 45.80842, "lng": 4.898396}, "southwest": {"lat": 45.707481, "lng":
+        4.771859}}}, "name": "Lyon", "address_components": [{"short_name": "FR", "long_name":
+        "France", "types": ["country", "administrative_area_level_0"]}, {"short_name":
+        "Rh\u00f4ne", "long_name": "Rh\u00f4ne", "types": ["administrative_area_level_1"]},
+        {"short_name": ["69000", "69001", "69002", "69003", "69004", "69005", "69006",
+        "69007", "69008", "69009"], "long_name": ["69000", "69001", "69002", "69003",
+        "69004", "69005", "69006", "69007", "69008", "69009"], "types": ["postal_codes"]}]}]}'
+  recorded_at: Thu, 25 May 2023 11:27:40 GMT
+recorded_with: VCR 6.1.0
