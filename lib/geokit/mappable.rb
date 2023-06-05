@@ -75,7 +75,7 @@ module Geokit
       end
 
       # Returns heading in degrees (0 is north, 90 is east, 180 is south, etc)
-      # from the first point to the second point. Typicaly, the instance methods
+      # from the first point to the second point. Typically, the instance methods
       # will be used instead of this method.
       def heading_between(from, to)
         from = Geokit::LatLng.normalize(from)
@@ -171,7 +171,7 @@ module Geokit
       register_unit :nms,   0.0005400722448725917
 
       # Returns the multiplier used to obtain the correct distance units.
-      # TODO: make more accurate by coping
+      # TODO: make more accurate by copying
       # http://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
       def units_sphere_multiplier(units)
         EARTH_RADIUS[units]
