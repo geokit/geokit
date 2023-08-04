@@ -140,7 +140,6 @@ Style/Documentation:
     - 'lib/geokit/geocoders/fcc.rb'
     - 'lib/geokit/geocoders/geocodio.rb'
     - 'lib/geokit/geocoders/google.rb'
-    - 'lib/geokit/geocoders/us_geocoder.rb'
     - 'lib/geokit/geocoders/yahoo.rb'
     - 'lib/geokit/inflectors.rb'
     - 'lib/geokit/lat_lng.rb'
@@ -182,7 +181,6 @@ Layout/ExtraSpacing:
     - 'lib/geokit/geocoders/yahoo.rb'
     - 'test/test_mappable.rb'
     - 'test/test_opencage_geocoder.rb'
-    - 'test/test_us_geocoder.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -239,7 +237,6 @@ Style/MutableConstant:
     - 'test/test_geo_plugin_geocoder.rb'
     - 'test/test_ipgeocoder.rb'
     - 'test/test_net_adapter.rb'
-    - 'test/test_us_geocoder.rb'
 
 # Offense count: 10
 # Cop supports --auto-correct.

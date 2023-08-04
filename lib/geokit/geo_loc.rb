@@ -26,8 +26,11 @@ module Geokit
     # Street number and street name are extracted from the street address
     # attribute if they don't exist
     attr_accessor :county, :state_name, :state_code, :zip, :country_code, :country
-    attr_accessor :all, :district, :sub_premise,
-                  :neighborhood
+    attr_accessor :all,
+                  :district,
+                  :sublocality,
+                  :neighborhood,
+                  :sub_premise
     attr_writer :state, :full_address, :street_number, :street_name, :formatted_address
     attr_reader :city, :street_address
     # Attributes set upon return from geocoding. Success will be true for

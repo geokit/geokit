@@ -1,3 +1,11 @@
+## 1.16.0
+
+* Added sublocality to Google geocoder
+
+## 1.15.0
+
+* Removed support for no longer accessible geocoder.us
+
 ## 1.14.0
 
 * Introduced NoSuchGeocoderError. If you try call a geocoder like :bogus that doesn't exist, an error will be returned.

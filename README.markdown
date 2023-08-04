@@ -12,7 +12,7 @@ Geokit
 The Geokit gem provides:
 
  * Distance calculations between two points on the earth. Calculate the distance in miles, kilometers, meters, or nautical miles, with all the trigonometry abstracted away by Geokit.
- * Geocoding from multiple providers. It supports Google, Yahoo, Geocoder.us, and Geocoder.ca geocoders, and others. It provides a uniform response structure from all of them.
+ * Geocoding from multiple providers. It supports Google, Yahoo, and Geocoder.ca geocoders, and others. It provides a uniform response structure from all of them.
    It also provides a fail-over mechanism, in case your input fails to geocode in one service.
  * Rectangular bounds calculations: is a point within a given rectangular bounds?
  * Heading and midpoint calculations
@@ -38,7 +38,6 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 
 ### "regular" address geocoders
 * Yahoo BOSS - requires an API key.
-* Geocoder.us - may require authentication if performing more than the free request limit.
 * Geocoder.ca - for Canada; may require authentication as well.
 * Geonames - a free geocoder
 * Bing
@@ -59,7 +58,6 @@ Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) 
 ### IP address geocoders
 * IP - geocodes an IP address using hostip.info's web service.
 * Geoplugin.net -- another IP address geocoder
-* Geobytes
 * RIPE
 * MaxMind
 * Ipstack
@@ -150,13 +148,6 @@ If you're using this gem by itself, here are the configuration options:
     # You define these keys with a Hash as follows:
     #Geokit::Geocoders::google = { 'rubyonrails.org' => 'RUBY_ON_RAILS_API_KEY', 'ruby-docs.org' => 'RUBY_DOCS_API_KEY' }
 
-    # This is your username and password for geocoder.us.
-    # To use the free service, the value can be set to nil or false.  For
-    # usage tied to an account, the value should be set to username:password.
-    # See http://geocoder.us
-    # and http://geocoder.us/user/signup
-    Geokit::Geocoders::UsGeocoder.key = 'username:password'
-
     # This is your authorization key for geocoder.ca.
     # To use the free service, the value can be set to nil or false.  For
     # usage tied to an account, set the value to the key obtained from
@@ -177,9 +168,8 @@ If you're using this gem by itself, here are the configuration options:
 
     # This is your api key for ip-api.com.
     # For the free version (with rate limits), leave api_key unset.
-    # For the pro version, api_key must be set
     # See https://ip-api.com/
-    Geokit::Geocoders::IpApiGeocoder.api_key = 'API_KEY'
+    Geokit::Geocoders::IpApiGeocoder.key = ''
 
     # Most other geocoders need either no setup or a key
     Geokit::Geocoders::BingGeocoder.key = ''
@@ -210,7 +200,7 @@ If you're using this gem by itself, here are the configuration options:
 
     # The IP provider order.
     #
-    # Valid symbols are :ipstack, :geo_plugin, :geobytes, :ip, and :ripe.
+    # Valid symbols are :ipstack, :geo_plugin, :ip, and :ripe.
     #
     # As before, make sure you read up on relevant Terms of Use for each.
     # Geokit::Geocoders::ip_provider_order = [:external,:geo_plugin,:ip]
