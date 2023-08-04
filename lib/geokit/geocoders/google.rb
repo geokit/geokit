@@ -160,7 +160,7 @@ module Geokit
         'APPROXIMATE' => 4,
       }
 
-      PRECISIONS = %w(unknown country state state city zip zip+4 street address building)
+      PRECISIONS = %w(unknown country state city zip zip+4 street address building)
 
       def self.single_json_to_geoloc(addr)
         loc = new_loc
