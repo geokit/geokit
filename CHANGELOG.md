@@ -1,3 +1,7 @@
+## 1.16.0
+
+* Added sublocality to Google geocoder
+
 ## 1.15.0
 
 * Removed support for no longer accessible geocoder.us

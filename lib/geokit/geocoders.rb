@@ -15,7 +15,6 @@ module Geokit
   #
   # ### "regular" address geocoders
   # * Yahoo Geocoder - requires an API key.
-  # * Geocoder.us - may require authentication if performing more than the free request limit.
   # * Geocoder.ca - for Canada; may require authentication as well.
   # * Geonames - a free geocoder
   #
