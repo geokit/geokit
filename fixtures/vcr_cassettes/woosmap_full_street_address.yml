@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.woosmap.com/localities/geocode?address=1%20Aveneu%20Claude%20Vellefaux,%2075010%20Paris&components=country:fr
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 25 May 2023 11:07:10 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Origin
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 7ccd50300ff800b9-CDG
+    body:
+      encoding: UTF-8
+      string: '{"results": [{"types": ["address"], "formatted_address": "1 Avenue
+        Claude Vellefaux, 75010, Paris", "geometry": {"location": {"lat": 48.872907,
+        "lng": 2.369788}, "location_type": "ROOFTOP"}, "address_components": [{"short_name":
+        "FR", "long_name": "France", "types": ["country", "administrative_area_level_0"]},
+        {"short_name": "Paris", "long_name": "Paris", "types": ["locality"]}, {"short_name":
+        "75010", "long_name": "75010", "types": ["postal_codes"]}, {"short_name":
+        "Avenue Claude Vellefaux", "long_name": "Avenue Claude Vellefaux", "types":
+        ["route"]}, {"short_name": "1", "long_name": "1", "types": ["street_number"]}]}]}'
+  recorded_at: Thu, 25 May 2023 11:07:10 GMT
+recorded_with: VCR 6.1.0

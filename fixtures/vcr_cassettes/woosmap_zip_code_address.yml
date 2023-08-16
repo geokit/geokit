@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.woosmap.com/localities/geocode?address=75018&components=country:fr
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 25 May 2023 11:31:29 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Origin
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 7ccd73cfaf5700c8-CDG
+    body:
+      encoding: UTF-8
+      string: '{"results": [{"public_id": "rykr7FQOU1CG3C74lRlRqKSebEs=", "types":
+        ["postal_code"], "formatted_address": "75018, Paris XVIII", "geometry": {"location":
+        {"lat": 48.892228, "lng": 2.348215915105388}, "viewport": {"northeast": {"lat":
+        48.901848, "lng": 2.371791}, "southwest": {"lat": 48.882023, "lng": 2.325595}}},
+        "name": "75018", "address_components": [{"short_name": "FR", "long_name":
+        "France", "types": ["country", "administrative_area_level_0"]}, {"short_name":
+        "Paris XVIII", "long_name": "Paris XVIII", "types": ["postal_town"]}, {"short_name":
+        "Paris", "long_name": "Paris", "types": ["administrative_area_level_1"]}]}]}'
+  recorded_at: Thu, 25 May 2023 11:31:29 GMT
+recorded_with: VCR 6.1.0
