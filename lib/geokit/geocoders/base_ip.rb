@@ -27,7 +27,7 @@ module Geokit
       end
 
       def self.ip?(ip)
-        /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/.match(ip)
+        Resolv::IPv4::Regex.match(ip) || Resolv::IPv6::Regex.match(ip)
       end
 
       def self.process(format, ip)

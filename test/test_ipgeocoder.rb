@@ -64,6 +64,22 @@ class IpGeocoderTest < BaseGeocoderTest #:nodoc: all
     assert location.success?
   end
 
+  def test_ip_v6_address
+    success = MockSuccess.new
+    success.expects(:body).returns(IP_SUCCESS)
+    url = "#{@base_url}?ip=3bfa:e8a1:79da:4e93:a383:6ac8:db47:c705&position=true"
+    Geokit::Geocoders::IpGeocoder.expects(:call_geocoder_service).with(url).returns(success)
+    location = Geokit::Geocoders::IpGeocoder.geocode('3bfa:e8a1:79da:4e93:a383:6ac8:db47:c705')
+    assert_not_nil location
+    assert_equal 41.7696, location.lat
+    assert_equal(-88.4588, location.lng)
+    assert_equal 'Sugar Grove', location.city
+    assert_equal 'IL', location.state
+    assert_equal 'US', location.country_code
+    assert_equal 'ip', location.provider
+    assert location.success?
+  end
+
   def test_unicoded_lookup
     success = MockSuccess.new
     success.expects(:body).returns(IP_UNICODED)
