@@ -3,6 +3,12 @@ require 'webmock/test_unit'
 
 require File.join(File.dirname(__FILE__), '../lib/geokit.rb')
 
+begin
+    require 'typhoeus'
+rescue LoadError => e
+    warn "Could not load Typhoeus: #{e.message}. Some tests may be skipped."
+end
+
 class UserAgentTest < Test::Unit::TestCase
 
     NETHTTPDEFAULT          = 'Ruby'
@@ -29,6 +35,10 @@ class UserAgentTest < Test::Unit::TestCase
     end
 
     def test_typhoeus_set_to_testagent
+        unless defined?(Typhoeus)
+            warn "Could not load Typhoeus. Some tests may be skipped."
+            return
+        end
         stub_request(:get, URL).with(:headers => TYPHOEUSDEFAULTHEADERS.merge('User-Agent' => TESTAGENT))
 
         Geokit::Geocoders::useragent = TESTAGENT
@@ -37,6 +47,10 @@ class UserAgentTest < Test::Unit::TestCase
     end
 
     def test_typhoeus_set_to_default
+        unless defined?(Typhoeus)
+            warn "Could not load Typhoeus. Some tests may be skipped."
+            return
+        end
         stub_request(:get, URL).with(:headers => TYPHOEUSDEFAULTHEADERS.merge('User-Agent' => TYPHOEUSDEFAULT))
 
         Geokit::Geocoders::useragent = nil

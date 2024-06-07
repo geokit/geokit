@@ -1,3 +1,7 @@
+## 1.16.1
+
+* Fixing tests and removing additional references to unavailable geocoder.
+
 ## 1.16.0
 
 * Added sublocality to Google geocoder

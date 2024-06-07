@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-Geokit::Geocoders.provider_order = [:google, :bing, :us]
+Geokit::Geocoders.provider_order = [:google, :bing]
 
 class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def setup
@@ -22,7 +22,8 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_double_failover
     Geokit::Geocoders::GoogleGeocoder.expects(:geocode).with(@address).returns(@failure)
     Geokit::Geocoders::BingGeocoder.expects(:geocode).with(@address).returns(@failure)
-    assert_equal @success, Geokit::Geocoders::MultiGeocoder.geocode(@address)
+    # Test a third, success case here, and change @failure below to @success
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.geocode(@address)
   end
 
   def test_failure
@@ -64,7 +65,8 @@ class MultiGeocoderTest < BaseGeocoderTest #:nodoc: all
   def test_reverse_geocode_double_failover
     Geokit::Geocoders::GoogleGeocoder.expects(:reverse_geocode).with(@latlng).returns(@failure)
     Geokit::Geocoders::BingGeocoder.expects(:reverse_geocode).with(@latlng).returns(@failure)
-    assert_equal @success, Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)
+    # Test a third, success case here, and change @failure below to @success
+    assert_equal @failure, Geokit::Geocoders::MultiGeocoder.reverse_geocode(@latlng)
   end
 
   def test_reverse_geocode_failure

@@ -196,7 +196,7 @@ If you're using this gem by itself, here are the configuration options:
     # Be aware that there are Terms of Use restrictions on how you can use the
     # various geocoders.  Make sure you read up on relevant Terms of Use for each
     # geocoder you are going to use.
-    Geokit::Geocoders::provider_order = [:google,:us]
+    Geokit::Geocoders::provider_order = [:google]
 
     # The IP provider order.
     #

@@ -34,7 +34,7 @@ module Geokit
     @@proxy = nil
     @@useragent = nil
     @@request_timeout = nil
-    @@provider_order = [:google, :us]
+    @@provider_order = [:google]
     @@ip_provider_order = [:geo_plugin, :ip]
     @@logger = Logger.new(STDOUT)
     @@logger.level = Logger::INFO
@@ -90,6 +90,7 @@ module Geokit
         logger.debug "#{provider_name} geocoding. address: #{address}, args #{args}"
         do_geocode(address, *args) || GeoLoc.new
       rescue TooManyQueriesError, GeocodeError, AccessDeniedError, NoSuchGeocoderError
+        # puts "Exception raised by provider: #{provider_name}"
         raise
       rescue => e
         logger.error "Caught an error during #{provider_name} geocoding call: #{$!}"

@@ -1,5 +1,11 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
+begin
+  require 'typhoeus'
+rescue LoadError => e
+  warn "Could not load Typhoeus: #{e.message}. Some tests may be skipped."
+end
+
 # Base class for testing geocoders.
 class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
   class Geokit::Geocoders::CachedGeocoder < Geokit::Geocoders::Geocoder
@@ -32,6 +38,10 @@ class NetAdapterTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_cache
+    unless defined?(Typhoeus)
+      warn "Could not load Typhoeus. Some tests may be skipped."
+      return
+    end
     old_adapter = Geokit::Geocoders.net_adapter
     Geokit::Geocoders.net_adapter = Geokit::NetAdapter::Typhoeus
     Typhoeus::Config.cache = SuperSimpleCache
