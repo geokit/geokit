@@ -15,7 +15,7 @@ module Geokit
           "api_key=#{key}",
         ].join('&')
 
-        ['http://api.geocod.io/v1/geocode', params].join('?')
+        ['http://api.geocod.io/v1.4/geocode', params].join('?')
       end
 
       def self.parse_json(json)
