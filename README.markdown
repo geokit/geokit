@@ -20,7 +20,7 @@ The Geokit gem provides:
 Combine this gem with the [geokit-rails](http://github.com/geokit/geokit-rails) to get location-based finders for your Rails app.
 
 * Repository at Github: [http://github.com/geokit/geokit](http://github.com/geokit/geokit).
-* RDoc pages: [http://rdoc.info/github/geokit/geokit/master/frames](http://rdoc.info/github/geokit/geokit/master/frames)
+* RubyDoc pages: [http://rubydoc.info/github/geokit/geokit/master/frames](http://rubydoc.info/github/geokit/geokit/master/frames)
 
 ## COMMUNICATION
 
@@ -259,7 +259,7 @@ Not it. What we can do is tell the geocoder to return results only from in and a
     => "Winnetka, California, USA"
 ```
 
-Another option is to use Component Filtering as described at https://developers.google.com/maps/documentation/geocoding/intro#ComponentFiltering. To do that supply the `:components` option to the `geocode` method. This option should be a hash with keys corresponding to desired component names.
+Another option is to use Component Filtering as described at https://developers.google.com/maps/documentation/geocoding/requests-geocoding#component-filtering. To do that supply the `:components` option to the `geocode` method. This option should be a hash with keys corresponding to desired component names.
 
 Suppose we'd like to geocode string 'Austin'. Regularly, Google would return 'Austin, TX, USA' for such a query. Not with component filtering:
 
